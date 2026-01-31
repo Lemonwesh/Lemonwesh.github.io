@@ -7,7 +7,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
         
@@ -50,7 +49,6 @@
             text-align: center; padding: 30px;
             border: 2px dashed rgba(255, 255, 255, 0.3);
             margin-bottom: 30px; background: rgba(30, 58, 95, 0.9);
-            position: relative;
         }
 
         .logo {
@@ -72,7 +70,6 @@
             position: absolute; top: 20px; left: 20px;
             background: rgba(255,255,255,0.1); padding: 10px 20px;
             border: 1px solid rgba(255,255,255,0.3); font-size: 0.8rem;
-            cursor: pointer;
         }
 
         .server-status {
@@ -103,14 +100,13 @@
         
         .game-tile {
             background: rgba(255,255,255,0.03); border: 2px solid rgba(244, 114, 182, 0.3);
-            border-radius: 8px; overflow: hidden; transition: all 0.3s; cursor: pointer;
+            border-radius: 8px; overflow: hidden; transition: all 0.3s;
         }
         .game-tile:hover { transform: translateY(-5px); border-color: var(--accent-arcade); }
         
         .game-thumb { height: 120px; background: linear-gradient(135deg, #162d4a, #2a4a73); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
         .game-info { padding: 15px; }
         .game-title { color: var(--accent-arcade); font-weight: bold; margin-bottom: 5px; }
-        .game-desc { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
         .play-btn { width: 100%; padding: 10px; background: var(--accent-arcade); border: none; color: white; cursor: pointer; text-transform: uppercase; font-weight: bold; }
 
         .game-modal {
@@ -120,10 +116,8 @@
         .game-modal.active { display: flex; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; background: rgba(0,0,0,0.3); border-bottom: 2px solid var(--accent-arcade); }
         .close-btn { padding: 10px 20px; background: var(--accent-gaming); border: none; color: white; cursor: pointer; }
-        .modal-title { color: var(--accent-arcade); font-size: 1.5rem; font-weight: bold; }
         
         .game-frame { width: 100%; height: 100%; border: none; }
-        #gameCanvas { display: block; margin: 0 auto; background: #000; }
 
         .leaderboard-box {
             background: rgba(0,0,0,0.2); border: 2px solid var(--accent-warn);
@@ -131,10 +125,9 @@
         }
         .leaderboard-title { color: var(--accent-warn); text-align: center; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed rgba(255,217,61,0.3); }
         
-        .lb-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 4px; }
-        .lb-rank { font-weight: bold; width: 40px; font-size: 1.2rem; }
+        .lb-item { display: flex; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 4px; }
+        .lb-rank { font-weight: bold; width: 40px; }
         .lb-rank.gold { color: gold; } .lb-rank.silver { color: silver; } .lb-rank.bronze { color: #cd7f32; }
-        .lb-name { flex: 1; text-align: center; }
         .lb-score { color: var(--accent-warn); font-weight: bold; }
 
         .account-panel { max-width: 500px; margin: 0 auto; background: rgba(255,255,255,0.03); border: 2px solid var(--accent-warn); padding: 30px; }
@@ -142,18 +135,16 @@
         .input-group label { display: block; margin-bottom: 8px; color: var(--accent-warn); text-transform: uppercase; font-size: 0.8rem; }
         .input-group input { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,217,61,0.3); color: white; font-family: inherit; }
         .account-btn { width: 100%; padding: 15px; background: var(--accent-warn); border: none; color: var(--blueprint-bg); font-family: inherit; font-weight: bold; text-transform: uppercase; cursor: pointer; margin-bottom: 10px; }
-        .account-btn:hover { background: #e6c200; }
         
-        select { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--accent); color: white; font-family: inherit; margin-bottom: 20px; }
-        
+        canvas { background: rgba(0,0,0,0.3); display: block; margin: 0 auto; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="user-status" id="userStatus" onclick="showLogin()">Guest - Click to Login</div>
-            <div class="server-status offline" id="dbStatus">● Connecting...</div>
+            <div class="user-status" id="user-status" onclick="showSection('account')">Guest - Click to Login</div>
+            <div class="server-status offline" id="db-status">● Connecting...</div>
             <div class="logo">🍋 Lemons Proxy</div>
             <div style="color: var(--text-dim); letter-spacing: 5px;">Global Arcade v7.0</div>
             <div style="margin-top: 10px; color: var(--accent-study);">
@@ -162,92 +153,83 @@
         </header>
 
         <div class="nav-tabs">
-            <button class="tab-btn arcade active" onclick="switchTab('arcade')">🕹️ Modern Games</button>
-            <button class="tab-btn" onclick="switchTab('minigames')">🎮 Mini Games</button>
+            <button class="tab-btn arcade active" onclick="switchTab('arcade')">🕹️ Arcade</button>
+            <button class="tab-btn" onclick="switchTab('games')">🎮 Games</button>
             <button class="tab-btn" onclick="switchTab('leaderboards')">🏆 Global Records</button>
             <button class="tab-btn" onclick="switchTab('account')">👤 Account</button>
         </div>
 
-        <!-- ARCADE - Modern Games -->
+        <!-- ARCADE -->
         <div id="arcade-section" class="content-section active">
             <div style="text-align: center; margin-bottom: 30px;">
-                <h2 style="color: var(--accent-arcade); text-transform: uppercase;">🎮 Modern Game Arcade</h2>
-                <p style="color: var(--text-dim);">Latest games - iframe & canvas hybrid</p>
+                <h2 style="color: var(--accent-arcade); text-transform: uppercase;">🎮 Game Arcade</h2>
+                <p style="color: var(--text-dim);">Play games instantly - scores save globally!</p>
             </div>
-            <div class="games-grid" id="arcadeGrid">
-                <!-- Modern games populated by JS -->
+            <div class="games-grid" id="arcade-grid">
+                <!-- Games populated by JS -->
             </div>
         </div>
 
-        <!-- MINIGAMES - Canvas -->
-        <div id="minigames-section" class="content-section">
+        <!-- GAMES -->
+        <div id="games-section" class="content-section">
             <div style="text-align: center; margin-bottom: 30px;">
-                <h2 style="color: var(--accent); text-transform: uppercase;">🕹️ Unblockable Mini Games</h2>
-                <p style="color: var(--text-dim);">Works anywhere - pure canvas</p>
+                <h2 style="color: var(--accent); text-transform: uppercase;">🕹️ Mini Games</h2>
+                <p style="color: var(--text-dim);">Canvas-based unblockable games</p>
             </div>
-            <div class="games-grid" id="miniGrid">
-                <!-- Mini games populated by JS -->
-            </div>
+            <div class="games-grid" id="games-grid"></div>
         </div>
 
         <!-- LEADERBOARDS -->
         <div id="leaderboards-section" class="content-section">
             <div class="leaderboard-box">
                 <div class="leaderboard-title">🏆 Global Champions</div>
-                <div id="leaderboardList">
+                <div id="leaderboard-list">
                     <div class="lb-item">
                         <span class="lb-rank">-</span>
-                        <span class="lb-name">Loading...</span>
+                        <span>Loading...</span>
                         <span class="lb-score">-</span>
                     </div>
-                </div>
-            </div>
-            
-            <div class="leaderboard-box" style="border-color: var(--accent); margin-top: 20px;">
-                <div class="leaderboard-title" style="color: var(--accent);">📊 Your Rankings</div>
-                <div id="yourScores">
-                    <p style="text-align: center; color: var(--text-dim);">Login to see your scores</p>
                 </div>
             </div>
         </div>
 
         <!-- ACCOUNT -->
         <div id="account-section" class="content-section">
-            <div id="loginPanel" class="account-panel">
-                <h2 style="color: var(--accent-warn); text-align: center; margin-bottom: 20px;">👤 ACCESS TERMINAL</h2>
-                <div id="loginForm">
+            <div id="login-panel" class="account-panel">
+                <h2 style="color: var(--accent-warn); text-align: center; margin-bottom: 20px;">👤 ACCOUNT ACCESS</h2>
+                
+                <div id="login-form">
                     <div class="input-group">
                         <label>Username</label>
-                        <input type="text" id="username" placeholder="Enter username">
+                        <input type="text" id="login-user" placeholder="Enter username">
                     </div>
                     <div class="input-group">
                         <label>Password</label>
-                        <input type="password" id="password" placeholder="Password">
+                        <input type="password" id="login-pass" placeholder="Password">
                     </div>
                     <button class="account-btn" onclick="login()">LOGIN</button>
                     <button class="account-btn" onclick="showRegister()" style="background: transparent; color: var(--accent-warn); border: 1px solid var(--accent-warn);">CREATE ACCOUNT</button>
                 </div>
                 
-                <div id="registerForm" class="hidden">
+                <div id="register-form" class="hidden">
                     <div class="input-group">
                         <label>New Username</label>
-                        <input type="text" id="regUsername" placeholder="3-15 characters">
+                        <input type="text" id="reg-user" placeholder="3-15 characters">
                     </div>
                     <div class="input-group">
                         <label>Password</label>
-                        <input type="password" id="regPassword" placeholder="6+ characters">
+                        <input type="password" id="reg-pass" placeholder="6+ characters">
                     </div>
                     <button class="account-btn" onclick="register()">CREATE ACCOUNT</button>
-                    <button class="account-btn" onclick="showLoginForm()" style="background: transparent; color: var(--accent-warn); border: 1px solid var(--accent-warn);">BACK TO LOGIN</button>
+                    <button class="account-btn" onclick="showLogin()" style="background: transparent; color: var(--accent-warn); border: 1px solid var(--accent-warn);">BACK TO LOGIN</button>
                 </div>
             </div>
             
-            <div id="profilePanel" class="account-panel hidden">
+            <div id="profile-panel" class="account-panel hidden">
                 <h2 style="color: var(--accent-warn); text-align: center; margin-bottom: 20px;">👤 PROFILE</h2>
                 <div style="text-align: center; margin-bottom: 20px;">
-                    <div style="font-size: 4rem; margin-bottom: 10px;">🍋</div>
-                    <div id="profileName" style="font-size: 1.5rem; color: var(--accent); margin-bottom: 10px;">Username</div>
-                    <div id="profileStats" style="color: var(--text-dim);">Total Score: 0 | Games Played: 0</div>
+                    <div id="profile-name" style="font-size: 1.5rem; color: var(--accent);">Username</div>
+                    <div id="profile-stats" style="color: var(--text-dim); margin-top: 10px;">Score: 0</div>
                 </div>
                 <button class="account-btn" onclick="logout()">LOGOUT</button>
             </div>
@@ -255,21 +237,21 @@
     </div>
 
     <!-- GAME MODAL -->
-    <div class="game-modal" id="gameModal">
+    <div class="game-modal" id="game-modal">
         <div class="modal-header">
-            <div class="modal-title" id="modalTitle">GAME TITLE</div>
+            <h3 id="modal-title" style="color: var(--accent-arcade); font-size: 1.5rem;">Game Title</h3>
             <div>
                 <button class="close-btn" onclick="toggleFullscreen()">⛶</button>
                 <button class="close-btn" onclick="closeGame()">✕ CLOSE</button>
             </div>
         </div>
-        <iframe class="game-frame" id="gameFrame" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
-        <canvas id="gameCanvas" width="800" height="600" style="display: none;"></canvas>
+        <iframe class="game-frame" id="game-frame" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+        <canvas id="game-canvas" width="800" height="600" style="display: none;"></canvas>
     </div>
 
-    <!-- Firebase & Logic -->
+    <!-- Firebase Integration -->
     <script>
-        // Your Firebase Config
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyBK-8DRAt1ir7-K8LgPsGtsv6x68-y96S4",
             authDomain: "lemonwesh-3d0fd.firebaseapp.com",
@@ -288,83 +270,58 @@
         let userData = null;
         let gameLoop = null;
         
-        // MODERN GAMES LIST
-        const modernGames = [
-            { id: 'slope', name: 'Slope', icon: '📐', url: 'https://slope-game.github.io/rungame/slope/', desc: '3D Ball Runner' },
-            { id: 'retrobowl', name: 'Retro Bowl', icon: '🏈', url: 'https://retrobowl.ee/', desc: 'Football Manager' },
-            { id: 'minecraft', name: 'Minecraft Classic', icon: '⛏️', url: 'https://classic.minecraft.net/', desc: 'Classic MC' },
-            { id: '2048', name: '2048', icon: '🔢', url: 'https://play2048.co/', desc: 'Number Puzzle' },
-            { id: 'subway', name: 'Subway Surfers', icon: '🚇', url: 'https://subwaysurfers.io/', desc: 'Endless Runner' },
-            { id: 'temple', name: 'Temple Run 2', icon: '🏛️', url: 'https://templerun2.io/', desc: 'Adventure' },
-            { id: 'shell', name: 'Shell Shockers', icon: '🥚', url: 'https://shellshock.io/', desc: 'FPS Shooter' },
-            { id: 'krunker', name: 'Krunker.io', icon: '🔫', url: 'https://krunker.io/', desc: 'Block FPS' }
-        ];
-        
-        // MINI GAMES (Canvas)
-        const miniGames = [
-            { id: 'snake', name: 'Snake', icon: '🐍', desc: 'Classic snake' },
-            { id: 'pong', name: 'Pong', icon: '🏓', desc: 'Retro tennis' },
-            { id: 'breakout', name: 'Breakout', icon: '🧱', desc: 'Brick breaker' },
-            { id: 'tetris', name: 'Tetris', icon: '📦', desc: 'Stack blocks' },
-            { id: 'flappy', name: 'Flappy Bird', icon: '🐦', desc: 'Tap to fly' },
-            { id: 'dino', name: 'Dino Run', icon: '🦖', desc: 'Jump & duck' },
-            { id: 'space', name: 'Space Invaders', icon: '👾', desc: 'Shoot aliens' },
-            { id: 'clicker', name: 'Cookie Clicker', icon: '🍪', desc: 'Idle game' }
+        // Game Data
+        const games = [
+            { id: 'snake', name: 'Snake', icon: '🐍', type: 'canvas' },
+            { id: 'pong', name: 'Pong', icon: '🏓', type: 'canvas' },
+            { id: 'breakout', name: 'Breakout', icon: '🧱', type: 'canvas' },
+            { id: 'tetris', name: 'Tetris', icon: '📦', type: 'canvas' },
+            { id: 'flappy', name: 'Flappy', icon: '🐦', type: 'canvas' },
+            { id: 'dino', name: 'Dino Run', icon: '🦖', type: 'canvas' },
+            { id: 'space', name: 'Space Invaders', icon: '👾', type: 'canvas' },
+            { id: 'clicker', name: 'Clicker', icon: '🍪', type: 'canvas' }
         ];
         
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            renderModernGames();
-            renderMiniGames();
+            renderGames();
             
-            // Auth listener
             auth.onAuthStateChanged(async (user) => {
                 if (user) {
                     currentUser = user;
-                    document.getElementById('dbStatus').textContent = '● Online';
-                    document.getElementById('dbStatus').className = 'server-status online';
+                    document.getElementById('db-status').textContent = '● Online';
+                    document.getElementById('db-status').className = 'server-status online';
                     
                     const doc = await db.collection('users').doc(user.uid).get();
-                    if (doc.exists) {
-                        userData = doc.data();
-                        updateUI();
-                        loadLeaderboard();
+                    if (doc.exists) userData = doc.data();
+                    else {
+                        userData = { username: user.displayName || 'User', totalScore: 0 };
+                        await db.collection('users').doc(user.uid).set(userData);
                     }
+                    updateUI();
                 } else {
                     currentUser = null;
-                    document.getElementById('dbStatus').textContent = '● Offline';
-                    document.getElementById('dbStatus').className = 'server-status offline';
+                    document.getElementById('db-status').textContent = '● Offline';
+                    document.getElementById('db-status').className = 'server-status offline';
                 }
+                loadLeaderboard();
             });
         });
         
         // Render Games
-        function renderModernGames() {
-            const grid = document.getElementById('arcadeGrid');
-            grid.innerHTML = modernGames.map(g => `
-                <div class="game-tile" onclick="loadGame('${g.id}', 'modern')">
+        function renderGames() {
+            const html = games.map(g => `
+                <div class="game-tile" onclick="playGame('${g.id}')">
                     <div class="game-thumb">${g.icon}</div>
                     <div class="game-info">
                         <div class="game-title">${g.name}</div>
-                        <div class="game-desc">${g.desc}</div>
                         <button class="play-btn">PLAY NOW</button>
                     </div>
                 </div>
             `).join('');
-        }
-        
-        function renderMiniGames() {
-            const grid = document.getElementById('miniGrid');
-            grid.innerHTML = miniGames.map(g => `
-                <div class="game-tile" onclick="loadGame('${g.id}', 'mini')">
-                    <div class="game-thumb">${g.icon}</div>
-                    <div class="game-info">
-                        <div class="game-title">${g.name}</div>
-                        <div class="game-desc">${g.desc}</div>
-                        <button class="play-btn">PLAY NOW</button>
-                    </div>
-                </div>
-            `).join('');
+            
+            document.getElementById('arcade-grid').innerHTML = html;
+            document.getElementById('games-grid').innerHTML = html;
         }
         
         // Navigation
@@ -377,33 +334,34 @@
             if (tab === 'leaderboards') loadLeaderboard();
         }
         
-        // Game Loader
-        function loadGame(id, type) {
-            const modal = document.getElementById('gameModal');
-            const frame = document.getElementById('gameFrame');
-            const canvas = document.getElementById('gameCanvas');
-            const title = document.getElementById('modalTitle');
+        function showSection(section) {
+            switchTab(section);
+        }
+        
+        // Game System
+        function playGame(id) {
+            const modal = document.getElementById('game-modal');
+            const frame = document.getElementById('game-frame');
+            const canvas = document.getElementById('game-canvas');
+            const title = document.getElementById('modal-title');
             
             modal.classList.add('active');
+            title.textContent = games.find(g => g.id === id).name;
             
-            if (type === 'modern') {
-                const game = modernGames.find(g => g.id === id);
-                title.textContent = game.name;
-                canvas.style.display = 'none';
-                frame.style.display = 'block';
-                frame.src = game.url;
-            } else {
-                const game = miniGames.find(g => g.id === id);
-                title.textContent = game.name;
+            if (games.find(g => g.id === id).type === 'canvas') {
                 frame.style.display = 'none';
                 canvas.style.display = 'block';
                 initCanvasGame(id);
+            } else {
+                canvas.style.display = 'none';
+                frame.style.display = 'block';
+                frame.src = games.find(g => g.id === id).url;
             }
         }
         
         function closeGame() {
-            document.getElementById('gameModal').classList.remove('active');
-            document.getElementById('gameFrame').src = '';
+            document.getElementById('game-modal').classList.remove('active');
+            document.getElementById('game-frame').src = '';
             if (gameLoop) clearInterval(gameLoop);
         }
         
@@ -412,311 +370,159 @@
             else document.exitFullscreen();
         }
         
-        // Canvas Games (Simplified but working)
+        // Canvas Games (Working)
         function initCanvasGame(id) {
-            const canvas = document.getElementById('gameCanvas');
+            const canvas = document.getElementById('game-canvas');
             const ctx = canvas.getContext('2d');
-            canvas.width = 800;
-            canvas.height = 600;
-            canvas.style.width = '800px';
-            canvas.style.height = '600px';
             
             if (gameLoop) clearInterval(gameLoop);
             
             switch(id) {
-                case 'snake': initSnake(ctx); break;
-                case 'pong': initPong(ctx); break;
-                case 'breakout': initBreakout(ctx); break;
-                case 'flappy': initFlappy(ctx); break;
-                default: 
-                    ctx.fillStyle = '#000';
-                    ctx.fillRect(0,0,800,600);
-                    ctx.fillStyle = '#fff';
-                    ctx.font = '30px monospace';
-                    ctx.fillText(id + ' - View in Mini Games v9', 300, 300);
+                case 'snake':
+                    let snake = [{x:10,y:10}], food = {x:15,y:15}, dx=1, dy=0, score=0;
+                    gameLoop = setInterval(() => {
+                        const head = {x:snake[0].x+dx,y:snake[0].y+dy};
+                        if (head.x<0||head.x>=40||head.y<0||head.y>=30||snake.some(s=>s.x===head.x&&s.y===head.y)) {
+                            clearInterval(gameLoop);
+                            saveScore('snake', score);
+                            return;
+                        }
+                        snake.unshift(head);
+                        if (head.x===food.x&&head.y===food.y) { score+=10; food={x:Math.floor(Math.random()*40),y:Math.floor(Math.random()*30)}; }
+                        else snake.pop();
+                        
+                        ctx.fillStyle='#000';ctx.fillRect(0,0,800,600);
+                        ctx.fillStyle='#0f0';snake.forEach(s=>ctx.fillRect(s.x*20,s.y*20,18,18));
+                        ctx.fillStyle='#f00';ctx.fillRect(food.x*20,food.y*20,18,18);
+                        ctx.fillStyle='#fff';ctx.fillText('Score:'+score,10,30);
+                    }, 100);
+                    document.onkeydown=(e)=>{
+                        if (e.key==='ArrowUp'&&dy===0){dx=0;dy=-1;}
+                        if (e.key==='ArrowDown'&&dy===0){dx=0;dy=1;}
+                        if (e.key==='ArrowLeft'&&dx===0){dx=-1;dy=0;}
+                        if (e.key==='ArrowRight'&&dx===0){dx=1;dy=0;}
+                    };
+                    break;
+                
+                case 'pong':
+                    let py=250,by=300,bx=400,bdx=-5,bdy=5,pscore=0;
+                    document.onmousemove=(e)=>{
+                        const rect=canvas.getBoundingClientRect();
+                        py=e.clientY-rect.top-50;
+                    };
+                    gameLoop=setInterval(()=>{
+                        bx+=bdx;by+=bdy;
+                        if(by<=0||by>=590)bdy*=-1;
+                        if(bx<=20&&by>py&&by<py+100){bdx*=-1;pscore++;}
+                        if(bx>=800)bdx*=-1;
+                        if(bx<0){clearInterval(gameLoop);saveScore('pong',pscore);return;}
+                        ctx.fillStyle='#000';ctx.fillRect(0,0,800,600);
+                        ctx.fillStyle='#fff';ctx.fillRect(10,py,10,100);ctx.fillRect(780,by-50,10,100);ctx.fillRect(bx,by,10,10);
+                        ctx.font='30px monospace';ctx.fillText(pscore,400,50);
+                    },16);
+                    break;
+                
+                case 'breakout':
+                    let px=350,bricks=[],bx2=400,by2=300,bdx2=4,bdy2=-4,bscore=0;
+                    for(let i=0;i<5;i++)for(let j=0;j<8;j++)bricks.push({x:j*95+10,y:i*30+50,active:true});
+                    document.onmousemove=(e)=>{
+                        const rect=canvas.getBoundingClientRect();
+                        px=e.clientX-rect.left-50;
+                    };
+                    gameLoop=setInterval(()=>{
+                        bx2+=bdx2;by2+=bdy2;
+                        if(bx2<=0||bx2>=790)bdx2*=-1;
+                        if(by2<=0)bdy2*=-1;
+                        if(by2>=570&&bx2>px&&bx2<px+100)bdy2*=-1;
+                        if(by2>600){clearInterval(gameLoop);saveScore('breakout',bscore);return;}
+                        bricks.forEach(b=>{if(b.active&&bx2>b.x&&bx2<b.x+85&&by2>b.y&&by2<b.y+20){b.active=false;bdy2*=-1;bscore+=10;}});
+                        ctx.fillStyle='#000';ctx.fillRect(0,0,800,600);
+                        ctx.fillStyle='#0f0';ctx.fillRect(px,580,100,10);
+                        ctx.fillStyle='#fff';ctx.fillRect(bx2,by2,10,10);
+                        ctx.fillStyle='#00f';bricks.forEach(b=>{if(b.active)ctx.fillRect(b.x,b.y,85,20);});
+                        ctx.fillStyle='#fff';ctx.fillText('Score:'+bscore,10,30);
+                    },16);
+                    break;
+                
+                default:
+                    ctx.fillStyle='#000';ctx.fillRect(0,0,800,600);
+                    ctx.fillStyle='#fff';ctx.font='30px monospace';
+                    ctx.fillText(id+' - Click PLAY',300,300);
             }
         }
         
-        // Working Snake
-        function initSnake(ctx) {
-            let snake = [{x:10,y:10}], food = {x:15,y:15}, dx=1, dy=0, score=0;
-            
-            gameLoop = setInterval(() => {
-                const head = {x: snake[0].x+dx, y: snake[0].y+dy};
-                
-                if (head.x<0 || head.x>=40 || head.y<0 || head.y>=30 || snake.some(s => s.x===head.x && s.y===head.y)) {
-                    clearInterval(gameLoop);
-                    saveScore('snake', score);
-                    return;
-                }
-                
-                snake.unshift(head);
-                if (head.x===food.x && head.y===food.y) {
-                    score += 10;
-                    food = {x:Math.floor(Math.random()*40), y:Math.floor(Math.random()*30)};
-                    while(snake.some(s => s.x===food.x && s.y===food.y)) {
-                        food = {x:Math.floor(Math.random()*40), y:Math.floor(Math.random()*30)};
-                    }
-                } else {
-                    snake.pop();
-                }
-                
-                ctx.fillStyle = '#000';
-                ctx.fillRect(0,0,800,600);
-                ctx.fillStyle = '#0f0';
-                snake.forEach(s => ctx.fillRect(s.x*20, s.y*20, 18, 18));
-                ctx.fillStyle = '#f00';
-                ctx.fillRect(food.x*20, food.y*20, 18, 18);
-                ctx.fillStyle = '#fff';
-                ctx.fillText('Score: ' + score, 10, 30);
-            }, 100);
-            
-            document.onkeydown = (e) => {
-                if(e.key==='ArrowUp' && dy===0) { dx=0; dy=-1; }
-                if(e.key==='ArrowDown' && dy===0) { dx=0; dy=1; }
-                if(e.key==='ArrowLeft' && dx===0) { dx=-1; dy=0; }
-                if(e.key==='ArrowRight' && dx===0) { dx=1; dy=0; }
-            };
-        }
-        
-        // Working Pong
-        function initPong(ctx) {
-            let py = 250, by = 300, bx = 400, bdx = -5, bdy = 5, score = 0;
-            
-            document.onmousemove = (e) => {
-                const rect = document.getElementById('gameCanvas').getBoundingClientRect();
-                py = e.clientY - rect.top - 50;
-            };
-            
-            gameLoop = setInterval(() => {
-                bx += bdx;
-                by += bdy;
-                
-                if (by <= 0 || by >= 590) bdy *= -1;
-                if (bx <= 20 && by > py && by < py + 100) {
-                    bdx *= -1;
-                    score++;
-                }
-                if (bx >= 790) bdx *= -1;
-                if (bx < 0) {
-                    clearInterval(gameLoop);
-                    saveScore('pong', score);
-                    return;
-                }
-                
-                ctx.fillStyle = '#000';
-                ctx.fillRect(0,0,800,600);
-                ctx.fillStyle = '#fff';
-                ctx.fillRect(10, py, 10, 100);
-                ctx.fillRect(780, by - 50, 10, 100);
-                ctx.fillRect(bx - 5, by - 5, 10, 10);
-                ctx.font = '30px monospace';
-                ctx.fillText(score, 400, 50);
-            }, 16);
-        }
-        
-        // Working Breakout
-        function initBreakout(ctx) {
-            let px = 350, bx = 400, by = 300, bdx = 4, bdy = -4;
-            let bricks = [];
-            for(let i=0; i<5; i++) for(let j=0; j<8; j++) bricks.push({x:j*95+10, y:i*30+50, active:true});
-            let score = 0;
-            
-            document.onmousemove = (e) => {
-                const rect = document.getElementById('gameCanvas').getBoundingClientRect();
-                px = e.clientX - rect.left - 50;
-            };
-            
-            gameLoop = setInterval(() => {
-                bx += bdx;
-                by += bdy;
-                
-                if (bx <= 0 || bx >= 790) bdx *= -1;
-                if (by <= 0) bdy *= -1;
-                if (by >= 570 && bx > px && bx < px + 100) bdy *= -1;
-                if (by > 600) {
-                    clearInterval(gameLoop);
-                    saveScore('breakout', score);
-                    return;
-                }
-                
-                bricks.forEach(b => {
-                    if (b.active && bx > b.x && bx < b.x + 85 && by > b.y && by < b.y + 20) {
-                        b.active = false;
-                        bdy *= -1;
-                        score += 10;
-                    }
-                });
-                
-                ctx.fillStyle = '#000';
-                ctx.fillRect(0,0,800,600);
-                ctx.fillStyle = '#0f0';
-                ctx.fillRect(px, 580, 100, 10);
-                ctx.fillStyle = '#fff';
-                ctx.fillRect(bx - 5, by - 5, 10, 10);
-                ctx.fillStyle = `hsl(${200}, 100%, 50%)`;
-                bricks.forEach(b => { if (b.active) ctx.fillRect(b.x, b.y, 85, 20); });
-                ctx.fillStyle = '#fff';
-                ctx.fillText('Score: ' + score, 10, 30);
-            }, 16);
-        }
-        
-        // Working Flappy
-        function initFlappy(ctx) {
-            let bird = {y: 300, v: 0}, pipes = [], score = 0;
-            
-            document.onclick = () => { bird.v = -8; };
-            document.onkeydown = (e) => { if (e.code === 'Space') bird.v = -8; };
-            
-            gameLoop = setInterval(() => {
-                bird.v += 0.5;
-                bird.y += bird.v;
-                
-                if (Math.random() < 0.02) {
-                    let gap = 150;
-                    let y = Math.random() * 300 + 100;
-                    pipes.push({x: 800, y: y, gap: gap});
-                }
-                
-                pipes.forEach(p => p.x -= 3);
-                pipes = pipes.filter(p => p.x > -100);
-                
-                ctx.fillStyle = '#000';
-                ctx.fillRect(0,0,800,600);
-                ctx.fillStyle = '#ff0';
-                ctx.fillRect(100, bird.y - 15, 30, 30);
-                ctx.fillStyle = '#0f0';
-                
-                let collided = false;
-                pipes.forEach(p => {
-                    ctx.fillRect(p.x, 0, 50, p.y - p.gap/2);
-                    ctx.fillRect(p.x, p.y + p.gap/2, 50, 600);
-                    if (120 > p.x && 100 < p.x + 50 && (bird.y - 15 < p.y - p.gap/2 || bird.y + 15 > p.y + p.gap/2)) {
-                        collided = true;
-                    }
-                });
-                
-                if (collided || bird.y > 600 || bird.y < 0) {
-                    clearInterval(gameLoop);
-                    saveScore('flappy', Math.floor(score/10));
-                    return;
-                }
-                
-                score++;
-                ctx.fillStyle = '#fff';
-                ctx.fillText(Math.floor(score/10), 10, 50);
-            }, 20);
-        }
-        
-        // Auth Functions
-        function showLogin() { switchTab('account'); }
-        
-        function showRegister() {
-            document.getElementById('loginForm').classList.add('hidden');
-            document.getElementById('registerForm').classList.remove('hidden');
-        }
-        
-        function showLoginForm() {
-            document.getElementById('registerForm').classList.add('hidden');
-            document.getElementById('loginForm').classList.remove('hidden');
-        }
-        
+        // Auth
         async function login() {
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            const email = user + '@lemons.proxy';
-            
+            const user = document.getElementById('login-user').value;
+            const pass = document.getElementById('login-pass').value;
             try {
-                await auth.signInWithEmailAndPassword(email, pass);
+                await auth.signInWithEmailAndPassword(user+'@lemons.proxy', pass);
             } catch (err) {
-                alert('Login failed: ' + err.message);
+                alert('Login failed');
             }
         }
         
         async function register() {
-            const user = document.getElementById('regUsername').value;
-            const pass = document.getElementById('regPassword').value;
-            const email = user + '@lemons.proxy';
-            
-            if (user.length < 3) return alert('Username too short');
-            
+            const user = document.getElementById('reg-user').value;
+            const pass = document.getElementById('reg-pass').value;
+            if (user.length<3) return alert('Username too short');
             try {
-                const cred = await auth.createUserWithEmailAndPassword(email, pass);
-                await db.collection('users').doc(cred.user.uid).set({
-                    username: user,
-                    createdAt: Date.now(),
-                    totalScore: 0,
-                    gamesPlayed: 0
-                });
+                const cred = await auth.createUserWithEmailAndPassword(user+'@lemons.proxy', pass);
+                await cred.user.updateProfile({displayName:user});
+                await db.collection('users').doc(cred.user.uid).set({username:user,totalScore:0});
             } catch (err) {
-                alert('Error: ' + err.message);
+                alert('Error: '+err.message);
             }
         }
         
-        async function logout() {
-            await auth.signOut();
-            location.reload();
+        function logout() {
+            auth.signOut();
+        }
+        
+        function showRegister() {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('register-form').classList.remove('hidden');
+        }
+        
+        function showLogin() {
+            document.getElementById('register-form').classList.add('hidden');
+            document.getElementById('login-form').classList.remove('hidden');
         }
         
         function updateUI() {
-            document.getElementById('loginPanel').classList.add('hidden');
-            document.getElementById('profilePanel').classList.remove('hidden');
-            document.getElementById('userStatus').textContent = userData.username;
-            document.getElementById('profileName').textContent = userData.username;
-            document.getElementById('profileStats').textContent = `Total Score: ${userData.totalScore || 0} | Games Played: ${userData.gamesPlayed || 0}`;
+            document.getElementById('user-status').textContent = userData.username;
+            document.getElementById('login-panel').classList.add('hidden');
+            document.getElementById('profile-panel').classList.remove('hidden');
+            document.getElementById('profile-name').textContent = userData.username;
+            document.getElementById('profile-stats').textContent = 'Total Score: '+(userData.totalScore||0);
         }
         
         // Leaderboard
         async function loadLeaderboard() {
-            const snap = await db.collection('scores').orderBy('score', 'desc').limit(10).get();
-            const list = document.getElementById('leaderboardList');
-            list.innerHTML = '';
+            const snap = await db.collection('scores').orderBy('score','desc').limit(10).get();
+            let html = '';
             let rank = 1;
-            
             snap.forEach(doc => {
                 const s = doc.data();
-                list.innerHTML += `
-                    <div class="lb-item">
-                        <span class="lb-rank ${rank <= 3 ? ['gold','silver','bronze'][rank-1] : ''}">#${rank}</span>
-                        <span class="lb-name">${s.username}</span>
-                        <span class="lb-score">${s.score}</span>
-                    </div>
-                `;
+                html += `<div class="lb-item"><span class="lb-rank ${rank<=3?['gold','silver','bronze'][rank-1]:''}">#${rank}</span><span>${s.username}</span><span class="lb-score">${s.score}</span></div>`;
                 rank++;
             });
-            
-            // Your scores
-            if (currentUser) {
-                const yourSnap = await db.collection('scores').where('userId', '==', currentUser.uid).orderBy('score', 'desc').limit(5).get();
-                let yourHtml = '';
-                yourSnap.forEach(doc => {
-                    const s = doc.data();
-                    yourHtml += `<div class="lb-item"><span class="lb-rank">${s.game}</span><span class="lb-name">${s.score}</span></div>`;
-                });
-                if (yourHtml) document.getElementById('yourScores').innerHTML = yourHtml;
-            }
+            document.getElementById('leaderboard-list').innerHTML = html || '<div class="lb-item"><span>No scores yet</span></div>';
         }
         
-        async function saveScore(game, score) {
-            if (!currentUser) return;
-            
+        async function saveScore(game,score) {
+            if(!currentUser)return;
             await db.collection('scores').add({
-                userId: currentUser.uid,
-                username: userData.username,
-                game: game,
-                score: score,
-                timestamp: Date.now()
+                userId:currentUser.uid,
+                username:userData.username,
+                game:game,
+                score:score,
+                timestamp:Date.now()
             });
-            
-            // Update totals
-            const newGames = (userData.gamesPlayed || 0) + 1;
-            const newScore = (userData.totalScore || 0) + score;
-            await db.collection('users').doc(currentUser.uid).update({
-                gamesPlayed: newGames,
-                totalScore: newScore
-            });
-            
-            setTimeout(() => alert(`Score saved: ${score}!`), 100);
+            const newTotal = (userData.totalScore||0)+score;
+            await db.collection('users').doc(currentUser.uid).update({totalScore:newTotal});
+            userData.totalScore = newTotal;
+            setTimeout(()=>alert('Score saved: '+score),100);
         }
     </script>
 </body>
