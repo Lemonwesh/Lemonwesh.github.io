@@ -3,285 +3,924 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lemons Proxy</title>
+    <title>Lemons Proxy | Educational Portal v1.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --blueprint-bg: #0066CC;
+            --blueprint-grid: rgba(255, 255, 255, 0.15);
+            --blueprint-line: rgba(255, 255, 255, 0.8);
+            --accent: #FF6B35;
+            --paper: #F0F0F0;
+            --warning: #FFD700;
+            --lemon: #FFE135;
+        }
 
         body {
-            font-family: 'JetBrains Mono', monospace;
-            background-color: #1e3a5f;
+            background-color: var(--blueprint-bg);
             background-image: 
-                linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
-            background-size: 40px 40px;
-            height: 100vh;
-            overflow: hidden;
+                linear-gradient(var(--blueprint-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--blueprint-grid) 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: 'Courier Prime', monospace;
             color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .header {
-            background: rgba(23, 37, 84, 0.95);
-            border-bottom: 2px dashed #4db8ff;
-            padding: 15px 20px;
+        /* Technical Border Decorations */
+        .tech-border {
+            position: fixed;
+            border: 2px solid var(--blueprint-line);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .tech-border.top-left {
+            top: 10px;
+            left: 10px;
+            width: 100px;
+            height: 100px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .tech-border.top-right {
+            top: 10px;
+            right: 10px;
+            width: 100px;
+            height: 100px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .tech-border.bottom-left {
+            bottom: 10px;
+            left: 10px;
+            width: 100px;
+            height: 100px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .tech-border.bottom-right {
+            bottom: 10px;
+            right: 10px;
+            width: 100px;
+            height: 100px;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Corner Marks */
+        .corner-mark {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--blueprint-line);
+            z-index: 1000;
+        }
+
+        .corner-mark::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 2px;
+            background: var(--blueprint-line);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .corner-mark::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: var(--blueprint-line);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Header */
+        header {
             text-align: center;
+            padding: 40px 20px;
+            border-bottom: 3px double var(--blueprint-line);
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
         }
 
-        .logo {
-            color: #4ade80;
-            font-weight: bold;
-            font-size: 1.5rem;
+        .blueprint-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            position: relative;
+            display: inline-block;
+        }
+
+        .blueprint-title::before {
+            content: '🍋';
+            position: absolute;
+            left: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            filter: grayscale(100%) brightness(2);
+        }
+
+        .blueprint-title::after {
+            content: '🍋';
+            position: absolute;
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            filter: grayscale(100%) brightness(2);
         }
 
         .subtitle {
-            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 10px;
+            letter-spacing: 3px;
+        }
+
+        .drawing-number {
+            position: absolute;
+            top: 20px;
+            right: 30px;
             font-size: 0.8rem;
-            margin-top: 5px;
+            border: 1px solid var(--blueprint-line);
+            padding: 5px 10px;
+            transform: rotate(-2deg);
         }
 
-        .search-bar {
-            display: flex;
-            max-width: 700px;
-            margin: 20px auto;
-            background: rgba(0,0,0,0.4);
-            border: 2px solid #4db8ff;
-            border-radius: 25px;
-            overflow: hidden;
-        }
-
-        .search-bar input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: white;
-            padding: 12px 20px;
-            font-family: inherit;
-            outline: none;
-        }
-
-        .search-bar button {
-            background: #4db8ff;
-            border: none;
-            color: #0f172a;
-            padding: 0 25px;
+        .version-badge {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 0.8rem;
+            border: 1px solid var(--lemon);
+            color: var(--lemon);
+            padding: 5px 10px;
+            transform: rotate(2deg);
             font-weight: bold;
-            cursor: pointer;
         }
 
-        .corner {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            border: 2px solid #4db8ff;
-            pointer-events: none;
-        }
-        .corner-tl { top: 85px; left: 0; border-right: none; border-bottom: none; }
-        .corner-tr { top: 85px; right: 0; border-left: none; border-bottom: none; }
-        .corner-bl { bottom: 0; left: 0; border-right: none; border-top: none; }
-        .corner-br { bottom: 0; right: 0; border-left: none; border-top: none; }
-
-        .viewport {
-            width: 100%;
-            height: calc(100vh - 140px);
-            border: none;
-            background: white;
-        }
-
-        .home {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .home h1 {
-            color: #4ade80;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .search-box {
-            max-width: 600px;
-            margin: 0 auto 30px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 15px 25px;
-            background: rgba(0,0,0,0.4);
-            border: 2px solid #4db8ff;
-            border-radius: 30px;
-            color: white;
-            font-family: inherit;
-            font-size: 16px;
-            outline: none;
-            margin-bottom: 15px;
-        }
-
-        .search-box button {
-            background: #4db8ff;
-            border: none;
-            color: #0f172a;
-            padding: 12px 35px;
-            font-family: inherit;
-            font-weight: bold;
-            border-radius: 25px;
-            cursor: pointer;
-        }
-
-        .note {
-            color: rgba(255,255,255,0.6);
-            font-size: 0.85rem;
-            margin: 20px auto;
-            max-width: 600px;
-            line-height: 1.5;
-        }
-
-        .links {
+        /* Navigation */
+        nav {
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid var(--blueprint-line);
+            padding: 15px;
             display: flex;
-            gap: 10px;
             justify-content: center;
+            gap: 30px;
             flex-wrap: wrap;
         }
 
-        .link-btn {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
+        nav button {
+            background: transparent;
+            border: 2px solid var(--blueprint-line);
             color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 10px 25px;
+            font-family: 'Share Tech Mono', monospace;
             cursor: pointer;
-            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .footer {
-            position: fixed;
-            bottom: 0;
+        nav button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s;
+        }
+
+        nav button:hover::before {
             left: 0;
-            right: 0;
-            text-align: center;
-            padding: 10px;
-            background: rgba(23, 37, 84, 0.95);
-            border-top: 2px dashed #4db8ff;
-            color: rgba(255,255,255,0.5);
-            font-size: 0.8rem;
         }
 
-        .error-msg {
+        nav button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        nav button.active {
+            background: var(--blueprint-line);
+            color: var(--blueprint-bg);
+            font-weight: bold;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section {
             display: none;
-            padding: 50px;
-            text-align: center;
-            color: #ff6b6b;
+            animation: fadeIn 0.5s;
         }
 
-        .hidden { display: none !important; }
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Proxy Section */
+        .proxy-container {
+            border: 3px solid var(--blueprint-line);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            position: relative;
+        }
+
+        .proxy-container::before {
+            content: 'LEMONS PROXY MODULE v1.0';
+            position: absolute;
+            top: -12px;
+            left: 30px;
+            background: var(--blueprint-bg);
+            padding: 0 15px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        .proxy-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .proxy-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--blueprint-line);
+            color: white;
+            padding: 15px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .proxy-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .proxy-btn {
+            background: var(--accent);
+            border: 2px solid var(--accent);
+            color: white;
+            padding: 15px 30px;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .proxy-btn:hover {
+            background: transparent;
+            color: var(--accent);
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: 600px;
+            border: 2px solid var(--blueprint-line);
+            background: white;
+            position: relative;
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .stealth-mode {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .stealth-mode input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent);
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .game-card {
+            border: 2px solid var(--blueprint-line);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid rgba(255,255,255,0.2);
+            pointer-events: none;
+        }
+
+        .game-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .game-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .game-desc {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .play-btn {
+            display: inline-block;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 8px 20px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .play-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Game Modal */
+        .game-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .game-modal.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 2px solid var(--blueprint-line);
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            background: var(--accent);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .game-frame {
+            flex: 1;
+            border: 2px solid var(--blueprint-line);
+            background: black;
+        }
+
+        /* Tools Section */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .tool-box {
+            border: 2px solid var(--blueprint-line);
+            padding: 25px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .tool-box h3 {
+            font-family: 'Share Tech Mono', monospace;
+            margin-bottom: 15px;
+            color: var(--lemon);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .calculator {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border: 1px solid var(--blueprint-line);
+        }
+
+        .calc-display {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--blueprint-line);
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: right;
+            font-size: 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            min-height: 50px;
+            word-wrap: break-word;
+        }
+
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .calc-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 15px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calc-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .calc-btn.operator {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 3px double var(--blueprint-line);
+            margin-top: 50px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .blueprint-title {
+                font-size: 1.8rem;
+            }
+            
+            .blueprint-title::before,
+            .blueprint-title::after {
+                display: none;
+            }
+            
+            .proxy-input-group {
+                flex-direction: column;
+            }
+            
+            .iframe-container {
+                height: 400px;
+            }
+        }
+
+        /* Loading Animation */
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loader.active {
+            display: block;
+        }
+
+        .blueprint-loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Hidden gems */
+        .konami-hint {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            opacity: 0.3;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
+    <!-- Technical Decorations -->
+    <div class="tech-border top-left"></div>
+    <div class="tech-border top-right"></div>
+    <div class="tech-border bottom-left"></div>
+    <div class="tech-border bottom-right"></div>
 
-    <div class="header">
-        <div class="logo">🍋 Lemons Proxy</div>
-        <div class="subtitle">made by ld</div>
-        <div class="search-bar hidden" id="topBar">
-            <input type="text" id="urlInput" placeholder="Enter URL..." onkeypress="if(event.key==='Enter')go()">
-            <button onclick="go()">GO</button>
-        </div>
+    <header>
+        <div class="version-badge">v1.0-BETA</div>
+        <div class="drawing-number">DWG: LEMONS-PROXY-2026-A</div>
+        <h1 class="blueprint-title">Lemons Proxy</h1>
+        <p class="subtitle">Citrus-Flavored Educational Resource Portal</p>
+    </header>
+
+    <nav>
+        <button class="nav-btn active" onclick="showSection('proxy')">Browse</button>
+        <button class="nav-btn" onclick="showSection('games')">Arcade</button>
+        <button class="nav-btn" onclick="showSection('tools')">Tools</button>
+    </nav>
+
+    <div class="container">
+        <!-- Proxy Section -->
+        <section id="proxy" class="section active">
+            <div class="proxy-container">
+                <div class="proxy-input-group">
+                    <input type="text" class="proxy-input" id="urlInput" placeholder="Enter URL (e.g., https://example.com)" onkeypress="if(event.key==='Enter')loadProxy()">
+                    <button class="proxy-btn" onclick="loadProxy()">Squeeze</button>
+                </div>
+                
+                <div class="stealth-mode">
+                    <input type="checkbox" id="stealthMode">
+                    <label for="stealthMode">Stealth Mode (Disguise as Google Docs)</label>
+                </div>
+
+                <div class="loader" id="loader">
+                    <div class="blueprint-loader"></div>
+                    <p>Extracting juice from the internet...</p>
+                </div>
+
+                <div class="iframe-container" id="frameContainer" style="display: none;">
+                    <iframe id="proxyFrame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" referrerpolicy="no-referrer"></iframe>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; border: 2px solid rgba(255,255,255,0.3); padding: 20px; background: rgba(0,0,0,0.2);">
+                <h3 style="font-family: 'Share Tech Mono', monospace; margin-bottom: 15px; color: var(--lemon);">🍋 Citric Acid Warning</h3>
+                <p style="font-size: 0.9rem; line-height: 1.6;">Lemons Proxy is designed for educational research. Some sites may have X-Frame-Options protection enabled preventing display. Use the Arcade tab for guaranteed entertainment.</p>
+            </div>
+        </section>
+
+        <!-- Games Section -->
+        <section id="games" class="section">
+            <div style="text-align: center; margin-bottom: 30px; padding: 20px; border: 2px dashed rgba(255,255,255,0.3);">
+                <h2 style="font-family: 'Share Tech Mono', monospace; letter-spacing: 3px;">LEMONADE ARCADE</h2>
+                <p style="margin-top: 10px; opacity: 0.8;">When life gives you lemons, play games</p>
+            </div>
+
+            <div class="games-grid">
+                <div class="game-card" onclick="openGame('https://example.com/game1', 'Sour Snake')">
+                    <div class="game-icon">🐍</div>
+                    <div class="game-title">Sour Snake</div>
+                    <div class="game-desc">Classic arcade action with a citrus twist</div>
+                    <span class="play-btn">Inject</span>
+                </div>
+
+                <div class="game-card" onclick="openGame('https://example.com/game2', 'Pong Citrus')">
+                    <div class="game-icon">🏓</div>
+                    <div class="game-title">Pong Citrus</div>
+                    <div class="game-desc">Acidic paddle action</div>
+                    <span class="play-btn">Inject</span>
+                </div>
+
+                <div class="game-card" onclick="openGame('https://example.com/game3', 'Tetris Twist')">
+                    <div class="game-icon">🧱</div>
+                    <div class="game-title">Tetris Twist</div>
+                    <div class="game-desc">Stack the lemon blocks</div>
+                    <span class="play-btn">Inject</span>
+                </div>
+
+                <div class="game-card" onclick="openGame('https://example.com/game4', '2048 Pulp')">
+                    <div class="game-icon">🍊</div>
+                    <div class="game-title">2048 Pulp</div>
+                    <div class="game-desc">Merge the citrus fruits</div>
+                    <span class="play-btn">Inject</span>
+                </div>
+
+                <div class="game-card" onclick="openGame('https://example.com/game5', 'Flappy Juice')">
+                    <div class="game-icon">🐦</div>
+                    <div class="game-title">Flappy Juice</div>
+                    <div class="game-desc">Squeeze through the pipes</div>
+                    <span class="play-btn">Inject</span>
+                </div>
+
+                <div class="game-card" onclick="openGame('https://example.com/game6', 'Asteroid Zest')">
+                    <div class="game-icon">🚀</div>
+                    <div class="game-title">Asteroid Zest</div>
+                    <div class="game-desc">Blast the sour space rocks</div>
+                    <span class="play-btn">Inject</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tools Section -->
+        <section id="tools" class="section">
+            <div class="tools-grid">
+                <div class="tool-box">
+                    <h3>Juice Calculator</h3>
+                    <div class="calculator">
+                        <div class="calc-display" id="calcDisplay">0</div>
+                        <div class="calc-buttons">
+                            <button class="calc-btn" onclick="calcClear()">C</button>
+                            <button class="calc-btn" onclick="calcAppend('(')">(</button>
+                            <button class="calc-btn" onclick="calcAppend(')')">)</button>
+                            <button class="calc-btn operator" onclick="calcOp('/')">/</button>
+                            
+                            <button class="calc-btn" onclick="calcAppend('7')">7</button>
+                            <button class="calc-btn" onclick="calcAppend('8')">8</button>
+                            <button class="calc-btn" onclick="calcAppend('9')">9</button>
+                            <button class="calc-btn operator" onclick="calcOp('*')">×</button>
+                            
+                            <button class="calc-btn" onclick="calcAppend('4')">4</button>
+                            <button class="calc-btn" onclick="calcAppend('5')">5</button>
+                            <button class="calc-btn" onclick="calcAppend('6')">6</button>
+                            <button class="calc-btn operator" onclick="calcOp('-')">-</button>
+                            
+                            <button class="calc-btn" onclick="calcAppend('1')">1</button>
+                            <button class="calc-btn" onclick="calcAppend('2')">2</button>
+                            <button class="calc-btn" onclick="calcAppend('3')">3</button>
+                            <button class="calc-btn operator" onclick="calcOp('+')">+</button>
+                            
+                            <button class="calc-btn" onclick="calcAppend('0')">0</button>
+                            <button class="calc-btn" onclick="calcAppend('.')">.</button>
+                            <button class="calc-btn" onclick="calcBack()">←</button>
+                            <button class="calc-btn operator" onclick="calcEquals()">=</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tool-box">
+                    <h3>pH Converter</h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div>
+                            <label style="font-size: 0.9rem; margin-bottom: 5px; display: block;">Acidity Level:</label>
+                            <input type="number" id="unitValue" class="proxy-input" style="width: 100%;" placeholder="Enter pH value">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.9rem; margin-bottom: 5px; display: block;">From:</label>
+                            <select id="fromUnit" class="proxy-input" style="width: 100%;">
+                                <option value="ph">pH Scale</option>
+                                <option value="percent">Percent Acid</option>
+                                <option value="molar">Molarity</option>
+                            </select>
+                        </div>
+                        <button class="proxy-btn" onclick="convertUnit()">Neutralize</button>
+                        <div id="convResult" style="padding: 15px; background: rgba(0,0,0,0.3); border: 1px solid var(--blueprint-line); margin-top: 10px; text-align: center; font-family: 'Share Tech Mono', monospace;"></div>
+                    </div>
+                </div>
+
+                <div class="tool-box">
+                    <h3>Quick Peels</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <button class="calc-btn" style="text-align: left; padding: 12px;" onclick="quickLink('https://www.google.com')">🔍 Google</button>
+                        <button class="calc-btn" style="text-align: left; padding: 12px;" onclick="quickLink('https://www.wikipedia.org')">📚 Wikipedia</button>
+                        <button class="calc-btn" style="text-align: left; padding: 12px;" onclick="quickLink('https://www.desmos.com/calculator')">📈 Desmos</button>
+                        <button class="calc-btn" style="text-align: left; padding: 12px;" onclick="quickLink('https://www.youtube.com')">📺 YouTube</button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <div class="corner corner-tl"></div>
-    <div class="corner corner-tr"></div>
-    <div class="corner corner-bl"></div>
-    <div class="corner corner-br"></div>
+    <footer>
+        <p>🍋 Lemons Proxy v1.0 | Fresh Squeezed Daily | Blueprint Edition</p>
+        <p style="margin-top: 10px; font-size: 0.7rem;">No seeds included | Keep refrigerated</p>
+    </footer>
 
-    <!-- Home -->
-    <div id="home" class="home">
-        <h1>🍋 Lemons Proxy</h1>
-        
-        <div class="search-box">
-            <input type="text" id="searchBox" placeholder="Search Google or enter URL..." onkeypress="if(event.key==='Enter')search()">
-            <button onclick="search()">SEARCH</button>
+    <!-- Game Modal -->
+    <div class="game-modal" id="gameModal">
+        <div class="modal-header">
+            <h2 id="modalTitle" style="font-family: 'Share Tech Mono', monospace; letter-spacing: 2px;">Game Title</h2>
+            <button class="close-modal" onclick="closeGame()">×</button>
         </div>
-
-        <div class="note">
-            ⚠️ <strong>How it works:</strong> This tries to load sites in the box below. 
-            Many sites (Google, YouTube) block this for security. If you see an error, the site opened in a <strong>new tab</strong> instead.
-        </div>
-
-        <div class="links">
-            <button class="link-btn" onclick="load('https://www.wikipedia.org')">Wikipedia</button>
-            <button class="link-btn" onclick="load('https://old.reddit.com')">Reddit</button>
-            <button class="link-btn" onclick="load('https://textise dot iitty.com')">Textise dot iitty</button>
-            <button class="link-btn" onclick="load('https://www.bing.com')">Bing</button>
-            <button class="link-btn" onclick="load('https://duckduckgo.com')">DuckDuckGo</button>
-        </div>
+        <iframe class="game-frame" id="gameFrame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
     </div>
 
-    <!-- Browser View -->
-    <iframe id="frame" class="viewport hidden" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
-
-    <div class="footer">made by Lemonwesh</div>
+    <div class="konami-hint">Up Up Down Down...</div>
 
     <script>
-        function search() {
-            const q = document.getElementById('searchBox').value.trim();
-            if(!q) return;
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             
-            // Try to load Google in iframe (will probably fail)
-            const googleUrl = 'https://www.google.com/search?q=' + encodeURIComponent(q);
-            load(googleUrl);
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
         }
 
-        function load(url) {
-            if(!url.startsWith('http')) url = 'https://' + url;
+        // Proxy Functionality
+        function loadProxy() {
+            const url = document.getElementById('urlInput').value;
+            const stealth = document.getElementById('stealthMode').checked;
+            const loader = document.getElementById('loader');
+            const container = document.getElementById('frameContainer');
+            const frame = document.getElementById('proxyFrame');
             
-            document.getElementById('home').classList.add('hidden');
-            document.getElementById('topBar').classList.remove('hidden');
-            document.getElementById('frame').classList.remove('hidden');
+            if (!url) {
+                alert('Please squeeze a URL into the input');
+                return;
+            }
+
+            loader.classList.add('active');
+            container.style.display = 'none';
+
+            setTimeout(() => {
+                loader.classList.remove('active');
+                container.style.display = 'block';
+                
+                let targetUrl = url;
+                if (!url.startsWith('http')) {
+                    targetUrl = 'https://' + url;
+                }
+                
+                frame.src = targetUrl;
+                
+                if (stealth) {
+                    document.title = 'Google Docs - Untitled Document';
+                    document.querySelector('header').style.display = 'none';
+                    document.querySelector('nav').style.display = 'none';
+                }
+            }, 1500);
+        }
+
+        // Game Functions
+        function openGame(url, title) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('gameFrame').src = url;
+            document.getElementById('gameModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGame() {
+            document.getElementById('gameModal').classList.remove('active');
+            document.getElementById('gameFrame').src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Calculator
+        let calcExpression = '';
+        let calcDisplay = document.getElementById('calcDisplay');
+
+        function calcAppend(val) {
+            if (calcDisplay.textContent === '0' && val !== '.') {
+                calcExpression = val;
+            } else {
+                calcExpression += val;
+            }
+            calcDisplay.textContent = calcExpression;
+        }
+
+        function calcOp(op) {
+            calcExpression += ' ' + op + ' ';
+            calcDisplay.textContent = calcExpression;
+        }
+
+        function calcClear() {
+            calcExpression = '';
+            calcDisplay.textContent = '0';
+        }
+
+        function calcBack() {
+            calcExpression = calcExpression.slice(0, -1);
+            calcDisplay.textContent = calcExpression || '0';
+        }
+
+        function calcEquals() {
+            try {
+                calcExpression = eval(calcExpression).toString();
+                calcDisplay.textContent = calcExpression;
+            } catch {
+                calcDisplay.textContent = 'Error';
+                setTimeout(calcClear, 1500);
+            }
+        }
+
+        // Unit Converter (pH themed)
+        function convertUnit() {
+            const val = parseFloat(document.getElementById('unitValue').value);
+            const from = document.getElementById('fromUnit').value;
+            const resultDiv = document.getElementById('convResult');
+            
+            if (isNaN(val)) {
+                resultDiv.textContent = 'Invalid citrus data';
+                return;
+            }
+
+            // Simplified conversion logic for demo
+            let result = val;
+            let unit = 'pH';
+            
+            if (from === 'ph') {
+                result = val;
+                unit = 'pH Scale';
+            } else if (from === 'percent') {
+                result = val * 0.01;
+                unit = 'Decimal';
+            }
+            
+            resultDiv.textContent = `${val} ${from} = ${result} ${unit}`;
+        }
+
+        function quickLink(url) {
             document.getElementById('urlInput').value = url;
-            
-            const frame = document.getElementById('frame');
-            frame.src = url;
-            
-            // Check if blocked after 2 seconds
-            setTimeout(() => {
-                try {
-                    // If we can't access it, it's cross-origin (good, loaded)
-                    // If we get a specific error, handle it
-                    if(frame.contentDocument && frame.contentDocument.body && frame.contentDocument.body.innerHTML.includes('refused')) {
-                        // Open in new tab
-                        window.open(url, '_blank');
-                        back();
-                    }
-                } catch(e) {
-                    // Cross-origin error means it loaded (most likely)
-                    // Do nothing
-                }
-            }, 2000);
-            
-            // Fallback: if iframe stays blank too long, open new tab
-            setTimeout(() => {
-                if(frame.contentDocument && frame.contentDocument.body && frame.contentDocument.body.innerHTML === '') {
-                    window.open(url, '_blank');
-                    back();
-                }
-            }, 4000);
+            showSection('proxy');
+            document.querySelector('.nav-btn').classList.remove('active');
+            document.querySelectorAll('.nav-btn')[0].classList.add('active');
+            loadProxy();
         }
 
-        function go() {
-            load(document.getElementById('urlInput').value);
-        }
-
-        function back() {
-            document.getElementById('home').classList.remove('hidden');
-            document.getElementById('topBar').classList.add('hidden');
-            document.getElementById('frame').classList.add('hidden');
-            document.getElementById('frame').src = '';
-        }
-
-        // ESC key to go back
+        // Konami Code Easter Egg
+        let konami = [];
+        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        
         document.addEventListener('keydown', (e) => {
-            if(e.key === 'Escape') back();
+            konami.push(e.key);
+            konami = konami.slice(-10);
+            
+            if (konami.join(',') === konamiCode.join(',')) {
+                document.body.style.filter = 'sepia(100%) saturate(300%) brightness(100%) hue-rotate(10deg)';
+                alert('🍋 LEMON OVERLOAD ACTIVATED 🍋');
+                setTimeout(() => {
+                    document.body.style.filter = 'none';
+                }, 5000);
+            }
+            
+            if (e.key === 'Escape') {
+                closeGame();
+            }
         });
     </script>
-
 </body>
 </html>
