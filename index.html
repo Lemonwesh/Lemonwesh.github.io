@@ -21,7 +21,6 @@
             color: white;
         }
 
-        /* Header */
         .header {
             background: rgba(23, 37, 84, 0.95);
             border-bottom: 2px dashed #4db8ff;
@@ -41,7 +40,6 @@
             margin-top: 5px;
         }
 
-        /* Search Bar */
         .search-bar {
             display: flex;
             background: rgba(0,0,0,0.4);
@@ -63,6 +61,17 @@
             outline: none;
         }
 
+        .search-bar select {
+            background: rgba(0,0,0,0.3);
+            border: none;
+            color: white;
+            padding: 0 15px;
+            font-family: inherit;
+            border-left: 1px solid rgba(255,255,255,0.2);
+            outline: none;
+            cursor: pointer;
+        }
+
         .search-bar button {
             background: #4db8ff;
             border: none;
@@ -72,7 +81,6 @@
             cursor: pointer;
         }
 
-        /* Corner Decorations */
         .corner {
             position: fixed;
             width: 60px;
@@ -85,7 +93,6 @@
         .corner-bl { bottom: 0; left: 0; border-right: none; border-top: none; }
         .corner-br { bottom: 0; right: 0; border-left: none; border-top: none; }
 
-        /* Browser View */
         .viewport {
             width: 100%;
             height: calc(100vh - 140px);
@@ -93,7 +100,6 @@
             background: white;
         }
 
-        /* Home Screen */
         .home {
             text-align: center;
             padding: 50px 20px;
@@ -121,6 +127,18 @@
             font-size: 16px;
             outline: none;
             margin-bottom: 15px;
+        }
+
+        .big-search select {
+            background: rgba(0,0,0,0.4);
+            border: 2px solid #4db8ff;
+            border-radius: 20px;
+            color: white;
+            padding: 10px 20px;
+            font-family: inherit;
+            margin-right: 10px;
+            outline: none;
+            cursor: pointer;
         }
 
         .big-search button {
@@ -151,6 +169,8 @@
             text-decoration: none;
             border-radius: 20px;
             font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-block;
         }
 
         .link-btn:hover {
@@ -158,7 +178,6 @@
             border-color: #4db8ff;
         }
 
-        /* Footer */
         .footer {
             position: fixed;
             bottom: 0;
@@ -181,55 +200,76 @@
         <div class="logo">🍋 Lemons Proxy</div>
         <div class="subtitle">made by ld</div>
         <div class="search-bar hidden" id="topSearch">
-            <input type="text" id="urlBar" placeholder="Search Google or enter URL..." onkeypress="handleKey(event)">
+            <input type="text" id="urlBar" placeholder="Search or enter URL..." onkeypress="handleKey(event)">
+            <select id="engineSelect">
+                <option value="duckduckgo">DuckDuckGo</option>
+                <option value="brave">Brave Search</option>
+                <option value="bing">Bing</option>
+                <option value="ecosia">Ecosia</option>
+            </select>
             <button onclick="search()">GO</button>
         </div>
     </div>
 
-    <!-- Corner Decorations -->
     <div class="corner corner-tl"></div>
     <div class="corner corner-tr"></div>
     <div class="corner corner-bl"></div>
     <div class="corner corner-br"></div>
 
-    <!-- Home Screen -->
     <div class="home" id="homeScreen">
         <h1>🍋 Lemons Proxy</h1>
         <div class="big-search">
-            <input type="text" id="searchInput" placeholder="Search Google..." onkeypress="handleHomeKey(event)">
+            <input type="text" id="searchInput" placeholder="Search the web..." onkeypress="handleHomeKey(event)">
+            <br>
+            <select id="homeEngine">
+                <option value="duckduckgo">🦆 DuckDuckGo</option>
+                <option value="brave">🦁 Brave Search</option>
+                <option value="bing">🔍 Bing</option>
+                <option value="ecosia">🌳 Ecosia</option>
+            </select>
             <button onclick="doSearch()">SEARCH</button>
         </div>
         
         <div class="quick-links">
-            <a href="#" class="link-btn" onclick="openUrl('https://www.google.com')">Google</a>
-            <a href="#" class="link-btn" onclick="openUrl('https://www.wikipedia.org')">Wikipedia</a>
-            <a href="#" class="link-btn" onclick="openUrl('https://old.reddit.com')">Reddit</a>
-            <a href="#" class="link-btn" onclick="openUrl('https://www.bing.com')">Bing</a>
+            <a class="link-btn" onclick="openUrl('https://www.wikipedia.org')">Wikipedia</a>
+            <a class="link-btn" onclick="openUrl('https://old.reddit.com')">Reddit</a>
+            <a class="link-btn" onclick="openUrl('https://duckduckgo.com')">DuckDuckGo</a>
+            <a class="link-btn" onclick="openUrl('https://search.brave.com')">Brave</a>
         </div>
     </div>
 
-    <!-- Browser Frame -->
     <iframe id="viewport" class="viewport hidden" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation"></iframe>
 
     <div class="footer">made by Lemonwesh</div>
 
     <script>
+        // Search engines that work in iframes
+        const engines = {
+            duckduckgo: 'https://duckduckgo.com/?q=',
+            brave: 'https://search.brave.com/search?q=',
+            bing: 'https://www.bing.com/search?q=',
+            ecosia: 'https://www.ecosia.org/search?q='
+        };
+
         function doSearch() {
             const query = document.getElementById('searchInput').value.trim();
+            const engine = document.getElementById('homeEngine').value;
+            
             if (query) {
-                const googleUrl = 'https://www.google.com/search?q=' + encodeURIComponent(query);
-                openUrl(googleUrl);
+                openUrl(engines[engine] + encodeURIComponent(query));
             }
         }
 
         function search() {
             const query = document.getElementById('urlBar').value.trim();
+            const engine = document.getElementById('engineSelect').value;
+            
             if (query) {
-                let url = query;
-                if (!query.startsWith('http')) {
-                    url = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+                if (query.startsWith('http')) {
+                    document.getElementById('viewport').src = query;
+                } else {
+                    document.getElementById('viewport').src = engines[engine] + encodeURIComponent(query);
                 }
-                document.getElementById('viewport').src = url;
             }
         }
 
@@ -249,7 +289,7 @@
             if (e.key === 'Enter') search();
         }
 
-        // Go back to home with Escape key
+        // ESC to go home
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 document.getElementById('homeScreen').classList.remove('hidden');
