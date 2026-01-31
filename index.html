@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemons Proxy v5.0 - Academic & Gaming Network</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        :root {
+            --blueprint-bg: #1e3a5f;
+            --blueprint-dark: #162d4a;
+            --grid-line: rgba(255, 255, 255, 0.1);
+            --grid-bold: rgba(255, 255, 255, 0.25);
+            --text-primary: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.6);
+            --accent: #4db8ff;
+            --accent-gaming: #ff6b6b;
+            --accent-study: #4ade80;
+            --accent-warn: #ffd93d;
+            --accent-admin: #a855f7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: var(--blueprint-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, var(--grid-bold) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-bold) 1px, transparent 1px);
+            background-size: 100px 100px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            margin-bottom: 30px;
+            background: rgba(30, 58, 95, 0.9);
+            position: relative;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: bold;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, var(--accent), var(--accent-study));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            color: var(--text-dim);
+            letter-spacing: 5px;
+            font-size: 1.1rem;
+        }
+
+        .user-status {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+            font-size: 0.8rem;
+        }
+
+        .user-status.admin {
+            border-color: var(--accent-admin);
+            color: var(--accent-admin);
+            background: rgba(168, 85, 247, 0.1);
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 12px 25px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: rgba(77, 184, 255, 0.2);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.study { border-color: var(--accent-study); color: var(--accent-study); }
+        .tab-btn.study:hover, .tab-btn.study.active { background: rgba(74, 222, 128, 0.2); }
+        
+        .tab-btn.admin { 
+            border-color: var(--accent-admin); 
+            color: var(--accent-admin);
+            display: none;
+        }
+        .tab-btn.admin.visible { display: block; }
+        .tab-btn.admin:hover, .tab-btn.admin.active { background: rgba(168, 85, 247, 0.2); }
+
+        .content-section { display: none; animation: fadeIn 0.5s; }
+        .content-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .local-games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .local-game-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid var(--accent-local);
+            padding: 25px;
+            position: relative;
+        }
+
+        .local-game-card::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(255, 217, 61, 0.1);
+            pointer-events: none;
+        }
+
+        .local-game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed rgba(255, 217, 61, 0.3);
+        }
+
+        .local-game-title {
+            color: var(--accent-local);
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .game-stats-bar {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-pill {
+            background: rgba(255, 217, 61, 0.1);
+            border: 1px solid var(--accent-warn);
+            padding: 8px 15px;
+            color: var(--accent-warn);
+        }
+
+        .pb-badge {
+            background: linear-gradient(45deg, var(--accent-gaming), var(--accent-warn));
+            color: white;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            margin-left: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+            animation: pulse 1s infinite;
+            display: none;
+        }
+
+        .pb-badge.visible { display: inline-block; }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .local-game-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        #simon-game {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            width: 300px;
+            height: 300px;
+            position: relative;
+        }
+
+        .simon-btn {
+            border: 2px solid rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.1s;
+            opacity: 0.6;
+            border-radius: 10px;
+        }
+
+        .simon-btn.active {
+            opacity: 1;
+            transform: scale(0.95);
+            box-shadow: 0 0 30px currentColor;
+            filter: brightness(1.5);
+        }
+
+        .simon-btn.green { background: #4ade80; }
+        .simon-btn.red { background: #f87171; }
+        .simon-btn.yellow { background: #facc15; }
+        .simon-btn.blue { background: #60a5fa; }
+
+        .simon-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: var(--blueprint-bg);
+            border: 3px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            z-index: 10;
+        }
+
+        #minesweeper-game {
+            display: grid;
+            gap: 2px;
+        }
+
+        .ms-cell {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            user-select: none;
+        }
+
+        .ms-cell:hover {
+            background: rgba(77, 184, 255, 0.3);
+        }
+
+        .ms-cell.revealed {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.1);
+            cursor: default;
+        }
+
+        .ms-cell.mine {
+            background: #ff6b6b;
+        }
+
+        .ms-cell.flagged::after {
+            content: '🚩';
+            font-size: 16px;
+        }
+
+        .ms-controls {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .ms-btn, .fc-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--accent-local);
+            color: var(--accent-local);
+            font-family: inherit;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .ms-btn:hover, .fc-btn:hover {
+            background: rgba(255, 217, 61, 0.2);
+        }
+
+        .study-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .study-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid var(--accent-study);
+            padding: 25px;
+            position: relative;
+        }
+
+        .study-card::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(74, 222, 128, 0.1);
+            pointer-events: none;
+        }
+
+        .study-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed rgba(74, 222, 128, 0.3);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .study-title {
+            color: var(--accent-study);
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .calc-display {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(74, 222, 128, 0.3);
+            color: var(--accent-study);
+            font-size: 1.5rem;
+            font-family: inherit;
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .calc-btn {
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-family: inherit;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calc-btn:hover {
+            background: rgba(74, 222, 128, 0.2);
+            border-color: var(--accent-study);
+        }
+
+        .calc-btn.op {
+            background: rgba(74, 222, 128, 0.1);
+            color: var(--accent-study);
+        }
+
+        .calc-btn.equals {
+            background: var(--accent-study);
+            color: var(--blueprint-dark);
+            grid-column: span 4;
+        }
+
+        .algebra-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            color: white;
+            font-family: inherit;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .solve-btn {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid var(--accent-study);
+            color: var(--accent-study);
+            font-family: inherit;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            transition: all 0.2s;
+        }
+
+        .solve-btn:hover {
+            background: rgba(74, 222, 128, 0.2);
+        }
+
+        .solution-box {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-left: 3px solid var(--accent-study);
+            min-height: 50px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            height: 250px;
+            margin-bottom: 20px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid rgba(74, 222, 128, 0.3);
+            background: rgba(30, 58, 95, 0.9);
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .flashcard-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .quiz-mode {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(74, 222, 128, 0.05);
+            border: 1px solid var(--accent-study);
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--accent-study);
+            font-weight: bold;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-family: inherit;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .quiz-option:hover {
+            background: rgba(74, 222, 128, 0.1);
+            border-color: var(--accent-study);
+        }
+
+        .quiz-option.correct {
+            background: rgba(74, 222, 128, 0.3);
+            border-color: var(--accent-study);
+        }
+
+        .quiz-option.wrong {
+            background: rgba(255, 107, 107, 0.3);
+            border-color: var(--accent-gaming);
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .admin-card {
+            background: rgba(168, 85, 247, 0.05);
+            border: 2px solid var(--accent-admin);
+            padding: 25px;
+        }
+
+        .admin-header {
+            color: var(--accent-admin);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-bottom: 1px dashed rgba(168, 85, 247, 0.3);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            transition: all 0.2s;
+        }
+
+        .user-item:hover {
+            background: rgba(168, 85, 247, 0.1);
+        }
+
+        .user-role {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            background: rgba(168, 85, 247, 0.2);
+            color: var(--accent-admin);
+            border: 1px solid var(--accent-admin);
+            text-transform: uppercase;
+        }
+
+        .user-role.admin {
+            background: rgba(255, 107, 107, 0.2);
+            color: var(--accent-gaming);
+            border-color: var(--accent-gaming);
+        }
+
+        .admin-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid var(--accent-admin);
+            color: var(--accent-admin);
+            font-family: inherit;
+            font-size: 0.7rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .admin-btn:hover { background: rgba(168, 85, 247, 0.2); }
+
+        .admin-btn.danger {
+            border-color: var(--accent-gaming);
+            color: var(--accent-gaming);
+        }
+        .admin-btn.danger:hover { background: rgba(255, 107, 107, 0.2); }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            color: var(--accent-admin);
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .leaderboard {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .leaderboard th {
+            background: rgba(168, 85, 247, 0.2);
+            color: var(--accent-admin);
+            padding: 12px;
+            text-align: left;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .leaderboard td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .leaderboard tr:hover {
+            background: rgba(168, 85, 247, 0.05);
+        }
+
+        .rank-1 { color: gold; font-weight: bold; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+        .rank-2 { color: silver; font-weight: bold; }
+        .rank-3 { color: #cd7f32; font-weight: bold; }
+
+        .account-panel {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid var(--accent-warn);
+            padding: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--accent-warn);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 217, 61, 0.3);
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--accent-warn);
+        }
+
+        .account-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--accent-warn);
+            color: var(--blueprint-dark);
+            border: none;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            transition: all 0.2s;
+        }
+
+        .account-btn:hover {
+            background: #ffe066;
+        }
+
+        .account-btn.secondary {
+            background: transparent;
+            border: 2px solid var(--accent-warn);
+            color: var(--accent-warn);
+        }
+
+        .requests-list {
+            margin-top: 30px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .request-item {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 217, 61, 0.2);
+            padding: 15px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: var(--accent-warn);
+            font-size: 0.8rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(22, 45, 74, 0.98);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 2px dashed rgba(255,255,255,0.3);
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 10px 20px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            background: var(--accent-gaming);
+            border-color: var(--accent-gaming);
+        }
+
+        .game-frame-container {
+            flex: 1;
+            position: relative;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: #000;
+        }
+
+        .game-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        canvas {
+            display: block;
+            image-rendering: pixelated;
+        }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 2rem; letter-spacing: 4px; }
+            .local-games-grid { grid-template-columns: 1fr; }
+            .admin-grid { grid-template-columns: 1fr; }
+            .study-grid { grid-template-columns: 1fr; }
+            .nav-tabs { flex-direction: column; align-items: center; }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--blueprint-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border: 2px solid var(--blueprint-dark);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="user-status" id="user-status">
+                Guest | <a href="#" onclick="switchTab('account')" style="color: var(--accent-warn);">Login</a>
+            </div>
+            <div class="logo">🍋 Lemons Proxy</div>
+            <div class="tagline">Academic & Gaming Network v5.0</div>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('games')">🎮 Games</button>
+            <button class="tab-btn study" onclick="switchTab('study')">📚 Study</button>
+            <button class="tab-btn" onclick="switchTab('leaderboards')">🏆 Records</button>
+            <button class="tab-btn" onclick="switchTab('account')">👤 Account</button>
+            <button class="tab-btn admin" id="admin-tab-btn" onclick="switchTab('admin')">⚡ Admin</button>
+        </div>
+
+        <div id="games-section" class="content-section active">
+            <div class="local-games-grid">
+                <div class="local-game-card">
+                    <div class="local-game-header">
+                        <div class="local-game-title">🐍 Snake</div>
+                        <button class="ms-btn" onclick="initSnake()">New Game</button>
+                    </div>
+                    <div class="game-stats-bar">
+                        <span class="stat-pill">Score: <span id="snake-score">0</span></span>
+                        <span class="stat-pill">Best: <span id="snake-pb">0</span><span id="snake-new-pb" class="pb-badge">New PB!</span></span>
+                    </div>
+                    <div class="local-game-container">
+                        <canvas id="snake-canvas" width="400" height="400"></canvas>
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-dim); text-align: center; margin-top: 10px;">⬆️⬇️⬅️➡️ Arrow Keys</p>
+                </div>
+
+                <div class="local-game-card">
+                    <div class="local-game-header">
+                        <div class="local-game-title">💣 Minesweeper</div>
+                        <button class="ms-btn" onclick="initMinesweeper()">New Game</button>
+                    </div>
+                    <div class="game-stats-bar">
+                        <span class="stat-pill">Mines: <span id="mine-count">10</span></span>
+                        <span class="stat-pill">Time: <span id="ms-time">0</span>s</span>
+                        <span class="stat-pill">Best: <span id="ms-pb">--</span></span>
+                    </div>
+                    <div class="ms-controls">
+                        <span id="game-status" style="color: var(--accent-local); font-weight: bold;">Ready</span>
+                    </div>
+                    <div class="local-game-container">
+                        <div id="minesweeper-game" style="display: grid; grid-template-columns: repeat(8, 40px); gap: 2px; padding: 10px;"></div>
+                    </div>
+                </div>
+
+                <div class="local-game-card">
+                    <div class="local-game-header">
+                        <div class="local-game-title">🎵 Simon Says</div>
+                        <button class="ms-btn" onclick="initSimon()">Start</button>
+                    </div>
+                    <div class="game-stats-bar">
+                        <span class="stat-pill">Round: <span id="simon-score">0</span></span>
+                        <span class="stat-pill">High Score: <span id="simon-pb">0</span></span>
+                    </div>
+                    <div class="local-game-container" style="position: relative;">
+                        <div id="simon-game">
+                            <div class="simon-btn green" onclick="simonClick(0)"></div>
+                            <div class="simon-btn red" onclick="simonClick(1)"></div>
+                            <div class="simon-btn yellow" onclick="simonClick(2)"></div>
+                            <div class="simon-btn blue" onclick="simonClick(3)"></div>
+                            <div class="simon-center" id="simon-center">GO</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="local-game-card">
+                    <div class="local-game-header">
+                        <div class="local-game-title">⚡ Speed Math</div>
+                        <button class="ms-btn" onclick="initSpeedMath()">Start</button>
+                    </div>
+                    <div class="game-stats-bar">
+                        <span class="stat-pill">Score: <span id="sm-score">0</span></span>
+                        <span class="stat-pill">Time: <span id="sm-time-left">30</span>s</span>
+                        <span class="stat-pill">Best: <span id="sm-pb">0</span></span>
+                    </div>
+                    <div id="speedmath-container" style="text-align: center; padding: 40px 20px;">
+                        <div id="sm-problem" style="font-size: 2.5rem; margin-bottom: 30px; color: var(--accent-local); font-weight: bold;">Press Start</div>
+                        <input type="number" id="sm-input" style="width: 200px; padding: 15px; font-size: 1.5rem; text-align: center; background: rgba(0,0,0,0.3); border: 2px solid var(--accent-local); color: white; font-family: inherit; display: none;" placeholder="?" onkeypress="if(event.key==='Enter')checkMathAnswer()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="study-section" class="content-section">
+            <div class="study-grid">
+                <div class="study-card" style="grid-column: span 2;">
+                    <div class="study-header">
+                        <div class="study-title">🎴 Flash Cards & Quiz</div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <button class="fc-btn" onclick="toggleQuizMode()" id="quiz-toggle-btn">Quiz Mode</button>
+                            <select id="fc-deck" onchange="loadDeck()" style="padding: 8px 30px 8px 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--accent-study); color: white; font-family: inherit; cursor: pointer;">
+                                <option value="history">History</option>
+                                <option value="science">Science</option>
+                                <option value="math">Math</option>
+                                <option value="english">English</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="flashcard-mode">
+                        <div class="flashcard-container" onclick="flipCard()">
+                            <div class="flashcard" id="flashcard">
+                                <div class="flashcard-face flashcard-front" id="fc-front">
+                                    Click to Start
+                                </div>
+                                <div class="flashcard-face flashcard-back" id="fc-back">
+                                    Answer appears here
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flashcard-nav">
+                            <button class="fc-btn" onclick="prevCard()">← Previous</button>
+                            <button class="fc-btn" onclick="shuffleCards()">🔀 Shuffle</button>
+                            <button class="fc-btn" onclick="nextCard()">Next →</button>
+                        </div>
+                    </div>
+
+                    <div id="quiz-mode" style="display: none;">
+                        <div class="quiz-mode">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem;">
+                                <span style="color: var(--accent-study);">Score: <span id="quiz-score">0</span></span>
+                                <span style="color: var(--accent-study);">Streak: <span id="quiz-streak">0</span></span>
+                            </div>
+                            <div class="quiz-question" id="quiz-question">Loading...</div>
+                            <div class="quiz-options" id="quiz-options"></div>
+                            <div id="quiz-feedback" style="margin-top: 15px; text-align: center; font-weight: bold; height: 24px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="study-card">
+                    <div class="study-header">
+                        <div class="study-title">🧮 Calculator</div>
+                        <span style="font-size: 0.8rem; color: var(--text-dim);">Scientific</span>
+                    </div>
+                    <input type="text" class="calc-display" id="calc-display" readonly placeholder="0">
+                    <div class="calc-grid">
+                        <button class="calc-btn" onclick="calcClear()">C</button>
+                        <button class="calc-btn" onclick="calcAppend('(')">(</button>
+                        <button class="calc-btn" onclick="calcAppend(')')">)</button>
+                        <button class="calc-btn op" onclick="calcAppend('/')">÷</button>
+                        <button class="calc-btn" onclick="calcAppend('7')">7</button>
+                        <button class="calc-btn" onclick="calcAppend('8')">8</button>
+                        <button class="calc-btn" onclick="calcAppend('9')">9</button>
+                        <button class="calc-btn op" onclick="calcAppend('*')">×</button>
+                        <button class="calc-btn" onclick="calcAppend('4')">4</button>
+                        <button class="calc-btn" onclick="calcAppend('5')">5</button>
+                        <button class="calc-btn" onclick="calcAppend('6')">6</button>
+                        <button class="calc-btn op" onclick="calcAppend('-')">-</button>
+                        <button class="calc-btn" onclick="calcAppend('1')">1</button>
+                        <button class="calc-btn" onclick="calcAppend('2')">2</button>
+                        <button class="calc-btn" onclick="calcAppend('3')">3</button>
+                        <button class="calc-btn op" onclick="calcAppend('+')">+</button>
+                        <button class="calc-btn" onclick="calcAppend('0')">0</button>
+                        <button class="calc-btn" onclick="calcAppend('.')">.</button>
+                        <button class="calc-btn op" onclick="calcAppend('**')">^</button>
+                        <button class="calc-btn op" onclick="calcAppend('Math.sqrt(')">√</button>
+                        <button class="calc-btn equals" onclick="calcSolve()">=</button>
+                    </div>
+                </div>
+
+                <div class="study-card">
+                    <div class="study-header">
+                        <div class="study-title">📐 Algebra Solver</div>
+                        <span style="font-size: 0.8rem; color: var(--text-dim);">Linear equations</span>
+                    </div>
+                    <input type="text" class="algebra-input" id="algebra-input" placeholder="e.g., 2x + 5 = 13">
+                    <button class="solve-btn" onclick="solveAlgebra()">Solve Step-by-Step</button>
+                    <div class="solution-box" id="algebra-solution">
+                        Enter an equation to see the solution...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="leaderboards-section" class="content-section">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2 style="color: var(--accent-warn); text-transform: uppercase; letter-spacing: 4px; font-size: 2rem;">🏆 Hall of Records</h2>
+                <p style="color: var(--text-dim); margin-top: 10px;">Global Rankings & Personal Achievements</p>
+            </div>
+            
+            <div class="admin-grid">
+                <div class="admin-card">
+                    <div class="admin-header">Global Top 20</div>
+                    <div style="overflow-x: auto;">
+                        <table class="leaderboard">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Player</th>
+                                    <th>Game</th>
+                                    <th>Score</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="global-leaderboard">
+                                <tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 20px">No scores yet. Play games!</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-header">Your Records</div>
+                    <div id="personal-records">
+                        <p style="color: var(--text-dim); text-align: center; padding: 20px;">Login to view your personal bests</p>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-header">Study Statistics</div>
+                    <div id="study-stats-display">
+                        <p style="color: var(--text-dim); text-align: center; padding: 20px;">Quiz data will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="account-section" class="content-section">
+            <div class="account-panel">
+                <div id="login-view">
+                    <h2 style="color: var(--accent-warn); margin-bottom: 30px; text-align: center; text-transform: uppercase; letter-spacing: 3px;">Access Terminal</h2>
+                    
+                    <div class="input-group">
+                        <label>Username</label>
+                        <input type="text" id="login-username" placeholder="Enter username">
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="login-password" placeholder="Enter password">
+                    </div>
+                    
+                    <button class="account-btn" onclick="login()">Login / Create Account</button>
+                    <p style="color: var(--text-dim); font-size: 0.85rem; text-align: center; margin-top: 15px;">
+                        First login creates account automatically.<br>
+                        First user becomes admin.
+                    </p>
+                </div>
+
+                <div id="dashboard-view" style="display: none;">
+                    <div style="background: rgba(74, 222, 128, 0.1); border: 1px solid var(--accent-study); padding: 20px; margin-bottom: 25px; text-align: center;">
+                        <h3 style="color: var(--accent-study); margin-bottom: 5px;">Welcome, <span id="dash-username">User</span></h3>
+                        <p style="font-size: 0.85rem; color: var(--text-dim);">Role: <span id="dash-role" style="color: var(--accent-admin); text-transform: uppercase;">User</span></p>
+                    </div>
+
+                    <button class="account-btn secondary" onclick="logout()">Logout</button>
+
+                    <h3 style="color: var(--accent-warn); margin: 30px 0 15px; text-transform: uppercase; letter-spacing: 2px;">Submit Request</h3>
+                    
+                    <div class="input-group">
+                        <label>Request Type</label>
+                        <select id="request-type">
+                            <option value="game">Game Addition</option>
+                            <option value="feature">Feature Request</option>
+                            <option value="resource">Study Resource</option>
+                            <option value="bug">Bug Report</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Description</label>
+                        <textarea id="request-text" rows="3" placeholder="Describe your request..."></textarea>
+                    </div>
+                    <button class="account-btn" onclick="submitRequest()">Submit</button>
+
+                    <h3 style="color: var(--accent-warn); margin: 30px 0 15px; text-transform: uppercase; letter-spacing: 2px;">My Requests</h3>
+                    <div class="requests-list" id="user-requests-list">
+                        <p style="color: var(--text-dim);">No requests submitted yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-section" class="content-section">
+            <div class="admin-grid">
+                <div class="admin-card" style="grid-column: span 2;">
+                    <div class="admin-header">System Overview</div>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-number" id="stat-total-users">0</div>
+                            <div class="stat-label">Total Users</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number" id="stat-admins">0</div>
+                            <div class="stat-label">Admins</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number" id="stat-scores">0</div>
+                            <div class="stat-label">High Scores</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number" id="stat-pending">0</div>
+                            <div class="stat-label">Pending Requests</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-card" style="grid-column: span 2;">
+                    <div class="admin-header">
+                        <span>User Management</span>
+                        <span style="font-size: 0.8rem; color: var(--text-dim);">Click username to toggle admin</span>
+                    </div>
+                    <div class="user-list" id="admin-user-list"></div>
+                </div>
+
+                <div class="admin-card" style="grid-column: span 2;">
+                    <div class="admin-header">All Pending Requests</div>
+                    <div id="admin-requests-container" style="max-height: 400px; overflow-y: auto;"></div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-header">Data Management</div>
+                    <button class="admin-btn danger" onclick="clearAllScores()" style="width: 100%; margin-bottom: 10px; padding: 12px;">Clear All Scores</button>
+                    <button class="admin-btn danger" onclick="clearAllRequests()" style="width: 100%; margin-bottom: 10px; padding: 12px;">Clear All Requests</button>
+                    <button class="admin-btn danger" onclick="factoryReset()" style="width: 100%; padding: 12px;">Factory Reset</button>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-header">Backup</div>
+                    <button class="admin-btn" onclick="exportData()" style="width: 100%; padding: 12px; margin-bottom: 10px;">Export Data (JSON)</button>
+                    <p style="font-size: 0.8rem; color: var(--text-dim);">Download backup before making changes</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="game-modal" class="modal">
+        <div class="modal-header">
+            <div id="modal-title">Game Title</div>
+            <button class="close-modal" onclick="closeModal()">✕ Close</button>
+        </div>
+        <div class="game-frame-container">
+            <iframe id="game-frame" class="game-frame"></iframe>
+        </div>
+    </div>
+
+    <script>
+        const DB = {
+            init() {
+                if (!localStorage.getItem('lemons_db')) {
+                    localStorage.setItem('lemons_db', JSON.stringify({
+                        users: [],
+                        scores: [],
+                        requests: [],
+                        version: '5.0',
+                        created: new Date().toISOString()
+                    }));
+                }
+            },
+
+            get() {
+                return JSON.parse(localStorage.getItem('lemons_db'));
+            },
+
+            save(data) {
+                localStorage.setItem('lemons_db', JSON.stringify(data));
+            },
+
+            getUser() {
+                const username = localStorage.getItem('lemons_user');
+                if (!username) return null;
+                const db = this.get();
+                return db.users.find(u => u.username === username) || null;
+            },
+
+            setUser(username) {
+                if (username) {
+                    localStorage.setItem('lemons_user', username);
+                } else {
+                    localStorage.removeItem('lemons_user');
+                }
+            },
+
+            createUser(username, password) {
+                const db = this.get();
+                if (db.users.find(u => u.username === username)) return false;
+                
+                const isFirst = db.users.length === 0;
+                db.users.push({
+                    username,
+                    password,
+                    role: isFirst ? 'admin' : 'user',
+                    created: new Date().toISOString(),
+                    stats: { games: 0, correct: 0, total: 0 }
+                });
+                this.save(db);
+                return true;
+            },
+
+            toggleAdmin(username) {
+                const db = this.get();
+                const user = db.users.find(u => u.username === username);
+                if (user) {
+                    user.role = user.role === 'admin' ? 'user' : 'admin';
+                    this.save(db);
+                    return true;
+                }
+                return false;
+            },
+
+            addScore(game, score, details = '') {
+                const user = this.getUser();
+                const db = this.get();
+                db.scores.push({
+                    username: user ? user.username : 'Guest',
+                    game,
+                    score,
+                    details,
+                    date: new Date().toISOString()
+                });
+                this.save(db);
+                
+                const pbKey = `lemons_pb_${user ? user.username : 'Guest'}_${game}`;
+                const currentPB = localStorage.getItem(pbKey) || 0;
+                if (score > parseInt(currentPB)) {
+                    localStorage.setItem(pbKey, score);
+                    return true;
+                }
+                return false;
+            },
+
+            getPB(game) {
+                const user = this.getUser();
+                const key = `lemons_pb_${user ? user.username : 'Guest'}_${game}`;
+                return parseInt(localStorage.getItem(key)) || 0;
+            },
+
+            addRequest(type, text) {
+                const user = this.getUser();
+                const db = this.get();
+                db.requests.push({
+                    id: Date.now(),
+                    username: user ? user.username : 'Guest',
+                    type,
+                    text,
+                    status: 'pending',
+                    date: new Date().toISOString()
+                });
+                this.save(db);
+            },
+
+            updateRequest(id, status) {
+                const db = this.get();
+                const req = db.requests.find(r => r.id === id);
+                if (req) {
+                    req.status = status;
+                    this.save(db);
+                }
+            },
+
+            clearScores() {
+                const db = this.get();
+                db.scores = [];
+                this.save(db);
+            },
+
+            clearRequests() {
+                const db = this.get();
+                db.requests = [];
+                this.save(db);
+            },
+
+            clearAll() {
+                localStorage.removeItem('lemons_db');
+                localStorage.removeItem('lemons_user');
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith('lemons_pb_')) localStorage.removeItem(key);
+                });
+            }
+        };
+
+        DB.init();
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tab + '-section').classList.add('active');
+            
+            if (tab === 'leaderboards') updateLeaderboards();
+            if (tab === 'admin') updateAdmin();
+        }
+
+        function login() {
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            
+            if (!username || !password) return alert('Enter both fields');
+            
+            let user = DB.get().users.find(u => u.username === username);
+            
+            if (!user) {
+                DB.createUser(username, password);
+                user = DB.get().users.find(u => u.username === username);
+                alert('Account created!');
+            } else if (user.password !== password) {
+                return alert('Wrong password');
+            }
+            
+            DB.setUser(username);
+            showDashboard();
+        }
+
+        function logout() {
+            DB.setUser(null);
+            document.getElementById('login-view').style.display = 'block';
+            document.getElementById('dashboard-view').style.display = 'none';
+            document.getElementById('user-status').innerHTML = `Guest | <a href="#" onclick="switchTab('account')" style="color: var(--accent-warn);">Login</a>`;
+            document.getElementById('user-status').classList.remove('admin');
+            document.getElementById('admin-tab-btn').classList.remove('visible');
+        }
+
+        function showDashboard() {
+            const user = DB.getUser();
+            if (!user) return;
+            
+            document.getElementById('login-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
+            document.getElementById('dash-username').textContent = user.username;
+            document.getElementById('dash-role').textContent = user.role;
+            
+            document.getElementById('user-status').innerHTML = `${user.username} | <a href="#" onclick="logout()" style="color: var(--accent-warn);">Logout</a>`;
+            if (user.role === 'admin') {
+                document.getElementById('user-status').classList.add('admin');
+                document.getElementById('admin-tab-btn').classList.add('visible');
+            }
+            
+            loadUserRequests();
+        }
+
+        function submitRequest() {
+            const type = document.getElementById('request-type').value;
+            const text = document.getElementById('request-text').value.trim();
+            if (!text) return alert('Enter description');
+            
+            DB.addRequest(type, text);
+            document.getElementById('request-text').value = '';
+            loadUserRequests();
+            alert('Request submitted!');
+        }
+
+        function loadUserRequests() {
+            const user = DB.getUser();
+            if (!user) return;
+            
+            const requests = DB.get().requests.filter(r => r.username === user.username);
+            const container = document.getElementById('user-requests-list');
+            
+            if (requests.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-dim);">No requests yet</p>';
+            } else {
+                container.innerHTML = requests.reverse().map(r => `
+                    <div class="request-item">
+                        <div class="request-header">
+                            <span>[${r.type.toUpperCase()}]</span>
+                            <span style="color: ${r.status === 'pending' ? 'var(--accent-warn)' : 'var(--accent-study)'}">${r.status}</span>
+                        </div>
+                        <div>${r.text}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        let snakeInterval, snake, food, dir, score;
+        
+        function initSnake() {
+            const canvas = document.getElementById('snake-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            snake = [{x: 10, y: 10}];
+            dir = {x: 1, y: 0};
+            food = {x: 15, y: 15};
+            score = 0;
+            
+            document.getElementById('snake-score').textContent = '0';
+            document.getElementById('snake-new-pb').classList.remove('visible');
+            updateSnakePB();
+            
+            if (snakeInterval) clearInterval(snakeInterval);
+            snakeInterval = setInterval(() => stepSnake(ctx), 100);
+            
+            document.onkeydown = (e) => {
+                if (e.key === 'ArrowRight' && dir.x === 0) dir = {x: 1, y: 0};
+                if (e.key === 'ArrowLeft' && dir.x === 0) dir = {x: -1, y: 0};
+                if (e.key === 'ArrowUp' && dir.y === 0) dir = {x: 0, y: -1};
+                if (e.key === 'ArrowDown' && dir.y === 0) dir = {x: 0, y: 1};
+            };
+        }
+
+        function stepSnake(ctx) {
+            const head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+            
+            if (head.x < 0) head.x = 19;
+            if (head.x > 19) head.x = 0;
+            if (head.y < 0) head.y = 19;
+            if (head.y > 19) head.y = 0;
+            
+            if (snake.some(s => s.x === head.x && s.y === head.y)) {
+                clearInterval(snakeInterval);
+                const isPB = DB.addScore('snake', score, `Length: ${snake.length}`);
+                if (isPB) document.getElementById('snake-new-pb').classList.add('visible');
+                updateSnakePB();
+                return;
+            }
+            
+            snake.unshift(head);
+            
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                document.getElementById('snake-score').textContent = score;
+                food = {x: Math.floor(Math.random()*20), y: Math.floor(Math.random()*20)};
+            } else {
+                snake.pop();
+            }
+            
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.fillRect(0, 0, 400, 400);
+            ctx.fillStyle = '#4ade80';
+            snake.forEach(s => ctx.fillRect(s.x*20, s.y*20, 18, 18));
+            ctx.fillStyle = '#ff6b6b';
+            ctx.fillRect(food.x*20, food.y*20, 18, 18);
+        }
+
+        function updateSnakePB() {
+            document.getElementById('snake-pb').textContent = DB.getPB('snake');
+        }
+
+        let msBoard = [], msRevealed = 0, msTimer = 0, msInterval, msGameOver = false;
+        
+        function initMinesweeper() {
+            const container = document.getElementById('minesweeper-game');
+            container.innerHTML = '';
+            msBoard = [];
+            msRevealed = 0;
+            msTimer = 0;
+            msGameOver = false;
+            clearInterval(msInterval);
+            
+            document.getElementById('ms-time').textContent = '0';
+            document.getElementById('game-status').textContent = 'Playing';
+            document.getElementById('game-status').style.color = 'var(--accent-local)';
+            document.getElementById('ms-pb').textContent = DB.getPB('minesweeper') ? (1000 - DB.getPB('minesweeper')) + 's' : '--';
+            
+            for (let i = 0; i < 8; i++) {
+                msBoard[i] = [];
+                for (let j = 0; j < 8; j++) {
+                    msBoard[i][j] = {mine: false, revealed: false, flagged: false, count: 0};
+                    const cell = document.createElement('div');
+                    cell.className = 'ms-cell';
+                    cell.dataset.r = i;
+                    cell.dataset.c = j;
+                    cell.onclick = () => revealCell(i, j);
+                    cell.oncontextmenu = (e) => { e.preventDefault(); flagCell(i, j); };
+                    container.appendChild(cell);
+                }
+            }
+            
+            let mines = 0;
+            while (mines < 10) {
+                const r = Math.floor(Math.random()*8);
+                const c = Math.floor(Math.random()*8);
+                if (!msBoard[r][c].mine) {
+                    msBoard[r][c].mine = true;
+                    mines++;
+                }
+            }
+            
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    if (!msBoard[i][j].mine) {
+                        for (let di = -1; di <= 1; di++) {
+                            for (let dj = -1; dj <= 1; dj++) {
+                                if (i+di >= 0 && i+di < 8 && j+dj >= 0 && j+dj < 8 && msBoard[i+di][j+dj].mine) {
+                                    msBoard[i][j].count++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            msInterval = setInterval(() => {
+                msTimer++;
+                document.getElementById('ms-time').textContent = msTimer;
+            }, 1000);
+        }
+
+        function revealCell(r, c) {
+            if (msGameOver || msBoard[r][c].flagged || msBoard[r][c].revealed) return;
+            
+            const cell = document.querySelector(`.ms-cell[data-r="${r}"][data-c="${c}"]`);
+            msBoard[r][c].revealed = true;
+            cell.classList.add('revealed');
+            msRevealed++;
+            
+            if (msBoard[r][c].mine) {
+                cell.classList.add('mine');
+                cell.textContent = '💥';
+                gameOverMS(false);
+            } else {
+                if (msBoard[r][c].count > 0) {
+                    cell.textContent = msBoard[r][c].count;
+                    cell.style.color = ['#4db8ff', '#4ade80', '#ff6b6b', '#60a5fa'][msBoard[r][c].count - 1] || '#fff';
+                } else {
+                    for (let di = -1; di <= 1; di++) {
+                        for (let dj = -1; dj <= 1; dj++) {
+                            if (r+di >= 0 && r+di < 8 && c+dj >= 0 && c+dj < 8) revealCell(r+di, c+dj);
+                        }
+                    }
+                }
+                if (msRevealed === 54) gameOverMS(true);
+            }
+        }
+
+        function flagCell(r, c) {
+            if (msGameOver || msBoard[r][c].revealed) return;
+            const cell = document.querySelector(`.ms-cell[data-r="${r}"][data-c="${c}"]`);
+            msBoard[r][c].flagged = !msBoard[r][c].flagged;
+            cell.classList.toggle('flagged');
+        }
+
+        function gameOverMS(won) {
+            msGameOver = true;
+            clearInterval(msInterval);
+            document.getElementById('game-status').textContent = won ? 'WINNER!' : 'BOOM!';
+            document.getElementById('game-status').style.color = won ? '#4ade80' : '#ff6b6b';
+            
+            if (won) {
+                const score = 1000 - msTimer;
+                DB.addScore('minesweeper', score, `Time: ${msTimer}s`);
+                const user = DB.getUser();
+                if (user) {
+                    const db = DB.get();
+                    db.users.find(u => u.username === user.username).stats.games++;
+                    DB.save(db);
+                }
+                localStorage.setItem(`lemons_pb_${DB.getUser()?.username || 'Guest'}_minesweeper`, score);
+                document.getElementById('ms-pb').textContent = (1000 - score) + 's';
+            }
+        }
+
+        let simonSeq = [], simonPlayer = [], simonScore = 0, simonActive = false;
+        
+        function initSimon() {
+            simonSeq = [];
+            simonPlayer = [];
+            simonScore = 0;
+            simonActive = false;
+            document.getElementById('simon-score').textContent = '0';
+            document.getElementById('simon-pb').textContent = DB.getPB('simon');
+            document.getElementById('simon-center').textContent = 'WATCH';
+            nextSimon();
+        }
+
+        function nextSimon() {
+            simonPlayer = [];
+            simonSeq.push(Math.floor(Math.random()*4));
+            playSeq();
+        }
+
+        function playSeq() {
+            simonActive = false;
+            document.getElementById('simon-center').textContent = '...';
+            let i = 0;
+            const int = setInterval(() => {
+                if (i >= simonSeq.length) {
+                    clearInterval(int);
+                    simonActive = true;
+                    document.getElementById('simon-center').textContent = 'GO';
+                    return;
+                }
+                flashBtn(simonSeq[i]);
+                i++;
+            }, 600);
+        }
+
+        function flashBtn(idx) {
+            const btn = document.querySelectorAll('.simon-btn')[idx];
+            btn.classList.add('active');
+            setTimeout(() => btn.classList.remove('active'), 300);
+        }
+
+        function simonClick(color) {
+            if (!simonActive) return;
+            flashBtn(color);
+            simonPlayer.push(color);
+            
+            if (simonPlayer[simonPlayer.length-1] !== simonSeq[simonPlayer.length-1]) {
+                document.getElementById('simon-center').textContent = '✕';
+                const isPB = DB.addScore('simon', simonScore, `Rounds: ${simonScore}`);
+                if (isPB) document.getElementById('simon-pb').textContent = simonScore;
+                return;
+            }
+            
+            if (simonPlayer.length === simonSeq.length) {
+                simonScore++;
+                document.getElementById('simon-score').textContent = simonScore;
+                document.getElementById('simon-center').textContent = '✓';
+                setTimeout(nextSimon, 1000);
+            }
+        }
+
+        let smScore = 0, smTime = 30, smInterval, smAnswer;
+        
+        function initSpeedMath() {
+            smScore = 0;
+            smTime = 30;
+            document.getElementById('sm-score').textContent = '0';
+            document.getElementById('sm-time-left').textContent = '30';
+            document.getElementById('sm-pb').textContent = DB.getPB('speedmath');
+            document.getElementById('sm-input').style.display = 'block';
+            document.getElementById('sm-input').value = '';
+            document.getElementById('sm-input').focus();
+            nextMath();
+            
+            clearInterval(smInterval);
+            smInterval = setInterval(() => {
+                smTime--;
+                document.getElementById('sm-time-left').textContent = smTime;
+                if (smTime <= 0) endMath();
+            }, 1000);
+        }
+
+        function nextMath() {
+            const ops = ['+', '-', '*'];
+            const op = ops[Math.floor(Math.random()*ops.length)];
+            let a = Math.floor(Math.random()*12)+1;
+            let b = Math.floor(Math.random()*12)+1;
+            
+            if (op === '-') { if (a < b) [a,b] = [b,a]; smAnswer = a-b; }
+            else if (op === '*') { a = Math.floor(Math.random()*10)+1; b = Math.floor(Math.random()*10)+1; smAnswer = a*b; }
+            else smAnswer = a+b;
+            
+            document.getElementById('sm-problem').textContent = `${a} ${op} ${b} = ?`;
+        }
+
+        function checkMathAnswer() {
+            const input = parseInt(document.getElementById('sm-input').value);
+            if (input === smAnswer) {
+                smScore += 10;
+                document.getElementById('sm-score').textContent = smScore;
+            }
+            document.getElementById('sm-input').value = '';
+            nextMath();
+        }
+
+        function endMath() {
+            clearInterval(smInterval);
+            document.getElementById('sm-problem').textContent = `Final: ${smScore}`;
+            document.getElementById('sm-input').style.display = 'none';
+            const isPB = DB.addScore('speedmath', smScore);
+            if (isPB) document.getElementById('sm-pb').textContent = smScore;
+        }
+
+        const decks = {
+            history: [
+                {q: "When did WWII end?", a: "1945"},
+                {q: "Who was the first US President?", a: "George Washington"},
+                {q: "What year did the Berlin Wall fall?", a: "1989"},
+                {q: "Who discovered America?", a: "Christopher Columbus (1492)"},
+                {q: "When was the Declaration of Independence signed?", a: "1776"}
+            ],
+            science: [
+                {q: "What does H2O stand for?", a: "Water (2 Hydrogen, 1 Oxygen)"},
+                {q: "Speed of light?", a: "299,792,458 m/s"},
+                {q: "What is Newton's Second Law?", a: "F = ma (Force = mass × acceleration)"},
+                {q: "What is the powerhouse of the cell?", a: "Mitochondria"},
+                {q: "Chemical symbol for Gold?", a: "Au"}
+            ],
+            math: [
+                {q: "What is 2+2×2?", a: "6 (order of operations)"},
+                {q: "Square root of 144?", a: "12"},
+                {q: "Value of π (pi)?", a: "3.14159..."},
+                {q: "Derivative of x²?", a: "2x"},
+                {q: "Pythagorean theorem?", a: "a² + b² = c²"}
+            ],
+            english: [
+                {q: "Who wrote Romeo and Juliet?", a: "William Shakespeare"},
+                {q: "Past tense of 'go'?", a: "Went"},
+                {q: "What is a metaphor?", a: "Comparison without like/as"},
+                {q: "Opposite of 'hot'?", a: "Cold"},
+                {q: "How many vowels in English?", a: "5 (A, E, I, O, U)"}
+            ]
+        };
+        
+        let currentDeck = 'history', currentCard = 0, quizScore = 0, quizStreak = 0;
+
+        function loadDeck() {
+            currentDeck = document.getElementById('fc-deck').value;
+            currentCard = 0;
+            updateCard();
+        }
+
+        function updateCard() {
+            document.getElementById('fc-front').textContent = decks[currentDeck][currentCard].q;
+            document.getElementById('fc-back').textContent = decks[currentDeck][currentCard].a;
+        }
+
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            currentCard = (currentCard + 1) % decks[currentDeck].length;
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(updateCard, 150);
+        }
+
+        function prevCard() {
+            currentCard = (currentCard - 1 + decks[currentDeck].length) % decks[currentDeck].length;
+            document.getElementById('flashcard').classList.remove('flipped');
+            setTimeout(updateCard, 150);
+        }
+
+        function shuffleCards() {
+            decks[currentDeck].sort(() => Math.random() - 0.5);
+            currentCard = 0;
+            updateCard();
+        }
+
+        function toggleQuizMode() {
+            const fc = document.getElementById('flashcard-mode');
+            const quiz = document.getElementById('quiz-mode');
+            const btn = document.getElementById('quiz-toggle-btn');
+            
+            if (quiz.style.display === 'none') {
+                fc.style.display = 'none';
+                quiz.style.display = 'block';
+                btn.textContent = 'Flashcard Mode';
+                startQuiz();
+            } else {
+                fc.style.display = 'block';
+                quiz.style.display = 'none';
+                btn.textContent = 'Quiz Mode';
+            }
+        }
+
+        function startQuiz() {
+            quizScore = 0;
+            quizStreak = 0;
+            document.getElementById('quiz-score').textContent = '0';
+            document.getElementById('quiz-streak').textContent = '0';
+            nextQuiz();
+        }
+
+        function nextQuiz() {
+            const q = decks[currentDeck][Math.floor(Math.random() * decks[currentDeck].length)];
+            document.getElementById('quiz-question').textContent = q.q;
+            
+            const wrong = decks[currentDeck].filter(x => x.a !== q.a).slice(0,3).map(x => x.a);
+            const opts = [q.a, ...wrong].sort(() => Math.random()-0.5);
+            
+            const container = document.getElementById('quiz-options');
+            container.innerHTML = '';
+            opts.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-option';
+                btn.textContent = opt;
+                btn.onclick = () => answerQuiz(opt === q.a, btn, q.a);
+                container.appendChild(btn);
+            });
+            document.getElementById('quiz-feedback').textContent = '';
+        }
+
+        function answerQuiz(correct, btn, rightAnswer) {
+            document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+            if (correct) {
+                btn.classList.add('correct');
+                quizScore += 10 + quizStreak;
+                quizStreak++;
+                document.getElementById('quiz-feedback').textContent = `+${10 + quizStreak - 1} points!`;
+                document.getElementById('quiz-feedback').style.color = '#4ade80';
+            } else {
+                btn.classList.add('wrong');
+                quizStreak = 0;
+                document.getElementById('quiz-feedback').textContent = 'Wrong!';
+                document.getElementById('quiz-feedback').style.color = '#ff6b6b';
+            }
+            document.getElementById('quiz-score').textContent = quizScore;
+            document.getElementById('quiz-streak').textContent = quizStreak;
+            
+            const user = DB.getUser();
+            if (user) {
+                const db = DB.get();
+                db.users.find(u => u.username === user.username).stats.total++;
+                if (correct) db.users.find(u => u.username === user.username).stats.correct++;
+                DB.save(db);
+            }
+            
+            setTimeout(nextQuiz, 1500);
+        }
+
+        let calcExpr = '';
+        function calcAppend(v) { calcExpr += v; document.getElementById('calc-display').value = calcExpr; }
+        function calcClear() { calcExpr = ''; document.getElementById('calc-display').value = ''; }
+        function calcSolve() { try { calcExpr = eval(calcExpr).toString(); document.getElementById('calc-display').value = calcExpr; } catch { document.getElementById('calc-display').value = 'Error'; } }
+
+        function solveAlgebra() {
+            const input = document.getElementById('algebra-input').value;
+            const box = document.getElementById('algebra-solution');
+            if (!input.includes('=')) {
+                box.innerHTML = '<span style="color: #ff6b6b">Error: Must include = sign</span>';
+                return;
+            }
+            box.innerHTML = `<strong style="color: var(--accent-study)">Solving:</strong> ${input}<br><br><strong>Step 1:</strong> Isolate variable<br><strong>Step 2:</strong> Simplify<br><br><strong style="color: var(--accent-study)">Solution:</strong> x = ${Math.floor(Math.random() * 10) + 1}<br><br><em style="color: var(--text-dim)">Note: This is a demonstration. For real solving, use WolframAlpha or similar tools.</em>`;
+        }
+
+        function updateLeaderboards() {
+            const scores = DB.get().scores.sort((a,b) => b.score - a.score).slice(0, 20);
+            const tbody = document.getElementById('global-leaderboard');
+            
+            if (scores.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-dim); padding: 20px">No scores yet. Play games!</td></tr>';
+            } else {
+                tbody.innerHTML = scores.map((s, i) => `
+                    <tr>
+                        <td class="rank-${i+1}">#${i+1}</td>
+                        <td>${s.username}</td>
+                        <td>${s.game}</td>
+                        <td style="color: var(--accent-warn); font-weight: bold">${s.score}</td>
+                        <td style="font-size: 0.8rem; color: var(--text-dim)">${new Date(s.date).toLocaleDateString()}</td>
+                    </tr>
+                `).join('');
+            }
+            
+            const user = DB.getUser();
+            if (user) {
+                const games = ['snake', 'simon', 'minesweeper', 'speedmath'];
+                let html = '<div style="display: grid; gap: 10px">';
+                games.forEach(g => {
+                    const pb = DB.getPB(g);
+                    html += `<div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--accent-warn)"><span>${g}</span><span style="color: var(--accent-warn); font-weight: bold">${pb}</span></div>`;
+                });
+                html += '</div>';
+                document.getElementById('personal-records').innerHTML = html;
+                
+                const acc = (user.stats.correct / (user.stats.total || 1) * 100).toFixed(1);
+                document.getElementById('study-stats-display').innerHTML = `
+                    <div style="text-align: center; padding: 20px">
+                        <div style="font-size: 3rem; color: var(--accent-study); font-weight: bold">${acc}%</div>
+                        <div style="color: var(--text-dim); margin-top: 10px">Quiz Accuracy</div>
+                        <div style="margin-top: 10px; font-size: 0.9rem">Correct: ${user.stats.correct} / ${user.stats.total}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function updateAdmin() {
+            const db = DB.get();
+            document.getElementById('stat-total-users').textContent = db.users.length;
+            document.getElementById('stat-admins').textContent = db.users.filter(u => u.role === 'admin').length;
+            document.getElementById('stat-scores').textContent = db.scores.length;
+            document.getElementById('stat-pending').textContent = db.requests.filter(r => r.status === 'pending').length;
+            
+            document.getElementById('admin-user-list').innerHTML = db.users.map(u => `
+                <div class="user-item" onclick="toggleUserAdmin('${u.username}')" style="cursor: pointer">
+                    <div>
+                        <div style="font-weight: bold">${u.username}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-dim)">Joined: ${new Date(u.created).toLocaleDateString()}</div>
+                    </div>
+                    <span class="user-role ${u.role}">${u.role}</span>
+                </div>
+            `).join('');
+            
+            const pending = db.requests.filter(r => r.status === 'pending');
+            document.getElementById('admin-requests-container').innerHTML = pending.length === 0 
+                ? '<p style="color: var(--text-dim)">No pending requests</p>'
+                : pending.map(r => `
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; margin-bottom: 10px; border-left: 3px solid var(--accent-warn)">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px">
+                            <span style="color: var(--accent-warn)">[${r.type.toUpperCase()}] ${r.username}</span>
+                            <span style="font-size: 0.75rem; color: var(--text-dim)">${new Date(r.date).toLocaleString()}</span>
+                        </div>
+                        <div style="margin-bottom: 10px">${r.text}</div>
+                        <button class="admin-btn" onclick="resolveRequest(${r.id})">Mark Resolved</button>
+                    </div>
+                `).join('');
+        }
+
+        function toggleUserAdmin(username) {
+            if (confirm(`Toggle admin status for ${username}?`)) {
+                DB.toggleAdmin(username);
+                updateAdmin();
+            }
+        }
+
+        function resolveRequest(id) {
+            DB.updateRequest(id, 'resolved');
+            updateAdmin();
+        }
+
+        function clearAllScores() {
+            if (confirm('Delete ALL high scores?')) {
+                DB.clearScores();
+                updateAdmin();
+            }
+        }
+
+        function clearAllRequests() {
+            if (confirm('Delete ALL requests?')) {
+                DB.clearRequests();
+                updateAdmin();
+            }
+        }
+
+        function factoryReset() {
+            if (confirm('FACTORY RESET: DELETE EVERYTHING?')) {
+                DB.clearAll();
+                location.reload();
+            }
+        }
+
+        function exportData() {
+            const data = JSON.stringify(DB.get(), null, 2);
+            const blob = new Blob([data], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `lemons_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+        }
+
+        window.onload = () => {
+            const user = DB.getUser();
+            if (user) showDashboard();
+            updateCard();
+            updateSnakePB();
+        };
+    </script>
+</body>
+</html>
