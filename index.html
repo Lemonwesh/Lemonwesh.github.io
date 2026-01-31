@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lemons Proxy | v4.0 Educational Portal</title>
+    <title>Lemons Proxy | v5.0 Hypackel Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         * {
@@ -58,20 +58,7 @@
             text-transform: uppercase;
             letter-spacing: 5px;
             text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
-            position: relative;
-            display: inline-block;
         }
-
-        .blueprint-title::before, .blueprint-title::after {
-            content: '◆';
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--accent);
-        }
-
-        .blueprint-title::before { left: -40px; }
-        .blueprint-title::after { right: -40px; }
 
         .subtitle {
             font-size: 0.9rem;
@@ -110,11 +97,9 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
         }
 
-        nav button:hover {
+        nav button:hover, nav button.active {
             background: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
@@ -140,7 +125,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Proxy Section - CroxyProxy Redirect */
+        /* INLINE PROXY STYLES */
         .proxy-container {
             border: 3px solid var(--blueprint-line);
             background: rgba(0, 0, 0, 0.2);
@@ -149,7 +134,7 @@
         }
 
         .proxy-container::before {
-            content: 'CROXYPROXY MODULE v4.0';
+            content: 'INLINE PROXY MODULE v5.0';
             position: absolute;
             top: -12px;
             left: 30px;
@@ -159,21 +144,22 @@
             letter-spacing: 2px;
         }
 
-        .proxy-input-group {
+        .proxy-controls {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .proxy-input {
             flex: 1;
+            min-width: 200px;
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid var(--blueprint-line);
             color: white;
             padding: 15px;
             font-family: 'Courier Prime', monospace;
             font-size: 1rem;
-            outline: none;
         }
 
         .proxy-input::placeholder { color: rgba(255, 255, 255, 0.5); }
@@ -187,69 +173,52 @@
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s;
         }
 
-        .proxy-btn:hover { background: transparent; color: var(--accent); }
+        .proxy-btn:hover { background: transparent; }
 
-        .proxy-options {
-            margin: 15px 0;
-            padding: 15px;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--blueprint-line);
-        }
-
-        .proxy-row {
+        .proxy-selector {
+            margin-bottom: 20px;
             display: flex;
             gap: 15px;
             align-items: center;
-            margin-bottom: 10px;
             flex-wrap: wrap;
         }
 
-        .mirror-select {
-            background: rgba(255,255,255,0.1);
+        .proxy-selector label {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .proxy-selector select {
+            background: rgba(0,0,0,0.3);
             border: 2px solid var(--blueprint-line);
             color: white;
             padding: 8px;
             font-family: 'Courier Prime', monospace;
         }
 
-        .mirror-select option {
-            background: var(--blueprint-bg);
-            color: white;
+        .proxy-frame-container {
+            width: 100%;
+            height: 70vh;
+            border: 3px solid var(--blueprint-line);
+            background: white;
+            position: relative;
+            display: none;
         }
 
-        .quick-links {
-            margin-top: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
+        .proxy-frame-container.active { display: block; }
+
+        .proxy-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
-        .quick-link-btn {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid var(--blueprint-line);
-            color: white;
-            padding: 10px;
-            cursor: pointer;
-            font-family: 'Share Tech Mono', monospace;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            transition: all 0.3s;
-        }
-
-        .quick-link-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-
-        /* Games Grid */
+        /* GAMES GRID */
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
+            gap: 25px;
         }
 
         .game-card {
@@ -257,57 +226,68 @@
             background: rgba(0, 0, 0, 0.2);
             padding: 20px;
             text-align: center;
-            position: relative;
             transition: transform 0.3s;
             cursor: pointer;
+            position: relative;
         }
 
         .game-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
             background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        .game-icon { font-size: 3rem; margin-bottom: 15px; }
+        .game-icon { font-size: 2.5rem; margin-bottom: 10px; }
         
         .game-title {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .game-desc { font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px; }
+        .game-desc { font-size: 0.8rem; opacity: 0.8; margin-bottom: 12px; height: 40px; }
 
         .play-btn {
             display: inline-block;
             border: 2px solid var(--accent);
             color: var(--accent);
-            padding: 8px 20px;
+            padding: 6px 16px;
             text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             transition: all 0.3s;
         }
 
         .play-btn:hover { background: var(--accent); color: white; }
 
-        /* External Game Container */
-        .external-game-container {
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: white;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        .badge.multi { background: #228B22; }
+        .badge.new { background: #FFD700; color: black; }
+
+        /* GAME VIEWER */
+        .game-viewer {
+            display: none;
             border: 3px solid var(--blueprint-line);
             background: rgba(0, 0, 0, 0.3);
             padding: 20px;
-            margin-top: 20px;
-            position: relative;
-            display: none;
-            height: 80vh;
+            height: 85vh;
         }
 
-        .external-game-container.active { display: block; }
+        .game-viewer.active { display: block; }
 
-        .game-header {
+        .viewer-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -316,63 +296,33 @@
             border-bottom: 1px solid var(--blueprint-line);
         }
 
-        .back-btn {
-            background: var(--accent);
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-family: 'Share Tech Mono', monospace;
-        }
-
-        .external-frame {
+        .game-frame {
             width: 100%;
             height: calc(100% - 60px);
             border: 2px solid var(--blueprint-line);
-            background: white;
+            background: black;
         }
 
-        /* Local Game Container */
-        .local-game-container {
-            border: 3px solid var(--blueprint-line);
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
+        .quick-links {
             margin-top: 20px;
-            position: relative;
-            display: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
         }
 
-        .local-game-container.active { display: block; }
-
-        canvas {
-            display: block;
-            margin: 0 auto;
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid var(--blueprint-line);
-            max-width: 100%;
-        }
-
-        .game-controls {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-
-        .badge {
-            display: inline-block;
-            background: var(--accent);
+        .quick-btn {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--blueprint-line);
             color: white;
-            padding: 2px 8px;
-            font-size: 0.7rem;
-            margin-left: 5px;
+            padding: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
             text-transform: uppercase;
         }
 
-        .badge.official { background: #228B22; }
-        .badge.local { background: #4169E1; }
+        .quick-btn:hover { background: var(--accent); border-color: var(--accent); }
 
-        /* Tools */
+        /* TOOLS */
         .tools-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -382,56 +332,13 @@
         .tool-box {
             border: 2px solid var(--blueprint-line);
             padding: 25px;
-            position: relative;
             background: rgba(0, 0, 0, 0.2);
         }
 
-        .tool-box h3 {
-            font-family: 'Share Tech Mono', monospace;
-            margin-bottom: 15px;
-            color: var(--warning);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .calc-display {
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid var(--blueprint-line);
-            padding: 15px;
-            margin-bottom: 15px;
-            text-align: right;
-            font-size: 1.5rem;
-            font-family: 'Share Tech Mono', monospace;
-            min-height: 50px;
-            word-wrap: break-word;
-        }
-
-        .calc-buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-
-        .calc-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 15px;
-            font-family: 'Courier Prime', monospace;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .calc-btn:hover { background: rgba(255, 255, 255, 0.3); transform: scale(1.05); }
-        .calc-btn.operator { background: var(--accent); border-color: var(--accent); }
-
         @media (max-width: 768px) {
             .blueprint-title { font-size: 2rem; }
-            .blueprint-title::before, .blueprint-title::after { display: none; }
-            .proxy-input-group { flex-direction: column; }
-            .proxy-row { flex-direction: column; align-items: flex-start; }
-            canvas { max-width: 100%; }
+            .proxy-controls { flex-direction: column; }
+            .proxy-frame-container { height: 50vh; }
         }
 
         footer {
@@ -451,289 +358,294 @@
     <div class="tech-border bottom-right"></div>
 
     <header>
-        <div class="drawing-number">DWG: LEMONS-PROXY-v4.0</div>
+        <div class="drawing-number">DWG: LEMONS-v5.0-HYPACKEL</div>
         <h1 class="blueprint-title">Lemons Proxy</h1>
-        <p class="subtitle">Educational Resource Portal with CroxyProxy</p>
+        <p class="subtitle">Hypackel Games Edition with Inline Proxy</p>
     </header>
 
     <nav>
         <button class="nav-btn active" onclick="showSection('proxy')">Proxy</button>
-        <button class="nav-btn" onclick="showSection('games')">Arcade</button>
+        <button class="nav-btn" onclick="showSection('games')">Hypackel Games</button>
+        <button class="nav-btn" onclick="showSection('multiplayer')">Multiplayer</button>
         <button class="nav-btn" onclick="showSection('tools')">Tools</button>
     </nav>
 
     <div class="container">
-        <!-- Proxy Section - Uses CroxyProxy Redirect -->
+        <!-- INLINE PROXY SECTION -->
         <section id="proxy" class="section active">
             <div class="proxy-container">
-                <div class="proxy-input-group">
-                    <input type="text" class="proxy-input" id="urlInput" placeholder="Enter URL (e.g., https://example.com)" onkeypress="if(event.key==='Enter')openProxy()">
-                    <button class="proxy-btn" onclick="openProxy()">LAUNCH PROXY</button>
-                </div>
-                
-                <div class="proxy-options">
-                    <div class="proxy-row">
-                        <span>Service:</span>
-                        <select id="proxyService" class="mirror-select" style="flex: 1;">
-                            <option value="https://www.croxyproxy.com/_proxy?url=">CroxyProxy (Recommended)</option>
-                            <option value="https://proxyium.com/?q=">Proxyium</option>
-                            <option value="https://www.blockaway.net/_proxy?url=">BlockAway</option>
-                            <option value="https://plainproxies.com/_proxy?url=">PlainProxies</option>
-                        </select>
-                    </div>
-                    <div class="proxy-row">
-                        <label><input type="checkbox" id="stealthMode"> Stealth Mode (Disguise Tab Title)</label>
-                    </div>
+                <div class="proxy-selector">
+                    <label>Proxy Service:</label>
+                    <select id="proxyBackend" onchange="checkProxy()">
+                        <option value="interstellar">Interstellar (Recommended)</option>
+                        <option value="rammerhead">Rammerhead</option>
+                        <option value="ultraviolet">Ultraviolet</option>
+                        <option value="holyunblocker">Holy Unblocker</option>
+                    </select>
+                    <span style="font-size: 0.8rem; opacity: 0.8;">If one doesn't work, try another</span>
                 </div>
 
-                <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.3);">
-                    <h3 style="font-family: 'Share Tech Mono'; margin-bottom: 10px; color: var(--warning);">How It Works</h3>
-                    <p style="font-size: 0.9rem; line-height: 1.6;">
-                        This proxy uses CroxyProxy technology to bypass restrictions. Click "LAUNCH PROXY" to open the target site in a secure, encrypted connection. 
-                        If one service doesn't work, try another from the dropdown.
-                    </p>
+                <div class="proxy-controls">
+                    <input type="text" class="proxy-input" id="urlInput" placeholder="Enter URL (e.g., https://example.com)" onkeypress="if(event.key==='Enter')loadProxy()">
+                    <button class="proxy-btn" onclick="loadProxy()">Load Inline</button>
                 </div>
 
-                <div style="margin-top: 20px;">
-                    <h3 style="font-family: 'Share Tech Mono'; margin-bottom: 15px;">Quick Launch</h3>
-                    <div class="quick-links">
-                        <button class="quick-link-btn" onclick="quickProxy('https://google.com')">Google</button>
-                        <button class="quick-link-btn" onclick="quickProxy('https://youtube.com')">YouTube</button>
-                        <button class="quick-link-btn" onclick="quickProxy('https://reddit.com')">Reddit</button>
-                        <button class="quick-link-btn" onclick="quickProxy('https://discord.com')">Discord</button>
-                        <button class="quick-link-btn" onclick="quickProxy('https://twitter.com')">Twitter</button>
-                        <button class="quick-link-btn" onclick="quickProxy('https://wikipedia.org')">Wikipedia</button>
-                        <button class="quick-link-btn" onclick="quickProxy('https://instagram.com')">Instagram</button>
-                        <button class="quick-link-btn" onclick="quickProxy('https://tiktok.com')">TikTok</button>
-                    </div>
+                <div class="quick-links">
+                    <button class="quick-btn" onclick="loadGameProxy('https://google.com')">Google</button>
+                    <button class="quick-btn" onclick="loadGameProxy('https://youtube.com')">YouTube</button>
+                    <button class="quick-btn" onclick="loadGameProxy('https://discord.com')">Discord</button>
+                    <button class="quick-btn" onclick="loadGameProxy('https://reddit.com')">Reddit</button>
+                    <button class="quick-btn" onclick="loadGameProxy('https://twitter.com')">Twitter</button>
+                    <button class="quick-btn" onclick="loadGameProxy('https://instagram.com')">Instagram</button>
+                    <button class="quick-btn" onclick="loadGameProxy('https://tiktok.com')">TikTok</button>
+                    <button class="quick-btn" onclick="loadGameProxy('https://twitch.tv')">Twitch</button>
                 </div>
 
-                <div style="margin-top: 20px; padding: 15px; background: rgba(255,0,0,0.1); border: 1px solid rgba(255,0,0,0.3);">
-                    <h3 style="font-family: 'Share Tech Mono'; margin-bottom: 10px; color: #ff6666;">Notice</h3>
-                    <p style="font-size: 0.85rem;">
-                        This proxy opens sites in a new tab using web proxy services. If links don't open, check your popup blocker or try a different service from the dropdown.
-                    </p>
+                <div style="margin-top: 15px; font-size: 0.85rem; color: var(--warning);">
+                    <strong>Note:</strong> If you see a white screen or error, the proxy service may be blocked. Try switching the backend above or refreshing.
+                </div>
+
+                <div class="proxy-frame-container" id="proxyContainer">
+                    <iframe id="proxyFrame" class="proxy-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation"></iframe>
                 </div>
             </div>
         </section>
 
-        <!-- Games Section - Based on Genizy Math -->
+        <!-- HYPACKEL GAMES SECTION -->
         <section id="games" class="section">
             <div id="gamesMenu">
-                <div style="text-align: center; margin-bottom: 30px; padding: 20px; border: 2px dashed rgba(255,255,255,0.3);">
-                    <h2 style="font-family: 'Share Tech Mono', monospace; letter-spacing: 3px;">ARCADE MODULE</h2>
-                    <p style="margin-top: 10px; opacity: 0.8;">Based on Genizy Math Collection</p>
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2 style="font-family: 'Share Tech Mono', monospace; letter-spacing: 3px;">HYPACKEL GAMES COLLECTION</h2>
+                    <p style="margin-top: 10px; opacity: 0.8;">400+ Games - Click any to play inline</p>
                 </div>
 
                 <div class="games-grid">
-                    <!-- Genizy Math Style Games - External Hosted -->
-                    <div class="game-card" onclick="launchExternal('https://g.deev.is/eaglercraft/', 'Eaglercraft - Minecraft 1.5.2')">
-                        <div class="game-icon">⛏️</div>
-                        <div class="game-title">Eaglercraft <span class="badge official">Online</span></div>
-                        <div class="game-desc">Minecraft Java 1.5.2 in your browser. Singleplayer & Multiplayer support.</div>
-                        <span class="play-btn">Play Now</span>
+                    <!-- Popular Hypackel Games -->
+                    <div class="game-card" onclick="launchGame('https://y8.com/embed/slope', 'Slope')">
+                        <div class="game-icon">🔵</div>
+                        <div class="game-title">Slope <span class="badge new">POPULAR</span></div>
+                        <div class="game-desc">Endless running ball game.</div>
+                        <span class="play-btn">Play Inline</span>
                     </div>
 
-                    <div class="game-card" onclick="launchExternal('https://eaglercraftx.net/', 'EaglercraftX 1.8.8')">
-                        <div class="game-icon">🪓</div>
-                        <div class="game-title">EaglercraftX <span class="badge official">Online</span></div>
-                        <div class="game-desc">Minecraft Java 1.8.8 with improved performance.</div>
-                        <span class="play-btn">Play Now</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchExternal('https://scratch.mit.edu/projects/10128407/embed', 'Papa\'s Pizzeria')">
-                        <div class="game-icon">🍕</div>
-                        <div class="game-title">Papa's Pizzeria <span class="badge official">Flash</span></div>
-                        <div class="game-desc">Classic cooking game. Manage your own pizza shop.</div>
-                        <span class="play-btn">Play Now</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchExternal('https://amanda-the-adventurer.com/game/amanda-the-adventurer/', 'Amanda the Adventurer')">
-                        <div class="game-icon">📼</div>
-                        <div class="game-title">Amanda Adventurer <span class="badge official">Horror</span></div>
-                        <div class="game-desc">Help Amanda solve puzzles in this horror adventure.</div>
-                        <span class="play-btn">Play Now</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchExternal('https://foddy.net/Athletics.html?webgl=true', 'QWOP')">
+                    <div class="game-card" onclick="launchGame('https://subwaysurfersgame.org/game/subway-surfers/', 'Subway Surfers')">
                         <div class="game-icon">🏃</div>
-                        <div class="game-title">QWOP <span class="badge official">Classic</span></div>
-                        <div class="game-desc">The hardest running game ever made.</div>
-                        <span class="play-btn">Play Now</span>
+                        <div class="game-title">Subway Surfers</div>
+                        <div class="game-desc">Classic endless runner.</div>
+                        <span class="play-btn">Play Inline</span>
                     </div>
 
-                    <div class="game-card" onclick="launchExternal('https://diep.io/', 'Diep.io')">
+                    <div class="game-card" onclick="launchGame('https://1v1.lol/', '1v1.LOL')">
                         <div class="game-icon">🔫</div>
-                        <div class="game-title">Diep.io <span class="badge official">.io</span></div>
-                        <div class="game-desc">Multiplayer tank warfare. Level up and destroy.</div>
-                        <span class="play-btn">Play Now</span>
+                        <div class="game-title">1v1.LOL <span class="badge multi">MP</span></div>
+                        <div class="game-desc">Build and battle online.</div>
+                        <span class="play-btn">Play Inline</span>
                     </div>
 
-                    <div class="game-card" onclick="launchExternal('https://slither.io/', 'Slither.io')">
-                        <div class="game-icon">🐍</div>
-                        <div class="game-title">Slither.io <span class="badge official">.io</span></div>
-                        <div class="game-desc">Snake MMO. Eat or be eaten.</div>
-                        <span class="play-btn">Play Now</span>
+                    <div class="game-card" onclick="launchGame('https://classic.minecraft.net/', 'Minecraft Classic')">
+                        <div class="game-icon">⛏️</div>
+                        <div class="game-title">Minecraft Classic</div>
+                        <div class="game-desc">Original browser version.</div>
+                        <span class="play-btn">Play Inline</span>
                     </div>
 
-                    <div class="game-card" onclick="launchExternal('https://agar.io/', 'Agar.io')">
-                        <div class="game-icon">⚪</div>
-                        <div class="game-title">Agar.io <span class="badge official">.io</span></div>
-                        <div class="game-desc">Cell eating multiplayer game.</div>
-                        <span class="play-btn">Play Now</span>
+                    <div class="game-card" onclick="launchGame('https://retrobowl.game/', 'Retro Bowl')">
+                        <div class="game-icon">🏈</div>
+                        <div class="game-title">Retro Bowl</div>
+                        <div class="game-desc">Football management game.</div>
+                        <span class="play-btn">Play Inline</span>
                     </div>
 
-                    <div class="game-card" onclick="launchExternal('https://krunker.io/', 'Krunker.io')">
-                        <div class="game-icon">🔫</div>
-                        <div class="game-title">Krunker.io <span class="badge official">FPS</span></div>
-                        <div class="game-desc">Fast-paced pixel FPS with classes.</div>
-                        <span class="play-btn">Play Now</span>
+                    <div class="game-card" onclick="launchGame('https://ovo-game.com/', 'OvO')">
+                        <div class="game-icon">🥚</div>
+                        <div class="game-title">OvO</div>
+                        <div class="game-desc">Fast-paced platformer.</div>
+                        <span class="play-btn">Play Inline</span>
                     </div>
 
-                    <div class="game-card" onclick="launchExternal('https://crazy-cattle-3d.com/', 'Crazy Cattle 3D')">
-                        <div class="game-icon">🐄</div>
-                        <div class="game-title">Crazy Cattle 3D <span class="badge official">3D</span></div>
-                        <div class="game-desc">Explosive sheep action game.</div>
-                        <span class="play-btn">Play Now</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchExternal('https://drivemad.com/', 'Drive Mad')">
+                    <div class="game-card" onclick="launchGame('https://webglmath.github.io/drift-boss/', 'Drift Boss')">
                         <div class="game-icon">🏎️</div>
-                        <div class="game-title">Drive Mad <span class="badge official">Racing</span></div>
-                        <div class="game-desc">Physics-based driving game.</div>
-                        <span class="play-btn">Play Now</span>
+                        <div class="game-title">Drift Boss</div>
+                        <div class="game-desc">Drifting car game.</div>
+                        <span class="play-btn">Play Inline</span>
                     </div>
 
-                    <!-- Local Games -->
-                    <div class="game-card" onclick="launchLocal('snake')">
-                        <div class="game-icon">🐍</div>
-                        <div class="game-title">Snake <span class="badge local">Local</span></div>
-                        <div class="game-desc">Classic arcade game built-in.</div>
-                        <span class="play-btn">Play</span>
+                    <div class="game-card" onclick="launchGame('https://webglmath.github.io/cookie-clicker/', 'Cookie Clicker')">
+                        <div class="game-icon">🍪</div>
+                        <div class="game-title">Cookie Clicker</div>
+                        <div class="game-desc">Incremental idle game.</div>
+                        <span class="play-btn">Play Inline</span>
                     </div>
 
-                    <div class="game-card" onclick="launchLocal('pong')">
-                        <div class="game-icon">🏓</div>
-                        <div class="game-title">Pong <span class="badge local">Local</span></div>
-                        <div class="game-desc">Original table tennis vs AI.</div>
-                        <span class="play-btn">Play</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchLocal('tetris')">
+                    <div class="game-card" onclick="launchGame('https://tetris.com/play-tetris', 'Tetris')">
                         <div class="game-icon">🧱</div>
-                        <div class="game-title">Tetris <span class="badge local">Local</span></div>
-                        <div class="game-desc">Block stacking puzzle.</div>
-                        <span class="play-btn">Play</span>
+                        <div class="game-title">Tetris</div>
+                        <div class="game-desc">Official Tetris game.</div>
+                        <span class="play-btn">Play Inline</span>
                     </div>
 
-                    <div class="game-card" onclick="launchLocal('minesweeper')">
-                        <div class="game-icon">💣</div>
-                        <div class="game-title">Minesweeper <span class="badge local">Local</span></div>
-                        <div class="game-desc">Clear the minefield safely.</div>
-                        <span class="play-btn">Play</span>
+                    <div class="game-card" onclick="launchGame('https://html5.gamedistribution.com/rvvASMiM/5b0abd1c0faa4f5eb190a9f16a1b6c5d/index.html', 'BitLife')">
+                        <div class="game-icon">📱</div>
+                        <div class="game-title">BitLife</div>
+                        <div class="game-desc">Life simulation game.</div>
+                        <span class="play-btn">Play Inline</span>
                     </div>
 
-                    <div class="game-card" onclick="launchLocal('flappy')">
-                        <div class="game-icon">🐦</div>
-                        <div class="game-title">Flappy Bird <span class="badge local">Local</span></div>
-                        <div class="game-desc">Navigate through pipes.</div>
-                        <span class="play-btn">Play</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchLocal('2048')">
+                    <div class="game-card" onclick="launchGame('https://play2048.co/', '2048')">
                         <div class="game-icon">🔢</div>
-                        <div class="game-title">2048 <span class="badge local">Local</span></div>
-                        <div class="game-desc">Slide tiles to win.</div>
-                        <span class="play-btn">Play</span>
+                        <div class="game-title">2048</div>
+                        <div class="game-desc">Number merging puzzle.</div>
+                        <span class="play-btn">Play Inline</span>
+                    </div>
+
+                    <div class="game-card" onclick="launchGame('https://snaeplayer.github.io/games/tunnel-rush/', 'Tunnel Rush')">
+                        <div class="game-icon">🌀</div>
+                        <div class="game-title">Tunnel Rush</div>
+                        <div class="game-desc">Speed through tunnels.</div>
+                        <span class="play-btn">Play Inline</span>
                     </div>
                 </div>
             </div>
 
-            <!-- External Game Viewer -->
-            <div id="externalGameContainer" class="external-game-container">
-                <div class="game-header">
-                    <h2 id="externalGameTitle" style="font-family: 'Share Tech Mono', monospace;">Game Title</h2>
+            <!-- Game Viewer -->
+            <div id="gameViewer" class="game-viewer">
+                <div class="viewer-header">
+                    <h2 id="viewerTitle" style="font-family: 'Share Tech Mono', monospace;">Game Title</h2>
                     <div>
-                        <button class="back-btn" onclick="closeExternal()" style="margin-right: 10px;">Back to Arcade</button>
-                        <button class="proxy-btn" onclick="toggleFullscreen()">Fullscreen</button>
+                        <button class="proxy-btn" onclick="toggleGameFullscreen()" style="margin-right: 10px;">Fullscreen</button>
+                        <button class="proxy-btn" onclick="closeGame()" style="background: #ff4444; border-color: #ff4444;">Close Game</button>
                     </div>
                 </div>
-                <iframe id="externalFrame" class="external-frame" allowfullscreen></iframe>
-            </div>
-
-            <!-- Local Game Viewer -->
-            <div id="localGameContainer" class="local-game-container">
-                <div class="game-header">
-                    <h2 id="localGameTitle" style="font-family: 'Share Tech Mono', monospace;">Game Title</h2>
-                    <button class="back-btn" onclick="closeLocal()">Exit Game</button>
-                </div>
-                <div id="localGameCanvas"></div>
-                <div class="game-controls" id="localGameControls"></div>
+                <iframe id="gameFrame" class="game-frame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
             </div>
         </section>
 
-        <!-- Tools Section -->
+        <!-- MULTIPLAYER SECTION -->
+        <section id="multiplayer" class="section">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2 style="font-family: 'Share Tech Mono', monospace; letter-spacing: 3px;">MULTIPLAYER GAMES</h2>
+                <p style="margin-top: 10px; opacity: 0.8;">Play online with friends</p>
+            </div>
+
+            <div class="games-grid">
+                <div class="game-card" onclick="launchGame('https://1v1.lol/', '1v1.LOL')">
+                    <div class="game-icon">🔫</div>
+                    <div class="game-title">1v1.LOL <span class="badge multi">MP</span></div>
+                    <div class="game-desc">Build & battle simulator.</div>
+                    <span class="play-btn">Play Now</span>
+                </div>
+
+                <div class="game-card" onclick="launchGame('https://agar.io/', 'Agar.io')">
+                    <div class="game-icon">⚪</div>
+                    <div class="game-title">Agar.io <span class="badge multi">MP</span></div>
+                    <div class="game-desc">Cell eating multiplayer.</div>
+                    <span class="play-btn">Play Now</span>
+                </div>
+
+                <div class="game-card" onclick="launchGame('https://slither.io/', 'Slither.io')">
+                    <div class="game-icon">🐍</div>
+                    <div class="game-title">Slither.io <span class="badge multi">MP</span></div>
+                    <div class="game-desc">Snake battle royale.</div>
+                    <span class="play-btn">Play Now</span>
+                </div>
+
+                <div class="game-card" onclick="launchGame('https://diep.io/', 'Diep.io')">
+                    <div class="game-icon">🔫</div>
+                    <div class="game-title">Diep.io <span class="badge multi">MP</span></div>
+                    <div class="game-desc">Tank warfare online.</div>
+                    <span class="play-btn">Play Now</span>
+                </div>
+
+                <div class="game-card" onclick="launchGame('https://krunker.io/', 'Krunker.io')">
+                    <div class="game-icon">🎯</div>
+                    <div class="game-title">Krunker.io <span class="badge multi">FPS</span></div>
+                    <div class="game-desc">Fast-paced FPS shooter.</div>
+                    <span class="play-btn">Play Now</span>
+                </div>
+
+                <div class="game-card" onclick="launchGame('https://shellshock.io/', 'Shell Shockers')">
+                    <div class="game-icon">🥚</div>
+                    <div class="game-title">Shell Shockers <span class="badge multi">FPS</span></div>
+                    <div class="game-desc">Egg shooter FPS.</div>
+                    <span class="play-btn">Play Now</span>
+                </div>
+
+                <div class="game-card" onclick="launchGame('https://zombsroyale.io/', 'Zombs Royale')">
+                    <div class="game-icon">💀</div>
+                    <div class="game-title">Zombs Royale <span class="badge multi">BR</span></div>
+                    <div class="game-desc">2D Battle Royale.</div>
+                    <span class="play-btn">Play Now</span>
+                </div>
+
+                <div class="game-card" onclick="launchGame('https://buildroyale.io/', 'Build Royale')">
+                    <div class="game-icon">🏗️</div>
+                    <div class="game-title">Build Royale <span class="badge multi">BR</span></div>
+                    <div class="game-desc">Build & shoot Battle Royale.</div>
+                    <span class="play-btn">Play Now</span>
+                </div>
+
+                <div class="game-card" onclick="launchGame('https://stumbleguys.com/play', 'Stumble Guys')">
+                    <div class="game-icon">🏃</div>
+                    <div class="game-title">Stumble Guys <span class="badge multi">BR</span></div>
+                    <div class="game-desc">Fall guys style knockout.</div>
+                    <span class="play-btn">Play Now</span>
+                </div>
+
+                <div class="game-card" onclick="launchGame('https://skribbl.io/', 'Skribbl.io')">
+                    <div class="game-icon">✏️</div>
+                    <div class="game-title">Skribbl.io <span class="badge multi">DRAW</span></div>
+                    <div class="game-desc">Drawing guessing game.</div>
+                    <span class="play-btn">Play Now</span>
+                </div>
+
+                <div class="game-card" onclick="launchGame('https://evowars.io/', 'EvoWars.io')">
+                    <div class="game-icon">⚔️</div>
+                    <div class="game-title">EvoWars.io <span class="badge multi">MP</span></div>
+                    <div class="game-desc">Evolution combat game.</div>
+                    <span class="play-btn">Play Now</span>
+                </div>
+
+                <div class="game-card" onclick="launchGame('https://smashkarts.io/', 'Smash Karts')">
+                    <div class="game-icon">🏎️</div>
+                    <div class="game-title">Smash Karts <span class="badge multi">MP</span></div>
+                    <div class="game-desc">Kart racing shooter.</div>
+                    <span class="play-btn">Play Now</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOOLS -->
         <section id="tools" class="section">
             <div class="tools-grid">
                 <div class="tool-box">
-                    <h3>Calculator</h3>
-                    <div class="calc-display" id="calcDisplay">0</div>
-                    <div class="calc-buttons">
-                        <button class="calc-btn" onclick="calcClear()">C</button>
-                        <button class="calc-btn" onclick="calcAppend('(')">(</button>
-                        <button class="calc-btn" onclick="calcAppend(')')">)</button>
-                        <button class="calc-btn operator" onclick="calcOp('/')">/</button>
-                        
-                        <button class="calc-btn" onclick="calcAppend('7')">7</button>
-                        <button class="calc-btn" onclick="calcAppend('8')">8</button>
-                        <button class="calc-btn" onclick="calcAppend('9')">9</button>
-                        <button class="calc-btn operator" onclick="calcOp('*')">×</button>
-                        
-                        <button class="calc-btn" onclick="calcAppend('4')">4</button>
-                        <button class="calc-btn" onclick="calcAppend('5')">5</button>
-                        <button class="calc-btn" onclick="calcAppend('6')">6</button>
-                        <button class="calc-btn operator" onclick="calcOp('-')">-</button>
-                        
-                        <button class="calc-btn" onclick="calcAppend('1')">1</button>
-                        <button class="calc-btn" onclick="calcAppend('2')">2</button>
-                        <button class="calc-btn" onclick="calcAppend('3')">3</button>
-                        <button class="calc-btn operator" onclick="calcOp('+')">+</button>
-                        
-                        <button class="calc-btn" onclick="calcAppend('0')">0</button>
-                        <button class="calc-btn" onclick="calcAppend('.')">.</button>
-                        <button class="calc-btn" onclick="calcBack()">←</button>
-                        <button class="calc-btn operator" onclick="calcEquals()">=</button>
-                    </div>
+                    <h3 style="font-family: 'Share Tech Mono', monospace; margin-bottom: 15px; color: var(--warning);">Current URL</h3>
+                    <div style="word-break: break-all; font-size: 0.9rem; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--blueprint-line);" id="currentUrl"></div>
+                    <button class="proxy-btn" onclick="copyUrl()" style="margin-top: 10px; width: 100%;">Copy URL</button>
                 </div>
 
                 <div class="tool-box">
-                    <h3>Base64 Encoder</h3>
-                    <textarea class="proxy-input" id="base64Input" rows="4" style="width: 100%; resize: vertical; margin-bottom: 10px;" placeholder="Enter text..."></textarea>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="proxy-btn" onclick="encodeBase64()" style="flex: 1;">Encode</button>
-                        <button class="proxy-btn" onclick="decodeBase64()" style="flex: 1;">Decode</button>
-                    </div>
-                    <div id="base64Output" style="margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--blueprint-line); word-break: break-all; min-height: 40px;"></div>
+                    <h3 style="font-family: 'Share Tech Mono', monospace; margin-bottom: 15px; color: var(--warning);">Panic Button</h3>
+                    <p style="margin-bottom: 10px; font-size: 0.9rem;">Press ` (tilde/backtick) key to instantly switch to Google.</p>
+                    <button class="proxy-btn" onclick="setPanic()" style="width: 100%;">Set Panic Site</button>
                 </div>
 
                 <div class="tool-box">
-                    <h3>URL Tools</h3>
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <button class="calc-btn" style="text-align: left;" onclick="copyCurrentURL()">Copy Current URL</button>
-                        <button class="calc-btn" style="text-align: left;" onclick="openNewTab()">Open New Tab</button>
-                        <button class="calc-btn" style="text-align: left;" onclick="document.getElementById('urlInput').focus()">Focus Proxy Input</button>
-                    </div>
+                    <h3 style="font-family: 'Share Tech Mono', monospace; margin-bottom: 15px; color: var(--warning);">About</h3>
+                    <p style="font-size: 0.9rem;">Lemons Proxy v5.0<br>Hypackel Games Edition<br><br>Total Games: 400+</p>
                 </div>
             </div>
         </section>
     </div>
 
     <footer>
-        <p>Lemons Proxy v4.0 | CroxyProxy Integration | Based on Genizy Math</p>
-        <p style="margin-top: 10px; font-size: 0.7rem;">Not affiliated with Genizy Math - Educational use only</p>
+        <p>Lemons Proxy v5.0 | Hypackel Games Collection</p>
+        <p style="margin-top: 10px; font-size: 0.7rem;">Inline proxy mode - No new tabs required</p>
     </footer>
 
     <script>
+        // Show current URL in tools
+        document.getElementById('currentUrl').textContent = window.location.href;
+
         // Navigation
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -742,446 +654,121 @@
             document.getElementById(sectionId).classList.add('active');
             event.target.classList.add('active');
             
-            if (sectionId !== 'games') {
-                closeExternal();
-                closeLocal();
-            }
+            if (sectionId !== 'games') closeGame();
         }
 
-        // PROXY FUNCTIONALITY - Opens in new tab like CroxyProxy
-        function openProxy() {
+        // Proxy backends configuration
+        const proxyBackends = {
+            interstellar: {
+                url: 'https://interstellar-bb7c.onrender.com/',
+                params: (target) => `?url=${encodeURIComponent(target)}`
+            },
+            rammerhead: {
+                url: 'https://rammerhead.org/',
+                params: (target) => `?url=${encodeURIComponent(target)}`
+            },
+            ultraviolet: {
+                url: 'https://ultraviolet-node.onrender.com/',
+                params: (target) => `service/${Ultraviolet.codec.xor.encode(target)}`
+            },
+            holyunblocker: {
+                url: 'https://holyubofficial.net/',
+                params: (target) => `?url=${encodeURIComponent(target)}`
+            }
+        };
+
+        let currentProxy = 'interstellar';
+
+        function checkProxy() {
+            currentProxy = document.getElementById('proxyBackend').value;
+        }
+
+        function loadProxy() {
             const url = document.getElementById('urlInput').value;
-            const service = document.getElementById('proxyService').value;
-            const stealth = document.getElementById('stealthMode').checked;
+            if (!url) { alert('Enter a URL'); return; }
             
-            if (!url) {
-                alert('Please enter a URL');
-                return;
-            }
-
-            let targetUrl = url;
-            if (!url.startsWith('http')) {
-                targetUrl = 'https://' + url;
-            }
-
-            // Construct proxy URL
-            const fullUrl = service + encodeURIComponent(targetUrl);
+            const container = document.getElementById('proxyContainer');
+            const frame = document.getElementById('proxyFrame');
             
-            // Open in new tab
-            const newTab = window.open(fullUrl, '_blank');
+            container.classList.add('active');
             
-            if (!newTab || newTab.closed || typeof newTab.closed == 'undefined') {
-                alert('Popup was blocked. Please allow popups for this site to use the proxy.');
-            } else {
-                if (stealth) {
-                    document.title = 'Google Docs';
-                }
-            }
+            // Construct URL based on backend
+            let target = url;
+            if (!url.startsWith('http')) target = 'https://' + url;
+            
+            const backend = proxyBackends[currentProxy];
+            const fullUrl = backend.url + backend.params(target);
+            
+            frame.src = fullUrl;
         }
 
-        function quickProxy(url) {
+        function loadGameProxy(url) {
             document.getElementById('urlInput').value = url;
-            openProxy();
+            loadProxy();
         }
 
-        // External Games
-        function launchExternal(url, title) {
+        // Game Launcher (Inline)
+        function launchGame(url, title) {
             document.getElementById('gamesMenu').style.display = 'none';
-            document.getElementById('externalGameContainer').classList.add('active');
-            document.getElementById('externalGameTitle').textContent = title;
-            document.getElementById('externalFrame').src = url;
+            document.getElementById('gameViewer').classList.add('active');
+            document.getElementById('viewerTitle').textContent = title;
+            
+            // Add timestamp to prevent caching issues
+            const separator = url.includes('?') ? '&' : '?';
+            document.getElementById('gameFrame').src = url + separator + '_t=' + Date.now();
         }
 
-        function closeExternal() {
-            document.getElementById('externalGameContainer').classList.remove('active');
+        function closeGame() {
+            document.getElementById('gameViewer').classList.remove('active');
             document.getElementById('gamesMenu').style.display = 'block';
-            document.getElementById('externalFrame').src = '';
+            document.getElementById('gameFrame').src = '';
         }
 
-        function toggleFullscreen() {
-            const elem = document.getElementById('externalGameContainer');
-            if (!document.fullscreenElement) {
-                elem.requestFullscreen().catch(err => {
-                    alert('Error attempting to enable fullscreen: ' + err.message);
-                });
-            } else {
-                document.exitFullscreen();
+        function toggleGameFullscreen() {
+            const frame = document.getElementById('gameFrame');
+            if (frame.requestFullscreen) frame.requestFullscreen();
+            else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+            else if (frame.msRequestFullScreen) frame.msRequestFullScreen();
+        }
+
+        function copyUrl() {
+            navigator.clipboard.writeText(window.location.href);
+            alert('URL copied!');
+        }
+
+        function setPanic() {
+            const site = prompt('Enter panic site URL (default: https://google.com):') || 'https://google.com';
+            localStorage.setItem('panicSite', site);
+            alert('Panic site set! Press ` (backtick) to activate.');
+        }
+
+        // Panic button (backtick/tilde key)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '`' || e.key === '~') {
+                const panic = localStorage.getItem('panicSite') || 'https://google.com';
+                window.location.href = panic;
             }
-        }
+        });
 
-        // Local Games System
-        let gameLoop = null;
-
-        function launchLocal(gameType) {
-            document.getElementById('gamesMenu').style.display = 'none';
-            document.getElementById('localGameContainer').classList.add('active');
-            const canvas = document.getElementById('localGameCanvas');
-            canvas.innerHTML = '';
-            
-            switch(gameType) {
-                case 'snake':
-                    document.getElementById('localGameTitle').textContent = 'SNAKE';
-                    document.getElementById('localGameControls').textContent = 'Arrow Keys: Move';
-                    initSnake(canvas);
-                    break;
-                case 'pong':
-                    document.getElementById('localGameTitle').textContent = 'PONG';
-                    document.getElementById('localGameControls').textContent = 'Mouse: Control Paddle';
-                    initPong(canvas);
-                    break;
-                case 'tetris':
-                    document.getElementById('localGameTitle').textContent = 'TETRIS';
-                    document.getElementById('localGameControls').textContent = 'Arrows: Move/Rotate | Down: Soft Drop | Space: Hard Drop';
-                    initTetris(canvas);
-                    break;
-                case 'minesweeper':
-                    document.getElementById('localGameTitle').textContent = 'MINESWEEPER';
-                    document.getElementById('localGameControls').textContent = 'Left Click: Reveal | Right Click: Flag';
-                    initMinesweeper(canvas);
-                    break;
-                case 'flappy':
-                    document.getElementById('localGameTitle').textContent = 'FLAPPY BIRD';
-                    document.getElementById('localGameControls').textContent = 'Space/Click: Jump';
-                    initFlappy(canvas);
-                    break;
-                case '2048':
-                    document.getElementById('localGameTitle').textContent = '2048';
-                    document.getElementById('localGameControls').textContent = 'Arrow Keys: Slide Tiles';
-                    init2048(canvas);
-                    break;
-            }
-        }
-
-        function closeLocal() {
-            document.getElementById('localGameContainer').classList.remove('active');
-            document.getElementById('gamesMenu').style.display = 'block';
-            if (gameLoop) cancelAnimationFrame(gameLoop);
-        }
-
-        // Game implementations (same as before - fully working)
-        function initSnake(container) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 400;
-            canvas.height = 400;
-            container.appendChild(canvas);
-            const ctx = canvas.getContext('2d');
-            const grid = 20;
-            let count = 0;
-            let score = 0;
-            
-            const snake = { x: 160, y: 160, dx: grid, dy: 0, cells: [], maxCells: 4 };
-            const apple = { x: 320, y: 320 };
-            
-            function reset() {
-                snake.x = 160; snake.y = 160; snake.cells = []; snake.maxCells = 4;
-                snake.dx = grid; snake.dy = 0;
-                apple.x = Math.floor(Math.random() * 20) * grid;
-                apple.y = Math.floor(Math.random() * 20) * grid;
-                score = 0;
-            }
-            
-            function loop() {
-                gameLoop = requestAnimationFrame(loop);
-                if (++count < 4) return;
-                count = 0;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                snake.x += snake.dx; snake.y += snake.dy;
-                
-                if (snake.x < 0 || snake.x >= canvas.width || snake.y < 0 || snake.y >= canvas.height) {
-                    reset(); return;
-                }
-                
-                snake.cells.unshift({x: snake.x, y: snake.y});
-                if (snake.cells.length > snake.maxCells) snake.cells.pop();
-                
-                ctx.fillStyle = 'red';
-                ctx.fillRect(apple.x, apple.y, grid-1, grid-1);
-                ctx.fillStyle = 'green';
-                snake.cells.forEach((cell, index) => {
-                    ctx.fillRect(cell.x, cell.y, grid-1, grid-1);
-                    if (cell.x === apple.x && cell.y === apple.y) {
-                        snake.maxCells++; score++;
-                        apple.x = Math.floor(Math.random() * 20) * grid;
-                        apple.y = Math.floor(Math.random() * 20) * grid;
+        // Ultraviolet codec for UV proxy
+        const Ultraviolet = {
+            codec: {
+                xor: {
+                    encode: (str) => {
+                        let result = '';
+                        for (let i = 0; i < str.length; i++) {
+                            result += String.fromCharCode(str.charCodeAt(i) ^ 0x10);
+                        }
+                        return btoa(result);
                     }
-                    for (let i = index + 1; i < snake.cells.length; i++) {
-                        if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) reset();
-                    }
-                });
-                ctx.fillStyle = 'white';
-                ctx.font = '20px monospace';
-                ctx.fillText('Score: ' + score, 10, 30);
-            }
-            
-            document.addEventListener('keydown', function handler(e) {
-                if (e.which === 37 && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; }
-                else if (e.which === 38 && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; }
-                else if (e.which === 39 && snake.dx === 0) { snake.dx = grid; snake.dy = 0; }
-                else if (e.which === 40 && snake.dy === 0) { snake.dy = grid; snake.dx = 0; }
-            });
-            gameLoop = requestAnimationFrame(loop);
-        }
-
-        function initPong(container) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 750; canvas.height = 585;
-            container.appendChild(canvas);
-            const ctx = canvas.getContext('2d');
-            const grid = 15;
-            const paddleHeight = grid * 5;
-            const maxPaddleY = canvas.height - grid - paddleHeight;
-            let paddleSpeed = 6, ballSpeed = 5;
-            let playerScore = 0, aiScore = 0;
-            
-            const leftPaddle = { x: grid * 2, y: canvas.height / 2 - paddleHeight / 2, width: grid, height: paddleHeight, dy: 0 };
-            const rightPaddle = { x: canvas.width - grid * 3, y: canvas.height / 2 - paddleHeight / 2, width: grid, height: paddleHeight, dy: 0 };
-            const ball = { x: canvas.width / 2, y: canvas.height / 2, width: grid, height: grid, resetting: false, dx: ballSpeed, dy: -ballSpeed };
-            
-            function loop() {
-                gameLoop = requestAnimationFrame(loop);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                leftPaddle.y += leftPaddle.dy;
-                if (leftPaddle.y < grid) leftPaddle.y = grid;
-                if (leftPaddle.y > maxPaddleY) leftPaddle.y = maxPaddleY;
-                
-                rightPaddle.dy = (ball.y < rightPaddle.y + rightPaddle.height/2) ? -paddleSpeed * 0.8 : paddleSpeed * 0.8;
-                rightPaddle.y += rightPaddle.dy;
-                if (rightPaddle.y < grid) rightPaddle.y = grid;
-                if (rightPaddle.y > maxPaddleY) rightPaddle.y = maxPaddleY;
-                
-                ball.x += ball.dx; ball.y += ball.dy;
-                if (ball.y < grid || ball.y + grid > canvas.height - grid) ball.dy *= -1;
-                
-                if ((ball.x < 0 || ball.x > canvas.width) && !ball.resetting) {
-                    if (ball.x < 0) aiScore++; else playerScore++;
-                    ball.resetting = true;
-                    setTimeout(() => {
-                        ball.resetting = false;
-                        ball.x = canvas.width / 2; ball.y = canvas.height / 2;
-                        ball.dx = ballSpeed * (Math.random() > 0.5 ? 1 : -1);
-                        ball.dy = ballSpeed * (Math.random() > 0.5 ? 1 : -1);
-                    }, 1000);
-                }
-                
-                if (ball.x < leftPaddle.x + leftPaddle.width && ball.y > leftPaddle.y && ball.y < leftPaddle.y + leftPaddle.height) {
-                    ball.dx *= -1; ball.x = leftPaddle.x + leftPaddle.width;
-                }
-                if (ball.x + ball.width > rightPaddle.x && ball.y > rightPaddle.y && ball.y < rightPaddle.y + rightPaddle.height) {
-                    ball.dx *= -1; ball.x = rightPaddle.x - ball.width;
-                }
-                
-                ctx.fillStyle = 'white';
-                ctx.fillRect(0, 0, canvas.width, grid);
-                ctx.fillRect(0, canvas.height - grid, canvas.width, canvas.height);
-                for (let i = grid; i < canvas.height - grid; i += grid * 2) ctx.fillRect(canvas.width / 2 - grid / 2, i, grid, grid);
-                ctx.fillRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
-                ctx.fillRect(rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
-                ctx.fillRect(ball.x, ball.y, ball.width, ball.height);
-                ctx.font = '30px monospace';
-                ctx.fillText(playerScore, canvas.width / 4, 50);
-                ctx.fillText(aiScore, 3 * canvas.width / 4, 50);
-            }
-            
-            canvas.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                leftPaddle.y = e.clientY - rect.top - leftPaddle.height / 2;
-            });
-            gameLoop = requestAnimationFrame(loop);
-        }
-
-        function initTetris(container) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 240; canvas.height = 400;
-            container.appendChild(canvas);
-            const ctx = canvas.getContext('2d');
-            ctx.scale(20, 20);
-            
-            const arena = createMatrix(12, 20);
-            const player = { pos: {x: 0, y: 0}, matrix: null, score: 0 };
-            const pieces = 'ILJOTSZ';
-            
-            function createMatrix(w, h) { const m = []; while (h--) m.push(new Array(w).fill(0)); return m; }
-            function createPiece(type) {
-                if (type === 'I') return [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]];
-                if (type === 'L') return [[0,2,0],[0,2,0],[0,2,2]];
-                if (type === 'J') return [[0,3,0],[0,3,0],[3,3,0]];
-                if (type === 'O') return [[4,4],[4,4]];
-                if (type === 'Z') return [[5,5,0],[0,5,5],[0,0,0]];
-                if (type === 'S') return [[0,6,6],[6,6,0],[0,0,0]];
-                if (type === 'T') return [[0,7,0],[7,7,7],[0,0,0]];
-            }
-            
-            function draw() {
-                ctx.fillStyle = '#000'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                drawMatrix(arena, {x: 0, y: 0}); drawMatrix(player.matrix, player.pos);
-                ctx.fillStyle = 'white'; ctx.font = '0.5px monospace'; ctx.fillText('Score: ' + player.score, 0.2, 0.5);
-            }
-            function drawMatrix(matrix, offset) {
-                matrix.forEach((row, y) => row.forEach((value, x) => {
-                    if (value !== 0) { ctx.fillStyle = ['','cyan','blue','orange','yellow','green','red','purple'][value]; ctx.fillRect(x + offset.x, y + offset.y, 1, 1); }
-                }));
-            }
-            function merge(arena, player) { player.matrix.forEach((row, y) => row.forEach((value, x) => { if (value !== 0) arena[y + player.pos.y][x + player.pos.x] = value; })); }
-            function rotate(matrix) { return matrix.map((val, index) => matrix.map(row => row[index]).reverse()); }
-            function collide(arena, player) { const m = player.matrix, o = player.pos; for (let y = 0; y < m.length; ++y) for (let x = 0; x < m[y].length; ++x) if (m[y][x] !== 0 && (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) return true; return false; }
-            function playerReset() { player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]); player.pos.y = 0; player.pos.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0); if (collide(arena, player)) { arena.forEach(row => row.fill(0)); player.score = 0; } }
-            function arenaSweep() { let rowCount = 1; outer: for (let y = arena.length -1; y > 0; --y) { for (let x = 0; x < arena[y].length; ++x) if (arena[y][x] === 0) continue outer; const row = arena.splice(y, 1)[0].fill(0); arena.unshift(row); ++y; player.score += rowCount * 10; rowCount *= 2; } }
-            function playerDrop() { player.pos.y++; if (collide(arena, player)) { player.pos.y--; merge(arena, player); playerReset(); arenaSweep(); } dropCounter = 0; }
-            
-            let dropCounter = 0, dropInterval = 1000, lastTime = 0;
-            function update(time = 0) { const deltaTime = time - lastTime; lastTime = time; dropCounter += deltaTime; if (dropCounter > dropInterval) playerDrop(); draw(); gameLoop = requestAnimationFrame(update); }
-            
-            document.addEventListener('keydown', event => {
-                if (event.keyCode === 37) { player.pos.x--; if (collide(arena, player)) player.pos.x++; }
-                else if (event.keyCode === 39) { player.pos.x++; if (collide(arena, player)) player.pos.x--; }
-                else if (event.keyCode === 40) playerDrop();
-                else if (event.keyCode === 38) { player.matrix = rotate(player.matrix); if (collide(arena, player)) player.matrix = rotate(player.matrix); }
-                else if (event.keyCode === 32) { while (!collide(arena, player)) player.pos.y++; player.pos.y--; playerDrop(); }
-            });
-            playerReset(); gameLoop = requestAnimationFrame(update);
-        }
-
-        function initMinesweeper(container) {
-            const width = 10, height = 10, bombCount = 20;
-            const grid = document.createElement('div');
-            grid.style.display = 'grid'; grid.style.gridTemplateColumns = 'repeat(10, 30px)'; grid.style.gap = '2px';
-            grid.style.margin = '0 auto'; grid.style.width = 'fit-content';
-            const squares = []; let isGameOver = false, flags = 0;
-            
-            const shuffledArray = Array(bombCount).fill('bomb').concat(Array(width * height - bombCount).fill('valid')).sort(() => Math.random() - 0.5);
-            
-            for (let i = 0; i < width * height; i++) {
-                const square = document.createElement('div');
-                square.setAttribute('id', i); square.className = shuffledArray[i];
-                square.style.cssText = 'width: 30px; height: 30px; background: #aaa; border: 2px solid white; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; font-weight: bold;';
-                grid.appendChild(square); squares.push(square);
-                square.addEventListener('click', () => click(square));
-                square.oncontextmenu = (e) => { e.preventDefault(); addFlag(square); }
-            }
-            
-            for (let i = 0; i < squares.length; i++) {
-                let total = 0; const isLeft = (i % width === 0), isRight = (i % width === width - 1);
-                if (squares[i].classList.contains('valid')) {
-                    if (i > 0 && !isLeft && squares[i-1].classList.contains('bomb')) total++;
-                    if (i > 9 && !isRight && squares[i+1-width].classList.contains('bomb')) total++;
-                    if (i > 10 && squares[i-width].classList.contains('bomb')) total++;
-                    if (i > 11 && !isLeft && squares[i-1-width].classList.contains('bomb')) total++;
-                    if (i < 98 && !isRight && squares[i+1].classList.contains('bomb')) total++;
-                    if (i < 90 && !isLeft && squares[i-1+width].classList.contains('bomb')) total++;
-                    if (i < 88 && !isRight && squares[i+1+width].classList.contains('bomb')) total++;
-                    if (i < 89 && squares[i+width].classList.contains('bomb')) total++;
-                    squares[i].setAttribute('data', total);
                 }
             }
-            
-            function addFlag(square) {
-                if (isGameOver || square.classList.contains('checked')) return;
-                if (!square.classList.contains('flag') && flags < bombCount) { square.classList.add('flag'); square.textContent = '🚩'; flags++; }
-                else if (square.classList.contains('flag')) { square.classList.remove('flag'); square.textContent = ''; flags--; }
-            }
-            function click(square) {
-                if (isGameOver || square.classList.contains('checked') || square.classList.contains('flag')) return;
-                if (square.classList.contains('bomb')) { gameOver(); return; }
-                let total = square.getAttribute('data');
-                if (total != 0) { square.classList.add('checked'); square.textContent = total; square.style.background = '#ddd'; 
-                    if (total == 1) square.style.color = 'blue'; if (total == 2) square.style.color = 'green';
-                    if (total == 3) square.style.color = 'red'; if (total == 4) square.style.color = 'navy'; }
-                else { checkSquare(square); }
-            }
-            function checkSquare(square) {
-                const curr = parseInt(square.id), isLeft = (curr % width === 0), isRight = (curr % width === width - 1);
-                setTimeout(() => {
-                    if (curr > 0 && !isLeft) click(squares[curr-1]); if (curr > 9 && !isRight) click(squares[curr+1-width]);
-                    if (curr > 10) click(squares[curr-width]); if (curr > 11 && !isLeft) click(squares[curr-1-width]);
-                    if (curr < 98 && !isRight) click(squares[curr+1]); if (curr < 90 && !isLeft) click(squares[curr-1+width]);
-                    if (curr < 88 && !isRight) click(squares[curr+1+width]); if (curr < 89) click(squares[curr+width]);
-                }, 10);
-            }
-            function gameOver() { isGameOver = true; squares.forEach(s => { if (s.classList.contains('bomb')) { s.textContent = '💣'; s.style.background = 'red'; } }); setTimeout(() => alert('Game Over!'), 10); }
-            container.appendChild(grid);
-        }
+        };
 
-        function initFlappy(container) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 320; canvas.height = 480;
-            container.appendChild(canvas);
-            const ctx = canvas.getContext('2d');
-            let birdY = 150, birdVelocity = 0, birdAcceleration = 0.2, isGameOver = false, score = 0, pipes = [], frames = 0;
-            
-            function reset() { birdY = 150; birdVelocity = 0; isGameOver = false; score = 0; pipes = []; frames = 0; }
-            function jump() { if (!isGameOver) birdVelocity = -5; }
-            
-            function update() {
-                if (isGameOver) return;
-                ctx.fillStyle = 'skyblue'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                birdVelocity += birdAcceleration; birdY += birdVelocity;
-                if (frames % 100 === 0) { const pipeHeight = Math.random() * 200 + 50, gap = 120; pipes.push({ x: canvas.width, width: 40, top: pipeHeight, bottom: canvas.height - pipeHeight - gap, passed: false }); }
-                pipes.forEach((pipe, index) => {
-                    pipe.x -= 2; if (!pipe.passed && pipe.x + pipe.width < 50) { score++; pipe.passed = true; } if (pipe.x + pipe.width < 0) pipes.splice(index, 1);
-                    if (50 + 10 > pipe.x && 50 - 10 < pipe.x + pipe.width) if (birdY - 10 < pipe.top || birdY + 10 > canvas.height - pipe.bottom) { isGameOver = true; setTimeout(() => { alert('Game Over! Score: ' + score); reset(); update(); }, 10); }
-                });
-                if (birdY < 0 || birdY > canvas.height) { isGameOver = true; setTimeout(() => { alert('Game Over! Score: ' + score); reset(); update(); }, 10); }
-                ctx.fillStyle = 'green'; pipes.forEach(pipe => { ctx.fillRect(pipe.x, 0, pipe.width, pipe.top); ctx.fillRect(pipe.x, canvas.height - pipe.bottom, pipe.width, pipe.bottom); });
-                ctx.fillStyle = 'yellow'; ctx.beginPath(); ctx.arc(50, birdY, 10, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = 'white'; ctx.font = '20px Arial'; ctx.fillText('Score: ' + score, 10, 30);
-                frames++; gameLoop = requestAnimationFrame(update);
-            }
-            canvas.addEventListener('click', jump);
-            document.addEventListener('keydown', (e) => { if (e.code === 'Space') { e.preventDefault(); jump(); }});
-            gameLoop = requestAnimationFrame(update);
-        }
-
-        function init2048(container) {
-            const gridSize = 4; let grid = [], score = 0;
-            const gameDiv = document.createElement('div');
-            gameDiv.style.cssText = 'width: 340px; margin: 0 auto; background: #bbada0; padding: 10px; border-radius: 6px;';
-            const scoreDiv = document.createElement('div'); scoreDiv.style.cssText = 'text-align: center; margin-bottom: 10px; font-size: 24px; font-weight: bold;'; scoreDiv.textContent = 'Score: 0'; gameDiv.appendChild(scoreDiv);
-            const gridDiv = document.createElement('div'); gridDiv.style.cssText = 'display: grid; grid-template-columns: repeat(4, 75px); gap: 10px;';
-            
-            function initGrid() { grid = Array(gridSize).fill().map(() => Array(gridSize).fill(0)); addRandom(); addRandom(); update(); }
-            function addRandom() { const avail = []; for (let r = 0; r < gridSize; r++) for (let c = 0; c < gridSize; c++) if (grid[r][c] === 0) avail.push({r, c}); if (avail.length > 0) { const {r, c} = avail[Math.floor(Math.random() * avail.length)]; grid[r][c] = Math.random() < 0.9 ? 2 : 4; } }
-            function update() {
-                gridDiv.innerHTML = ''; for (let r = 0; r < gridSize; r++) for (let c = 0; c < gridSize; c++) {
-                    const cell = document.createElement('div'); cell.style.cssText = `width: 75px; height: 75px; background: ${getColor(grid[r][c])}; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: ${grid[r][c] > 4 ? 'white' : '#776e65'}; border-radius: 3px;`;
-                    cell.textContent = grid[r][c] || ''; gridDiv.appendChild(cell);
-                } scoreDiv.textContent = 'Score: ' + score;
-            }
-            function getColor(v) { const c = {0: '#cdc1b4', 2: '#eee4da', 4: '#ede0c8', 8: '#f2b179', 16: '#f59563', 32: '#f67c5f', 64: '#f65e3b', 128: '#edcf72', 256: '#edcc61', 512: '#edc850', 1024: '#edc53f', 2048: '#edc22e'}; return c[v] || '#3c3a32'; }
-            function move(dir) {
-                let moved = false; const newGrid = grid.map(r => [...r]);
-                if (dir === 'left' || dir === 'right') for (let r = 0; r < gridSize; r++) {
-                    let row = newGrid[r].filter(v => v); if (dir === 'right') row.reverse();
-                    for (let i = 0; i < row.length - 1; i++) if (row[i] === row[i+1]) { row[i] *= 2; score += row[i]; row.splice(i+1, 1); moved = true; }
-                    while (row.length < gridSize) row.push(0); if (dir === 'right') row.reverse();
-                    for (let c = 0; c < gridSize; c++) { if (newGrid[r][c] !== row[c]) moved = true; newGrid[r][c] = row[c]; }
-                } else for (let c = 0; c < gridSize; c++) {
-                    let col = []; for (let r = 0; r < gridSize; r++) col.push(newGrid[r][c]); col = col.filter(v => v); if (dir === 'down') col.reverse();
-                    for (let i = 0; i < col.length - 1; i++) if (col[i] === col[i+1]) { col[i] *= 2; score += col[i]; col.splice(i+1, 1); moved = true; }
-                    while (col.length < gridSize) col.push(0); if (dir === 'down') col.reverse();
-                    for (let r = 0; r < gridSize; r++) { if (newGrid[r][c] !== col[r]) moved = true; newGrid[r][c] = col[r]; }
-                }
-                if (moved) { grid = newGrid; addRandom(); update(); if (isOver()) setTimeout(() => alert('Game Over! Score: ' + score), 100); }
-            }
-            function isOver() { for (let r = 0; r < gridSize; r++) for (let c = 0; c < gridSize; c++) { if (grid[r][c] === 0) return false; if (c < gridSize - 1 && grid[r][c] === grid[r][c+1]) return false; if (r < gridSize - 1 && grid[r][c] === grid[r+1][c]) return false; } return true; }
-            document.addEventListener('keydown', (e) => { switch(e.key) { case 'ArrowUp': move('up'); break; case 'ArrowDown': move('down'); break; case 'ArrowLeft': move('left'); break; case 'ArrowRight': move('right'); break; }});
-            gameDiv.appendChild(gridDiv); container.appendChild(gameDiv); initGrid();
-        }
-
-        // Calculator Tools
-        let calcExpression = '';
-        function calcAppend(v) { if (document.getElementById('calcDisplay').textContent === '0' && v !== '.') calcExpression = v; else calcExpression += v; document.getElementById('calcDisplay').textContent = calcExpression; }
-        function calcOp(o) { calcExpression += ' ' + o + ' '; document.getElementById('calcDisplay').textContent = calcExpression; }
-        function calcClear() { calcExpression = ''; document.getElementById('calcDisplay').textContent = '0'; }
-        function calcBack() { calcExpression = calcExpression.slice(0, -1); document.getElementById('calcDisplay').textContent = calcExpression || '0'; }
-        function calcEquals() { try { calcExpression = eval(calcExpression).toString(); document.getElementById('calcDisplay').textContent = calcExpression; } catch { document.getElementById('calcDisplay').textContent = 'Error'; setTimeout(calcClear, 1500); } }
-
-        // Base64
-        function encodeBase64() { document.getElementById('base64Output').textContent = btoa(document.getElementById('base64Input').value); }
-        function decodeBase64() { try { document.getElementById('base64Output').textContent = atob(document.getElementById('base64Input').value); } catch { document.getElementById('base64Output').textContent = 'Invalid Base64'; } }
-
-        // URL Tools
-        function copyCurrentURL() { navigator.clipboard.writeText(window.location.href).then(() => alert('URL copied!')); }
-        function openNewTab() { window.open('https://www.google.com', '_blank'); }
+        // Handle iframe errors
+        document.getElementById('proxyFrame').addEventListener('error', () => {
+            alert('Proxy failed to load. Try switching to a different backend.');
+        });
     </script>
 </body>
 </html>
