@@ -1,61 +1,72 @@
 <!DOCTYPE html>
-<html lang="en" id="root">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lemons Proxy - Shadow Edition</title>
+    <title>Lemons Proxy</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍋</text></svg>">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* STEALTH MODE - Looks like Google Docs by default */
-        body.normal {
+        body {
             font-family: 'JetBrains Mono', monospace;
             background-color: #1e3a5f;
             background-image: 
                 linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
             background-size: 40px 40px;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
             color: white;
-        }
-
-        body.stealth {
-            font-family: Arial, sans-serif;
-            background: white;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Header */
-        .proxy-header {
+        .header {
             background: rgba(23, 37, 84, 0.95);
             border-bottom: 2px dashed #4db8ff;
             padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            backdrop-filter: blur(10px);
+            text-align: center;
         }
 
         .logo {
             color: #4ade80;
             font-weight: bold;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.8rem;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        /* Search Box */
+        .search-container {
+            width: 100%;
+            max-width: 700px;
+            margin-bottom: 50px;
         }
 
         .search-box {
-            flex: 1;
             display: flex;
             background: rgba(0,0,0,0.4);
-            border: 2px solid rgba(77, 184, 255, 0.3);
-            border-radius: 25px;
+            border: 2px solid #4db8ff;
+            border-radius: 30px;
             overflow: hidden;
-            max-width: 800px;
-            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .search-box input {
@@ -63,174 +74,128 @@
             background: transparent;
             border: none;
             color: white;
-            padding: 12px 20px;
+            padding: 18px 25px;
             font-family: inherit;
-            font-size: 14px;
+            font-size: 16px;
             outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255,255,255,0.5);
         }
 
         .search-box button {
             background: #4db8ff;
             border: none;
             color: #0f172a;
-            padding: 0 25px;
+            padding: 0 35px;
             font-weight: bold;
-            cursor: pointer;
             font-family: inherit;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
         .search-box button:hover {
             background: #4ade80;
         }
 
-        /* Controls */
-        .controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .ctrl-btn {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            border-radius: 4px;
-        }
-
-        .ctrl-btn:hover {
-            background: rgba(77, 184, 255, 0.3);
-        }
-
-        /* Quick Links Grid */
-        .quick-links {
-            padding: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            color: #4ade80;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .link-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .link-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            color: white;
-            display: block;
-        }
-
-        .link-card:hover {
-            background: rgba(77, 184, 255, 0.2);
-            border-color: #4db8ff;
-            transform: translateY(-3px);
-        }
-
-        .link-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .link-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .link-desc {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.6);
-        }
-
-        /* Browser View */
-        .browser-frame {
-            width: 100%;
-            height: calc(100vh - 70px);
-            border: none;
-            background: white;
-            display: none;
-        }
-
-        .browser-frame.active {
-            display: block;
-        }
-
-        .home-screen {
-            padding: 50px 20px;
-            text-align: center;
-            display: none;
-        }
-
-        .home-screen.active {
-            display: block;
-        }
-
-        .big-search {
-            max-width: 700px;
-            margin: 100px auto;
-        }
-
-        .big-search h1 {
-            color: #4ade80;
-            margin-bottom: 30px;
-            font-size: 3rem;
-        }
-
-        /* Corner Decor */
+        /* Corner Decorations */
         .corner {
             position: fixed;
             width: 60px;
             height: 60px;
             border: 2px solid #4db8ff;
             pointer-events: none;
-            z-index: 100;
         }
-        .corner-tl { top: 80px; left: 0; border-right: none; border-bottom: none; }
-        .corner-tr { top: 80px; right: 0; border-left: none; border-bottom: none; }
+        .corner-tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+        .corner-tr { top: 0; right: 0; border-left: none; border-bottom: none; }
         .corner-bl { bottom: 0; left: 0; border-right: none; border-top: none; }
         .corner-br { bottom: 0; right: 0; border-left: none; border-top: none; }
 
-        /* PANIC OVERLAY */
-        .panic-screen {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: white;
-            z-index: 9999;
-            padding: 50px;
-            font-family: Arial, sans-serif;
-            color: #333;
+        /* Quick Links */
+        .quick-links {
+            text-align: center;
+            margin-top: 30px;
         }
 
-        .panic-screen.active {
+        .quick-links-title {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .link-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .link-btn:hover {
+            background: rgba(77, 184, 255, 0.3);
+            border-color: #4db8ff;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer a {
+            color: #4ade80;
+            text-decoration: none;
+        }
+
+        /* Frame Container (Hidden by default, shown when searching) */
+        .frame-container {
+            display: none;
+            width: 100%;
+            height: calc(100vh - 100px);
+            border: none;
+        }
+
+        .frame-container.active {
             display: block;
         }
 
-        .hidden { display: none !important; }
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #4db8ff;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            z-index: 100;
+            display: none;
+        }
+
+        .frame-container.active ~ .back-btn {
+            display: block;
+        }
     </style>
 </head>
-<body class="normal">
-
-    <!-- Panic Screen (Press ` to activate) -->
-    <div class="panic-screen" id="panic">
-        <h1>Google Docs</h1>
-        <p>You're viewing a document...</p>
-    </div>
+<body>
 
     <!-- Corner Decorations -->
     <div class="corner corner-tl"></div>
@@ -239,167 +204,77 @@
     <div class="corner corner-br"></div>
 
     <!-- Header -->
-    <div class="proxy-header">
-        <div class="logo">🍋 SHADOW PROXY</div>
-        
-        <div class="search-box">
-            <input type="text" id="urlInput" placeholder="Search or enter URL..." onkeypress="handleKey(event)">
-            <button onclick="navigate()">GO</button>
-        </div>
-
-        <div class="controls">
-            <button class="ctrl-btn" onclick="toggleCloak()" title="Hide Tab">🎭 Cloak</button>
-            <button class="ctrl-btn" onclick="document.getElementById('frame').classList.remove('active'); document.getElementById('home').classList.add('active')" title="Home">🏠</button>
-        </div>
+    <div class="header" id="header">
+        <div class="logo">🍋 Lemons Proxy</div>
+        <div class="subtitle">made by ld</div>
     </div>
 
-    <!-- Home Screen with Quick Links -->
-    <div id="home" class="home-screen active">
-        <div class="big-search">
-            <h1>🍋 SHADOW PROXY</h1>
-            <div class="search-box" style="max-width: 100%;">
-                <input type="text" id="bigInput" placeholder="Enter website URL..." style="padding: 15px 25px; font-size: 16px;" onkeypress="handleBigKey(event)">
-                <button onclick="bigNavigate()" style="padding: 0 30px;">BROWSE</button>
+    <!-- Back Button (shown when viewing results) -->
+    <button class="back-btn" onclick="goHome()">← Back to Search</button>
+
+    <!-- Main Page -->
+    <div class="main" id="mainPage">
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search Google..." onkeypress="handleKey(event)" autocomplete="off">
+                <button onclick="doSearch()">SEARCH</button>
             </div>
-            <p style="color: rgba(255,255,255,0.6); margin-top: 20px; font-size: 0.9rem;">
-                Press `<code>`</code> (backtick) for Panic Mode | Click 🎭 to disguise tab
-            </p>
         </div>
 
         <div class="quick-links">
-            <div class="section-title">🔥 POPULAR UNBLOCKED</div>
-            <div class="link-grid">
-                <a href="#" class="link-card" onclick="openSite('https://www.wikipedia.org')">
-                    <div class="link-icon">📚</div>
-                    <div class="link-name">Wikipedia</div>
-                    <div class="link-desc">The Free Encyclopedia</div>
-                </a>
-                <a href="#" class="link-card" onclick="openSite('https://old.reddit.com')">
-                    <div class="link-icon">🔴</div>
-                    <div class="link-name">Old Reddit</div>
-                    <div class="link-desc">Front Page of Internet</div>
-                </a>
-                <a href="#" class="link-card" onclick="openSite('https://www.bing.com')">
-                    <div class="link-icon">🔍</div>
-                    <div class="link-name">Bing</div>
-                    <div class="link-desc">Search Engine</div>
-                </a>
-                <a href="#" class="link-card" onclick="openSite('https://www.wolframalpha.com')">
-                    <div class="link-icon">🧮</div>
-                    <div class="link-name">Wolfram Alpha</div>
-                    <div class="link-desc">Computational Knowledge</div>
-                </a>
-                <a href="#" class="link-card" onclick="openSite('https://www.coolmathgames.com')">
-                    <div class="link-icon">🎮</div>
-                    <div class="link-name">Cool Math Games</div>
-                    <div class="link-desc">Logic & Math Games</div>
-                </a>
-                <a href="#" class="link-card" onclick="openSite('https://www.chess.com')">
-                    <div class="link-icon">♟️</div>
-                    <div class="link-name">Chess.com</div>
-                    <div class="link-desc">Play Chess Online</div>
-                </a>
-                <a href="#" class="link-card" onclick="openSite('https://www.nytimes.com/crosswords')">
-                    <div class="link-icon">🧩</div>
-                    <div class="link-name">NYT Crossword</div>
-                    <div class="link-desc">Daily Puzzles</div>
-                </a>
-                <a href="#" class="link-card" onclick="openSite('https://www.khanacademy.org')">
-                    <div class="link-icon">🎓</div>
-                    <div class="link-name">Khan Academy</div>
-                    <div class="link-desc">Free Education</div>
-                </a>
+            <div class="quick-links-title">Quick Access</div>
+            <div class="links">
+                <a href="https://www.google.com" class="link-btn" target="_blank">Google</a>
+                <a href="https://www.wikipedia.org" class="link-btn" target="_blank">Wikipedia</a>
+                <a href="https://old.reddit.com" class="link-btn" target="_blank">Reddit</a>
+                <a href="https://www.coolmathgames.com" class="link-btn" target="_blank">Cool Math</a>
             </div>
-
-            <div class="section-title" style="margin-top: 40px;">⚠️ NOTE ABOUT PROXY</div>
-            <p style="color: rgba(255,255,255,0.7); max-width: 800px; line-height: 1.6;">
-                This is a <strong>frontend proxy</strong>. It uses iframes to display sites. Many sites (Google, YouTube, Facebook) block iframes for security. 
-                For a <strong>true Shadow Proxy</strong> that works with any site, you need a backend server (Node.js/PHP) to fetch content. 
-                This version works with sites that allow embedding (Wikipedia, Reddit old, etc.).
-            </p>
         </div>
     </div>
 
-    <!-- Browser Frame -->
-    <iframe id="frame" class="browser-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation"></iframe>
+    <!-- Google Results Frame -->
+    <iframe id="resultsFrame" class="frame-container" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation"></iframe>
+
+    <!-- Footer -->
+    <div class="footer" id="footer">
+        made by Lemonwesh | 🍋 Lemons Proxy 2024
+    </div>
 
     <script>
-        let isCloaked = false;
-
-        // Navigation
-        function navigate() {
-            const url = document.getElementById('urlInput').value.trim();
-            if (url) openSite(url);
-        }
-
-        function bigNavigate() {
-            const url = document.getElementById('bigInput').value.trim();
-            if (url) openSite(url);
-        }
-
-        function openSite(url) {
-            if (!url.startsWith('http')) url = 'https://' + url;
-            
-            document.getElementById('home').classList.remove('active');
-            document.getElementById('frame').classList.add('active');
-            document.getElementById('frame').src = url;
-            document.getElementById('urlInput').value = url;
+        function doSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                // Redirect to Google search
+                const googleUrl = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+                window.open(googleUrl, '_blank');
+                
+                // Alternative: load in iframe (commented out because Google usually blocks iframes)
+                // document.getElementById('mainPage').style.display = 'none';
+                // document.getElementById('footer').style.display = 'none';
+                // document.getElementById('header').style.display = 'none';
+                // document.getElementById('resultsFrame').src = googleUrl;
+                // document.getElementById('resultsFrame').classList.add('active');
+            }
         }
 
         function handleKey(e) {
-            if (e.key === 'Enter') navigate();
+            if (e.key === 'Enter') doSearch();
         }
 
-        function handleBigKey(e) {
-            if (e.key === 'Enter') bigNavigate();
+        function goHome() {
+            document.getElementById('mainPage').style.display = 'flex';
+            document.getElementById('footer').style.display = 'block';
+            document.getElementById('header').style.display = 'block';
+            document.getElementById('resultsFrame').classList.remove('active');
+            document.getElementById('resultsFrame').src = '';
+            document.getElementById('searchInput').value = '';
         }
 
-        // Tab Cloaking - Disguises the tab as Google Docs
-        function toggleCloak() {
-            isCloaked = !isCloaked;
-            if (isCloaked) {
-                document.title = 'Google Docs';
-                document.getElementById('root').innerHTML += '<link rel="icon" type="image/png" href="https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico">';
-                document.body.classList.remove('normal');
-                document.body.classList.add('stealth');
-                alert('Tab Cloaked: Now appears as Google Docs\nPress 🎭 again to restore');
-            } else {
-                document.title = 'Lemons Proxy - Shadow Edition';
-                location.reload(); // Simple way to restore
-            }
-        }
-
-        // Panic Key - Press ` to show fake Google Docs
-        document.addEventListener('keydown', (e) => {
-            if (e.key === '`' || e.key === '~') {
-                const panic = document.getElementById('panic');
-                panic.classList.toggle('active');
-            }
-            
-            // Also works with Escape key
-            if (e.key === 'Escape') {
-                document.getElementById('frame').classList.remove('active');
-                document.getElementById('home').classList.add('active');
-            }
-        });
-
-        // Try to detect iframe blocking
-        document.getElementById('frame').addEventListener('load', function() {
-            try {
-                // If we can access contentWindow, it loaded
-                const frame = document.getElementById('frame');
-                if (frame.contentWindow && frame.contentWindow.document) {
-                    console.log('Site loaded successfully');
-                }
-            } catch (e) {
-                // Cross-origin error means it loaded (good)
-                console.log('Cross-origin site loaded');
-            }
-        });
-
-        document.getElementById('frame').addEventListener('error', function() {
-            alert('This site blocks embedding. Try a different site from Quick Links.');
-        });
+        // Focus search on load
+        window.onload = () => {
+            document.getElementById('searchInput').focus();
+        };
     </script>
+
 </body>
 </html>
