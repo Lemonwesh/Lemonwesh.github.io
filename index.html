@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lemons Proxy</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍋</text></svg>">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
         
@@ -17,10 +16,9 @@
                 linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
             background-size: 40px 40px;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
             color: white;
-            display: flex;
-            flex-direction: column;
         }
 
         /* Header */
@@ -35,69 +33,43 @@
             color: #4ade80;
             font-weight: bold;
             font-size: 1.5rem;
-            margin-bottom: 5px;
         }
 
         .subtitle {
             color: rgba(255,255,255,0.6);
             font-size: 0.8rem;
+            margin-top: 5px;
         }
 
-        /* Main Content */
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-        }
-
-        /* Search Box */
-        .search-container {
-            width: 100%;
-            max-width: 700px;
-            margin-bottom: 50px;
-        }
-
-        .search-box {
+        /* Search Bar */
+        .search-bar {
             display: flex;
             background: rgba(0,0,0,0.4);
             border: 2px solid #4db8ff;
-            border-radius: 30px;
+            border-radius: 25px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 700px;
+            margin: 20px auto;
         }
 
-        .search-box input {
+        .search-bar input {
             flex: 1;
             background: transparent;
             border: none;
             color: white;
-            padding: 18px 25px;
+            padding: 12px 20px;
             font-family: inherit;
-            font-size: 16px;
+            font-size: 14px;
             outline: none;
         }
 
-        .search-box input::placeholder {
-            color: rgba(255,255,255,0.5);
-        }
-
-        .search-box button {
+        .search-bar button {
             background: #4db8ff;
             border: none;
             color: #0f172a;
-            padding: 0 35px;
+            padding: 0 25px;
             font-weight: bold;
-            font-family: inherit;
-            font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .search-box button:hover {
-            background: #4ade80;
         }
 
         /* Corner Decorations */
@@ -108,30 +80,67 @@
             border: 2px solid #4db8ff;
             pointer-events: none;
         }
-        .corner-tl { top: 0; left: 0; border-right: none; border-bottom: none; }
-        .corner-tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+        .corner-tl { top: 85px; left: 0; border-right: none; border-bottom: none; }
+        .corner-tr { top: 85px; right: 0; border-left: none; border-bottom: none; }
         .corner-bl { bottom: 0; left: 0; border-right: none; border-top: none; }
         .corner-br { bottom: 0; right: 0; border-left: none; border-top: none; }
 
-        /* Quick Links */
-        .quick-links {
+        /* Browser View */
+        .viewport {
+            width: 100%;
+            height: calc(100vh - 140px);
+            border: none;
+            background: white;
+        }
+
+        /* Home Screen */
+        .home {
             text-align: center;
-            margin-top: 30px;
+            padding: 50px 20px;
         }
 
-        .quick-links-title {
-            color: rgba(255,255,255,0.6);
-            font-size: 0.8rem;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .home h1 {
+            color: #4ade80;
+            font-size: 3rem;
+            margin-bottom: 30px;
         }
 
-        .links {
+        .big-search {
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .big-search input {
+            width: 100%;
+            padding: 15px 25px;
+            background: rgba(0,0,0,0.4);
+            border: 2px solid #4db8ff;
+            border-radius: 30px;
+            color: white;
+            font-family: inherit;
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 15px;
+        }
+
+        .big-search button {
+            background: #4db8ff;
+            border: none;
+            color: #0f172a;
+            padding: 12px 40px;
+            font-family: inherit;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .quick-links {
             display: flex;
             gap: 15px;
-            flex-wrap: wrap;
             justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
         }
 
         .link-btn {
@@ -142,60 +151,40 @@
             text-decoration: none;
             border-radius: 20px;
             font-size: 0.9rem;
-            transition: all 0.3s;
         }
 
         .link-btn:hover {
             background: rgba(77, 184, 255, 0.3);
             border-color: #4db8ff;
-            transform: translateY(-2px);
         }
 
         /* Footer */
         .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
             text-align: center;
-            padding: 20px;
+            padding: 10px;
+            background: rgba(23, 37, 84, 0.95);
+            border-top: 2px dashed #4db8ff;
             color: rgba(255,255,255,0.5);
             font-size: 0.8rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
-        .footer a {
-            color: #4ade80;
-            text-decoration: none;
-        }
-
-        /* Frame Container (Hidden by default, shown when searching) */
-        .frame-container {
-            display: none;
-            width: 100%;
-            height: calc(100vh - 100px);
-            border: none;
-        }
-
-        .frame-container.active {
-            display: block;
-        }
-
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid #4db8ff;
-            color: white;
-            padding: 10px 20px;
-            cursor: pointer;
-            z-index: 100;
-            display: none;
-        }
-
-        .frame-container.active ~ .back-btn {
-            display: block;
-        }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
+
+    <div class="header">
+        <div class="logo">🍋 Lemons Proxy</div>
+        <div class="subtitle">made by ld</div>
+        <div class="search-bar hidden" id="topSearch">
+            <input type="text" id="urlBar" placeholder="Search Google or enter URL..." onkeypress="handleKey(event)">
+            <button onclick="search()">GO</button>
+        </div>
+    </div>
 
     <!-- Corner Decorations -->
     <div class="corner corner-tl"></div>
@@ -203,77 +192,72 @@
     <div class="corner corner-bl"></div>
     <div class="corner corner-br"></div>
 
-    <!-- Header -->
-    <div class="header" id="header">
-        <div class="logo">🍋 Lemons Proxy</div>
-        <div class="subtitle">made by ld</div>
-    </div>
-
-    <!-- Back Button (shown when viewing results) -->
-    <button class="back-btn" onclick="goHome()">← Back to Search</button>
-
-    <!-- Main Page -->
-    <div class="main" id="mainPage">
-        <div class="search-container">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search Google..." onkeypress="handleKey(event)" autocomplete="off">
-                <button onclick="doSearch()">SEARCH</button>
-            </div>
+    <!-- Home Screen -->
+    <div class="home" id="homeScreen">
+        <h1>🍋 Lemons Proxy</h1>
+        <div class="big-search">
+            <input type="text" id="searchInput" placeholder="Search Google..." onkeypress="handleHomeKey(event)">
+            <button onclick="doSearch()">SEARCH</button>
         </div>
-
+        
         <div class="quick-links">
-            <div class="quick-links-title">Quick Access</div>
-            <div class="links">
-                <a href="https://www.google.com" class="link-btn" target="_blank">Google</a>
-                <a href="https://www.wikipedia.org" class="link-btn" target="_blank">Wikipedia</a>
-                <a href="https://old.reddit.com" class="link-btn" target="_blank">Reddit</a>
-                <a href="https://www.coolmathgames.com" class="link-btn" target="_blank">Cool Math</a>
-            </div>
+            <a href="#" class="link-btn" onclick="openUrl('https://www.google.com')">Google</a>
+            <a href="#" class="link-btn" onclick="openUrl('https://www.wikipedia.org')">Wikipedia</a>
+            <a href="#" class="link-btn" onclick="openUrl('https://old.reddit.com')">Reddit</a>
+            <a href="#" class="link-btn" onclick="openUrl('https://www.bing.com')">Bing</a>
         </div>
     </div>
 
-    <!-- Google Results Frame -->
-    <iframe id="resultsFrame" class="frame-container" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation"></iframe>
+    <!-- Browser Frame -->
+    <iframe id="viewport" class="viewport hidden" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation"></iframe>
 
-    <!-- Footer -->
-    <div class="footer" id="footer">
-        made by Lemonwesh | 🍋 Lemons Proxy 2024
-    </div>
+    <div class="footer">made by Lemonwesh</div>
 
     <script>
         function doSearch() {
             const query = document.getElementById('searchInput').value.trim();
             if (query) {
-                // Redirect to Google search
                 const googleUrl = 'https://www.google.com/search?q=' + encodeURIComponent(query);
-                window.open(googleUrl, '_blank');
-                
-                // Alternative: load in iframe (commented out because Google usually blocks iframes)
-                // document.getElementById('mainPage').style.display = 'none';
-                // document.getElementById('footer').style.display = 'none';
-                // document.getElementById('header').style.display = 'none';
-                // document.getElementById('resultsFrame').src = googleUrl;
-                // document.getElementById('resultsFrame').classList.add('active');
+                openUrl(googleUrl);
             }
         }
 
-        function handleKey(e) {
+        function search() {
+            const query = document.getElementById('urlBar').value.trim();
+            if (query) {
+                let url = query;
+                if (!query.startsWith('http')) {
+                    url = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+                }
+                document.getElementById('viewport').src = url;
+            }
+        }
+
+        function openUrl(url) {
+            document.getElementById('homeScreen').classList.add('hidden');
+            document.getElementById('topSearch').classList.remove('hidden');
+            document.getElementById('viewport').classList.remove('hidden');
+            document.getElementById('viewport').src = url;
+            document.getElementById('urlBar').value = url;
+        }
+
+        function handleHomeKey(e) {
             if (e.key === 'Enter') doSearch();
         }
 
-        function goHome() {
-            document.getElementById('mainPage').style.display = 'flex';
-            document.getElementById('footer').style.display = 'block';
-            document.getElementById('header').style.display = 'block';
-            document.getElementById('resultsFrame').classList.remove('active');
-            document.getElementById('resultsFrame').src = '';
-            document.getElementById('searchInput').value = '';
+        function handleKey(e) {
+            if (e.key === 'Enter') search();
         }
 
-        // Focus search on load
-        window.onload = () => {
-            document.getElementById('searchInput').focus();
-        };
+        // Go back to home with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('homeScreen').classList.remove('hidden');
+                document.getElementById('topSearch').classList.add('hidden');
+                document.getElementById('viewport').classList.add('hidden');
+                document.getElementById('viewport').src = '';
+            }
+        });
     </script>
 
 </body>
