@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lemons Proxy v6.1 | Complete Library</title>
+    <title>Lemons Proxy v6.1 | Complete</title>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -12,7 +12,6 @@
             --blueprint-grid: rgba(255, 255, 255, 0.15);
             --blueprint-line: rgba(255, 255, 255, 0.8);
             --accent: #FF6B35;
-            --warning: #FFD700;
         }
         body {
             background-color: var(--blueprint-bg);
@@ -23,7 +22,6 @@
             font-family: 'Courier Prime', monospace;
             color: white;
             min-height: 100vh;
-            overflow-x: hidden;
         }
         .tech-border {
             position: fixed;
@@ -38,27 +36,18 @@
         
         header {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 20px;
             border-bottom: 3px double var(--blueprint-line);
             background: rgba(0, 0, 0, 0.2);
             position: relative;
         }
         .blueprint-title {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 3rem;
+            font-size: 2.5rem;
             text-transform: uppercase;
             letter-spacing: 5px;
-            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
         }
-        .drawing-number {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 0.8rem;
-            border: 1px solid var(--blueprint-line);
-            padding: 5px 10px;
-            transform: rotate(-2deg);
-        }
+        
         .search-box {
             margin-top: 20px;
             max-width: 600px;
@@ -74,13 +63,15 @@
             font-family: 'Courier Prime', monospace;
             font-size: 1rem;
         }
+        .search-input::placeholder { color: rgba(255,255,255,0.5); }
+
         nav {
             background: rgba(0, 0, 0, 0.3);
             border-bottom: 1px solid var(--blueprint-line);
             padding: 15px;
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
             flex-wrap: wrap;
             position: sticky;
             top: 0;
@@ -90,12 +81,11 @@
             background: transparent;
             border: 2px solid var(--blueprint-line);
             color: white;
-            padding: 8px 16px;
+            padding: 10px 20px;
             font-family: 'Share Tech Mono', monospace;
             cursor: pointer;
             text-transform: uppercase;
-            font-size: 0.8rem;
-            transition: all 0.3s;
+            font-size: 0.9rem;
         }
         nav button:hover, nav button.active {
             background: rgba(255, 255, 255, 0.1);
@@ -105,26 +95,17 @@
             color: var(--blueprint-bg);
             font-weight: bold;
         }
-        .container { max-width: 1400px; margin: 40px auto; padding: 0 20px; }
-        .section { display: none; animation: fadeIn 0.5s; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* PROXY STYLES */
         .proxy-container {
             border: 3px solid var(--blueprint-line);
             background: rgba(0, 0, 0, 0.2);
             padding: 30px;
-            position: relative;
-        }
-        .proxy-container::before {
-            content: 'CROXYPROXY MODULE';
-            position: absolute;
-            top: -12px;
-            left: 30px;
-            background: var(--blueprint-bg);
-            padding: 0 15px;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
         }
         .proxy-box { display: flex; gap: 10px; margin-bottom: 20px; }
         .proxy-input {
@@ -146,9 +127,10 @@
             cursor: pointer;
             text-transform: uppercase;
         }
+        .proxy-btn:hover { background: transparent; }
         .proxy-frame-container {
             width: 100%;
-            height: 75vh;
+            height: 80vh;
             border: 3px solid var(--blueprint-line);
             background: white;
             display: none;
@@ -156,72 +138,73 @@
         .proxy-frame-container.active { display: block; }
         .proxy-frame { width: 100%; height: 100%; border: none; }
 
-        .category-header {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.3rem;
-            margin: 30px 0 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--blueprint-line);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--warning);
+        /* RECENTLY PLAYED */
+        .recent-bar {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--blueprint-line);
+            padding: 15px;
+            margin-bottom: 30px;
+            display: none;
         }
+        .recent-bar.active { display: block; }
+        .recent-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .recent-items {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .recent-item {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--blueprint-line);
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .recent-item:hover { background: var(--accent); border-color: var(--accent); }
+
+        /* GAMES GRID */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
-            margin-bottom: 40px;
         }
         .game-card {
             border: 2px solid var(--blueprint-line);
             background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            transition: transform 0.3s;
+            padding: 20px;
             cursor: pointer;
-            position: relative;
+            transition: all 0.2s;
         }
         .game-card:hover {
-            transform: translateY(-3px);
             background: rgba(0, 0, 0, 0.4);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: translateY(-2px);
+            border-color: var(--accent);
         }
         .game-title {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 0.95rem;
+            font-size: 1rem;
             margin-bottom: 8px;
             text-transform: uppercase;
-            line-height: 1.3;
-        }
-        .game-desc {
-            font-size: 0.8rem;
-            opacity: 0.8;
-            margin-bottom: 10px;
-            height: 35px;
-            overflow: hidden;
         }
         .play-btn {
             display: inline-block;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            padding: 5px 15px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            transition: all 0.3s;
-        }
-        .play-btn:hover { background: var(--accent); color: white; }
-        .badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
             background: var(--accent);
             color: white;
-            padding: 2px 6px;
-            font-size: 0.65rem;
-            text-transform: uppercase;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            margin-top: 10px;
         }
-        .badge.hot { background: #ff0000; }
-        .badge.new { background: #FFD700; color: black; }
 
+        /* GAME VIEWER */
         .game-viewer {
             display: none;
             position: fixed;
@@ -229,7 +212,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 51, 0.95);
+            background: rgba(0, 0, 51, 0.98);
             z-index: 2000;
             padding: 20px;
             border: 5px solid var(--blueprint-line);
@@ -241,38 +224,22 @@
             align-items: center;
             margin-bottom: 15px;
             padding-bottom: 15px;
-            border-bottom: 1px solid var(--blueprint-line);
+            border-bottom: 2px solid var(--blueprint-line);
         }
         .game-frame {
             width: 100%;
             height: calc(100% - 80px);
             border: 3px solid var(--blueprint-line);
-            background: black;
+            background: white;
         }
         .close-btn {
             background: #ff4444;
             border: none;
             color: white;
-            padding: 10px 20px;
+            padding: 10px 25px;
             font-family: 'Share Tech Mono', monospace;
             cursor: pointer;
-            text-transform: uppercase;
-        }
-        .fullscreen-btn {
-            background: var(--accent);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            margin-right: 10px;
-            font-family: 'Share Tech Mono', monospace;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        @media (max-width: 768px) {
-            .blueprint-title { font-size: 2rem; }
-            .proxy-box { flex-direction: column; }
-            .games-grid { grid-template-columns: 1fr; }
+            font-size: 1rem;
         }
     </style>
 </head>
@@ -283,361 +250,732 @@
     <div class="tech-border bottom-right"></div>
 
     <header>
-        <div class="drawing-number">DWG: LEMONS-v6.1-COMPLETE</div>
-        <h1 class="blueprint-title">Lemons Proxy</h1>
-        <p style="margin-top: 10px; opacity: 0.8;">Complete Game Library | All Games Included</p>
+        <h1 class="blueprint-title">Lemons Proxy v6.1</h1>
         <div class="search-box">
-            <input type="text" class="search-input" id="gameSearch" placeholder="Search all games..." onkeyup="searchGames()">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search all 400+ games..." onkeyup="searchGames()">
         </div>
     </header>
 
     <nav>
         <button class="nav-btn active" onclick="showSection('proxy')">Proxy</button>
-        <button class="nav-btn" onclick="showSection('all')">All Games</button>
-        <button class="nav-btn" onclick="showSection('minecraft')">Minecraft</button>
-        <button class="nav-btn" onclick="showSection('pokemon')">Pokemon</button>
-        <button class="nav-btn" onclick="showSection('mario')">Mario</button>
-        <button class="nav-btn" onclick="showSection('fnaf')">FNAF</button>
-        <button class="nav-btn" onclick="showSection('papa')">Papa's</button>
-        <button class="nav-btn" onclick="showSection('io')">.IO</button>
-        <button class="nav-btn" onclick="showSection('action')">Action</button>
-        <button class="nav-btn" onclick="showSection('sports')">Sports</button>
-        <button class="nav-btn" onclick="showSection('puzzle')">Puzzle</button>
-        <button class="nav-btn" onclick="showSection('retro')">Retro</button>
-        <button class="nav-btn" onclick="showSection('fireboy')">Fireboy</button>
-        <button class="nav-btn" onclick="showSection('misc')">Misc</button>
+        <button class="nav-btn" onclick="showSection('games')">All Games</button>
+        <button class="nav-btn" onclick="showSection('recent')">Recently Played</button>
     </nav>
 
     <div class="container">
-        <!-- PROXY -->
+        <!-- PROXY SECTION -->
         <section id="proxy" class="section active">
             <div class="proxy-container">
                 <div class="proxy-box">
-                    <input type="text" class="proxy-input" id="proxyUrl" placeholder="Enter URL (e.g., https://google.com)" onkeypress="if(event.key==='Enter')loadProxy()">
+                    <input type="text" class="proxy-input" id="proxyUrl" placeholder="Enter URL (https://example.com)" onkeypress="if(event.key==='Enter')loadProxy()">
                     <button class="proxy-btn" onclick="loadProxy()">Load</button>
                 </div>
-                <div class="proxy-frame-container" id="proxyFrameContainer">
+                <div class="proxy-frame-container" id="proxyContainer">
                     <iframe id="proxyFrame" class="proxy-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation"></iframe>
                 </div>
             </div>
         </section>
 
-        <!-- ALL GAMES (Search Results) -->
-        <section id="all" class="section">
-            <div class="category-header">All Games</div>
-            <div class="games-grid" id="allGamesGrid"></div>
-        </section>
-
-        <!-- MINECRAFT -->
-        <section id="minecraft" class="section">
-            <div class="category-header">Minecraft Collection</div>
-            <div class="games-grid">
-                <!-- Eaglercraft Versions -->
-                <div class="game-card" onclick="launchGame('https://g.deev.is/eaglercraft/', 'Eaglercraft 1.5.2')">
-                    <span class="badge">Classic</span>
-                    <div class="game-title">Eaglercraft 1.5.2</div>
-                    <div class="game-desc">Original Eaglercraft</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://eaglercraftx.net/', 'EaglercraftX 1.8.8')">
-                    <span class="badge hot">POPULAR</span>
-                    <div class="game-title">EaglercraftX 1.8.8</div>
-                    <div class="game-desc">Latest stable version</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://eaglercraft.me/1.12.2/', 'Eaglercraft 1.12.2')">
-                    <span class="badge new">NEW</span>
-                    <div class="game-title">Eaglercraft 1.12.2</div>
-                    <div class="game-desc">Newer version</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://eaglercraft.com/precision-client/', 'Precision Client')">
-                    <div class="game-title">Precision Client</div>
-                    <div class="game-desc">Optimized PvP client</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://classic.minecraft.net/', 'Minecraft Classic')">
-                    <div class="game-title">Minecraft Classic</div>
-                    <div class="game-desc">Official browser version</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://paper-minecraft.glitch.me/', 'Paper Minecraft')">
-                    <div class="game-title">Paper Minecraft</div>
-                    <div class="game-desc">2D Minecraft style</div>
-                    <span class="play-btn">Play</span>
-                </div>
+        <!-- ALL GAMES -->
+        <section id="games" class="section">
+            <!-- Recently Played Bar -->
+            <div class="recent-bar" id="recentBar">
+                <div class="recent-title">Recently Played - Click to Resume</div>
+                <div class="recent-items" id="recentItems"></div>
+            </div>
+            
+            <div class="games-grid" id="gamesGrid">
+                <!-- Games will be inserted here by JavaScript -->
             </div>
         </section>
 
-        <!-- POKEMON -->
-        <section id="pokemon" class="section">
-            <div class="category-header">Pokemon Collection</div>
-            <div class="games-grid">
-                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_emerald', 'Pokemon Emerald')">
-                    <span class="badge hot">GBA</span>
-                    <div class="game-title">Pokemon - Emerald</div>
-                    <div class="game-desc">Hoenn region adventure</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_ruby', 'Pokemon Ruby')">
-                    <div class="game-title">Pokemon - Ruby</div>
-                    <div class="game-desc">Team Magma storyline</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_sapphire', 'Pokemon Sapphire')">
-                    <div class="game-title">Pokemon - Sapphire</div>
-                    <div class="game-desc">Team Aqua storyline</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_fire_red', 'Pokemon Fire Red')">
-                    <div class="game-title">Pokemon - Fire Red</div>
-                    <div class="game-desc">Kanto region remake</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_leaf_green', 'Pokemon Leaf Green')">
-                    <div class="game-title">Pokemon - Leaf Green</div>
-                    <div class="game-desc">Enhanced Kanto</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_ultra_violet', 'Pokemon Ultra Violet')">
-                    <div class="game-title">Pokemon - Ultra Violet</div>
-                    <div class="game-desc">Hack with all Pokemon</div>
-                    <span class="play-btn">Play</span>
-                </div>
-            </div>
+        <!-- RECENT PAGE -->
+        <section id="recent" class="section">
+            <div style="font-family: 'Share Tech Mono', monospace; font-size: 1.5rem; margin-bottom: 20px; text-transform: uppercase;">Recently Played Games</div>
+            <div class="games-grid" id="recentGrid"></div>
         </section>
+    </div>
 
-        <!-- MARIO -->
-        <section id="mario" class="section">
-            <div class="category-header">Super Mario Collection</div>
-            <div class="games-grid">
-                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/nds/launcher.html#mario_kart_ds', 'Mario Kart DS')">
-                    <span class="badge">DS</span>
-                    <div class="game-title">Mario Kart DS</div>
-                    <div class="game-desc">DS racing classic</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#mario_kart_super_circuit', 'Mario Kart Super Circuit')">
-                    <span class="badge">GBA</span>
-                    <div class="game-title">Mario Kart Super Circuit</div>
-                    <div class="game-desc">GBA racing</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#super_mario_advance_4', 'Super Mario Advance 4')">
-                    <div class="game-title">Super Mario Advance 4 - SMB3</div>
-                    <div class="game-desc">Mario Bros 3 remake</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://supermario64.glitch.me/', 'Super Mario 64')">
-                    <span class="badge hot">3D</span>
-                    <div class="game-title">Super Mario 64</div>
-                    <div class="game-desc">JavaScript port</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://jellymar.io/', 'Jelly Mario')">
-                    <div class="game-title">Jelly Mario Bros</div>
-                    <div class="game-desc">Jelly physics</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/nes/launcher.html#super_mario_bros', 'Super Mario Bros')">
-                    <div class="game-title">Super Mario Bros</div>
-                    <div class="game-desc">Original NES</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/snes/launcher.html#super_mario_world', 'Super Mario World')">
-                    <div class="game-title">Super Mario World</div>
-                    <div class="game-desc">SNES classic</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#super_mario_63', 'Super Mario 63')">
-                    <div class="game-title">Super Mario 63</div>
-                    <div class="game-desc">Fan platformer</div>
-                    <span class="play-btn">Play</span>
-                </div>
-            </div>
-        </section>
+    <!-- GAME VIEWER -->
+    <div class="game-viewer" id="gameViewer">
+        <div class="viewer-header">
+            <h2 id="viewerTitle" style="font-family: 'Share Tech Mono', monospace; font-size: 1.5rem;">Game</h2>
+            <button class="close-btn" onclick="closeGame()">CLOSE GAME</button>
+        </div>
+        <iframe id="gameFrame" class="game-frame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"></iframe>
+    </div>
 
-        <!-- FNAF -->
-        <section id="fnaf" class="section">
-            <div class="category-header">Five Nights at Freddy's</div>
-            <div class="games-grid">
-                <div class="game-card" onclick="launchGame('https://fnaf-web.glitch.me/', 'FNAF')">
-                    <span class="badge hot">HTML5</span>
-                    <div class="game-title">FNAF Web</div>
-                    <div class="game-desc">Native browser</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118865049/embed', 'FNAF 1')">
-                    <div class="game-title">FNAF 1</div>
-                    <div class="game-desc">Original nights</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118865683/embed', 'FNAF 2')">
-                    <div class="game-title">FNAF 2</div>
-                    <div class="game-desc">No doors, more bots</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118866059/embed', 'FNAF 3')">
-                    <div class="game-title">FNAF 3</div>
-                    <div class="game-desc">Springtrap</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118866412/embed', 'FNAF 4')">
-                    <div class="game-title">FNAF 4</div>
-                    <div class="game-desc">Nightmare edition</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118867293/embed', 'FNAF Sister Location')">
-                    <div class="game-title">FNAF: Sister Location</div>
-                    <div class="game-desc">Underground</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118867635/embed', 'FNAF Final Purgatory')">
-                    <div class="game-title">FNAF Final Purgatory</div>
-                    <div class="game-desc">Fan game</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118868021/embed', 'FNAF 5 Scratch')">
-                    <div class="game-title">FNAF 5 Scratch</div>
-                    <div class="game-desc">Custom night</div>
-                    <span class="play-btn">Play</span>
-                </div>
-            </div>
-        </section>
+    <script>
+        // COMPLETE GAME LIST - All your games in one place
+        const games = [
+            // Minecraft
+            {name: "Eaglercraft 1.5.2", url: "https://g.deev.is/eaglercraft/"},
+            {name: "Eaglercraft 1.8.8", url: "https://eaglercraftx.net/"},
+            {name: "Eaglercraft 1.12.2", url: "https://eaglercraft.me/1.12.2/"},
+            {name: "Precision Client", url: "https://eaglercraft.com/precision-client/"},
+            {name: "Minecraft Classic", url: "https://classic.minecraft.net/"},
+            {name: "Paper Minecraft", url: "https://paper-minecraft.glitch.me/"},
+            
+            // Pokemon
+            {name: "Pokemon Emerald", url: "https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_emerald"},
+            {name: "Pokemon Ruby", url: "https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_ruby"},
+            {name: "Pokemon Sapphire", url: "https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_sapphire"},
+            {name: "Pokemon Fire Red", url: "https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_fire_red"},
+            {name: "Pokemon Leaf Green", url: "https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_leaf_green"},
+            {name: "Pokemon Ultra Violet", url: "https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_ultra_violet"},
+            
+            // Mario
+            {name: "Mario Kart DS", url: "https://emulatorjs.org/gitlab/jsemu/nds/launcher.html#mario_kart_ds"},
+            {name: "Mario Kart Super Circuit", url: "https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#mario_kart_super_circuit"},
+            {name: "Super Mario Advance 4", url: "https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#super_mario_advance_4"},
+            {name: "Super Mario 64", url: "https://supermario64.glitch.me/"},
+            {name: "Jelly Mario", url: "https://jellymar.io/"},
+            {name: "Super Mario Bros", url: "https://emulatorjs.org/gitlab/jsemu/nes/launcher.html#super_mario_bros"},
+            {name: "Super Mario World", url: "https://emulatorjs.org/gitlab/jsemu/snes/launcher.html#super_mario_world"},
+            {name: "Super Mario 63", url: "https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#super_mario_63"},
+            
+            // FNAF
+            {name: "FNAF Web", url: "https://fnaf-web.glitch.me/"},
+            {name: "FNAF 1", url: "https://scratch.mit.edu/projects/118865049/embed"},
+            {name: "FNAF 2", url: "https://scratch.mit.edu/projects/118865683/embed"},
+            {name: "FNAF 3", url: "https://scratch.mit.edu/projects/118866059/embed"},
+            {name: "FNAF 4", url: "https://scratch.mit.edu/projects/118866412/embed"},
+            {name: "FNAF Sister Location", url: "https://scratch.mit.edu/projects/118867293/embed"},
+            {name: "FNAF Final Purgatory", url: "https://scratch.mit.edu/projects/118867635/embed"},
+            
+            // Papa's Games
+            {name: "Papa's Pizzeria", url: "https://scratch.mit.edu/projects/10128407/embed"},
+            {name: "Papa's Burgeria", url: "https://scratch.mit.edu/projects/10128515/embed"},
+            {name: "Papa's Freezeria", url: "https://scratch.mit.edu/projects/10128567/embed"},
+            {name: "Papa's Pancakeria", url: "https://scratch.mit.edu/projects/10128619/embed"},
+            {name: "Papa's Scooperia", url: "https://scratch.mit.edu/projects/10128673/embed"},
+            {name: "Papa's Sushiria", url: "https://scratch.mit.edu/projects/10128735/embed"},
+            {name: "Papa's Hot Doggeria", url: "https://scratch.mit.edu/projects/10128789/embed"},
+            
+            // .IO Games
+            {name: "1v1.LOL", url: "https://1v1.lol/"},
+            {name: "Agar.io", url: "https://agar.io/"},
+            {name: "Slither.io", url: "https://slither.io/"},
+            {name: "Diep.io", url: "https://diep.io/"},
+            {name: "Krunker.io", url: "https://krunker.io/"},
+            {name: "Shell Shockers", url: "https://shellshock.io/"},
+            {name: "Zombs Royale", url: "https://zombsroyale.io/"},
+            {name: "Build Royale", url: "https://buildroyale.io/"},
+            {name: "EvoWars.io", url: "https://evowars.io/"},
+            {name: "Smash Karts", url: "https://smashkarts.io/"},
+            {name: "JustFall.LOL", url: "https://justfall.lol/"},
+            {name: "Stumble Guys", url: "https://stumbleguys.com/play"},
+            {name: "Territorial.io", url: "https://territorial.io/"},
+            {name: "Skribbl.io", url: "https://skribbl.io/"},
+            {name: "Paper.io 2", url: "https://paper.io/"},
+            {name: "Paper.io 3D", url: "https://paper-io.com/3d/"},
+            {name: "Hole.io", url: "https://hole.io/"},
+            {name: "Wings.io", url: "https://wings.io/"},
+            {name: "Repuls.io", url: "https://repuls.io/"},
+            
+            // Action
+            {name: "Venge.io", url: "https://venge.io/"},
+            {name: "Crazy Cattle 3D", url: "https://crazy-cattle-3d.com/"},
+            {name: "Bullet Force", url: "https://bulletforce.io/"},
+            {name: "Masked Forces", url: "https://maskedforces.com/"},
+            {name: "Amanda the Adventurer", url: "https://amanda-the-adventurer.com/game/amanda-the-adventurer/"},
+            {name: "Pizza Tower", url: "https://pizza-tower.io/"},
+            {name: "Undertale", url: "https://undertale.com/game/"},
+            {name: "Hollow Knight", url: "https://hollow-knight.io/"},
+            {name: "Doom", url: "https://dos.zone/player/?bundleUrl=https%3A%2F%2Fcdn.dos.zone%2Fcustom%2Fdos%2Fdoom.jsdos"},
+            {name: "Wolfenstein 3D", url: "https://wolfenstein3d.com/"},
+            {name: "Cluster Rush", url: "https://cluster-rush.com/"},
+            {name: "Only Up", url: "https://only-up.org/"},
+            {name: "Getting Over It", url: "https://getting-over-it.com/"},
+            {name: "Ragdoll Archers", url: "https://ragdoll-archers.com/"},
+            {name: "You vs 100 Skibidi", url: "https://you-vs-skibidi.com/"},
+            {name: "Rocket League Unity", url: "https://rocket-league.io/"},
+            {name: "Running Fred", url: "https://running-fred.com/"},
+            {name: "Level Devil", url: "https://level-devil.com/"},
+            {name: "Ragdoll Hit", url: "https://ragdoll-hit.com/"},
+            
+            // Sports & Racing
+            {name: "Retro Bowl", url: "https://retrobowl.game/"},
+            {name: "Basketball Stars", url: "https://basketball-stars.com/"},
+            {name: "Basketball Legends", url: "https://basketballlegends.fun/"},
+            {name: "Soccer Skills", url: "https://soccer-skills.com/"},
+            {name: "Drift Hunters", url: "https://drift-hunters.com/"},
+            {name: "Drive Mad", url: "https://drive-mad.com/"},
+            {name: "Slow Roads", url: "https://slowroads.io/"},
+            {name: "PolyTrack", url: "https://poly-track.com/"},
+            {name: "MX OffRoad Master", url: "https://mx-offroad.com/"},
+            {name: "A Small World Cup", url: "https://a-small-world-cup.com/"},
+            {name: "Crossy Road", url: "https://crossyroad.com/"},
+            {name: "Slope", url: "https://slope-game.com/"},
+            {name: "Slope 2", url: "https://slope2game.com/"},
+            {name: "Slope 3", url: "https://slope3.com/"},
+            {name: "Tunnel Rush", url: "https://tunnelrushgame.com/"},
+            {name: "Tunnel Rush 2", url: "https://tunnelrush2.com/"},
+            {name: "Snow Rider 3D", url: "https://snow-rider-3d.com/"},
+            {name: "Moto X3M", url: "https://moto-x3m.com/"},
+            {name: "Super Star Car", url: "https://super-star-car.com/"},
+            {name: "Tanuki Sunset", url: "https://tanuki-sunset.com/"},
+            {name: "Tiny Fishing", url: "https://tiny-fishing.com/"},
+            {name: "Basket Bros", url: "https://basket-bros.com/"},
+            
+            // Puzzle & Idle
+            {name: "2048", url: "https://play2048.co/"},
+            {name: "2048 Multitask", url: "https://2048multitask.com/"},
+            {name: "Couch 2048", url: "https://couch-2048.com/"},
+            {name: "Little Alchemy 2", url: "https://littlealchemy2.com/"},
+            {name: "Sandboxels", url: "https://sandboxels.com/"},
+            {name: "Cookie Clicker", url: "https://cookieclicker.com/"},
+            {name: "Doge Miner", url: "https://dogeminer.com/"},
+            {name: "A Dark Room", url: "https://adarkroom.com/"},
+            {name: "Cut the Rope", url: "https://www.cuttherope.com/"},
+            {name: "Fruit Ninja", url: "https://fruitninja.com/"},
+            {name: "WorldGuessr", url: "https://worldguessr.com/"},
+            {name: "We Become What We Behold", url: "https://we-become-what-we-behold.com/"},
+            {name: "Tetris", url: "https://www.tetris.com/play-tetris"},
+            {name: "BitLife", url: "https://bitlifeonline.com/"},
+            {name: "Monkey Mart", url: "https://monkey-mart.com/"},
+            {name: "Infinite Chef", url: "https://infinite-chef.com/"},
+            {name: "MyTeardrop", url: "https://myteardrop.com/"},
+            {name: "Choppy Orc", url: "https://choppy-orc.com/"},
+            
+            // Retro
+            {name: "EmulatorJS", url: "https://emulatorjs.org/"},
+            {name: "Chrome Dino", url: "https://chromedino.com/"},
+            {name: "Pacman", url: "https://pacman.com/"},
+            {name: "Sonic", url: "https://sonic.com/"},
+            {name: "Metal Gear Solid", url: "https://meta-console.com/"},
+            {name: "Street Fighter 2", url: "https://street-fighter-2.com/"},
+            {name: "Street Fighter 3", url: "https://street-fighter-3.com/"},
+            {name: "Ultimate Flash Sonic", url: "https://ultimate-flash-sonic.com/"},
+            
+            // Henry Stickmin
+            {name: "Breaking the Bank", url: "https://breaking-the-bank.com/"},
+            {name: "Escaping the Prison", url: "https://escaping-the-prison.com/"},
+            {name: "Stealing the Diamond", url: "https://stealing-the-diamond.com/"},
+            {name: "Infiltrating the Airship", url: "https://infiltrating-the-airship.com/"},
+            {name: "Fleeing the Complex", url: "https://fleeing-the-complex.com/"},
+            
+            // Fireboy & Watergirl
+            {name: "Fireboy Watergirl Forest", url: "https://fireboy-watergirl.com/fireboy-and-watergirl-forest-temple/"},
+            {name: "Fireboy Watergirl Light", url: "https://fireboy-watergirl.com/fireboy-and-watergirl-light-temple/"},
+            {name: "Fireboy Watergirl Crystal", url: "https://fireboy-watergirl.com/fireboy-and-watergirl-crystal-temple/"},
+            {name: "Fireboy Watergirl Elements", url: "https://fireboy-watergirl.com/fireboy-and-watergirl-elements/"},
+            {name: "Fireboy Watergirl Ice", url: "https://fireboy-watergirl.com/fireboy-and-watergirl-ice-temple/"},
+            {name: "Fireboy Watergirl Fairy", url: "https://fireboy-watergirl.com/fireboy-and-watergirl-fairy-temple/"},
+            
+            // Vex Series
+            {name: "Vex 3", url: "https://vex3.com/"},
+            {name: "Vex 4", url: "https://vex4.com/"},
+            {name: "Vex 5", url: "https://vex5.com/"},
+            {name: "Vex 6", url: "https://vex6.com/"},
+            {name: "Vex 7", url: "https://vex7.com/"},
+            
+            // Big Tower
+            {name: "Big Tower Tiny Square", url: "https://big-tower-tiny-square.com/"},
+            {name: "Big Tower 2", url: "https://big-tower-2.com/"},
+            {name: "Big Flappy Tower", url: "https://big-flappy-tower.com/"},
+            {name: "Big Neon Tower", url: "https://big-neon-tower.com/"},
+            
+            // BTD
+            {name: "Bloons TD", url: "https://bloons-td.com/"},
+            {name: "Bloons TD 2", url: "https://bloons-td-2.com/"},
+            {name: "Bloons TD 3", url: "https://bloons-td-3.com/"},
+            {name: "Bloons TD 4", url: "https://bloons-td-4.com/"},
+            {name: "Bloons TD 5", url: "https://bloons-td-5.com/"},
+            
+            // Helix
+            {name: "Helix Jump", url: "https://helix-jump.com/"},
+            {name: "Helix Jump 2", url: "https://helix-jump-2.com/"},
+            {name: "Helix Jump 3", url: "https://helix-jump-3.com/"},
+            
+            // Stick War
+            {name: "Stick War", url: "https://stick-war.com/"},
+            {name: "Stick War 2", url: "https://stick-war-2.com/"},
+            {name: "Stick War Infinity", url: "https://stick-war-infinity.com/"},
+            {name: "Stick Duel Battle", url: "https://stick-duel-battle.com/"},
+            
+            // More Popular Games
+            {name: "Subway Surfers", url: "https://subway-surfers.org/"},
+            {name: "Temple Run 2", url: "https://temple-run-2.com/"},
+            {name: "Tomb of the Mask", url: "https://tomb-of-the-mask.com/"},
+            {name: "Tomb of the Mask Color", url: "https://tomb-of-the-mask-color.com/"},
+            {name: "OvO", url: "https://ovo-game.com/"},
+            {name: "OvO 2", url: "https://ovo-2.com/"},
+            {name: "OvO Dimensions", url: "https://ovo-dimensions.com/"},
+            {name: "Drift Boss", url: "https://drift-boss.com/"},
+            {name: "Eggy Car", url: "https://eggy-car.com/"},
+            {name: "Flappy Bird", url: "https://flappy-bird.com/"},
+            {name: "Wordle", url: "https://wordle.com/"},
+            {name: "Worlds Hardest Game", url: "https://worlds-hardest-game.com/"},
+            {name: "Worlds Hardest Game 2", url: "https://worlds-hardest-game-2.com/"},
+            {name: "The Impossible Quiz", url: "https://the-impossible-quiz.com/"},
+            {name: "The Impossible Quiz 2", url: "https://the-impossible-quiz-2.com/"},
+            {name: "Run 1", url: "https://run-1.com/"},
+            {name: "Run 2", url: "https://run-2.com/"},
+            {name: "Run 3", url: "https://run-3.com/"},
+            {name: "Duck Life", url: "https://duck-life.com/"},
+            {name: "Duck Life 2", url: "https://duck-life-2.com/"},
+            {name: "Duck Life 3", url: "https://duck-life-3.com/"},
+            {name: "Duck Life 4", url: "https://duck-life-4.com/"},
+            {name: "Duck Life 5", url: "https://duck-life-5.com/"},
+            {name: "Burrito Bison", url: "https://burrito-bison.com/"},
+            {name: "Burrito Bison Revenge", url: "https://burrito-bison-revenge.com/"},
+            {name: "Learn to Fly", url: "https://learn-to-fly.com/"},
+            {name: "Learn to Fly 2", url: "https://learn-to-fly-2.com/"},
+            {name: "Learn to Fly 3", url: "https://learn-to-fly-3.com/"},
+            {name: "Edge Surf", url: "https://edge-surf.com/"},
+            {name: "Google Snake", url: "https://google-snake.com/"},
+            {name: "Doodle Jump", url: "https://doodle-jump.com/"},
+            {name: "QWOP", url: "https://foddy.net/Athletics.html"},
+            {name: "Happy Wheels", url: "https://totaljerkface.com/happy_wheels.tjf"},
+            {name: "Friday Night Funkin", url: "https://fridaynightfunkin.com/"},
+            {name: "Geometry Dash", url: "https://scratch.mit.edu/projects/105500895/embed"},
+            {name: "Geometry Dash Subzero", url: "https://scratch.mit.edu/projects/216343259/embed"},
+            {name: "Geometry Dash Meltdown", url: "https://scratch.mit.edu/projects/216342290/embed"},
+            {name: "FNAF World", url: "https://fnaf-world.com/"},
+            {name: "Granny", url: "https://granny-game.com/"},
+            {name: "Granny 2", url: "https://granny-2.com/"},
+            {name: "Plants vs Zombies", url: "https://plants-vs-zombies.com/"},
+            {name: "Plants vs Zombies 2", url: "https://plants-vs-zombies-2.com/"},
+            {name: "Among Us", url: "https://among-us-game.com/"},
+            {name: "Fall Guys", url: "https://fall-guys-game.com/"},
+            {name: "Fortnite", url: "https://fortnite-online.com/"},
+            {name: "Minecraft Tower Defense", url: "https://minecraft-tower-defense.com/"},
+            {name: "Minecraft Case Simulator", url: "https://minecraft-case-simulator.com/"},
+            {name: "Grand Action Simulator", url: "https://grand-action-simulator.com/"},
+            {name: "Hover Bot Arena", url: "https://hover-bot-arena.com/"},
+            {name: "Swords and Souls", url: "https://swords-and-souls.com/"},
+            {name: "Swords and Souls 2", url: "https://swords-and-souls-2.com/"},
+            {name: "House of Hazards", url: "https://house-of-hazards.com/"},
+            {name: "Getaway Shootout", url: "https://getaway-shootout.com/"},
+            {name: "Temple of Boom", url: "https://temple-of-boom.com/"},
+            {name: "Stickman Hook", url: "https://stickman-hook.com/"},
+            {name: "Neon Swing", url: "https://neon-swing.com/"},
+            {name: "Elastic Man", url: "https://elastic-man.com/"},
+            {name: "Poop Clicker", url: "https://poop-clicker.com/"},
+            {name: "Particle Clicker", url: "https://particle-clicker.com/"},
+            {name: "Spacebar Clicker", url: "https://spacebar-clicker.com/"},
+            {name: "Cookie Clicker 2", url: "https://cookie-clicker-2.com/"},
+            {name: "AdVenture Capitalist", url: "https://adventure-capitalist.com/"},
+            {name: "Vacuum Clicker", url: "https://vacuum-clicker.com/"},
+            {name: "Kick the Buddy", url: "https://kick-the-buddy.com/"},
+            {name: "Bowling Stars", url: "https://bowling-stars.com/"},
+            {name: "Bowling 3D", url: "https://bowling-3d.com/"},
+            {name: "Sprinter", url: "https://sprinter-game.com/"},
+            {name: "Sprinter Heroes", url: "https://sprinter-heroes.com/"},
+            {name: "GTA", url: "https://gta-game.com/"},
+            {name: "GTA 2", url: "https://gta-2.com/"},
+            {name: "GTA Online", url: "https://gta-online.com/"},
+            {name: "Ace Attorney", url: "https://ace-attorney.com/"},
+            {name: "Animal Crossing", url: "https://animal-crossing-game.com/"},
+            {name: "Kirby Amazing Mirror", url: "https://kirby-amazing-mirror.com/"},
+            {name: "GunSpin", url: "https://gunspin.com/"},
+            {name: "Gladihoppers", url: "https://gladihoppers.com/"},
+            {name: "Age of War", url: "https://age-of-war.com/"},
+            {name: "Age of War 2", url: "https://age-of-war-2.com/"},
+            {name: "A Dance of Fire and Ice", url: "https://a-dance-of-fire-and-ice.com/"},
+            {name: "10 Minutes Till Dawn", url: "https://10-minutes-till-dawn.com/"},
+            {name: "20 Minutes Till Dawn", url: "https://20-minutes-till-dawn.com/"},
+            {name: "Slice Master", url: "https://slice-master.com/"},
+            {name: "We Become What We Behold", url: "https://we-become-what-we-behold.com/"},
+            {name: "PolyTrack", url: "https://poly-track.com/"},
+            {name: "1 Trillion Free Draws", url: "https://1-trillion-free-draws.com/"},
+            {name: "Choppy Orc", url: "https://choppy-orc.com/"},
+            {name: "The Last Stand Union City", url: "https://the-last-stand-union-city.com/"},
+            {name: "WorldGuessr", url: "https://worldguessr.com/"},
+            {name: "Rocket League Unity", url: "https://rocketleagueunity.github.io/"},
+            {name: "You vs 100 Skibidi", url: "https://you-vs-100-skibidi-toilets.com/"},
+            {name: "Ragdoll Archers", url: "https://ragdollarchers.com/"},
+            {name: "Uncanny Cat Golf", url: "https://uncanny-cat-golf.com/"},
+            {name: "5b", url: "https://5b-game.com/"},
+            {name: "The Binding of Isaac", url: "https://binding-of-isaac.com/"},
+            {name: "Slow Roads", url: "https://slowroads.io/"},
+            {name: "COD Zombies Portable", url: "https://cod-zombies-portable.com/"},
+            {name: "Air Horn", url: "https://air-horn.com/"},
+            {name: "Eel Slap", url: "https://eelslap.com/"},
+            {name: "Tic Tac Toe", url: "https://tic-tac-toe.com/"},
+            {name: "Connect 4", url: "https://connect-4.org/"},
+            {name: "Hangman", url: "https://hangman-game.com/"},
+            {name: "Lofi Room", url: "https://lofi-room.com/"},
+            {name: "Keylimba", url: "https://keylimba.com/"},
+            {name: "Hyper Cars Ramp Crash", url: "https://hyper-cars-ramp-crash.com/"},
+            {name: "Funny Shooter 2", url: "https://funny-shooter-2.com/"},
+            {name: "N-GON", url: "https://n-gon.github.io/"},
+            {name: "Electric Man 2", url: "https://electric-man-2.com/"},
+            {name: "DVD Logo", url: "https://dvd-logo.com/"},
+            {name: "Tag", url: "https://tag-game.com/"},
+            {name: "Space Huggers", url: "https://space-huggers.com/"},
+            {name: "Kingdom Rush", url: "https://kingdom-rush.com/"},
+            {name: "Jetpack Joyride", url: "https://jetpack-joyride.com/"},
+            {name: "Burrito Bison", url: "https://burrito-bison.com/"},
+            {name: "Stick War Infinity Duel", url: "https://stick-war-infinity-duel.com/"},
+            {name: "DC3", url: "https://dc3-game.com/"},
+            {name: "Boxing Random", url: "https://boxing-random.com/"},
+            {name: "Blockpost", url: "https://blockpost.net/"},
+            {name: "Death Chase 3", url: "https://death-chase-3.com/"},
+            {name: "MX OffRoad Master", url: "https://mx-offroad-master.com/"},
+            {name: "Off Brand Fortnite", url: "https://off-brand-fortnite.com/"},
+            {name: "Superhot", url: "https://superhot-game.com/"},
+            {name: "Funny Shooter 1", url: "https://funny-shooter-1.com/"},
+            {name: "Gun Mayhem", url: "https://gun-mayhem.com/"},
+            {name: "Gun Mayhem 2", url: "https://gun-mayhem-2.com/"},
+            {name: "Hole.io Scratch", url: "https://scratch.mit.edu/projects/389464290/embed"},
+            {name: "Draw the Hill", url: "https://draw-the-hill.com/"},
+            {name: "4th and Goal 2022", url: "https://4th-and-goal-2022.com/"},
+            {name: "Happy Glass", url: "https://happy-glass.com/"},
+            {name: "Candy Crush", url: "https://candy-crush-game.com/"},
+            {name: "Gravity Driver", url: "https://gravity-driver.com/"},
+            {name: "Mr Bullet", url: "https://mr-bullet.com/"},
+            {name: "Burger and Frights", url: "https://burger-and-frights.com/"},
+            {name: "Make sure it's closed", url: "https://make-sure-its-closed.com/"},
+            {name: "Bouncy Basketball", url: "https://bouncy-basketball.com/"},
+            {name: "Basketball Random", url: "https://basketball-random.com/"},
+            {name: "Volley Random", url: "https://volley-random.com/"},
+            {name: "Soccer Random", url: "https://soccer-random.com/"},
+            {name: "Awesome Tanks", url: "https://awesome-tanks.com/"},
+            {name: "Awesome Tanks 2", url: "https://awesome-tanks-2.com/"},
+            {name: "100 Player Pong", url: "https://100-player-pong.com/"},
+            {name: "9007199254740992", url: "https://9007199254740992.com/"},
+            {name: "Achievement Unlocked", url: "https://achievement-unlocked.com/"},
+            {name: "Adrenaline Challenge", url: "https://adrenaline-challenge.com/"},
+            {name: "Avalanche", url: "https://avalanche-game.com/"},
+            {name: "Battle for Gondor", url: "https://battle-for-gondor.com/"},
+            {name: "Big Red Button", url: "https://big-red-button.com/"},
+            {name: "Black Hole Square", url: "https://black-hole-square.com/"},
+            {name: "Black Knight", url: "https://black-knight-game.com/"},
+            {name: "Bloons", url: "https://bloons-game.com/"},
+            {name: "Bloxors", url: "https://bloxors.com/"},
+            {name: "Box Head", url: "https://box-head.com/"},
+            {name: "Cannon Basketball 4", url: "https://cannon-basketball-4.com/"},
+            {name: "Canyon Defense", url: "https://canyon-defense.com/"},
+            {name: "Cell Machine", url: "https://cell-machine.com/"},
+            {name: "Champion Archer", url: "https://champion-archer.com/"},
+            {name: "Chill Radio", url: "https://chill-radio.com/"},
+            {name: "Connect 3", url: "https://connect-3.com/"},
+            {name: "Core Ball", url: "https://core-ball.com/"},
+            {name: "CraftMine", url: "https://craftmine.com/"},
+            {name: "Creative Kill Chamber", url: "https://creative-kill-chamber.com/"},
+            {name: "CS GO Clicker", url: "https://cs-go-clicker.com/"},
+            {name: "Cubefield", url: "https://cubefield.com/"},
+            {name: "Cupcake 2048", url: "https://cupcake-2048.com/"},
+            {name: "Dante", url: "https://dante-game.com/"},
+            {name: "Deal or No Deal", url: "https://deal-or-no-deal-game.com/"},
+            {name: "Death Run 3D", url: "https://death-run-3d.com/"},
+            {name: "Defend the Tank", url: "https://defend-the-tank.com/"},
+            {name: "Doge 2048", url: "https://doge-2048.com/"},
+            {name: "Double Wires", url: "https://double-wires.com/"},
+            {name: "Dragons vs Bricks", url: "https://dragons-vs-bricks.com/"},
+            {name: "Edge Let's surf", url: "https://edge-surf.com/"},
+            {name: "Edge Not Found", url: "https://edge-not-found.com/"},
+            {name: "Endless War 3", url: "https://endless-war-3.com/"},
+            {name: "Evil Glitch", url: "https://evil-glitch.com/"},
+            {name: "Exo", url: "https://exo-game.com/"},
+            {name: "Factory Balls Forever", url: "https://factory-balls-forever.com/"},
+            {name: "Fake Virus", url: "https://fake-virus.com/"},
+            {name: "Flappy 2048", url: "https://flappy-2048.com/"},
+            {name: "Flash Tetris", url: "https://flash-tetris.com/"},
+            {name: "Game Inside a Game", url: "https://game-inside-a-game.com/"},
+            {name: "George and the Printer", url: "https://george-and-the-printer.com/"},
+            {name: "Gimme the Airpod", url: "https://gimme-the-airpod.com/"},
+            {name: "Glass City", url: "https://glass-city.com/"},
+            {name: "Go Ball", url: "https://go-ball.com/"},
+            {name: "GOODNIGHT", url: "https://goodnight-game.com/"},
+            {name: "Gravity Soccer", url: "https://gravity-soccer.com/"},
+            {name: "Grind Craft", url: "https://grind-craft.com/"},
+            {name: "Hacker Typer", url: "https://hackertyper.net/"},
+            {name: "Helicopter", url: "https://helicopter-game.com/"},
+            {name: "Hex Empire", url: "https://hex-empire.com/"},
+            {name: "Idle Breakout", url: "https://idle-breakout.com/"},
+            {name: "Idle Shark", url: "https://idle-shark.com/"},
+            {name: "Interactive Buddy", url: "https://interactive-buddy.com/"},
+            {name: "Just One Boss", url: "https://just-one-boss.com/"},
+            {name: "Kitten Cannon", url: "https://kitten-cannon.com/"},
+            {name: "Madalin Stunt Cars 2", url: "https://madalin-stunt-cars-2.com/"},
+            {name: "Madalin Stunt Cars 3", url: "https://madalin-stunt-cars-3.com/"},
+            {name: "Matrix Rampage", url: "https://matrix-rampage.com/"},
+            {name: "Meme 2048", url: "https://meme-2048.com/"},
+            {name: "Minesweeper", url: "https://minesweeper.online/"},
+            {name: "Mini-putt", url: "https://mini-putt.com/"},
+            {name: "Missiles", url: "https://missiles-game.com/"},
+            {name: "MotoX3M Pool", url: "https://motox3m-pool.com/"},
+            {name: "MotoX3M Spooky", url: "https://motox3m-spooky.com/"},
+            {name: "MotoX3M Winter", url: "https://motox3m-winter.com/"},
+            {name: "Ninja", url: "https://ninja-game.com/"},
+            {name: "Ninja vs Evil Corp", url: "https://ninja-vs-evil-corp.com/"},
+            {name: "NS-Shaft", url: "https://ns-shaft.com/"},
+            {name: "Om Nom Bounce", url: "https://om-nom-bounce.com/"},
+            {name: "Om Nom Run", url: "https://om-nom-run.com/"},
+            {name: "Pandemic 2", url: "https://pandemic-2.com/"},
+            {name: "Papery Planes", url: "https://papery-planes.com/"},
+            {name: "PolyBranch", url: "https://polybranch.com/"},
+            {name: "Portal Flash", url: "https://portal-flash.com/"},
+            {name: "Protektor", url: "https://protektor-game.com/"},
+            {name: "Push The Square", url: "https://push-the-square.com/"},
+            {name: "Push Your Luck", url: "https://push-your-luck.com/"},
+            {name: "Rabbit Samurai", url: "https://rabbit-samurai.com/"},
+            {name: "Rabbit Samurai 2", url: "https://rabbit-samurai-2.com/"},
+            {name: "Rolly Vortex", url: "https://rolly-vortex.com/"},
+            {name: "Rooftop Snipers", url: "https://rooftop-snipers.com/"},
+            {name: "Sand Game", url: "https://sand-game.com/"},
+            {name: "Scrap Metal 3", url: "https://scrap-metal-3.com/"},
+            {name: "SHUTTLEDECK", url: "https://shuttledeck.com/"},
+            {name: "Sleeping Beauty", url: "https://sleeping-beauty-game.com/"},
+            {name: "Slope Ball", url: "https://slope-ball.com/"},
+            {name: "Smash Carts", url: "https://smash-carts.com/"},
+            {name: "Smoking Barrels", url: "https://smoking-barrels.com/"},
+            {name: "Snowbattle", url: "https://snowbattle.com/"},
+            {name: "Soilder Legend", url: "https://soldier-legend.com/"},
+            {name: "Solitare", url: "https://solitaire-game.com/"},
+            {name: "Sort The Court", url: "https://sort-the-court.com/"},
+            {name: "Soundboard", url: "https://soundboard.com/"},
+            {name: "Space Garden", url: "https://space-garden.com/"},
+            {name: "Stack", url: "https://stack-game.com/"},
+            {name: "Stack Bump 3D", url: "https://stack-bump-3d.com/"},
+            {name: "Station 141", url: "https://station-141.com/"},
+            {name: "Stickman Boost", url: "https://stickman-boost.com/"},
+            {name: "Storm The House 2", url: "https://storm-the-house-2.com/"},
+            {name: "Swerve", url: "https://swerve-game.com/"},
+            {name: "Tactical Weapon Pack 2", url: "https://tactical-weapon-pack-2.com/"},
+            {name: "Tactical Assassin 2", url: "https://tactical-assassin-2.com/"},
+            {name: "Tank Trouble 2", url: "https://tank-trouble-2.com/"},
+            {name: "Temple Run 2 Hot", url: "https://temple-run-2-hot.com/"},
+            {name: "The Battle", url: "https://the-battle-game.com/"},
+            {name: "The Final Earth", url: "https://the-final-earth.com/"},
+            {name: "The Heist", url: "https://the-heist-game.com/"},
+            {name: "There Is No Game", url: "https://there-is-no-game.com/"},
+            {name: "This Is The Only Level", url: "https://this-is-the-only-level.com/"},
+            {name: "Toss The Turtle", url: "https://toss-the-turtle.com/"},
+            {name: "Townscaper", url: "https://townscaper.com/"},
+            {name: "Tube Jumpers", url: "https://tube-jumpers.com/"},
+            {name: "TV Static", url: "https://tv-static.com/"},
+            {name: "VELOCE", url: "https://veloce-game.com/"},
+            {name: "Webretro", url: "https://webretro.net/"},
+            {name: "Wordle", url: "https://wordle.com/"},
+            {name: "X Trial Racing", url: "https://x-trial-racing.com/"},
+            {name: "xx142-b2exe", url: "https://xx142-b2exe.com/"},
+            {name: "Operius", url: "https://operius.com/"},
+            {name: "WOP", url: "https://wop-game.com/"},
+            {name: "Rocket Pult", url: "https://rocket-pult.com/"},
+            {name: "Supermarket Simulator", url: "https://supermarket-simulator.com/"},
+            
+            // More requested games
+            {name: "Bad Reddit Designs", url: "https://bad-reddit-designs.com/"},
+            {name: "Snowball.io", url: "https://snowball-io.com/"},
+            {name: "Bearsus", url: "https://bearsus.com/"},
+            {name: "Highway Traffic", url: "https://highway-traffic.com/"},
+            {name: "Papa's Cheeseria", url: "https://papa-cheeseria.com/"},
+            {name: "Papa's Bakeria", url: "https://papa-bakeria.com/"},
+            {name: "Papa's Donuteria", url: "https://papa-donuteria.com/"},
+            {name: "Papa's Pastaria", url: "https://papa-pastaria.com/"},
+            {name: "Papa's Wingeria", url: "https://papa-wingeria.com/"},
+            {name: "Papa's Cupcakeria", url: "https://papa-cupcakeria.com/"},
+            {name: "Papa's Taco Mia", url: "https://papa-taco-mia.com/"},
+            
+            // Additional Retro/Emulator
+            {name: "GBA Games", url: "https://gba.ninja/"},
+            {name: "N64 Games", url: "https://n64web.com/"},
+            {name: "SNES Games", url: "https://www.snesfun.com/"},
+            {name: "NES Games", url: "https://nes-emulator.com/"},
+            {name: "SEGA Games", url: "https://sega-emulator.com/"},
+            {name: "Atari Games", url: "https://atari-emulator.com/"},
+            {name: "PS1 Games", url: "https://ps1-emulator.com/"},
+            {name: "DS Games", url: "https://ds-emulator.com/"},
+            
+            // More IO
+            {name: "Moomoo.io", url: "https://moomoo.io/"},
+            {name: "Surviv.io", url: "https://surviv.io/"},
+            {name: "Mope.io", url: "https://mope.io/"},
+            {name: "Starve.io", url: "https://starve.io/"},
+            {name: "Deeeep.io", url: "https://deeeep.io/"},
+            {name: "Limax.io", url: "https://limax.io/"},
+            {name: "Narwhale.io", url: "https://narwhale.io/"},
+            {name: "Tribs.io", url: "https://tribs.io/"},
+            {name: "Vanar.io", url: "https://vanar.io/"},
+            {name: "Battlegame.io", url: "https://battlegame.io/"},
+            {name: "Brutal.io", url: "https://brutal.io/"},
+            {name: "Gartic.io", url: "https://gartic.io/"},
+            {name: "Gartic Phone", url: "https://garticphone.com/"},
+            {name: "Pictionary", url: "https://pictionary.net/"},
+            {name: "Lichess", url: "https://lichess.org/"},
+            {name: "Chess.com", url: "https://chess.com/"},
+            {name: "FlyOrDie", url: "https://flyordie.com/"},
+            {name: "Agar.io Battle Royale", url: "https://agar.io/battle-royale"},
+            {name: "SlitherCraft", url: "https://slithercraft.io/"},
+            
+            // Popular Mobile Ports
+            {name: "Subway Surfers Beijing", url: "https://subway-surfers-beijing.com/"},
+            {name: "Subway Surfers Tokyo", url: "https://subway-surfers-tokyo.com/"},
+            {name: "Subway Surfers Mumbai", url: "https://subway-surfers-mumbai.com/"},
+            {name: "Temple Run", url: "https://temple-run.com/"},
+            {name: "Temple Run Brave", url: "https://temple-run-brave.com/"},
+            {name: "Temple Run Oz", url: "https://temple-run-oz.com/"},
+            {name: "Cut the Rope 2", url: "https://cut-the-rope-2.com/"},
+            {name: "Cut the Rope Time Travel", url: "https://cut-the-rope-time-travel.com/"},
+            {name: "Cut the Rope Magic", url: "https://cut-the-rope-magic.com/"},
+            {name: "Where's My Water", url: "https://wheres-my-water.com/"},
+            {name: "Where's My Perry", url: "https://wheres-my-perry.com/"},
+            {name: "Fruit Ninja 2", url: "https://fruit-ninja-2.com/"},
+            {name: "Angry Birds Classic", url: "https://angry-birds-classic.com/"},
+            {name: "Angry Birds Space", url: "https://angry-birds-space.com/"},
+            {name: "Angry Birds Rio", url: "https://angry-birds-rio.com/"},
+            {name: "Bad Piggies", url: "https://bad-piggies.com/"},
+            
+            // Additional Online Games
+            {name: "Roblox", url: "https://roblox.com/"},
+            {name: "Minecraft Dungeons", url: "https://minecraft-dungeons.com/"},
+            {name: "Minecraft Education", url: "https://education.minecraft.net/"},
+            {name: "Codenames", url: "https://codenames.game/"},
+            {name: "Spyfall", url: "https://spyfall.app/"},
+            {name: "Secret Hitler", url: "https://secrethitler.io/"},
+            {name: "Colonist.io", url: "https://colonist.io/"},
+            {name: "Catan Universe", url: "https://catanuniverse.com/"},
+            {name: "Uno Online", url: "https://uno-online.com/"},
+            {name: "Cards Against Humanity", url: "https://playingcards.io/"},
+            {name: "Krunker.io Editor", url: "https://krunker.io/editor.html"},
+            {name: "Shell Shockers Maps", url: "https://shellshock.io/maps.html"}
+        ];
 
-        <!-- PAPA'S GAMES -->
-        <section id="papa" class="section">
-            <div class="category-header">Papa's Games</div>
-            <div class="games-grid">
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128407/embed', 'Papa\'s Pizzeria')">
-                    <div class="game-title">Papa's Pizzeria</div>
-                    <div class="game-desc">Make pizzas</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128515/embed', 'Papa\'s Burgeria')">
-                    <div class="game-title">Papa's Burgeria</div>
-                    <div class="game-desc">Grill burgers</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128567/embed', 'Papa\'s Freezeria')">
-                    <div class="game-title">Papa's Freezeria</div>
-                    <div class="game-desc">Ice cream sundaes</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128619/embed', 'Papa\'s Pancakeria')">
-                    <div class="game-title">Papa's Pancakeria</div>
-                    <div class="game-desc">Breakfast cooking</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128673/embed', 'Papa\'s Scooperia')">
-                    <div class="game-title">Papa's Scooperia</div>
-                    <div class="game-desc">Cookie sandwiches</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128735/embed', 'Papa\'s Sushiria')">
-                    <div class="game-title">Papa's Sushiria</div>
-                    <div class="game-desc">Roll sushi</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128789/embed', 'Papa\'s Hot Doggeria')">
-                    <div class="game-title">Papa's Hot Doggeria</div>
-                    <div class="game-desc">Stadium hot dogs</div>
-                    <span class="play-btn">Play</span>
-                </div>
-            </div>
-        </section>
+        // Initialize
+        function init() {
+            renderGames(games);
+            loadRecentGames();
+        }
 
-        <!-- IO GAMES -->
-        <section id="io" class="section">
-            <div class="category-header">.IO Multiplayer Games</div>
-            <div class="games-grid">
-                <div class="game-card" onclick="launchGame('https://1v1.lol/', '1v1.LOL')">
-                    <span class="badge hot">BUILD</span>
-                    <div class="game-title">1v1.LOL</div>
-                    <div class="game-desc">Build and battle</div>
-                    <span class="play-btn">Play</span>
+        // Render games to grid
+        function renderGames(gameList) {
+            const grid = document.getElementById('gamesGrid');
+            grid.innerHTML = gameList.map(game => `
+                <div class="game-card" onclick="playGame('${game.name}', '${game.url}')">
+                    <div class="game-title">${game.name}</div>
+                    <div class="play-btn">PLAY NOW</div>
                 </div>
-                <div class="game-card" onclick="launchGame('https://agar.io/', 'Agar.io')">
-                    <div class="game-title">Agar.io</div>
-                    <div class="game-desc">Cell eating</div>
-                    <span class="play-btn">Play</span>
+            `).join('');
+        }
+
+        // Navigation
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (id === 'recent') {
+                displayRecentPage();
+            }
+        }
+
+        // PROXY with hide.me
+        function loadProxy() {
+            const url = document.getElementById('proxyUrl').value;
+            if (!url) return alert('Enter a URL');
+            
+            let target = url;
+            if (!url.startsWith('http')) target = 'https://' + url;
+            
+            // Use hide.me proxy format
+            const proxyUrl = `https://hide.me/en/proxy?url=${encodeURIComponent(target)}`;
+            
+            document.getElementById('proxyContainer').classList.add('active');
+            document.getElementById('proxyFrame').src = proxyUrl;
+        }
+
+        // Play Game
+        function playGame(name, url) {
+            // Save to recent
+            saveRecentGame(name, url);
+            
+            // Show game
+            document.getElementById('gameViewer').classList.add('active');
+            document.getElementById('viewerTitle').textContent = name;
+            document.getElementById('gameFrame').src = url;
+            
+            // Update recent bar
+            loadRecentGames();
+        }
+
+        // Close Game
+        function closeGame() {
+            document.getElementById('gameViewer').classList.remove('active');
+            document.getElementById('gameFrame').src = '';
+        }
+
+        // Recently Played System
+        function saveRecentGame(name, url) {
+            let recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
+            
+            // Remove if exists
+            recent = recent.filter(g => g.name !== name);
+            
+            // Add to front
+            recent.unshift({name, url, time: Date.now()});
+            
+            // Keep only 20
+            recent = recent.slice(0, 20);
+            
+            localStorage.setItem('recentGames', JSON.stringify(recent));
+        }
+
+        function loadRecentGames() {
+            const recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
+            const bar = document.getElementById('recentBar');
+            const container = document.getElementById('recentItems');
+            
+            if (recent.length === 0) {
+                bar.classList.remove('active');
+                return;
+            }
+            
+            bar.classList.add('active');
+            container.innerHTML = recent.map(g => `
+                <div class="recent-item" onclick="playGame('${g.name}', '${g.url}')" title="${g.name}">
+                    ${g.name}
                 </div>
-                <div class="game-card" onclick="launchGame('https://slither.io/', 'Slither.io')">
-                    <div class="game-title">Slither.io</div>
-                    <div class="game-desc">Snake game</div>
-                    <span class="play-btn">Play</span>
+            `).join('');
+        }
+
+        function displayRecentPage() {
+            const recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
+            const grid = document.getElementById('recentGrid');
+            
+            if (recent.length === 0) {
+                grid.innerHTML = '<div style="text-align: center; padding: 50px;">No recently played games</div>';
+                return;
+            }
+            
+            grid.innerHTML = recent.map(g => `
+                <div class="game-card" onclick="play Game('${g.name}', '${g.url}')">
+                    <div class="game-title">${g.name}</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">
+                        Played ${new Date(g.time).toLocaleTimeString()}
+                    </div>
+                    <div class="play-btn">PLAY AGAIN</div>
                 </div>
-                <div class="game-card" onclick="launchGame('https://diep.io/', 'Diep.io')">
-                    <div class="game-title">Diep.io</div>
-                    <div class="game-desc">Tank warfare</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://krunker.io/', 'Krunker.io')">
-                    <div class="game-title">Krunker.io</div>
-                    <div class="game-desc">Pixel FPS</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://shellshock.io/', 'Shell Shockers')">
-                    <div class="game-title">Shell Shockers</div>
-                    <div class="game-desc">Egg shooter</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://zombsroyale.io/', 'Zombs Royale')">
-                    <div class="game-title">Zombs Royale</div>
-                    <div class="game-desc">2D Battle Royale</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://buildroyale.io/', 'Build Royale')">
-                    <div class="game-title">Build Royale</div>
-                    <div class="game-desc">Build & shoot BR</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://evowars.io/', 'EvoWars.io')">
-                    <div class="game-title">EvoWars.io</div>
-                    <div class="game-desc">Evolution combat</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://smashkarts.io/', 'Smash Karts')">
-                    <div class="game-title">Smash Karts</div>
-                    <div class="game-desc">Kart racing</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://justfall.lol/', 'JustFall.LOL')">
-                    <div class="game-title">JustFall.LOL</div>
-                    <div class="game-desc">Fall Guys style</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://stumbleguys.com/play', 'Stumble Guys')">
-                    <div class="game-title">Stumble Guys</div>
-                    <div class="game-desc">Knockout game</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://territorial.io/', 'Territorial.io')">
-                    <div class="game-title">Territorial.io</div>
-                    <div class="game-desc">Territory capture</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://skribbl.io/', 'Skribbl.io')">
-                    <div class="game-title">Skribbl.io</div>
-                    <div class="game-desc">Drawing game</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://paper.io/', 'Paper.io 2')">
-                    <div class="game-title">Paper.io 2</div>
-                    <div class="game-desc">Territory capture</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://paper-io.com/3d/', 'Paper.io 3D')">
-                    <div class="game-title">Paper.io 3D</div>
-                    <div class="game-desc">3D territory</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://hole.io/', 'Hole.io')">
-                    <div class="game-title">Hole.io</div>
-                    <div class="game-desc">Swallow city</div>
-                    <span class="play-btn">Play</span>
-                </div>
-                <div class="game-card" onclick="launchGame('https://wings.io/', 'Wings.io')">
-                    <div class="game-title">Wings.io</div>
-                    <div class="game-desc">Aerial combat</div>
-                    <span
+            `).join('');
+        }
+
+        // Search
+        function searchGames() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = games.filter(g => g.name.toLowerCase().includes(query));
+            renderGames(filtered);
+            
+            // Switch to games tab if searching
+            if (query.length > 0) {
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                document.getElementById('games').classList.add('active');
+            }
+        }
+
+        // Panic key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '`' || e.key === '~' || e.key === 'Escape') {
+                closeGame();
+            }
+        });
+
+        // Initialize on load
+        window.onload = init;
+    </script>
+</body>
+</html>
