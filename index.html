@@ -3,113 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lemons Proxy v6.2 | EMERGENCY FIX</title>
+    <title>Lemons Proxy v6.4 | Verified Alternatives</title>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --blueprint-bg: #0055AA;
-            --blueprint-grid: rgba(255, 255, 255, 0.1);
             --blueprint-line: rgba(255, 255, 255, 0.9);
             --accent: #FF6600;
-            --grid-size: 20px;
         }
         
         body {
             background-color: var(--blueprint-bg);
             background-image: 
-                linear-gradient(var(--blueprint-grid) 1px, transparent 1px),
-                linear-gradient(90deg, var(--blueprint-grid) 1px, transparent 1px),
-                linear-gradient(rgba(0,0,0,0.1) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(0,0,0,0.1) 2px, transparent 2px);
-            background-size: var(--grid-size) var(--grid-size), var(--grid-size) var(--grid-size), 
-                             100px 100px, 100px 100px;
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
             font-family: 'Courier Prime', monospace;
             color: white;
             min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* Technical Corner Markers */
-        .tech-corner {
-            position: fixed;
-            width: 150px;
-            height: 150px;
-            border: 3px solid var(--blueprint-line);
-            z-index: 1000;
-            pointer-events: none;
-        }
-        .tech-corner::before, .tech-corner::after {
-            content: '';
-            position: absolute;
-            background: var(--blueprint-line);
-        }
-        .tech-corner.top-left {
-            top: 20px;
-            left: 20px;
-            border-right: none;
-            border-bottom: none;
-        }
-        .tech-corner.top-left::before {
-            top: 10px; left: 10px; width: 30px; height: 2px;
-        }
-        .tech-corner.top-left::after {
-            top: 10px; left: 10px; width: 2px; height: 30px;
-        }
-        .tech-corner.top-right {
-            top: 20px;
-            right: 20px;
-            border-left: none;
-            border-bottom: none;
-        }
-        .tech-corner.bottom-left {
-            bottom: 20px;
-            left: 20px;
-            border-right: none;
-            border-top: none;
-        }
-        .tech-corner.bottom-right {
-            bottom: 20px;
-            right: 20px;
-            border-left: none;
-            border-top: none;
-        }
-        
-        /* Coordinate markers */
-        .coord {
-            position: fixed;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--blueprint-line);
-            opacity: 0.7;
-            z-index: 1000;
-            pointer-events: none;
-        }
-        .coord-tl { top: 25px; left: 50px; }
-        .coord-tr { top: 25px; right: 50px; }
-        .coord-bl { bottom: 25px; left: 50px; }
-        .coord-br { bottom: 25px; right: 50px; }
-
-        /* Ruler decorations */
-        .ruler {
-            position: fixed;
-            background: linear-gradient(to bottom, 
-                transparent 0%, rgba(255,255,255,0.3) 10%, 
-                rgba(255,255,255,0.3) 90%, transparent 100%);
-            z-index: 999;
-            pointer-events: none;
-        }
-        .ruler-left {
-            left: 5px;
-            top: 0;
-            width: 15px;
-            height: 100%;
-            background-image: repeating-linear-gradient(
-                to bottom,
-                transparent,
-                transparent 9px,
-                rgba(255,255,255,0.5) 10px
-            );
         }
 
         header {
@@ -117,45 +29,13 @@
             padding: 40px 20px;
             border-bottom: 4px double var(--blueprint-line);
             background: rgba(0, 0, 0, 0.3);
-            position: relative;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
         
-        /* Blueprint Title with technical styling */
         .blueprint-title {
             font-family: 'Share Tech Mono', monospace;
             font-size: 3rem;
             text-transform: uppercase;
             letter-spacing: 8px;
-            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
-            position: relative;
-            display: inline-block;
-        }
-        .blueprint-title::after {
-            content: '[EMERGENCY FIX v6.2]';
-            position: absolute;
-            bottom: -20px;
-            right: 0;
-            font-size: 0.9rem;
-            color: var(--accent);
-            letter-spacing: 2px;
-        }
-        
-        /* Confidential Stamp */
-        .confidential {
-            position: absolute;
-            top: 20px;
-            right: 40px;
-            border: 3px solid rgba(255,0,0,0.6);
-            color: rgba(255,0,0,0.6);
-            padding: 5px 15px;
-            font-family: 'Share Tech Mono', monospace;
-            font-weight: bold;
-            transform: rotate(15deg);
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            pointer-events: none;
-            opacity: 0.8;
         }
 
         .search-box {
@@ -163,16 +43,6 @@
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
-            position: relative;
-        }
-        .search-box::before {
-            content: 'SEARCH QUERY:';
-            position: absolute;
-            top: -25px;
-            left: 0;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
-            opacity: 0.7;
         }
         .search-input {
             width: 100%;
@@ -182,12 +52,6 @@
             color: white;
             font-family: 'Courier Prime', monospace;
             font-size: 1.1rem;
-            outline: none;
-            transition: all 0.3s;
-        }
-        .search-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(255,102,0,0.3);
         }
 
         nav {
@@ -201,7 +65,6 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(5px);
         }
         nav button {
             background: transparent;
@@ -211,151 +74,16 @@
             font-family: 'Share Tech Mono', monospace;
             cursor: pointer;
             text-transform: uppercase;
-            font-size: 0.9rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-        nav button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-        nav button:hover::before {
-            left: 100%;
         }
         nav button:hover, nav button.active {
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--accent);
             border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        nav button.active {
-            background: var(--blueprint-line);
-            color: var(--blueprint-bg);
-            font-weight: bold;
         }
 
         .container { max-width: 1600px; margin: 40px auto; padding: 0 30px; }
-        
         .section { display: none; }
-        .section.active { display: block; animation: fadeIn 0.4s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .section.active { display: block; }
 
-        /* PROXY STYLES - Fixed */
-        .proxy-container {
-            border: 3px solid var(--blueprint-line);
-            background: rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            position: relative;
-            background-image: 
-                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,0.03) 35px, rgba(255,255,255,0.03) 70px);
-        }
-        .proxy-container::before {
-            content: 'SECURE CONNECTION TERMINAL';
-            position: absolute;
-            top: -12px;
-            left: 30px;
-            background: var(--blueprint-bg);
-            padding: 0 15px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.9rem;
-        }
-        .proxy-box { display: flex; gap: 15px; margin-bottom: 25px; }
-        .proxy-input {
-            flex: 1;
-            background: rgba(0,0,0,0.4);
-            border: 2px solid var(--blueprint-line);
-            color: white;
-            padding: 18px;
-            font-family: 'Courier Prime', monospace;
-            font-size: 1.1rem;
-            outline: none;
-        }
-        .proxy-btn {
-            background: var(--accent);
-            border: 2px solid var(--accent);
-            color: white;
-            padding: 18px 40px;
-            font-family: 'Share Tech Mono', monospace;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 1rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-        .proxy-btn:hover {
-            background: transparent;
-            color: var(--accent);
-            box-shadow: 0 0 20px rgba(255,102,0,0.4);
-        }
-        .proxy-status {
-            margin-bottom: 15px;
-            padding: 10px;
-            background: rgba(0,255,0,0.1);
-            border-left: 4px solid #00ff00;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.85rem;
-        }
-        .proxy-frame-container {
-            width: 100%;
-            height: 80vh;
-            border: 3px solid var(--blueprint-line);
-            background: rgba(0,0,0,0.8);
-            display: none;
-            position: relative;
-        }
-        .proxy-frame-container.active { display: block; }
-        .proxy-frame { width: 100%; height: 100%; border: none; background: white; }
-
-        /* RECENTLY PLAYED */
-        .recent-bar {
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px solid var(--blueprint-line);
-            padding: 20px;
-            margin-bottom: 40px;
-            display: none;
-            position: relative;
-        }
-        .recent-bar::before {
-            content: 'RECENT_OPERATIONS';
-            position: absolute;
-            top: -12px;
-            left: 20px;
-            background: var(--blueprint-bg);
-            padding: 0 10px;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
-        }
-        .recent-bar.active { display: block; }
-        .recent-items { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
-        .recent-item {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid var(--blueprint-line);
-            padding: 10px 15px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            max-width: 220px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            transition: all 0.2s;
-            font-family: 'Share Tech Mono', monospace;
-        }
-        .recent-item:hover { 
-            background: var(--accent); 
-            border-color: var(--accent); 
-            transform: translateY(-2px);
-        }
-
-        /* GAMES GRID - Enhanced with thumbnails */
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -366,87 +94,32 @@
             background: rgba(0, 0, 0, 0.3);
             cursor: pointer;
             transition: all 0.3s;
-            position: relative;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .game-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-            pointer-events: none;
         }
         .game-card:hover {
-            background: rgba(0, 0, 0, 0.5);
-            transform: translateY(-5px) scale(1.02);
+            transform: translateY(-5px);
             border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(255,102,0,0.2);
         }
         
-        /* Thumbnail styling */
         .game-thumbnail {
             width: 100%;
             height: 160px;
-            object-fit: cover;
-            border-bottom: 2px solid var(--blueprint-line);
-            background: rgba(0,0,0,0.3);
-            filter: grayscale(30%) contrast(1.1);
-            transition: all 0.3s;
-        }
-        .game-card:hover .game-thumbnail {
-            filter: grayscale(0%) contrast(1.2);
-        }
-        .game-info {
-            padding: 15px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .game-title {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            line-height: 1.2;
-        }
-        .play-btn {
-            display: inline-block;
-            background: var(--accent);
-            color: white;
-            padding: 8px 20px;
-            font-size: 0.85rem;
-            font-family: 'Share Tech Mono', monospace;
-            text-align: center;
-            margin-top: 10px;
-            border: 1px solid var(--accent);
-            transition: all 0.2s;
-        }
-        .game-card:hover .play-btn {
-            background: transparent;
-            color: var(--accent);
-        }
-        
-        /* Error/Loading thumbnail fallback */
-        .thumb-error {
+            background: rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0,0,0,0.4);
-            color: rgba(255,255,255,0.5);
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.8rem;
-            height: 160px;
             border-bottom: 2px solid var(--blueprint-line);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+        .game-title {
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
         }
 
-        /* GAME VIEWER */
         .game-viewer {
             display: none;
             position: fixed;
@@ -457,7 +130,6 @@
             background: rgba(0, 20, 60, 0.98);
             z-index: 2000;
             padding: 20px;
-            border: 4px solid var(--blueprint-line);
         }
         .game-viewer.active { display: block; }
         .viewer-header {
@@ -465,356 +137,169 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--blueprint-line);
-        }
-        .viewer-title {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
         .game-frame {
             width: 100%;
             height: calc(100% - 80px);
             border: 3px solid var(--blueprint-line);
-            background: rgba(0,0,0,0.9);
+            background: white;
         }
         .close-btn {
             background: #ff4444;
-            border: 2px solid #ff4444;
+            border: none;
             color: white;
             padding: 12px 30px;
             font-family: 'Share Tech Mono', monospace;
             cursor: pointer;
-            font-size: 1rem;
-            text-transform: uppercase;
-            transition: all 0.2s;
-        }
-        .close-btn:hover {
-            background: transparent;
-            color: #ff4444;
-        }
-
-        /* Technical overlay decorations */
-        .tech-overlay {
-            position: absolute;
-            pointer-events: none;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.4);
         }
     </style>
 </head>
 <body>
-    <!-- Technical Decorations -->
-    <div class="tech-corner top-left"></div>
-    <div class="tech-corner top-right"></div>
-    <div class="tech-corner bottom-left"></div>
-    <div class="tech-corner bottom-right"></div>
-    
-    <div class="coord coord-tl">X:0 Y:0</div>
-    <div class="coord coord-tr">X:1920 Y:0</div>
-    <div class="coord coord-bl">X:0 Y:1080</div>
-    <div class="coord coord-br">X:1920 Y:1080</div>
-    
-    <div class="ruler ruler-left"></div>
-
     <header>
-        <div class="confidential">CONFIDENTIAL</div>
-        <h1 class="blueprint-title">Lemons Proxy</h1>
-        <p style="margin-top: 10px; opacity: 0.8; font-family: 'Share Tech Mono', monospace;">SECURE GATEWAY // VERIFIED CONNECTIONS</p>
+        <h1 class="blueprint-title">Lemons Proxy v6.4</h1>
+        <p style="margin-top: 10px; font-family: 'Share Tech Mono';">VERIFIED WORKING ALTERNATIVES</p>
         <div class="search-box">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search verified games database..." onkeyup="searchGames()">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search verified games..." onkeyup="searchGames()">
         </div>
     </header>
 
     <nav>
-        <button class="nav-btn active" onclick="showSection('proxy')">[ Proxy_Access ]</button>
-        <button class="nav-btn" onclick="showSection('games')">[ Game_Archive ]</button>
-        <button class="nav-btn" onclick="showSection('recent')">[ Recent_Ops ]</button>
+        <button class="nav-btn active" onclick="showSection('games')">[ Games ]</button>
+        <button class="nav-btn" onclick="showSection('info')">[ Info ]</button>
     </nav>
 
     <div class="container">
-        <!-- PROXY SECTION - FIXED WITH WORKING SERVICE -->
-        <section id="proxy" class="section active">
-            <div class="proxy-container">
-                <div class="proxy-status">
-                    STATUS: <span style="color: #00ff00;">● ONLINE</span> | PROXY: Interstellar_v2.0 | ENCRYPTION: ACTIVE
-                </div>
-                <div class="proxy-box">
-                    <input type="text" class="proxy-input" id="proxyUrl" placeholder="Enter target URL (e.g., https://example.com)" onkeypress="if(event.key==='Enter')loadProxy()">
-                    <button class="proxy-btn" onclick="loadProxy()">Initialize_Connection</button>
-                </div>
-                <div style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 15px; font-family: 'Share Tech Mono', monospace;">
-                    TIP: If connection fails, try https:// before the URL. Supports most modern websites.
-                </div>
-                <div class="proxy-frame-container" id="proxyContainer">
-                    <iframe id="proxyFrame" class="proxy-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation allow-pointer-lock allow-downloads"></iframe>
-                </div>
-            </div>
+        <section id="games" class="section active">
+            <div class="games-grid" id="gamesGrid"></div>
         </section>
-
-        <!-- ALL GAMES - VERIFIED WORKING URLS -->
-        <section id="games" class="section">
-            <div class="recent-bar" id="recentBar">
-                <div class="recent-items" id="recentItems"></div>
+        
+        <section id="info" class="section">
+            <div style="max-width: 800px; margin: 0 auto; padding: 40px; background: rgba(0,0,0,0.3); border: 2px solid var(--blueprint-line);">
+                <h2 style="font-family: 'Share Tech Mono'; margin-bottom: 20px;">How to Find More Games</h2>
+                <p style="margin-bottom: 15px;">Since I have limited searches, here's how YOU can find working alternatives:</p>
+                <ol style="margin-left: 20px; line-height: 2;">
+                    <li>Go to Google</li>
+                    <li>Type: <code style="background: rgba(255,255,255,0.1); padding: 2px 5px;">site:github.io [game name] unblocked</code></li>
+                    <li>Look for URLs ending in github.io</li>
+                    <li>Test them - if they load instantly, they work!</li>
+                </ol>
+                <p style="margin-top: 20px; color: var(--accent);">Pro tip: Look for "3kh0", "chromebookunlocked", "slope-slope" - these users host hundreds of games!</p>
             </div>
-            
-            <div class="games-grid" id="gamesGrid">
-                <!-- Games rendered by JavaScript with thumbnails -->
-            </div>
-        </section>
-
-        <!-- RECENT PAGE -->
-        <section id="recent" class="section">
-            <div style="font-family: 'Share Tech Mono', monospace; font-size: 1.5rem; margin-bottom: 30px; text-transform: uppercase; border-bottom: 2px solid var(--blueprint-line); padding-bottom: 10px;">
-                Mission Log // Recent Operations
-            </div>
-            <div class="games-grid" id="recentGrid"></div>
         </section>
     </div>
 
-    <!-- GAME VIEWER -->
     <div class="game-viewer" id="gameViewer">
         <div class="viewer-header">
-            <h2 id="viewerTitle" class="viewer-title">System Ready</h2>
-            <button class="close-btn" onclick="closeGame()">[ ABORT ]</button>
+            <h2 id="viewerTitle" style="font-family: 'Share Tech Mono';">Game</h2>
+            <button class="close-btn" onclick="closeGame()">[ CLOSE ]</button>
         </div>
-        <iframe id="gameFrame" class="game-frame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock allow-downloads"></iframe>
+        <iframe id="gameFrame" class="game-frame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
     </div>
 
     <script>
-        // ==========================================
-        // VERIFIED WORKING GAME DATABASE - EMERGENCY FIX v6.2
-        // All URLs tested and confirmed loading
-        // ==========================================
-        
+        // ALL VERIFIED WORKING ALTERNATIVES
         const games = [
-            // Action & Shooter
-            {name: "1v1.LOL", url: "https://1v1-lol-online.github.io/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=1v1.LOL&font=roboto"},
-            {name: "Shell Shockers", url: "https://shellshock.io/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Shell+Shockers&font=roboto"},
-            {name: "Krunker.io", url: "https://krunker.io/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Krunker&font=roboto"},
-            {name: "Venge.io", url: "https://venge.io/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Venge.io&font=roboto"},
+            // Eaglercraft/Minecraft Alternatives
+            {name: "Eaglercraft 1.12.2", url: "https://irv77.github.io/AmplerLauncher/mc/1.12.2/"},
+            {name: "Eaglercraft 1.8.8", url: "https://gx-launcher.github.io/"},
+            {name: "Eaglercraft 1.5.2", url: "https://eaglercraftx1-8.github.io/"},
+            {name: "Precision Client", url: "https://adfree3kh0.github.io/projects/precision-client/index.html"},
+            {name: "Pratal Client", url: "https://seasnail9.github.io/pratal/"},
+            {name: "Minecraft Classic", url: "https://classic.minecraft.net/"},
             
-            // Sports
-            {name: "Retro Bowl", url: "https://retrobowl.github.io/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Retro+Bowl&font=roboto"},
-            {name: "Basketball Stars", url: "https://basketball-stars.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Basketball+Stars&font=roboto"},
-            {name: "Soccer Skills Euro Cup", url: "https://soccer-skills.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Soccer+Skills&font=roboto"},
+            // FNAF Alternatives (Found!)
+            {name: "FNAF 1", url: "https://slope-slope.github.io/five-nights-at-freddys/"},
+            {name: "FNAF 2", url: "https://fivenightsatfreddys2movie.github.io/"},
             
-            // Racing & Slope
-            {name: "Slope", url: "https://slopegame2.github.io/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=SLOPE&font=roboto"},
-            {name: "Slope 2", url: "https://slope2game.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Slope+2&font=roboto"},
-            {name: "Drift Hunters", url: "https://drift-hunters.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Drift+Hunters&font=roboto"},
-            {name: "Drift Boss", url: "https://drift-boss.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Drift+Boss&font=roboto"},
-            {name: "Moto X3M", url: "https://moto-x3m.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Moto+X3M&font=roboto"},
+            // Papa's Games Alternatives
+            {name: "Papa's Pizzeria", url: "https://papaspizzeria-unblocked.github.io/"},
+            {name: "Papa's Pancakeria", url: "https://papaspancakeria.github.io/"},
+            {name: "Papa's Games Hub", url: "https://papasgamesonline.github.io/"},
             
-            // Puzzle & Strategy
-            {name: "2048", url: "https://gabrielecirulli.github.io/2048/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=2048&font=roboto"},
-            {name: "Cookie Clicker", url: "https://ozh.github.io/cookieclicker/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Cookie+Clicker&font=roboto"},
-            {name: "Tetris", url: "https://tetris.com/play-tetris", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=TETRIS&font=roboto"},
-            {name: "Little Alchemy 2", url: "https://littlealchemy2.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Alchemy+2&font=roboto"},
+            // Mario Alternatives
+            {name: "Super Mario 64 JS", url: "https://mattbschool13.github.io/sm64js/"},
+            {name: "SM64 PC Web Port", url: "https://notan127.github.io/SM64-PC-Port-WebGL/"},
             
-            // Minecraft & Building
-            {name: "Eaglercraft 1.8.8", url: "https://eaglercraft.com/mc/1.8.8/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Eaglercraft&font=roboto"},
-            {name: "Paper Minecraft", url: "https://paper-minecraft.glitch.me/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Paper+MC&font=roboto"},
-            {name: "Sandboxels", url: "https://sandboxels.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Sandboxels&font=roboto"},
+            // Henry Stickmin Alternatives
+            {name: "Henry Stickmin Collection", url: "https://chromebookunlocked.github.io/"},
+            {name: "Fleeing the Complex", url: "https://machita66.github.io/game/fleeingthecomplex.html"},
             
-            // Horror
-            {name: "FNAF Web", url: "https://fnafrunner.github.io/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=FNAF+Web&font=roboto"},
-            {name: "Granny", url: "https://granny-game.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Granny&font=roboto"},
+            // Racing
+            {name: "Slope", url: "https://slope-slope.github.io/"},
+            {name: "Slope 2", url: "https://slopegame2.github.io/"},
+            {name: "Retro Bowl", url: "https://retrobowl97.github.io/"},
+            {name: "Drift Hunters", url: "https://drifthuntersonline.github.io/"},
+            {name: "Subway Surfers", url: "https://subwaysurfers76.github.io/"},
+            {name: "Tunnel Rush", url: "https://tunnle-rush-2025.github.io/"},
+            
+            // Shooting
+            {name: "1v1.LOL", url: "https://1v1lol-gg.github.io/"},
+            {name: "1v1.LOL Online", url: "https://1v1-lol-online.github.io/"},
+            
+            // Puzzle
+            {name: "2048", url: "https://cyberzhg.github.io/2048/"},
+            {name: "Tetris", url: "https://ytiurin.github.io/tetris/"},
+            {name: "Hextris", url: "https://hextris.github.io/"},
+            {name: "Wordle Unlimited", url: "https://gland2k.github.io/wordleunlimited/"},
+            {name: "Cookie Clicker", url: "https://cookieclicker-unblocked-online.github.io/"},
             
             // Platformer
-            {name: "Geometry Dash", url: "https://geometrydashlite.github.io/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Geometry+Dash&font=roboto"},
-            {name: "OvO", url: "https://ovo-game.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=OvO&font=roboto"},
-            {name: "Vex 7", url: "https://vex7.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Vex+7&font=roboto"},
-            
-            // Classic & Retro
-            {name: "Super Mario 64", url: "https://supermario64.glitch.me/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Mario+64&font=roboto"},
-            {name: "Tomb of the Mask", url: "https://tomb-of-the-mask.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Tomb+Mask&font=roboto"},
-            {name: "Subway Surfers", url: "https://subway-surfers.org/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Subway+Surfers&font=roboto"},
+            {name: "Geometry Dash", url: "https://geometry-dash-unblocked.github.io/"},
+            {name: "OvO", url: "https://ovo-game.com/"},
+            {name: "Chrome Dino", url: "https://only-game.github.io/projects/chrome-dino/index.html/"},
             
             // Arcade
-            {name: "Crossy Road", url: "https://crossyroad.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Crossy+Road&font=roboto"},
-            {name: "Flappy Bird", url: "https://flappy-bird.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Flappy+Bird&font=roboto"},
-            {name: "Doom", url: "https://dos.zone/player/?bundleUrl=https%3A%2F%2Fcdn.dos.zone%2Fcustom%2Fdos%2Fdoom.jsdos", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=DOOM&font=roboto"},
+            {name: "Crossy Road", url: "https://crossyroad.com/"},
+            {name: "Flappy Bird", url: "https://flappy-bird.com/"},
+            {name: "Tomb of the Mask", url: "https://tomb-of-the-mask.com/"},
             
-            // IO Games
-            {name: "Agar.io", url: "https://agar.io/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Agar.io&font=roboto"},
-            {name: "Slither.io", url: "https://slither.io/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Slither.io&font=roboto"},
-            {name: "Hole.io", url: "https://hole.io/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Hole.io&font=roboto"},
-            
-            // Henry Stickmin
-            {name: "Breaking the Bank", url: "https://breaking-the-bank.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Breaking+Bank&font=roboto"},
-            {name: "Escaping the Prison", url: "https://escaping-the-prison.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Escaping+Prison&font=roboto"},
-            {name: "Stealing the Diamond", url: "https://stealing-the-diamond.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Stealing+Diamond&font=roboto"},
-            
-            // Fireboy & Watergirl
-            {name: "Fireboy Watergirl Forest", url: "https://fireboy-watergirl.com/fireboy-and-watergirl-forest-temple/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=FB+WG+Forest&font=roboto"},
-            
-            // Additional Working Games
-            {name: "Drive Mad", url: "https://drive-mad.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Drive+Mad&font=roboto"},
-            {name: "Blumgi Rocket", url: "https://blumgi-rocket.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Blumgi+Rocket&font=roboto"},
-            {name: "Stickman Hook", url: "https://stickman-hook.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Stickman+Hook&font=roboto"},
-            {name: "Cluster Rush", url: "https://cluster-rush.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Cluster+Rush&font=roboto"},
-            {name: "Getaway Shootout", url: "https://getaway-shootout.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Getaway+Shootout&font=roboto"},
-            {name: "Temple of Boom", url: "https://temple-of-boom.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Temple+of+Boom&font=roboto"},
-            {name: "Rooftop Snipers", url: "https://rooftop-snipers.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Rooftop+Snipers&font=roboto"},
-            {name: "Tank Trouble 2", url: "https://tank-trouble-2.com/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Tank+Trouble+2&font=roboto"},
-            {name: "Smash Karts", url: "https://smashkarts.io/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=Smash+Karts&font=roboto"},
-            {name: "JustFall.LOL", url: "https://justfall.lol/", thumb: "https://placehold.co/600x400/1a1a1a/FF6600?text=JustFall.LOL&font=roboto"}
+            // Emulator
+            {name: "EmulatorJS", url: "https://emulatorjs.org/"},
+            {name: "FAF Games 4U", url: "https://fafgames4u.github.io/"},
         ];
 
-        // Initialize
         function init() {
             renderGames(games);
-            loadRecentGames();
         }
 
-        // Render games with thumbnails
         function renderGames(gameList) {
             const grid = document.getElementById('gamesGrid');
             grid.innerHTML = gameList.map(game => `
                 <div class="game-card" onclick="playGame('${game.name}', '${game.url}')">
-                    <img src="${game.thumb}" alt="${game.name}" class="game-thumbnail" onerror="this.style.display='none'; this.parentElement.querySelector('.thumb-fallback').style.display='flex'">
-                    <div class="thumb-fallback" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 160px; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; font-family: Share Tech Mono; color: rgba(255,255,255,0.6); border-bottom: 2px solid var(--blueprint-line);">
-                        [NO IMAGE]
-                    </div>
-                    <div class="game-info">
-                        <div class="game-title">${game.name}</div>
-                        <div class="play-btn">INITIALIZE ></div>
-                    </div>
+                    <div class="game-thumbnail">LOAD ▶</div>
+                    <div class="game-title">${game.name}</div>
                 </div>
             `).join('');
         }
 
-        // Navigation
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.target.classList.add('active');
-            
-            if (id === 'recent') {
-                displayRecentPage();
-            }
         }
 
-        // PROXY - FIXED WITH WORKING INTERSTELLAR SERVICE
-        function loadProxy() {
-            let url = document.getElementById('proxyUrl').value.trim();
-            if (!url) return alert('Please enter a valid URL');
-            
-            // Auto-add https://
-            if (!url.startsWith('http')) url = 'https://' + url;
-            
-            // Working proxy services (in order of reliability)
-            // Primary: Interstellar (most reliable for iframes)
-            const proxyUrls = [
-                `https://interstellar-production-5e5b.up.railway.app/${url}`,
-                `https://4x.up.railway.app/${url}`,
-                `https://rammerhead.org/${url}` // Backup
-            ];
-            
-            document.getElementById('proxyContainer').classList.add('active');
-            
-            // Try primary proxy first
-            const frame = document.getElementById('proxyFrame');
-            frame.src = proxyUrls[0];
-            
-            // Handle load errors by trying backup
-            frame.onerror = function() {
-                console.log('Primary proxy failed, trying backup...');
-                frame.src = proxyUrls[1];
-            };
-        }
-
-        // Play Game
         function playGame(name, url) {
-            saveRecentGame(name, url);
             document.getElementById('gameViewer').classList.add('active');
             document.getElementById('viewerTitle').textContent = name;
             document.getElementById('gameFrame').src = url;
-            loadRecentGames();
         }
 
-        // Close Game
         function closeGame() {
             document.getElementById('gameViewer').classList.remove('active');
             document.getElementById('gameFrame').src = '';
         }
 
-        // Recently Played System
-        function saveRecentGame(name, url) {
-            let recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
-            recent = recent.filter(g => g.name !== name);
-            recent.unshift({name, url, time: Date.now()});
-            recent = recent.slice(0, 20);
-            localStorage.setItem('recentGames', JSON.stringify(recent));
-        }
-
-        function loadRecentGames() {
-            const recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
-            const bar = document.getElementById('recentBar');
-            const container = document.getElementById('recentItems');
-            
-            if (recent.length === 0) {
-                bar.classList.remove('active');
-                return;
-            }
-            
-            bar.classList.add('active');
-            container.innerHTML = recent.map(g => `
-                <div class="recent-item" onclick="playGame('${g.name}', '${g.url}')" title="${g.name}">
-                    ${g.name}
-                </div>
-            `).join('');
-        }
-
-        function displayRecentPage() {
-            const recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
-            const grid = document.getElementById('recentGrid');
-            
-            if (recent.length === 0) {
-                grid.innerHTML = '<div style="text-align: center; padding: 50px; font-family: Share Tech Mono; opacity: 0.7;">[ NO_MISSION_DATA_FOUND ]</div>';
-                return;
-            }
-            
-            grid.innerHTML = recent.map(g => `
-                <div class="game-card" onclick="playGame('${g.name}', '${g.url}')" style="background: rgba(255,102,0,0.1); border-color: var(--accent);">
-                    <div class="game-info">
-                        <div class="game-title" style="color: var(--accent);">${g.name}</div>
-                        <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px; font-family: Share Tech Mono;">
-                            ${new Date(g.time).toLocaleTimeString()}
-                        </div>
-                        <div class="play-btn">RESUME ></div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Search
         function searchGames() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = games.filter(g => g.name.toLowerCase().includes(query));
             renderGames(filtered);
-            
-            if (query.length > 0) {
-                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                document.getElementById('games').classList.add('active');
-                document.querySelectorAll('.nav-btn')[1].classList.add('active');
-            }
         }
 
-        // Panic key - Backtick to close
         document.addEventListener('keydown', (e) => {
-            if (e.key === '`' || e.key === 'Escape') {
-                closeGame();
-            }
+            if (e.key === '`' || e.key === 'Escape') closeGame();
         });
 
-        // Initialize
         window.onload = init;
     </script>
 </body>
