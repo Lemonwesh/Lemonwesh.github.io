@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lemons Proxy | v5.0 Hypackel Edition</title>
+    <title>Lemons Proxy v6.1 | Complete Library</title>
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --blueprint-bg: #0066CC;
             --blueprint-grid: rgba(255, 255, 255, 0.15);
@@ -19,7 +14,6 @@
             --accent: #FF6B35;
             --warning: #FFD700;
         }
-
         body {
             background-color: var(--blueprint-bg);
             background-image: 
@@ -31,27 +25,24 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-
         .tech-border {
             position: fixed;
             border: 2px solid var(--blueprint-line);
             pointer-events: none;
             z-index: 1000;
         }
-
         .tech-border.top-left { top: 10px; left: 10px; width: 100px; height: 100px; border-right: none; border-bottom: none; }
         .tech-border.top-right { top: 10px; right: 10px; width: 100px; height: 100px; border-left: none; border-bottom: none; }
         .tech-border.bottom-left { bottom: 10px; left: 10px; width: 100px; height: 100px; border-right: none; border-top: none; }
         .tech-border.bottom-right { bottom: 10px; right: 10px; width: 100px; height: 100px; border-left: none; border-top: none; }
-
+        
         header {
             text-align: center;
             padding: 40px 20px;
             border-bottom: 3px double var(--blueprint-line);
-            position: relative;
             background: rgba(0, 0, 0, 0.2);
+            position: relative;
         }
-
         .blueprint-title {
             font-family: 'Share Tech Mono', monospace;
             font-size: 3rem;
@@ -59,14 +50,6 @@
             letter-spacing: 5px;
             text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
         }
-
-        .subtitle {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-top: 10px;
-            letter-spacing: 3px;
-        }
-
         .drawing-number {
             position: absolute;
             top: 20px;
@@ -76,65 +59,65 @@
             padding: 5px 10px;
             transform: rotate(-2deg);
         }
-
+        .search-box {
+            margin-top: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid var(--blueprint-line);
+            color: white;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+        }
         nav {
             background: rgba(0, 0, 0, 0.3);
             border-bottom: 1px solid var(--blueprint-line);
             padding: 15px;
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 15px;
             flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-
         nav button {
             background: transparent;
             border: 2px solid var(--blueprint-line);
             color: white;
-            padding: 10px 25px;
+            padding: 8px 16px;
             font-family: 'Share Tech Mono', monospace;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 0.8rem;
             transition: all 0.3s;
         }
-
         nav button:hover, nav button.active {
             background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
-
         nav button.active {
             background: var(--blueprint-line);
             color: var(--blueprint-bg);
             font-weight: bold;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
+        .container { max-width: 1400px; margin: 40px auto; padding: 0 20px; }
         .section { display: none; animation: fadeIn 0.5s; }
         .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* INLINE PROXY STYLES */
         .proxy-container {
             border: 3px solid var(--blueprint-line);
             background: rgba(0, 0, 0, 0.2);
             padding: 30px;
             position: relative;
         }
-
         .proxy-container::before {
-            content: 'INLINE PROXY MODULE v5.0';
+            content: 'CROXYPROXY MODULE';
             position: absolute;
             top: -12px;
             left: 30px;
@@ -143,17 +126,9 @@
             font-size: 0.9rem;
             letter-spacing: 2px;
         }
-
-        .proxy-controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
+        .proxy-box { display: flex; gap: 10px; margin-bottom: 20px; }
         .proxy-input {
             flex: 1;
-            min-width: 200px;
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid var(--blueprint-line);
             color: white;
@@ -161,9 +136,6 @@
             font-family: 'Courier Prime', monospace;
             font-size: 1rem;
         }
-
-        .proxy-input::placeholder { color: rgba(255, 255, 255, 0.5); }
-
         .proxy-btn {
             background: var(--accent);
             border: 2px solid var(--accent);
@@ -174,119 +146,95 @@
             cursor: pointer;
             text-transform: uppercase;
         }
-
-        .proxy-btn:hover { background: transparent; }
-
-        .proxy-selector {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .proxy-selector label {
-            font-family: 'Share Tech Mono', monospace;
-        }
-
-        .proxy-selector select {
-            background: rgba(0,0,0,0.3);
-            border: 2px solid var(--blueprint-line);
-            color: white;
-            padding: 8px;
-            font-family: 'Courier Prime', monospace;
-        }
-
         .proxy-frame-container {
             width: 100%;
-            height: 70vh;
+            height: 75vh;
             border: 3px solid var(--blueprint-line);
             background: white;
-            position: relative;
             display: none;
         }
-
         .proxy-frame-container.active { display: block; }
+        .proxy-frame { width: 100%; height: 100%; border: none; }
 
-        .proxy-frame {
-            width: 100%;
-            height: 100%;
-            border: none;
+        .category-header {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.3rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--blueprint-line);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--warning);
         }
-
-        /* GAMES GRID */
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
+            gap: 20px;
+            margin-bottom: 40px;
         }
-
         .game-card {
             border: 2px solid var(--blueprint-line);
             background: rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            text-align: center;
+            padding: 15px;
             transition: transform 0.3s;
             cursor: pointer;
             position: relative;
         }
-
         .game-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             background: rgba(0, 0, 0, 0.4);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-
-        .game-icon { font-size: 2.5rem; margin-bottom: 10px; }
-        
         .game-title {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            line-height: 1.3;
         }
-
-        .game-desc { font-size: 0.8rem; opacity: 0.8; margin-bottom: 12px; height: 40px; }
-
+        .game-desc {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            height: 35px;
+            overflow: hidden;
+        }
         .play-btn {
             display: inline-block;
             border: 2px solid var(--accent);
             color: var(--accent);
-            padding: 6px 16px;
-            text-decoration: none;
-            text-transform: uppercase;
+            padding: 5px 15px;
             font-size: 0.8rem;
+            text-transform: uppercase;
             transition: all 0.3s;
         }
-
         .play-btn:hover { background: var(--accent); color: white; }
-
         .badge {
             position: absolute;
             top: 10px;
             right: 10px;
             background: var(--accent);
             color: white;
-            padding: 2px 8px;
-            font-size: 0.7rem;
+            padding: 2px 6px;
+            font-size: 0.65rem;
             text-transform: uppercase;
         }
-
-        .badge.multi { background: #228B22; }
+        .badge.hot { background: #ff0000; }
         .badge.new { background: #FFD700; color: black; }
 
-        /* GAME VIEWER */
         .game-viewer {
             display: none;
-            border: 3px solid var(--blueprint-line);
-            background: rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 51, 0.95);
+            z-index: 2000;
             padding: 20px;
-            height: 85vh;
+            border: 5px solid var(--blueprint-line);
         }
-
         .game-viewer.active { display: block; }
-
         .viewer-header {
             display: flex;
             justify-content: space-between;
@@ -295,59 +243,36 @@
             padding-bottom: 15px;
             border-bottom: 1px solid var(--blueprint-line);
         }
-
         .game-frame {
             width: 100%;
-            height: calc(100% - 60px);
-            border: 2px solid var(--blueprint-line);
+            height: calc(100% - 80px);
+            border: 3px solid var(--blueprint-line);
             background: black;
         }
-
-        .quick-links {
-            margin-top: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 10px;
-        }
-
-        .quick-btn {
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--blueprint-line);
+        .close-btn {
+            background: #ff4444;
+            border: none;
             color: white;
-            padding: 8px;
+            padding: 10px 20px;
+            font-family: 'Share Tech Mono', monospace;
             cursor: pointer;
-            font-size: 0.8rem;
             text-transform: uppercase;
         }
-
-        .quick-btn:hover { background: var(--accent); border-color: var(--accent); }
-
-        /* TOOLS */
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .tool-box {
-            border: 2px solid var(--blueprint-line);
-            padding: 25px;
-            background: rgba(0, 0, 0, 0.2);
+        .fullscreen-btn {
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin-right: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            cursor: pointer;
+            text-transform: uppercase;
         }
 
         @media (max-width: 768px) {
             .blueprint-title { font-size: 2rem; }
-            .proxy-controls { flex-direction: column; }
-            .proxy-frame-container { height: 50vh; }
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            border-top: 3px double var(--blueprint-line);
-            margin-top: 50px;
-            font-size: 0.8rem;
-            opacity: 0.7;
+            .proxy-box { flex-direction: column; }
+            .games-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -358,417 +283,361 @@
     <div class="tech-border bottom-right"></div>
 
     <header>
-        <div class="drawing-number">DWG: LEMONS-v5.0-HYPACKEL</div>
+        <div class="drawing-number">DWG: LEMONS-v6.1-COMPLETE</div>
         <h1 class="blueprint-title">Lemons Proxy</h1>
-        <p class="subtitle">Hypackel Games Edition with Inline Proxy</p>
+        <p style="margin-top: 10px; opacity: 0.8;">Complete Game Library | All Games Included</p>
+        <div class="search-box">
+            <input type="text" class="search-input" id="gameSearch" placeholder="Search all games..." onkeyup="searchGames()">
+        </div>
     </header>
 
     <nav>
         <button class="nav-btn active" onclick="showSection('proxy')">Proxy</button>
-        <button class="nav-btn" onclick="showSection('games')">Hypackel Games</button>
-        <button class="nav-btn" onclick="showSection('multiplayer')">Multiplayer</button>
-        <button class="nav-btn" onclick="showSection('tools')">Tools</button>
+        <button class="nav-btn" onclick="showSection('all')">All Games</button>
+        <button class="nav-btn" onclick="showSection('minecraft')">Minecraft</button>
+        <button class="nav-btn" onclick="showSection('pokemon')">Pokemon</button>
+        <button class="nav-btn" onclick="showSection('mario')">Mario</button>
+        <button class="nav-btn" onclick="showSection('fnaf')">FNAF</button>
+        <button class="nav-btn" onclick="showSection('papa')">Papa's</button>
+        <button class="nav-btn" onclick="showSection('io')">.IO</button>
+        <button class="nav-btn" onclick="showSection('action')">Action</button>
+        <button class="nav-btn" onclick="showSection('sports')">Sports</button>
+        <button class="nav-btn" onclick="showSection('puzzle')">Puzzle</button>
+        <button class="nav-btn" onclick="showSection('retro')">Retro</button>
+        <button class="nav-btn" onclick="showSection('fireboy')">Fireboy</button>
+        <button class="nav-btn" onclick="showSection('misc')">Misc</button>
     </nav>
 
     <div class="container">
-        <!-- INLINE PROXY SECTION -->
+        <!-- PROXY -->
         <section id="proxy" class="section active">
             <div class="proxy-container">
-                <div class="proxy-selector">
-                    <label>Proxy Service:</label>
-                    <select id="proxyBackend" onchange="checkProxy()">
-                        <option value="interstellar">Interstellar (Recommended)</option>
-                        <option value="rammerhead">Rammerhead</option>
-                        <option value="ultraviolet">Ultraviolet</option>
-                        <option value="holyunblocker">Holy Unblocker</option>
-                    </select>
-                    <span style="font-size: 0.8rem; opacity: 0.8;">If one doesn't work, try another</span>
+                <div class="proxy-box">
+                    <input type="text" class="proxy-input" id="proxyUrl" placeholder="Enter URL (e.g., https://google.com)" onkeypress="if(event.key==='Enter')loadProxy()">
+                    <button class="proxy-btn" onclick="loadProxy()">Load</button>
                 </div>
-
-                <div class="proxy-controls">
-                    <input type="text" class="proxy-input" id="urlInput" placeholder="Enter URL (e.g., https://example.com)" onkeypress="if(event.key==='Enter')loadProxy()">
-                    <button class="proxy-btn" onclick="loadProxy()">Load Inline</button>
-                </div>
-
-                <div class="quick-links">
-                    <button class="quick-btn" onclick="loadGameProxy('https://google.com')">Google</button>
-                    <button class="quick-btn" onclick="loadGameProxy('https://youtube.com')">YouTube</button>
-                    <button class="quick-btn" onclick="loadGameProxy('https://discord.com')">Discord</button>
-                    <button class="quick-btn" onclick="loadGameProxy('https://reddit.com')">Reddit</button>
-                    <button class="quick-btn" onclick="loadGameProxy('https://twitter.com')">Twitter</button>
-                    <button class="quick-btn" onclick="loadGameProxy('https://instagram.com')">Instagram</button>
-                    <button class="quick-btn" onclick="loadGameProxy('https://tiktok.com')">TikTok</button>
-                    <button class="quick-btn" onclick="loadGameProxy('https://twitch.tv')">Twitch</button>
-                </div>
-
-                <div style="margin-top: 15px; font-size: 0.85rem; color: var(--warning);">
-                    <strong>Note:</strong> If you see a white screen or error, the proxy service may be blocked. Try switching the backend above or refreshing.
-                </div>
-
-                <div class="proxy-frame-container" id="proxyContainer">
+                <div class="proxy-frame-container" id="proxyFrameContainer">
                     <iframe id="proxyFrame" class="proxy-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation"></iframe>
                 </div>
             </div>
         </section>
 
-        <!-- HYPACKEL GAMES SECTION -->
-        <section id="games" class="section">
-            <div id="gamesMenu">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <h2 style="font-family: 'Share Tech Mono', monospace; letter-spacing: 3px;">HYPACKEL GAMES COLLECTION</h2>
-                    <p style="margin-top: 10px; opacity: 0.8;">400+ Games - Click any to play inline</p>
+        <!-- ALL GAMES (Search Results) -->
+        <section id="all" class="section">
+            <div class="category-header">All Games</div>
+            <div class="games-grid" id="allGamesGrid"></div>
+        </section>
+
+        <!-- MINECRAFT -->
+        <section id="minecraft" class="section">
+            <div class="category-header">Minecraft Collection</div>
+            <div class="games-grid">
+                <!-- Eaglercraft Versions -->
+                <div class="game-card" onclick="launchGame('https://g.deev.is/eaglercraft/', 'Eaglercraft 1.5.2')">
+                    <span class="badge">Classic</span>
+                    <div class="game-title">Eaglercraft 1.5.2</div>
+                    <div class="game-desc">Original Eaglercraft</div>
+                    <span class="play-btn">Play</span>
                 </div>
-
-                <div class="games-grid">
-                    <!-- Popular Hypackel Games -->
-                    <div class="game-card" onclick="launchGame('https://y8.com/embed/slope', 'Slope')">
-                        <div class="game-icon">🔵</div>
-                        <div class="game-title">Slope <span class="badge new">POPULAR</span></div>
-                        <div class="game-desc">Endless running ball game.</div>
-                        <span class="play-btn">Play Inline</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchGame('https://subwaysurfersgame.org/game/subway-surfers/', 'Subway Surfers')">
-                        <div class="game-icon">🏃</div>
-                        <div class="game-title">Subway Surfers</div>
-                        <div class="game-desc">Classic endless runner.</div>
-                        <span class="play-btn">Play Inline</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchGame('https://1v1.lol/', '1v1.LOL')">
-                        <div class="game-icon">🔫</div>
-                        <div class="game-title">1v1.LOL <span class="badge multi">MP</span></div>
-                        <div class="game-desc">Build and battle online.</div>
-                        <span class="play-btn">Play Inline</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchGame('https://classic.minecraft.net/', 'Minecraft Classic')">
-                        <div class="game-icon">⛏️</div>
-                        <div class="game-title">Minecraft Classic</div>
-                        <div class="game-desc">Original browser version.</div>
-                        <span class="play-btn">Play Inline</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchGame('https://retrobowl.game/', 'Retro Bowl')">
-                        <div class="game-icon">🏈</div>
-                        <div class="game-title">Retro Bowl</div>
-                        <div class="game-desc">Football management game.</div>
-                        <span class="play-btn">Play Inline</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchGame('https://ovo-game.com/', 'OvO')">
-                        <div class="game-icon">🥚</div>
-                        <div class="game-title">OvO</div>
-                        <div class="game-desc">Fast-paced platformer.</div>
-                        <span class="play-btn">Play Inline</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchGame('https://webglmath.github.io/drift-boss/', 'Drift Boss')">
-                        <div class="game-icon">🏎️</div>
-                        <div class="game-title">Drift Boss</div>
-                        <div class="game-desc">Drifting car game.</div>
-                        <span class="play-btn">Play Inline</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchGame('https://webglmath.github.io/cookie-clicker/', 'Cookie Clicker')">
-                        <div class="game-icon">🍪</div>
-                        <div class="game-title">Cookie Clicker</div>
-                        <div class="game-desc">Incremental idle game.</div>
-                        <span class="play-btn">Play Inline</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchGame('https://tetris.com/play-tetris', 'Tetris')">
-                        <div class="game-icon">🧱</div>
-                        <div class="game-title">Tetris</div>
-                        <div class="game-desc">Official Tetris game.</div>
-                        <span class="play-btn">Play Inline</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchGame('https://html5.gamedistribution.com/rvvASMiM/5b0abd1c0faa4f5eb190a9f16a1b6c5d/index.html', 'BitLife')">
-                        <div class="game-icon">📱</div>
-                        <div class="game-title">BitLife</div>
-                        <div class="game-desc">Life simulation game.</div>
-                        <span class="play-btn">Play Inline</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchGame('https://play2048.co/', '2048')">
-                        <div class="game-icon">🔢</div>
-                        <div class="game-title">2048</div>
-                        <div class="game-desc">Number merging puzzle.</div>
-                        <span class="play-btn">Play Inline</span>
-                    </div>
-
-                    <div class="game-card" onclick="launchGame('https://snaeplayer.github.io/games/tunnel-rush/', 'Tunnel Rush')">
-                        <div class="game-icon">🌀</div>
-                        <div class="game-title">Tunnel Rush</div>
-                        <div class="game-desc">Speed through tunnels.</div>
-                        <span class="play-btn">Play Inline</span>
-                    </div>
+                <div class="game-card" onclick="launchGame('https://eaglercraftx.net/', 'EaglercraftX 1.8.8')">
+                    <span class="badge hot">POPULAR</span>
+                    <div class="game-title">EaglercraftX 1.8.8</div>
+                    <div class="game-desc">Latest stable version</div>
+                    <span class="play-btn">Play</span>
                 </div>
-            </div>
-
-            <!-- Game Viewer -->
-            <div id="gameViewer" class="game-viewer">
-                <div class="viewer-header">
-                    <h2 id="viewerTitle" style="font-family: 'Share Tech Mono', monospace;">Game Title</h2>
-                    <div>
-                        <button class="proxy-btn" onclick="toggleGameFullscreen()" style="margin-right: 10px;">Fullscreen</button>
-                        <button class="proxy-btn" onclick="closeGame()" style="background: #ff4444; border-color: #ff4444;">Close Game</button>
-                    </div>
+                <div class="game-card" onclick="launchGame('https://eaglercraft.me/1.12.2/', 'Eaglercraft 1.12.2')">
+                    <span class="badge new">NEW</span>
+                    <div class="game-title">Eaglercraft 1.12.2</div>
+                    <div class="game-desc">Newer version</div>
+                    <span class="play-btn">Play</span>
                 </div>
-                <iframe id="gameFrame" class="game-frame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+                <div class="game-card" onclick="launchGame('https://eaglercraft.com/precision-client/', 'Precision Client')">
+                    <div class="game-title">Precision Client</div>
+                    <div class="game-desc">Optimized PvP client</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://classic.minecraft.net/', 'Minecraft Classic')">
+                    <div class="game-title">Minecraft Classic</div>
+                    <div class="game-desc">Official browser version</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://paper-minecraft.glitch.me/', 'Paper Minecraft')">
+                    <div class="game-title">Paper Minecraft</div>
+                    <div class="game-desc">2D Minecraft style</div>
+                    <span class="play-btn">Play</span>
+                </div>
             </div>
         </section>
 
-        <!-- MULTIPLAYER SECTION -->
-        <section id="multiplayer" class="section">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <h2 style="font-family: 'Share Tech Mono', monospace; letter-spacing: 3px;">MULTIPLAYER GAMES</h2>
-                <p style="margin-top: 10px; opacity: 0.8;">Play online with friends</p>
+        <!-- POKEMON -->
+        <section id="pokemon" class="section">
+            <div class="category-header">Pokemon Collection</div>
+            <div class="games-grid">
+                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_emerald', 'Pokemon Emerald')">
+                    <span class="badge hot">GBA</span>
+                    <div class="game-title">Pokemon - Emerald</div>
+                    <div class="game-desc">Hoenn region adventure</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_ruby', 'Pokemon Ruby')">
+                    <div class="game-title">Pokemon - Ruby</div>
+                    <div class="game-desc">Team Magma storyline</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_sapphire', 'Pokemon Sapphire')">
+                    <div class="game-title">Pokemon - Sapphire</div>
+                    <div class="game-desc">Team Aqua storyline</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_fire_red', 'Pokemon Fire Red')">
+                    <div class="game-title">Pokemon - Fire Red</div>
+                    <div class="game-desc">Kanto region remake</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_leaf_green', 'Pokemon Leaf Green')">
+                    <div class="game-title">Pokemon - Leaf Green</div>
+                    <div class="game-desc">Enhanced Kanto</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#pkmn_ultra_violet', 'Pokemon Ultra Violet')">
+                    <div class="game-title">Pokemon - Ultra Violet</div>
+                    <div class="game-desc">Hack with all Pokemon</div>
+                    <span class="play-btn">Play</span>
+                </div>
             </div>
+        </section>
 
+        <!-- MARIO -->
+        <section id="mario" class="section">
+            <div class="category-header">Super Mario Collection</div>
+            <div class="games-grid">
+                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/nds/launcher.html#mario_kart_ds', 'Mario Kart DS')">
+                    <span class="badge">DS</span>
+                    <div class="game-title">Mario Kart DS</div>
+                    <div class="game-desc">DS racing classic</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#mario_kart_super_circuit', 'Mario Kart Super Circuit')">
+                    <span class="badge">GBA</span>
+                    <div class="game-title">Mario Kart Super Circuit</div>
+                    <div class="game-desc">GBA racing</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#super_mario_advance_4', 'Super Mario Advance 4')">
+                    <div class="game-title">Super Mario Advance 4 - SMB3</div>
+                    <div class="game-desc">Mario Bros 3 remake</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://supermario64.glitch.me/', 'Super Mario 64')">
+                    <span class="badge hot">3D</span>
+                    <div class="game-title">Super Mario 64</div>
+                    <div class="game-desc">JavaScript port</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://jellymar.io/', 'Jelly Mario')">
+                    <div class="game-title">Jelly Mario Bros</div>
+                    <div class="game-desc">Jelly physics</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/nes/launcher.html#super_mario_bros', 'Super Mario Bros')">
+                    <div class="game-title">Super Mario Bros</div>
+                    <div class="game-desc">Original NES</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/snes/launcher.html#super_mario_world', 'Super Mario World')">
+                    <div class="game-title">Super Mario World</div>
+                    <div class="game-desc">SNES classic</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://emulatorjs.org/gitlab/jsemu/gba/launcher.html#super_mario_63', 'Super Mario 63')">
+                    <div class="game-title">Super Mario 63</div>
+                    <div class="game-desc">Fan platformer</div>
+                    <span class="play-btn">Play</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FNAF -->
+        <section id="fnaf" class="section">
+            <div class="category-header">Five Nights at Freddy's</div>
+            <div class="games-grid">
+                <div class="game-card" onclick="launchGame('https://fnaf-web.glitch.me/', 'FNAF')">
+                    <span class="badge hot">HTML5</span>
+                    <div class="game-title">FNAF Web</div>
+                    <div class="game-desc">Native browser</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118865049/embed', 'FNAF 1')">
+                    <div class="game-title">FNAF 1</div>
+                    <div class="game-desc">Original nights</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118865683/embed', 'FNAF 2')">
+                    <div class="game-title">FNAF 2</div>
+                    <div class="game-desc">No doors, more bots</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118866059/embed', 'FNAF 3')">
+                    <div class="game-title">FNAF 3</div>
+                    <div class="game-desc">Springtrap</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118866412/embed', 'FNAF 4')">
+                    <div class="game-title">FNAF 4</div>
+                    <div class="game-desc">Nightmare edition</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118867293/embed', 'FNAF Sister Location')">
+                    <div class="game-title">FNAF: Sister Location</div>
+                    <div class="game-desc">Underground</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118867635/embed', 'FNAF Final Purgatory')">
+                    <div class="game-title">FNAF Final Purgatory</div>
+                    <div class="game-desc">Fan game</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/118868021/embed', 'FNAF 5 Scratch')">
+                    <div class="game-title">FNAF 5 Scratch</div>
+                    <div class="game-desc">Custom night</div>
+                    <span class="play-btn">Play</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAPA'S GAMES -->
+        <section id="papa" class="section">
+            <div class="category-header">Papa's Games</div>
+            <div class="games-grid">
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128407/embed', 'Papa\'s Pizzeria')">
+                    <div class="game-title">Papa's Pizzeria</div>
+                    <div class="game-desc">Make pizzas</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128515/embed', 'Papa\'s Burgeria')">
+                    <div class="game-title">Papa's Burgeria</div>
+                    <div class="game-desc">Grill burgers</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128567/embed', 'Papa\'s Freezeria')">
+                    <div class="game-title">Papa's Freezeria</div>
+                    <div class="game-desc">Ice cream sundaes</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128619/embed', 'Papa\'s Pancakeria')">
+                    <div class="game-title">Papa's Pancakeria</div>
+                    <div class="game-desc">Breakfast cooking</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128673/embed', 'Papa\'s Scooperia')">
+                    <div class="game-title">Papa's Scooperia</div>
+                    <div class="game-desc">Cookie sandwiches</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128735/embed', 'Papa\'s Sushiria')">
+                    <div class="game-title">Papa's Sushiria</div>
+                    <div class="game-desc">Roll sushi</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://scratch.mit.edu/projects/10128789/embed', 'Papa\'s Hot Doggeria')">
+                    <div class="game-title">Papa's Hot Doggeria</div>
+                    <div class="game-desc">Stadium hot dogs</div>
+                    <span class="play-btn">Play</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- IO GAMES -->
+        <section id="io" class="section">
+            <div class="category-header">.IO Multiplayer Games</div>
             <div class="games-grid">
                 <div class="game-card" onclick="launchGame('https://1v1.lol/', '1v1.LOL')">
-                    <div class="game-icon">🔫</div>
-                    <div class="game-title">1v1.LOL <span class="badge multi">MP</span></div>
-                    <div class="game-desc">Build & battle simulator.</div>
-                    <span class="play-btn">Play Now</span>
+                    <span class="badge hot">BUILD</span>
+                    <div class="game-title">1v1.LOL</div>
+                    <div class="game-desc">Build and battle</div>
+                    <span class="play-btn">Play</span>
                 </div>
-
                 <div class="game-card" onclick="launchGame('https://agar.io/', 'Agar.io')">
-                    <div class="game-icon">⚪</div>
-                    <div class="game-title">Agar.io <span class="badge multi">MP</span></div>
-                    <div class="game-desc">Cell eating multiplayer.</div>
-                    <span class="play-btn">Play Now</span>
+                    <div class="game-title">Agar.io</div>
+                    <div class="game-desc">Cell eating</div>
+                    <span class="play-btn">Play</span>
                 </div>
-
                 <div class="game-card" onclick="launchGame('https://slither.io/', 'Slither.io')">
-                    <div class="game-icon">🐍</div>
-                    <div class="game-title">Slither.io <span class="badge multi">MP</span></div>
-                    <div class="game-desc">Snake battle royale.</div>
-                    <span class="play-btn">Play Now</span>
+                    <div class="game-title">Slither.io</div>
+                    <div class="game-desc">Snake game</div>
+                    <span class="play-btn">Play</span>
                 </div>
-
                 <div class="game-card" onclick="launchGame('https://diep.io/', 'Diep.io')">
-                    <div class="game-icon">🔫</div>
-                    <div class="game-title">Diep.io <span class="badge multi">MP</span></div>
-                    <div class="game-desc">Tank warfare online.</div>
-                    <span class="play-btn">Play Now</span>
+                    <div class="game-title">Diep.io</div>
+                    <div class="game-desc">Tank warfare</div>
+                    <span class="play-btn">Play</span>
                 </div>
-
                 <div class="game-card" onclick="launchGame('https://krunker.io/', 'Krunker.io')">
-                    <div class="game-icon">🎯</div>
-                    <div class="game-title">Krunker.io <span class="badge multi">FPS</span></div>
-                    <div class="game-desc">Fast-paced FPS shooter.</div>
-                    <span class="play-btn">Play Now</span>
+                    <div class="game-title">Krunker.io</div>
+                    <div class="game-desc">Pixel FPS</div>
+                    <span class="play-btn">Play</span>
                 </div>
-
                 <div class="game-card" onclick="launchGame('https://shellshock.io/', 'Shell Shockers')">
-                    <div class="game-icon">🥚</div>
-                    <div class="game-title">Shell Shockers <span class="badge multi">FPS</span></div>
-                    <div class="game-desc">Egg shooter FPS.</div>
-                    <span class="play-btn">Play Now</span>
+                    <div class="game-title">Shell Shockers</div>
+                    <div class="game-desc">Egg shooter</div>
+                    <span class="play-btn">Play</span>
                 </div>
-
                 <div class="game-card" onclick="launchGame('https://zombsroyale.io/', 'Zombs Royale')">
-                    <div class="game-icon">💀</div>
-                    <div class="game-title">Zombs Royale <span class="badge multi">BR</span></div>
-                    <div class="game-desc">2D Battle Royale.</div>
-                    <span class="play-btn">Play Now</span>
+                    <div class="game-title">Zombs Royale</div>
+                    <div class="game-desc">2D Battle Royale</div>
+                    <span class="play-btn">Play</span>
                 </div>
-
                 <div class="game-card" onclick="launchGame('https://buildroyale.io/', 'Build Royale')">
-                    <div class="game-icon">🏗️</div>
-                    <div class="game-title">Build Royale <span class="badge multi">BR</span></div>
-                    <div class="game-desc">Build & shoot Battle Royale.</div>
-                    <span class="play-btn">Play Now</span>
+                    <div class="game-title">Build Royale</div>
+                    <div class="game-desc">Build & shoot BR</div>
+                    <span class="play-btn">Play</span>
                 </div>
-
-                <div class="game-card" onclick="launchGame('https://stumbleguys.com/play', 'Stumble Guys')">
-                    <div class="game-icon">🏃</div>
-                    <div class="game-title">Stumble Guys <span class="badge multi">BR</span></div>
-                    <div class="game-desc">Fall guys style knockout.</div>
-                    <span class="play-btn">Play Now</span>
-                </div>
-
-                <div class="game-card" onclick="launchGame('https://skribbl.io/', 'Skribbl.io')">
-                    <div class="game-icon">✏️</div>
-                    <div class="game-title">Skribbl.io <span class="badge multi">DRAW</span></div>
-                    <div class="game-desc">Drawing guessing game.</div>
-                    <span class="play-btn">Play Now</span>
-                </div>
-
                 <div class="game-card" onclick="launchGame('https://evowars.io/', 'EvoWars.io')">
-                    <div class="game-icon">⚔️</div>
-                    <div class="game-title">EvoWars.io <span class="badge multi">MP</span></div>
-                    <div class="game-desc">Evolution combat game.</div>
-                    <span class="play-btn">Play Now</span>
+                    <div class="game-title">EvoWars.io</div>
+                    <div class="game-desc">Evolution combat</div>
+                    <span class="play-btn">Play</span>
                 </div>
-
                 <div class="game-card" onclick="launchGame('https://smashkarts.io/', 'Smash Karts')">
-                    <div class="game-icon">🏎️</div>
-                    <div class="game-title">Smash Karts <span class="badge multi">MP</span></div>
-                    <div class="game-desc">Kart racing shooter.</div>
-                    <span class="play-btn">Play Now</span>
+                    <div class="game-title">Smash Karts</div>
+                    <div class="game-desc">Kart racing</div>
+                    <span class="play-btn">Play</span>
                 </div>
-            </div>
-        </section>
-
-        <!-- TOOLS -->
-        <section id="tools" class="section">
-            <div class="tools-grid">
-                <div class="tool-box">
-                    <h3 style="font-family: 'Share Tech Mono', monospace; margin-bottom: 15px; color: var(--warning);">Current URL</h3>
-                    <div style="word-break: break-all; font-size: 0.9rem; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--blueprint-line);" id="currentUrl"></div>
-                    <button class="proxy-btn" onclick="copyUrl()" style="margin-top: 10px; width: 100%;">Copy URL</button>
+                <div class="game-card" onclick="launchGame('https://justfall.lol/', 'JustFall.LOL')">
+                    <div class="game-title">JustFall.LOL</div>
+                    <div class="game-desc">Fall Guys style</div>
+                    <span class="play-btn">Play</span>
                 </div>
-
-                <div class="tool-box">
-                    <h3 style="font-family: 'Share Tech Mono', monospace; margin-bottom: 15px; color: var(--warning);">Panic Button</h3>
-                    <p style="margin-bottom: 10px; font-size: 0.9rem;">Press ` (tilde/backtick) key to instantly switch to Google.</p>
-                    <button class="proxy-btn" onclick="setPanic()" style="width: 100%;">Set Panic Site</button>
+                <div class="game-card" onclick="launchGame('https://stumbleguys.com/play', 'Stumble Guys')">
+                    <div class="game-title">Stumble Guys</div>
+                    <div class="game-desc">Knockout game</div>
+                    <span class="play-btn">Play</span>
                 </div>
-
-                <div class="tool-box">
-                    <h3 style="font-family: 'Share Tech Mono', monospace; margin-bottom: 15px; color: var(--warning);">About</h3>
-                    <p style="font-size: 0.9rem;">Lemons Proxy v5.0<br>Hypackel Games Edition<br><br>Total Games: 400+</p>
+                <div class="game-card" onclick="launchGame('https://territorial.io/', 'Territorial.io')">
+                    <div class="game-title">Territorial.io</div>
+                    <div class="game-desc">Territory capture</div>
+                    <span class="play-btn">Play</span>
                 </div>
-            </div>
-        </section>
-    </div>
-
-    <footer>
-        <p>Lemons Proxy v5.0 | Hypackel Games Collection</p>
-        <p style="margin-top: 10px; font-size: 0.7rem;">Inline proxy mode - No new tabs required</p>
-    </footer>
-
-    <script>
-        // Show current URL in tools
-        document.getElementById('currentUrl').textContent = window.location.href;
-
-        // Navigation
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            
-            document.getElementById(sectionId).classList.add('active');
-            event.target.classList.add('active');
-            
-            if (sectionId !== 'games') closeGame();
-        }
-
-        // Proxy backends configuration
-        const proxyBackends = {
-            interstellar: {
-                url: 'https://interstellar-bb7c.onrender.com/',
-                params: (target) => `?url=${encodeURIComponent(target)}`
-            },
-            rammerhead: {
-                url: 'https://rammerhead.org/',
-                params: (target) => `?url=${encodeURIComponent(target)}`
-            },
-            ultraviolet: {
-                url: 'https://ultraviolet-node.onrender.com/',
-                params: (target) => `service/${Ultraviolet.codec.xor.encode(target)}`
-            },
-            holyunblocker: {
-                url: 'https://holyubofficial.net/',
-                params: (target) => `?url=${encodeURIComponent(target)}`
-            }
-        };
-
-        let currentProxy = 'interstellar';
-
-        function checkProxy() {
-            currentProxy = document.getElementById('proxyBackend').value;
-        }
-
-        function loadProxy() {
-            const url = document.getElementById('urlInput').value;
-            if (!url) { alert('Enter a URL'); return; }
-            
-            const container = document.getElementById('proxyContainer');
-            const frame = document.getElementById('proxyFrame');
-            
-            container.classList.add('active');
-            
-            // Construct URL based on backend
-            let target = url;
-            if (!url.startsWith('http')) target = 'https://' + url;
-            
-            const backend = proxyBackends[currentProxy];
-            const fullUrl = backend.url + backend.params(target);
-            
-            frame.src = fullUrl;
-        }
-
-        function loadGameProxy(url) {
-            document.getElementById('urlInput').value = url;
-            loadProxy();
-        }
-
-        // Game Launcher (Inline)
-        function launchGame(url, title) {
-            document.getElementById('gamesMenu').style.display = 'none';
-            document.getElementById('gameViewer').classList.add('active');
-            document.getElementById('viewerTitle').textContent = title;
-            
-            // Add timestamp to prevent caching issues
-            const separator = url.includes('?') ? '&' : '?';
-            document.getElementById('gameFrame').src = url + separator + '_t=' + Date.now();
-        }
-
-        function closeGame() {
-            document.getElementById('gameViewer').classList.remove('active');
-            document.getElementById('gamesMenu').style.display = 'block';
-            document.getElementById('gameFrame').src = '';
-        }
-
-        function toggleGameFullscreen() {
-            const frame = document.getElementById('gameFrame');
-            if (frame.requestFullscreen) frame.requestFullscreen();
-            else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
-            else if (frame.msRequestFullScreen) frame.msRequestFullScreen();
-        }
-
-        function copyUrl() {
-            navigator.clipboard.writeText(window.location.href);
-            alert('URL copied!');
-        }
-
-        function setPanic() {
-            const site = prompt('Enter panic site URL (default: https://google.com):') || 'https://google.com';
-            localStorage.setItem('panicSite', site);
-            alert('Panic site set! Press ` (backtick) to activate.');
-        }
-
-        // Panic button (backtick/tilde key)
-        document.addEventListener('keydown', (e) => {
-            if (e.key === '`' || e.key === '~') {
-                const panic = localStorage.getItem('panicSite') || 'https://google.com';
-                window.location.href = panic;
-            }
-        });
-
-        // Ultraviolet codec for UV proxy
-        const Ultraviolet = {
-            codec: {
-                xor: {
-                    encode: (str) => {
-                        let result = '';
-                        for (let i = 0; i < str.length; i++) {
-                            result += String.fromCharCode(str.charCodeAt(i) ^ 0x10);
-                        }
-                        return btoa(result);
-                    }
-                }
-            }
-        };
-
-        // Handle iframe errors
-        document.getElementById('proxyFrame').addEventListener('error', () => {
-            alert('Proxy failed to load. Try switching to a different backend.');
-        });
-    </script>
-</body>
-</html>
+                <div class="game-card" onclick="launchGame('https://skribbl.io/', 'Skribbl.io')">
+                    <div class="game-title">Skribbl.io</div>
+                    <div class="game-desc">Drawing game</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://paper.io/', 'Paper.io 2')">
+                    <div class="game-title">Paper.io 2</div>
+                    <div class="game-desc">Territory capture</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://paper-io.com/3d/', 'Paper.io 3D')">
+                    <div class="game-title">Paper.io 3D</div>
+                    <div class="game-desc">3D territory</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://hole.io/', 'Hole.io')">
+                    <div class="game-title">Hole.io</div>
+                    <div class="game-desc">Swallow city</div>
+                    <span class="play-btn">Play</span>
+                </div>
+                <div class="game-card" onclick="launchGame('https://wings.io/', 'Wings.io')">
+                    <div class="game-title">Wings.io</div>
+                    <div class="game-desc">Aerial combat</div>
+                    <span
