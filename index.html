@@ -42,12 +42,12 @@
 
         .search-bar {
             display: flex;
+            max-width: 700px;
+            margin: 20px auto;
             background: rgba(0,0,0,0.4);
             border: 2px solid #4db8ff;
             border-radius: 25px;
             overflow: hidden;
-            max-width: 700px;
-            margin: 20px auto;
         }
 
         .search-bar input {
@@ -57,19 +57,7 @@
             color: white;
             padding: 12px 20px;
             font-family: inherit;
-            font-size: 14px;
             outline: none;
-        }
-
-        .search-bar select {
-            background: rgba(0,0,0,0.3);
-            border: none;
-            color: white;
-            padding: 0 15px;
-            font-family: inherit;
-            border-left: 1px solid rgba(255,255,255,0.2);
-            outline: none;
-            cursor: pointer;
         }
 
         .search-bar button {
@@ -102,21 +90,21 @@
 
         .home {
             text-align: center;
-            padding: 50px 20px;
+            padding: 40px 20px;
         }
 
         .home h1 {
             color: #4ade80;
-            font-size: 3rem;
-            margin-bottom: 30px;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
         }
 
-        .big-search {
+        .search-box {
             max-width: 600px;
-            margin: 0 auto 40px;
+            margin: 0 auto 30px;
         }
 
-        .big-search input {
+        .search-box input {
             width: 100%;
             padding: 15px 25px;
             background: rgba(0,0,0,0.4);
@@ -129,53 +117,40 @@
             margin-bottom: 15px;
         }
 
-        .big-search select {
-            background: rgba(0,0,0,0.4);
-            border: 2px solid #4db8ff;
-            border-radius: 20px;
-            color: white;
-            padding: 10px 20px;
-            font-family: inherit;
-            margin-right: 10px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .big-search button {
+        .search-box button {
             background: #4db8ff;
             border: none;
             color: #0f172a;
-            padding: 12px 40px;
+            padding: 12px 35px;
             font-family: inherit;
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
-            font-size: 16px;
         }
 
-        .quick-links {
+        .note {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+            margin: 20px auto;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .links {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             justify-content: center;
             flex-wrap: wrap;
-            margin-top: 30px;
         }
 
         .link-btn {
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
             color: white;
-            padding: 10px 20px;
-            text-decoration: none;
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 0.9rem;
             cursor: pointer;
-            display: inline-block;
-        }
-
-        .link-btn:hover {
-            background: rgba(77, 184, 255, 0.3);
-            border-color: #4db8ff;
+            font-size: 0.85rem;
         }
 
         .footer {
@@ -191,6 +166,13 @@
             font-size: 0.8rem;
         }
 
+        .error-msg {
+            display: none;
+            padding: 50px;
+            text-align: center;
+            color: #ff6b6b;
+        }
+
         .hidden { display: none !important; }
     </style>
 </head>
@@ -199,15 +181,9 @@
     <div class="header">
         <div class="logo">🍋 Lemons Proxy</div>
         <div class="subtitle">made by ld</div>
-        <div class="search-bar hidden" id="topSearch">
-            <input type="text" id="urlBar" placeholder="Search or enter URL..." onkeypress="handleKey(event)">
-            <select id="engineSelect">
-                <option value="duckduckgo">DuckDuckGo</option>
-                <option value="brave">Brave Search</option>
-                <option value="bing">Bing</option>
-                <option value="ecosia">Ecosia</option>
-            </select>
-            <button onclick="search()">GO</button>
+        <div class="search-bar hidden" id="topBar">
+            <input type="text" id="urlInput" placeholder="Enter URL..." onkeypress="if(event.key==='Enter')go()">
+            <button onclick="go()">GO</button>
         </div>
     </div>
 
@@ -216,87 +192,94 @@
     <div class="corner corner-bl"></div>
     <div class="corner corner-br"></div>
 
-    <div class="home" id="homeScreen">
+    <!-- Home -->
+    <div id="home" class="home">
         <h1>🍋 Lemons Proxy</h1>
-        <div class="big-search">
-            <input type="text" id="searchInput" placeholder="Search the web..." onkeypress="handleHomeKey(event)">
-            <br>
-            <select id="homeEngine">
-                <option value="duckduckgo">🦆 DuckDuckGo</option>
-                <option value="brave">🦁 Brave Search</option>
-                <option value="bing">🔍 Bing</option>
-                <option value="ecosia">🌳 Ecosia</option>
-            </select>
-            <button onclick="doSearch()">SEARCH</button>
-        </div>
         
-        <div class="quick-links">
-            <a class="link-btn" onclick="openUrl('https://www.wikipedia.org')">Wikipedia</a>
-            <a class="link-btn" onclick="openUrl('https://old.reddit.com')">Reddit</a>
-            <a class="link-btn" onclick="openUrl('https://duckduckgo.com')">DuckDuckGo</a>
-            <a class="link-btn" onclick="openUrl('https://search.brave.com')">Brave</a>
+        <div class="search-box">
+            <input type="text" id="searchBox" placeholder="Search Google or enter URL..." onkeypress="if(event.key==='Enter')search()">
+            <button onclick="search()">SEARCH</button>
+        </div>
+
+        <div class="note">
+            ⚠️ <strong>How it works:</strong> This tries to load sites in the box below. 
+            Many sites (Google, YouTube) block this for security. If you see an error, the site opened in a <strong>new tab</strong> instead.
+        </div>
+
+        <div class="links">
+            <button class="link-btn" onclick="load('https://www.wikipedia.org')">Wikipedia</button>
+            <button class="link-btn" onclick="load('https://old.reddit.com')">Reddit</button>
+            <button class="link-btn" onclick="load('https://textise dot iitty.com')">Textise dot iitty</button>
+            <button class="link-btn" onclick="load('https://www.bing.com')">Bing</button>
+            <button class="link-btn" onclick="load('https://duckduckgo.com')">DuckDuckGo</button>
         </div>
     </div>
 
-    <iframe id="viewport" class="viewport hidden" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation"></iframe>
+    <!-- Browser View -->
+    <iframe id="frame" class="viewport hidden" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
 
     <div class="footer">made by Lemonwesh</div>
 
     <script>
-        // Search engines that work in iframes
-        const engines = {
-            duckduckgo: 'https://duckduckgo.com/?q=',
-            brave: 'https://search.brave.com/search?q=',
-            bing: 'https://www.bing.com/search?q=',
-            ecosia: 'https://www.ecosia.org/search?q='
-        };
-
-        function doSearch() {
-            const query = document.getElementById('searchInput').value.trim();
-            const engine = document.getElementById('homeEngine').value;
-            
-            if (query) {
-                openUrl(engines[engine] + encodeURIComponent(query));
-            }
-        }
-
         function search() {
-            const query = document.getElementById('urlBar').value.trim();
-            const engine = document.getElementById('engineSelect').value;
+            const q = document.getElementById('searchBox').value.trim();
+            if(!q) return;
             
-            if (query) {
-                if (query.startsWith('http')) {
-                    document.getElementById('viewport').src = query;
-                } else {
-                    document.getElementById('viewport').src = engines[engine] + encodeURIComponent(query);
+            // Try to load Google in iframe (will probably fail)
+            const googleUrl = 'https://www.google.com/search?q=' + encodeURIComponent(q);
+            load(googleUrl);
+        }
+
+        function load(url) {
+            if(!url.startsWith('http')) url = 'https://' + url;
+            
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('topBar').classList.remove('hidden');
+            document.getElementById('frame').classList.remove('hidden');
+            document.getElementById('urlInput').value = url;
+            
+            const frame = document.getElementById('frame');
+            frame.src = url;
+            
+            // Check if blocked after 2 seconds
+            setTimeout(() => {
+                try {
+                    // If we can't access it, it's cross-origin (good, loaded)
+                    // If we get a specific error, handle it
+                    if(frame.contentDocument && frame.contentDocument.body && frame.contentDocument.body.innerHTML.includes('refused')) {
+                        // Open in new tab
+                        window.open(url, '_blank');
+                        back();
+                    }
+                } catch(e) {
+                    // Cross-origin error means it loaded (most likely)
+                    // Do nothing
                 }
-            }
+            }, 2000);
+            
+            // Fallback: if iframe stays blank too long, open new tab
+            setTimeout(() => {
+                if(frame.contentDocument && frame.contentDocument.body && frame.contentDocument.body.innerHTML === '') {
+                    window.open(url, '_blank');
+                    back();
+                }
+            }, 4000);
         }
 
-        function openUrl(url) {
-            document.getElementById('homeScreen').classList.add('hidden');
-            document.getElementById('topSearch').classList.remove('hidden');
-            document.getElementById('viewport').classList.remove('hidden');
-            document.getElementById('viewport').src = url;
-            document.getElementById('urlBar').value = url;
+        function go() {
+            load(document.getElementById('urlInput').value);
         }
 
-        function handleHomeKey(e) {
-            if (e.key === 'Enter') doSearch();
+        function back() {
+            document.getElementById('home').classList.remove('hidden');
+            document.getElementById('topBar').classList.add('hidden');
+            document.getElementById('frame').classList.add('hidden');
+            document.getElementById('frame').src = '';
         }
 
-        function handleKey(e) {
-            if (e.key === 'Enter') search();
-        }
-
-        // ESC to go home
+        // ESC key to go back
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.getElementById('homeScreen').classList.remove('hidden');
-                document.getElementById('topSearch').classList.add('hidden');
-                document.getElementById('viewport').classList.add('hidden');
-                document.getElementById('viewport').src = '';
-            }
+            if(e.key === 'Escape') back();
         });
     </script>
 
