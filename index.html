@@ -1,125 +1,405 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="root">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GameHub</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-    }
-    header {
-      background: #020617;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #1e293b;
-    }
-    nav button {
-      background: transparent;
-      color: #e5e7eb;
-      border: none;
-      margin-left: 1rem;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    main {
-      padding: 2rem;
-    }
-    .hidden { display: none; }
-    .card {
-      background: #020617;
-      border: 1px solid #1e293b;
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-    }
-    .games-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      border-top: 1px solid #1e293b;
-      color: #94a3b8;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemons Proxy - Shadow Edition</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* STEALTH MODE - Looks like Google Docs by default */
+        body.normal {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #1e3a5f;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
+
+        body.stealth {
+            font-family: Arial, sans-serif;
+            background: white;
+        }
+
+        /* Header */
+        .proxy-header {
+            background: rgba(23, 37, 84, 0.95);
+            border-bottom: 2px dashed #4db8ff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            color: #4ade80;
+            font-weight: bold;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box {
+            flex: 1;
+            display: flex;
+            background: rgba(0,0,0,0.4);
+            border: 2px solid rgba(77, 184, 255, 0.3);
+            border-radius: 25px;
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-box button {
+            background: #4db8ff;
+            border: none;
+            color: #0f172a;
+            padding: 0 25px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .search-box button:hover {
+            background: #4ade80;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .ctrl-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border-radius: 4px;
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(77, 184, 255, 0.3);
+        }
+
+        /* Quick Links Grid */
+        .quick-links {
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            color: #4ade80;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .link-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+
+        .link-card:hover {
+            background: rgba(77, 184, 255, 0.2);
+            border-color: #4db8ff;
+            transform: translateY(-3px);
+        }
+
+        .link-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .link-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .link-desc {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Browser View */
+        .browser-frame {
+            width: 100%;
+            height: calc(100vh - 70px);
+            border: none;
+            background: white;
+            display: none;
+        }
+
+        .browser-frame.active {
+            display: block;
+        }
+
+        .home-screen {
+            padding: 50px 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .home-screen.active {
+            display: block;
+        }
+
+        .big-search {
+            max-width: 700px;
+            margin: 100px auto;
+        }
+
+        .big-search h1 {
+            color: #4ade80;
+            margin-bottom: 30px;
+            font-size: 3rem;
+        }
+
+        /* Corner Decor */
+        .corner {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #4db8ff;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .corner-tl { top: 80px; left: 0; border-right: none; border-bottom: none; }
+        .corner-tr { top: 80px; right: 0; border-left: none; border-bottom: none; }
+        .corner-bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+        .corner-br { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+        /* PANIC OVERLAY */
+        .panic-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: white;
+            z-index: 9999;
+            padding: 50px;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .panic-screen.active {
+            display: block;
+        }
+
+        .hidden { display: none !important; }
+    </style>
 </head>
-<body>
+<body class="normal">
 
-  <header>
-    <h1>🎮 GameHub</h1>
-    <nav>
-      <button onclick="showPage('home')">Home</button>
-      <button onclick="showPage('games')">Games</button>
-      <button onclick="showPage('profile')">Profile</button>
-      <button onclick="showPage('login')">Login</button>
-    </nav>
-  </header>
+    <!-- Panic Screen (Press ` to activate) -->
+    <div class="panic-screen" id="panic">
+        <h1>Google Docs</h1>
+        <p>You're viewing a document...</p>
+    </div>
 
-  <main>
-    <section id="home" class="card">
-      <h2>Welcome</h2>
-      <p>A global game hub with minigames, profiles, and friends.</p>
-    </section>
+    <!-- Corner Decorations -->
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
 
-    <section id="games" class="card hidden">
-      <h2>Games</h2>
-      <div class="games-grid">
-        <div class="card">Minesweeper (coming soon)</div>
-        <div class="card">Block Game (coming soon)</div>
-        <div class="card">More soon...</div>
-      </div>
-    </section>
+    <!-- Header -->
+    <div class="proxy-header">
+        <div class="logo">🍋 SHADOW PROXY</div>
+        
+        <div class="search-box">
+            <input type="text" id="urlInput" placeholder="Search or enter URL..." onkeypress="handleKey(event)">
+            <button onclick="navigate()">GO</button>
+        </div>
 
-    <section id="profile" class="card hidden">
-      <h2>Your Profile</h2>
-      <p>Username: <span id="username">Guest</span></p>
-      <p>Bio: <span id="bio">No bio yet</span></p>
-      <img src="" alt="Profile Picture" id="pfp" width="100" />
-    </section>
+        <div class="controls">
+            <button class="ctrl-btn" onclick="toggleCloak()" title="Hide Tab">🎭 Cloak</button>
+            <button class="ctrl-btn" onclick="document.getElementById('frame').classList.remove('active'); document.getElementById('home').classList.add('active')" title="Home">🏠</button>
+        </div>
+    </div>
 
-    <section id="login" class="card hidden">
-      <h2>Login</h2>
-      <p>Login system will be added (Firebase / Supabase).</p>
-      <button disabled>Sign In</button>
-    </section>
+    <!-- Home Screen with Quick Links -->
+    <div id="home" class="home-screen active">
+        <div class="big-search">
+            <h1>🍋 SHADOW PROXY</h1>
+            <div class="search-box" style="max-width: 100%;">
+                <input type="text" id="bigInput" placeholder="Enter website URL..." style="padding: 15px 25px; font-size: 16px;" onkeypress="handleBigKey(event)">
+                <button onclick="bigNavigate()" style="padding: 0 30px;">BROWSE</button>
+            </div>
+            <p style="color: rgba(255,255,255,0.6); margin-top: 20px; font-size: 0.9rem;">
+                Press `<code>`</code> (backtick) for Panic Mode | Click 🎭 to disguise tab
+            </p>
+        </div>
 
-    <section id="admin" class="card hidden">
-      <h2>Admin Panel</h2>
-      <p>Only visible to admins.</p>
-    </section>
-  </main>
+        <div class="quick-links">
+            <div class="section-title">🔥 POPULAR UNBLOCKED</div>
+            <div class="link-grid">
+                <a href="#" class="link-card" onclick="openSite('https://www.wikipedia.org')">
+                    <div class="link-icon">📚</div>
+                    <div class="link-name">Wikipedia</div>
+                    <div class="link-desc">The Free Encyclopedia</div>
+                </a>
+                <a href="#" class="link-card" onclick="openSite('https://old.reddit.com')">
+                    <div class="link-icon">🔴</div>
+                    <div class="link-name">Old Reddit</div>
+                    <div class="link-desc">Front Page of Internet</div>
+                </a>
+                <a href="#" class="link-card" onclick="openSite('https://www.bing.com')">
+                    <div class="link-icon">🔍</div>
+                    <div class="link-name">Bing</div>
+                    <div class="link-desc">Search Engine</div>
+                </a>
+                <a href="#" class="link-card" onclick="openSite('https://www.wolframalpha.com')">
+                    <div class="link-icon">🧮</div>
+                    <div class="link-name">Wolfram Alpha</div>
+                    <div class="link-desc">Computational Knowledge</div>
+                </a>
+                <a href="#" class="link-card" onclick="openSite('https://www.coolmathgames.com')">
+                    <div class="link-icon">🎮</div>
+                    <div class="link-name">Cool Math Games</div>
+                    <div class="link-desc">Logic & Math Games</div>
+                </a>
+                <a href="#" class="link-card" onclick="openSite('https://www.chess.com')">
+                    <div class="link-icon">♟️</div>
+                    <div class="link-name">Chess.com</div>
+                    <div class="link-desc">Play Chess Online</div>
+                </a>
+                <a href="#" class="link-card" onclick="openSite('https://www.nytimes.com/crosswords')">
+                    <div class="link-icon">🧩</div>
+                    <div class="link-name">NYT Crossword</div>
+                    <div class="link-desc">Daily Puzzles</div>
+                </a>
+                <a href="#" class="link-card" onclick="openSite('https://www.khanacademy.org')">
+                    <div class="link-icon">🎓</div>
+                    <div class="link-name">Khan Academy</div>
+                    <div class="link-desc">Free Education</div>
+                </a>
+            </div>
 
-  <footer>
-    <p>© 2026 GameHub</p>
-  </footer>
+            <div class="section-title" style="margin-top: 40px;">⚠️ NOTE ABOUT PROXY</div>
+            <p style="color: rgba(255,255,255,0.7); max-width: 800px; line-height: 1.6;">
+                This is a <strong>frontend proxy</strong>. It uses iframes to display sites. Many sites (Google, YouTube, Facebook) block iframes for security. 
+                For a <strong>true Shadow Proxy</strong> that works with any site, you need a backend server (Node.js/PHP) to fetch content. 
+                This version works with sites that allow embedding (Wikipedia, Reddit old, etc.).
+            </p>
+        </div>
+    </div>
 
-  <script>
-    function showPage(pageId) {
-      document.querySelectorAll('main section').forEach(sec => {
-        sec.classList.add('hidden');
-      });
-      document.getElementById(pageId).classList.remove('hidden');
-    }
+    <!-- Browser Frame -->
+    <iframe id="frame" class="browser-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation"></iframe>
 
-    // Placeholder user state
-    const user = {
-      loggedIn: false,
-      isAdmin: false
-    };
+    <script>
+        let isCloaked = false;
 
-    if (user.isAdmin) {
-      document.getElementById('admin').classList.remove('hidden');
-    }
-  </script>
+        // Navigation
+        function navigate() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (url) openSite(url);
+        }
 
+        function bigNavigate() {
+            const url = document.getElementById('bigInput').value.trim();
+            if (url) openSite(url);
+        }
+
+        function openSite(url) {
+            if (!url.startsWith('http')) url = 'https://' + url;
+            
+            document.getElementById('home').classList.remove('active');
+            document.getElementById('frame').classList.add('active');
+            document.getElementById('frame').src = url;
+            document.getElementById('urlInput').value = url;
+        }
+
+        function handleKey(e) {
+            if (e.key === 'Enter') navigate();
+        }
+
+        function handleBigKey(e) {
+            if (e.key === 'Enter') bigNavigate();
+        }
+
+        // Tab Cloaking - Disguises the tab as Google Docs
+        function toggleCloak() {
+            isCloaked = !isCloaked;
+            if (isCloaked) {
+                document.title = 'Google Docs';
+                document.getElementById('root').innerHTML += '<link rel="icon" type="image/png" href="https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico">';
+                document.body.classList.remove('normal');
+                document.body.classList.add('stealth');
+                alert('Tab Cloaked: Now appears as Google Docs\nPress 🎭 again to restore');
+            } else {
+                document.title = 'Lemons Proxy - Shadow Edition';
+                location.reload(); // Simple way to restore
+            }
+        }
+
+        // Panic Key - Press ` to show fake Google Docs
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '`' || e.key === '~') {
+                const panic = document.getElementById('panic');
+                panic.classList.toggle('active');
+            }
+            
+            // Also works with Escape key
+            if (e.key === 'Escape') {
+                document.getElementById('frame').classList.remove('active');
+                document.getElementById('home').classList.add('active');
+            }
+        });
+
+        // Try to detect iframe blocking
+        document.getElementById('frame').addEventListener('load', function() {
+            try {
+                // If we can access contentWindow, it loaded
+                const frame = document.getElementById('frame');
+                if (frame.contentWindow && frame.contentWindow.document) {
+                    console.log('Site loaded successfully');
+                }
+            } catch (e) {
+                // Cross-origin error means it loaded (good)
+                console.log('Cross-origin site loaded');
+            }
+        });
+
+        document.getElementById('frame').addEventListener('error', function() {
+            alert('This site blocks embedding. Try a different site from Quick Links.');
+        });
+    </script>
 </body>
 </html>
