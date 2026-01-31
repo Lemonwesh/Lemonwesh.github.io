@@ -1,166 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lemons Proxy v7.0 - Global Leaderboards</title>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-        
-        :root {
-            --blueprint-bg: #1e3a5f;
-            --grid-line: rgba(255, 255, 255, 0.1);
-            --text-primary: #ffffff;
-            --text-dim: rgba(255, 255, 255, 0.6);
-            --accent: #4db8ff;
-            --accent-gaming: #ff6b6b;
-            --accent-study: #4ade80;
-            --accent-warn: #ffd93d;
-            --accent-arcade: #f472b6;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'JetBrains Mono', monospace;
-            background-color: var(--blueprint-bg);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            pointer-events: none; z-index: 1;
-        }
-
-        .container { position: relative; z-index: 10; max-width: 1800px; margin: 0 auto; padding: 20px; }
-        
-        header {
-            text-align: center; padding: 30px;
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            margin-bottom: 30px; background: rgba(30, 58, 95, 0.9);
-        }
-
-        .logo {
-            font-size: 3.5rem; font-weight: bold; letter-spacing: 8px;
-            text-transform: uppercase; margin-bottom: 10px;
-            background: linear-gradient(45deg, var(--accent), var(--accent-study));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .live-indicator {
-            display: inline-block; width: 10px; height: 10px;
-            background: var(--accent-study); border-radius: 50%;
-            margin-right: 8px; animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        .user-status {
-            position: absolute; top: 20px; left: 20px;
-            background: rgba(255,255,255,0.1); padding: 10px 20px;
-            border: 1px solid rgba(255,255,255,0.3); font-size: 0.8rem;
-        }
-
-        .server-status {
-            position: absolute; top: 20px; right: 20px;
-            padding: 5px 15px; font-size: 0.75rem;
-            text-transform: uppercase; letter-spacing: 2px;
-        }
-        .server-status.online { background: rgba(74, 222, 128, 0.2); border: 1px solid var(--accent-study); color: var(--accent-study); }
-        .server-status.offline { background: rgba(255, 107, 107, 0.2); border: 1px solid var(--accent-gaming); color: var(--accent-gaming); }
-
-        .nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
-        
-        .tab-btn {
-            background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.3);
-            color: white; padding: 10px 20px; font-family: inherit;
-            font-size: 0.85rem; cursor: pointer; text-transform: uppercase;
-            letter-spacing: 2px; transition: all 0.3s;
-        }
-        .tab-btn:hover, .tab-btn.active { background: rgba(77, 184, 255, 0.2); border-color: var(--accent); transform: translateY(-2px); }
-        .tab-btn.arcade { border-color: var(--accent-arcade); color: var(--accent-arcade); }
-        .tab-btn.arcade:hover, .tab-btn.arcade.active { background: rgba(244, 114, 182, 0.2); }
-
-        .content-section { display: none; animation: fadeIn 0.5s; }
-        .content-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-        
-        .game-tile {
-            background: rgba(255,255,255,0.03); border: 2px solid rgba(244, 114, 182, 0.3);
-            border-radius: 8px; overflow: hidden; transition: all 0.3s;
-        }
-        .game-tile:hover { transform: translateY(-5px); border-color: var(--accent-arcade); }
-        
-        .game-thumb { height: 120px; background: linear-gradient(135deg, #162d4a, #2a4a73); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
-        .game-info { padding: 15px; }
-        .game-title { color: var(--accent-arcade); font-weight: bold; margin-bottom: 5px; }
-        .play-btn { width: 100%; padding: 10px; background: var(--accent-arcade); border: none; color: white; cursor: pointer; text-transform: uppercase; font-weight: bold; }
-
-        .game-modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(22, 45, 74, 0.98); z-index: 1000; flex-direction: column;
-        }
-        .game-modal.active { display: flex; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px; background: rgba(0,0,0,0.3); border-bottom: 2px solid var(--accent-arcade); }
-        .close-btn { padding: 10px 20px; background: var(--accent-gaming); border: none; color: white; cursor: pointer; }
-        
-        .game-frame { width: 100%; height: 100%; border: none; }
-
-        .leaderboard-box {
-            background: rgba(0,0,0,0.2); border: 2px solid var(--accent-warn);
-            padding: 20px; border-radius: 8px; margin-bottom: 20px;
-        }
-        .leaderboard-title { color: var(--accent-warn); text-align: center; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed rgba(255,217,61,0.3); }
-        
-        .lb-item { display: flex; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 4px; }
-        .lb-rank { font-weight: bold; width: 40px; }
-        .lb-rank.gold { color: gold; } .lb-rank.silver { color: silver; } .lb-rank.bronze { color: #cd7f32; }
-        .lb-score { color: var(--accent-warn); font-weight: bold; }
-
-        .account-panel { max-width: 500px; margin: 0 auto; background: rgba(255,255,255,0.03); border: 2px solid var(--accent-warn); padding: 30px; }
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; margin-bottom: 8px; color: var(--accent-warn); text-transform: uppercase; font-size: 0.8rem; }
-        .input-group input { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,217,61,0.3); color: white; font-family: inherit; }
-        .account-btn { width: 100%; padding: 15px; background: var(--accent-warn); border: none; color: var(--blueprint-bg); font-family: inherit; font-weight: bold; text-transform: uppercase; cursor: pointer; margin-bottom: 10px; }
-        
-        canvas { background: rgba(0,0,0,0.3); display: block; margin: 0 auto; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameHub</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+    header {
+      background: #020617;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+    }
+    nav button {
+      background: transparent;
+      color: #e5e7eb;
+      border: none;
+      margin-left: 1rem;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    main {
+      padding: 2rem;
+    }
+    .hidden { display: none; }
+    .card {
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      border-top: 1px solid #1e293b;
+      color: #94a3b8;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="user-status" id="user-status">Guest</div>
-            <div class="server-status offline" id="db-status">● Connecting...</div>
-            <div class="logo">🍋 Lemons Proxy</div>
-            <div style="color: var(--text-dim); letter-spacing: 5px;">Global Arcade v7.0</div>
-            <div style="margin-top: 10px; color: var(--accent-study);">
-                <span class="live-indicator"></span>Live Global Leaderboards Active
-            </div>
-        </header>
 
-        <div class="nav-tabs">
-            <button class="tab-btn arcade active" onclick="switchTab('arcade')">🕹️ Arcade</button>
-            <button class="tab-btn" onclick="switchTab('games')">🎮 Snake</button>
-            <button class="tab-btn" onclick="switchTab('leaderboards')">🏆 Global Records</button>
-            <button class="tab-btn" onclick="switchTab('account')">👤 Account</button>
-        </div>
+  <header>
+    <h1>🎮 GameHub</h1>
+    <nav>
+      <button onclick="showPage('home')">Home</button>
+      <button onclick="showPage('games')">Games</button>
+      <button onclick="showPage('profile')">Profile</button>
+      <button onclick="showPage('login')">Login</button>
+    </nav>
+  </header>
 
-        <!-- ARCADE -->
-        <div id="arcade-section" class="content-section active">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <h2 style="color: var(--accent-arcade); text-transform: uppercase;">🎮 Game Arcade</h2>
-                <p style="color: var(--text-dim);">Play games instantly - scores save globally!</p>
-            </div>
-            <div class="games-grid" id
+  <main>
+    <section id="home" class="card">
+      <h2>Welcome</h2>
+      <p>A global game hub with minigames, profiles, and friends.</p>
+    </section>
+
+    <section id="games" class="card hidden">
+      <h2>Games</h2>
+      <div class="games-grid">
+        <div class="card">Minesweeper (coming soon)</div>
+        <div class="card">Block Game (coming soon)</div>
+        <div class="card">More soon...</div>
+      </div>
+    </section>
+
+    <section id="profile" class="card hidden">
+      <h2>Your Profile</h2>
+      <p>Username: <span id="username">Guest</span></p>
+      <p>Bio: <span id="bio">No bio yet</span></p>
+      <img src="" alt="Profile Picture" id="pfp" width="100" />
+    </section>
+
+    <section id="login" class="card hidden">
+      <h2>Login</h2>
+      <p>Login system will be added (Firebase / Supabase).</p>
+      <button disabled>Sign In</button>
+    </section>
+
+    <section id="admin" class="card hidden">
+      <h2>Admin Panel</h2>
+      <p>Only visible to admins.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 GameHub</p>
+  </footer>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('main section').forEach(sec => {
+        sec.classList.add('hidden');
+      });
+      document.getElementById(pageId).classList.remove('hidden');
+    }
+
+    // Placeholder user state
+    const user = {
+      loggedIn: false,
+      isAdmin: false
+    };
+
+    if (user.isAdmin) {
+      document.getElementById('admin').classList.remove('hidden');
+    }
+  </script>
+
+</body>
+</html>
