@@ -22,13 +22,10 @@ body{background-color:var(--bg-primary);background-image:linear-gradient(var(--b
 @keyframes blink{50%{opacity:0}}
 .click-to-boot{margin-top:40px;color:var(--terminal-amber);font-size:1rem;cursor:pointer;opacity:0;animation:fadeInOut 2s infinite;animation-delay:3s;text-align:center;border:1px solid var(--terminal-amber);padding:15px;width:fit-content;border-radius:4px;align-self:center}
 @keyframes fadeInOut{0%,100%{opacity:0.3}50%{opacity:1}}
-.hidden-message{position:fixed;bottom:2px;right:5px;font-size:8px;color:rgba(148,163,184,0.08);user-select:text;pointer-events:none;font-family:'JetBrains Mono',monospace;z-index:9999;letter-spacing:1px}
-
-/* Lazy dev tooltip */
+.hidden-message{position:fixed;bottom:2px;right:5px;font-size:8px;color:rgba(148,163,184,0.06);user-select:text;pointer-events:none;font-family:'JetBrains Mono',monospace;z-index:9999;letter-spacing:1px}
 .dev-warning{position:fixed;top:0;left:0;width:100%;background:rgba(245,158,11,0.1);border-bottom:1px solid var(--terminal-amber);padding:8px 20px;text-align:center;font-size:0.8rem;color:var(--terminal-amber);z-index:9998;font-family:'JetBrains Mono',monospace;backdrop-filter:blur(5px);display:flex;justify-content:center;align-items:center;gap:15px}
 .dev-warning button{background:transparent;border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:2px 10px;font-size:0.7rem;cursor:pointer;border-radius:4px;font-family:'JetBrains Mono',monospace}
 .dev-warning button:hover{background:var(--terminal-amber);color:var(--bg-primary)}
-
 header{background:var(--bg-secondary);border-bottom:1px solid var(--terminal-blue);padding:15px 25px;display:flex;align-items:center;justify-content:space-between;position:relative;margin-top:35px}
 .logo-container{display:flex;align-items:center;gap:12px;cursor:pointer}
 .logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--lemon-blue) 0%,#1e293b 100%);border:1px solid var(--terminal-blue);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 12px var(--border-glow);position:relative;overflow:hidden;animation:pulseGlow 3s ease-in-out infinite}
@@ -113,557 +110,947 @@ nav button:disabled{opacity:0.3;cursor:not-allowed;pointer-events:none}
 .status-left{display:flex;gap:25px}
 .easter-egg-toast{position:fixed;top:100px;right:-400px;background:var(--bg-secondary);border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:15px 25px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.9rem;transition:right 0.5s;z-index:1002;box-shadow:0 5px 20px rgba(245,158,11,0.2);max-width:350px;line-height:1.5;white-space:pre-line}
 .easter-egg-toast.show{right:25px}
+.easter-egg-toast.angry{background:#2a0a0a;border-color:var(--error-red);color:var(--error-red);box-shadow:0 5px 20px rgba(239,68,68,0.4)}
+.easter-egg-toast.furious{background:#1a0505;border-color:#ff0000;color:#ff0000;box-shadow:0 0 30px rgba(255,0,0,0.6);animation:shake 0.5s infinite}
 .easter-egg-toast.unlocked{background:#0a2a1a;border-color:var(--success-green);color:var(--success-green);box-shadow:0 5px 20px rgba(16,185,129,0.3)}
-
-/* Secret Menu Styles */
-.secret-menu{background:var(--bg-secondary);border:2px solid var(--terminal-amber);border-radius:8px;padding:25px;margin-top:20px;position:relative;overflow:hidden}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+#shutdown-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace}
+#shutdown-overlay.active{display:flex}
+.shutdown-text{font-size:8rem;color:#ff0000;font-weight:bold;text-transform:uppercase;letter-spacing:20px;animation:pulseRed 1s infinite;text-shadow:0 0 50px rgba(255,0,0,0.8)}
+@keyframes pulseRed{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(1.05)}}
+.shutdown-sub{color:#666;margin-top:20px;font-size:1.2rem;text-align:center}
+.shutdown-timer{color:#ff0000;font-size:2rem;margin-top:30px;font-weight:bold;animation:pulseRed 1s infinite}
+.shutdown-hint{color:#444;margin-top:15px;font-size:0.9rem}
+.secret-menu{background:var(--bg-secondary);border:2px solid var(--terminal-amber);border-radius:8px;padding:25px;margin-top:20px;position:relative;overflow:hidden;display:none}
+.secret-menu.active{display:block;animation:scanline 0.5s ease-out}
 .secret-menu::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--terminal-amber),transparent,var(--terminal-amber));animation:scan 2s linear infinite}
 @keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+@keyframes scanline{0%{clip-path:inset(0 100% 0 0)}100%{clip-path:inset(0 0 0 0)}}
 .secret-title{color:var(--terminal-amber);font-family:'JetBrains Mono',monospace;font-size:1.5rem;margin-bottom:20px;text-transform:uppercase;letter-spacing:2px;text-align:center;text-shadow:0 0 10px rgba(245,158,11,0.3)}
 .secret-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
-.secret-btn{background:rgba(245,158,11,0.1);border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:15px;font-family:'JetBrains Mono',monospace;cursor:pointer;border-radius:4px;transition:all 0.3s;text-align:center;font-size:0.85rem}
+.secret-btn{background:rgba(245,158,11,0.1);border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:15px;font-family:'JetBrains Mono',monospace;cursor:pointer;border-radius:4px;transition:all 0.3s;text-transform:uppercase;font-size:0.8rem;letter-spacing:1px;position:relative;overflow:hidden}
 .secret-btn:hover{background:rgba(245,158,11,0.2);transform:translateY(-2px);box-shadow:0 5px 15px rgba(245,158,11,0.2)}
-.secret-console{background:#000;border:1px solid var(--terminal-amber);border-radius:4px;padding:15px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--terminal-amber);height:200px;overflow-y:auto;margin-top:20px;position:relative}
-.secret-console-line{margin-bottom:5px;opacity:0;animation:typeConsole 0.3s forwards}
-@keyframes typeConsole{to{opacity:1}}
-.matrix-intensity{width:100%;margin:10px 0}
-.cool-effect{position:fixed;pointer-events:none;z-index:9997;width:100%;height:100%;top:0;left:0;display:none}
-.cool-effect.active{display:block}
-::-webkit-scrollbar{width:8px}
-::-webkit-scrollbar-track{background:var(--bg-primary)}
-::-webkit-scrollbar-thumb{background:rgba(59,130,246,0.2);border-radius:4px}
-::-webkit-scrollbar-thumb:hover{background:var(--terminal-blue)}
-@media(max-width:768px){.games-grid{grid-template-columns:1fr}.music-player{flex-direction:column;gap:10px}.terminal-title{font-size:1.1rem}.system-stats{grid-template-columns:repeat(2,1fr)}}
+.secret-btn.danger{border-color:var(--error-red);color:var(--error-red);background:rgba(239,68,68,0.1)}
+.secret-btn.danger:hover{background:rgba(239,68,68,0.2);box-shadow:0 5px 15px rgba(239,68,68,0.3)}
+.secret-btn.success{border-color:var(--success-green);color:var(--success-green);background:rgba(16,185,129,0.1)}
+.secret-btn.success:hover{background:rgba(16,185,129,0.2)}
+.secret-status{margin-top:15px;padding:10px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.2);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--terminal-amber);text-align:center;min-height:40px;display:flex;align-items:center;justify-content:center}
+.matrix-control{margin-top:15px;padding:15px;background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.2);border-radius:4px}
+.matrix-control label{display:block;color:var(--terminal-blue);font-size:0.8rem;margin-bottom:8px;font-family:'JetBrains Mono',monospace}
+.matrix-slider{width:100%;height:6px;background:var(--bg-primary);outline:none;opacity:0.7;transition:opacity 0.2s;-webkit-appearance:none}
+.matrix-slider:hover{opacity:1}
+.matrix-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:var(--terminal-blue);cursor:pointer;border-radius:50%;box-shadow:0 0 10px rgba(59,130,246,0.5)}
+.debug-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9997;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(59,130,246,0.5);padding:10px;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(59,130,246,0.03) 2px,rgba(59,130,246,0.03) 4px)}
+.debug-overlay.active{display:block}
+.debug-info{position:absolute;top:10px;left:10px;background:rgba(10,22,40,0.9);padding:10px;border:1px solid rgba(59,130,246,0.3);border-radius:4px;max-width:300px}
+.god-mode{animation:godMode 3s infinite}
+@keyframes godMode{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(180deg)}}
+.night-mode{filter:invert(1) hue-rotate(180deg)}
+.speed-mode *{transition-duration:0.1s!important;animation-duration:0.1s!important}
+.console-toast{position:fixed;bottom:100px;left:25px;background:var(--bg-secondary);border:1px solid var(--success-green);color:var(--success-green);padding:10px 15px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:0.75rem;z-index:999;display:none;max-width:400px}
+.console-toast.active{display:block;animation:slideUp 0.3s ease-out}
 </style>
 </head>
 <body>
 
 <canvas id="matrix-canvas"></canvas>
-<div class="hidden-message">found you</div>
-<div class="easter-egg-toast" id="easterToast"></div>
-<div class="cool-effect" id="coolEffect"></div>
 
-<!-- Dev Warning -->
-<div class="dev-warning" id="devWarning">
-  <span>⚠️ DEV_NOTICE: Some games don't work and I'm too lazy to find working URLs. Deal with it.</span>
-  <button onclick="document.getElementById('devWarning').style.display='none'">[ DISMISS ]</button>
+<div id="shutdown-overlay">
+    <div class="shutdown-text">STOP</div>
+    <div class="shutdown-sub">AURELIO PROTECTION SYSTEM ACTIVATED</div>
+    <div class="shutdown-timer">60</div>
+    <div class="shutdown-hint">Type 'sorry' or wait for lockout to expire</div>
 </div>
 
 <div id="boot-sequence">
-  <div class="boot-line" style="animation-delay:0.1s">INITIALIZING LEMONS_PROXY v10.0...</div>
-  <div class="boot-line" style="animation-delay:0.3s">LOADING BLUEPRINT ARCHITECTURE...</div>
-  <div class="boot-line" style="animation-delay:0.5s">MOUNTING GAME MODULES [0/60]</div>
-  <div class="boot-line dim" style="animation-delay:0.7s">  > Run_3.exe [OK]</div>
-  <div class="boot-line dim" style="animation-delay:0.8s">  > Super_Mario_64.exe [OK]</div>
-  <div class="boot-line dim" style="animation-delay:0.9s">  > Eaglercraft_1.8.8.exe [OK]</div>
-  <div class="boot-line" style="animation-delay:1.0s">ALL MODULES MOUNTED SUCCESSFULLY</div>
-  <div class="boot-line" style="animation-delay:1.2s">ESTABLISHING SECURE CONNECTION...</div>
-  <div class="boot-line success" style="animation-delay:1.4s">ENCRYPTION: AES-256 [ACTIVE]</div>
-  <div class="boot-line error" style="animation-delay:1.6s">WARNING: PROXY_MODULE_OFFLINE</div>
-  <div class="boot-line warn" style="animation-delay:1.8s">FALLBACK_MODE: GAME_MODULES_ONLY</div>
-  <div class="boot-line" style="animation-delay:2.0s">AUTHORS: LEMONWESH x LD <span style="color:var(--terminal-dim)">(dist. v.10)</span></div>
-  <div class="boot-line success" style="animation-delay:2.2s">SYSTEM READY<span class="boot-cursor"></span></div>
-  <div class="click-to-boot" onclick="dismissBoot()">[ CLICK TO INITIALIZE ]</div>
+    <div id="boot-content"></div>
+    <div class="boot-cursor"></div>
+    <div class="click-to-boot" onclick="skipBoot()">[ CLICK TO INITIALIZE ]</div>
+</div>
+
+<div class="dev-warning" id="devWarning">
+    <span>⚠️ DEVELOPMENT MODE // UNAUTHORIZED ACCESS DETECTED</span>
+    <button onclick="dismissDevWarning()">ACKNOWLEDGE</button>
+</div>
+
+<div class="hidden-message">
+    user: lemonwesh | status: admin | access: unrestricted | protocol: lemon_v10.0 | ████████████████████
 </div>
 
 <header>
-  <div class="logo-container" onclick="easterEggLogo()">
-    <div class="logo-icon">🍋</div>
-    <div><span class="terminal-title">LEMONS_PROXY</span><span class="version-tag">v10.0</span></div>
-  </div>
-  <div class="credits">Blueprint Terminal // Engineered by LD & Lemonwesh</div>
+    <div class="logo-container" onclick="logoClick()">
+        <div class="logo-icon">🍋</div>
+        <div>
+            <div class="terminal-title">LEMONS_PROXY<span class="version-tag">v10.0</span></div>
+            <div class="credits">blueprint terminal // by lemonwesh & ld</div>
+        </div>
+    </div>
+    <div style="display:flex;gap:15px;align-items:center;">
+        <button class="control-btn" onclick="toggleCloak()" title="Toggle Tab Cloak">
+            <span>👻</span> CLOAK
+        </button>
+        <div class="stat-value" id="clock" style="font-size:0.9rem;"></div>
+    </div>
 </header>
 
 <nav>
-  <button class="nav-btn active" onclick="showSection('games')" id="nav-games">Game_Modules</button>
-  <button class="nav-btn" onclick="showSection('search')" id="nav-search">Network_Proxy</button>
-  <button class="nav-btn" onclick="showSection('secret')" id="nav-secret" disabled style="opacity:0.3;position:relative">
-    ????
-    <span style="position:absolute;top:-5px;right:-5px;width:10px;height:10px;background:var(--terminal-amber);border-radius:50%;display:none" id="secretBadge"></span>
-  </button>
+    <button class="nav-btn active" onclick="showSection('home')">Home</button>
+    <button class="nav-btn" onclick="showSection('games')">Games</button>
+    <button class="nav-btn" onclick="showSection('proxy')">Proxy</button>
+    <button class="nav-btn" onclick="showSection('tools')">Tools</button>
+    <button class="nav-btn" onclick="showSection('about')">About</button>
 </nav>
 
 <div class="container">
-  <section id="games" class="section active">
-    <div class="system-stats">
-      <div class="stat-box"><div class="stat-label">System_Status</div><div class="stat-value" style="color:var(--success-green)">Online</div></div>
-      <div class="stat-box"><div class="stat-label">Modules_Loaded</div><div class="stat-value" id="moduleCount">60</div></div>
-      <div class="stat-box"><div class="stat-label">Network</div><div class="stat-value" style="font-size:0.95rem">Encrypted</div></div>
-      <div class="stat-box"><div class="stat-label">Latency</div><div class="stat-value" id="latency">12ms</div></div>
-      <div class="stat-box"><div class="stat-label">Achievements</div><div class="stat-value" id="achievements-count">0/8</div></div>
-    </div>
-    <div class="search-container"><input type="text" class="search-input" id="searchInput" placeholder="Search module database..." onkeyup="searchGames()"></div>
-    <div class="games-grid" id="gamesGrid"></div>
-  </section>
+    
+    <section id="home" class="section active">
+        <div class="system-stats">
+            <div class="stat-box">
+                <span class="stat-label">System Status</span>
+                <span class="stat-value" style="color:var(--success-green);">ONLINE</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Latency</span>
+                <span class="stat-value" id="latency">12ms</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Active Nodes</span>
+                <span class="stat-value" id="nodes">420</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Encryption</span>
+                <span class="stat-value">AES-256</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Aurelio Status</span>
+                <span class="stat-value" id="aurelioStatus" style="color:var(--terminal-amber);">WATCHING</span>
+            </div>
+        </div>
 
-  <section id="search" class="section">
-    <div class="coming-soon">
-      <div class="hack-map" id="hackMap"><div class="map-grid"></div></div>
-      <div class="coming-title">LEMONS_SEARCH</div>
-      <div class="coming-subtitle">[ COMING_SOON ]</div>
-      <div class="coming-text">Advanced network protocols currently offline.<br>Engineering team working on deployment.<br><br><span style="color:var(--terminal-blue);font-family:'JetBrains Mono'">> Estimated: TBD</span></div>
-      <div class="proxy-links">
-        <a href="https://www.croxyproxy.com/" target="_blank" class="proxy-link">> CroxyProxy</a>
-        <a href="https://www.blockaway.net/" target="_blank" class="proxy-link">> BlockAway</a>
-      </div>
-    </div>
-  </section>
+        <div class="coming-soon">
+            <div class="secret-menu" id="secretMenu">
+                <div class="secret-title">🍋 LEMON PROTOCOL UNLOCKED 🍋</div>
+                <div class="secret-grid">
+                    <button class="secret-btn" onclick="toggleMatrix()">Toggle Matrix</button>
+                    <button class="secret-btn" onclick="toggleNightMode()">Night Mode</button>
+                    <button class="secret-btn" onclick="toggleGodMode()">God Mode</button>
+                    <button class="secret-btn" onclick="toggleDebug()">Debug Overlay</button>
+                    <button class="secret-btn success" onclick="speedRunMode()">SPEED RUN</button>
+                    <button class="secret-btn danger" onclick="fakeDelete()">Delete System32</button>
+                    <button class="secret-btn" onclick="fakeIPLog()">Log IP Address</button>
+                    <button class="secret-btn" onclick="unlockAllAchievements()">Unlock All</button>
+                </div>
+                <div class="matrix-control">
+                    <label>Matrix Intensity: <span id="matrixValue">8%</span></label>
+                    <input type="range" class="matrix-slider" min="0" max="50" value="8" oninput="setMatrixIntensity(this.value)">
+                </div>
+                <div class="secret-status" id="secretStatus">PROTOCOL ACTIVE // WAITING FOR INPUT</div>
+            </div>
 
-  <section id="secret" class="section">
-    <div class="secret-menu">
-      <div class="secret-title">🔐 LEMON_PROTOCOL // UNLOCKED</div>
-      <div class="secret-grid">
-        <button class="secret-btn" onclick="rickRoll()">🎵 Play Cool Song</button>
-        <button class="secret-btn" onclick="matrixOverload()">💊 Matrix Overload</button>
-        <button class="secret-btn" onclick="hackerTyper()">👨‍💻 Hacker Typer</button>
-        <button class="secret-btn" onclick="fixAllGames()">🔧 Fix All Games (Fake)</button>
-        <button class="secret-btn" onclick="confettiRain()">🎉 Party Mode</button>
-        <button class="secret-btn" onclick="revealTruth()">🚫 Reveal Hidden Truth</button>
-      </div>
-      <div class="secret-console" id="secretConsole">
-        <div class="secret-console-line" style="animation-delay:0s">> LEMON_PROTOCOL v9.9.9 initialized...</div>
-        <div class="secret-console-line" style="animation-delay:0.5s">> Root access granted to user: LEMONWESH</div>
-        <div class="secret-console-line" style="animation-delay:1s">> Warning: Security protocols bypassed</div>
-        <div class="secret-console-line" style="animation-delay:1.5s">> Secret menu loaded successfully</div>
-        <div class="secret-console-line" style="animation-delay:2s">> Waiting for input...</div>
-      </div>
-    </div>
-  </section>
-</div>
+            <div style="position:relative;width:200px;height:200px;margin:0 auto 30px;">
+                <svg viewBox="0 0 200 200" style="width:100%;height:100%;">
+                    <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(59,130,246,0.2)" stroke-width="1"/>
+                    <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(59,130,246,0.4)" stroke-width="1" stroke-dasharray="10,5"/>
+                    <circle cx="100" cy="100" r="50" fill="none" stroke="rgba(59,130,246,0.6)" stroke-width="1"/>
+                    <line x1="100" y1="10" x2="100" y2="190" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+                    <line x1="10" y1="100" x2="190" y2="100" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+                    <circle cx="100" cy="100" r="5" fill="#3b82f6">
+                        <animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3rem;">🍋</div>
+            </div>
+            <h2 class="coming-title">WELCOME OPERATIVE</h2>
+            <p class="coming-subtitle">SECURE CONNECTION ESTABLISHED</p>
+            <p class="coming-text">
+                LEMONS_PROXY v10.0 is now online. All systems nominal. 
+                Search for "lemon" to unlock hidden protocols. 
+                Warning: Do not search for "aurelio" - system protection is active.
+            </p>
+            <div class="proxy-links">
+                <a href="#" class="proxy-link" onclick="showSection('games')">> GAMES</a>
+                <a href="#" class="proxy-link" onclick="showSection('proxy')">> BROWSER</a>
+                <a href="#" class="proxy-link" onclick="showSection('tools')">> TOOLS</a>
+            </div>
+        </div>
+    </section>
 
-<div class="music-player">
-  <span class="music-label">Audio_Input:</span>
-  <input type="text" class="music-input" id="musicUrl" value="https://www.youtube.com/watch?v=JvF3ps2JiYY" placeholder="YouTube URL...">
-  <button class="music-btn" onclick="playMusic()">Play</button>
-  <button class="music-btn" onclick="stopMusic()" style="background:transparent;color:var(--text-secondary);border-color:rgba(255,255,255,0.2)">Stop</button>
-  <span class="now-playing active" id="nowPlaying">♫ Standby...</span>
-</div>
-<div id="musicContainer" style="display:none"></div>
+    <section id="games" class="section">
+        <div class="system-stats">
+            <div class="stat-box">
+                <span class="stat-label">Library Size</span>
+                <span class="stat-value" id="gameCount">0</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Recently Added</span>
+                <span class="stat-value">15</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Favorites</span>
+                <span class="stat-value" id="favCount">0</span>
+            </div>
+        </div>
 
-<button class="achievements-btn" onclick="toggleAchievements()">🏆</button>
-<div class="achievements-panel" id="achievementsPanel">
-  <div class="panel-header"><span>System Achievements</span><span id="ach-progress">0/8</span></div>
-  <div id="achievementsList"></div>
-</div>
-<div class="achievement-popup" id="achievementPopup"><div class="pop-icon">🏆</div><div class="pop-text"><h3>Achievement Unlocked</h3><p id="pop-achievement-text">Description</p></div></div>
+        <div class="search-container">
+                      <input type="text" class="search-input" id="gameSearch" placeholder="Search protocols... [Try 'lemon' or 'aurelio']" autocomplete="off">
+        </div>
 
-<div class="status-bar">
-  <div class="status-left"><span>Node: US-East-1</span><span>Mem: 4.2GB/8GB</span><span>Uptime: 99.9%</span></div>
-  <div style="color:var(--terminal-blue);font-family:'JetBrains Mono';font-weight:400">🍋 LEMONS_PROXY v10.0 // LD x LEMONWESH</div>
+        <div class="games-grid" id="gamesGrid">
+            <!-- Games populated by JS -->
+        </div>
+    </section>
+
+    <section id="proxy" class="section">
+        <div class="coming-soon">
+            <div class="hack-map">
+                <div class="map-grid"></div>
+                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">
+                    <div style="font-size:2rem;margin-bottom:10px;">🌐</div>
+                    <div style="color:var(--terminal-blue);font-family:'JetBrains Mono';">SECURE_PROXY_NODE</div>
+                </div>
+            </div>
+            <h2 class="coming-title">PROXY_TERMINAL</h2>
+            <p class="coming-subtitle">BYPASS RESTRICTIONS // ACCESS FREELY</p>
+            <p class="coming-text">
+                Enter URL below to route through encrypted proxy servers.
+                Connection is tunneled through secure nodes.
+            </p>
+            <div style="max-width:600px;margin:0 auto;display:flex;gap:10px;">
+                <input type="text" id="proxyUrl" placeholder="https://example.com" style="flex:1;padding:12px;background:var(--bg-primary);border:1px solid rgba(59,130,246,0.3);color:var(--text-primary);border-radius:4px;font-family:'JetBrains Mono';">
+                <button class="control-btn" onclick="loadProxy()">CONNECT</button>
+            </div>
+            <div id="proxyFrame" style="margin-top:20px;width:100%;height:500px;background:var(--bg-primary);border:1px solid rgba(59,130,246,0.3);border-radius:4px;display:none;">
+                <iframe id="proxyIframe" style="width:100%;height:100%;border:none;"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section id="tools" class="section">
+        <div class="games-grid">
+            <div class="game-module" onclick="openTool('calc')">
+                <div class="module-header">
+                    <span class="module-icon">🧮</span>
+                    <span class="module-tag">UTIL</span>
+                </div>
+                <div class="module-title">Calculator</div>
+                <div class="module-meta">v1.0 // Basic Math</div>
+            </div>
+            <div class="game-module" onclick="openTool('notes')">
+                <div class="module-header">
+                    <span class="module-icon">📝</span>
+                    <span class="module-tag">UTIL</span>
+                </div>
+                <div class="module-title">Secure Notes</div>
+                <div class="module-meta">Encrypted // Local</div>
+            </div>
+            <div class="game-module" onclick="openTool('clock')">
+                <div class="module-header">
+                    <span class="module-icon">⏰</span>
+                    <span class="module-tag">UTIL</span>
+                </div>
+                <div class="module-title">World Clock</div>
+                <div class="module-meta">Multi-Timezone</div>
+            </div>
+            <div class="game-module" onclick="openTool('convert')">
+                <div class="module-header">
+                    <span class="module-icon">🔄</span>
+                    <span class="module-tag">UTIL</span>
+                </div>
+                <div class="module-title">Converter</div>
+                <div class="module-meta">Units // Currency</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="coming-soon" style="max-width:800px;margin:0 auto;">
+            <h2 class="coming-title">SYSTEM_INFO</h2>
+            <div style="text-align:left;padding:20px;font-family:'JetBrains Mono';font-size:0.9rem;line-height:1.8;">
+                <div style="color:var(--terminal-blue);margin-bottom:15px;">// LEMONS_PROXY v10.0 BLUEPRINT EDITION</div>
+                <div style="color:var(--text-secondary);margin-bottom:10px;">> Developed by: <span style="color:var(--terminal-bright);">lemonwesh</span> & <span style="color:var(--terminal-bright);">LD</span></div>
+                <div style="color:var(--text-secondary);margin-bottom:10px;">> Architecture: <span style="color:var(--terminal-bright);">Static HTML5/ES6+</span></div>
+                <div style="color:var(--text-secondary);margin-bottom:10px;">> Security: <span style="color:var(--terminal-bright);">Client-Side Only</span></div>
+                <div style="color:var(--text-secondary);margin-bottom:20px;">> License: <span style="color:var(--terminal-bright);">Open Source // MIT</span></div>
+                
+                <div style="color:var(--terminal-amber);margin-bottom:10px;">// HIDDEN COMMANDS</div>
+                <div style="color:var(--text-secondary);font-size:0.8rem;line-height:2;">
+                    <div>• Search "lemon" 5x → Unlock Secret Menu</div>
+                    <div>• Search "aurelio" 5x → Trigger Lockdown</div>
+                    <div>• Click logo rapidly → Surprise</div>
+                    <div>• Konami Code → Classic</div>
+                    <div>• Type "idkfa" → God Mode</div>
+                    <div>• Ctrl+Shift+L → Lemon捷径</div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
 
 <div class="game-viewer" id="gameViewer">
-  <div class="viewer-header">
-    <div class="viewer-title">> EXECUTING: <span id="viewerTitle">Unknown</span></div>
-    <div class="controls-group">
-      <button class="control-btn" onclick="toggleFullscreen()" id="fullscreenBtn">⛶ Fullscreen</button>
-      <button class="control-btn close" onclick="closeGame()">✕ Close</button>
+    <div class="viewer-header">
+        <div class="viewer-title" id="viewerTitle">> GAME_LOADED</div>
+        <div class="controls-group">
+            <button class="control-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+            <button class="control-btn" onclick="reloadGame()">↻ Reload</button>
+            <button class="control-btn close" onclick="closeGame()">✕ Close</button>
+        </div>
     </div>
-  </div>
-  <iframe id="gameFrame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"></iframe>
+    <iframe id="gameFrame" allowfullscreen></iframe>
+</div>
+
+<div class="music-player">
+    <span class="music-label">Audio_Cache:</span>
+    <input type="text" class="music-input" id="musicUrl" placeholder="Enter audio URL or YouTube ID...">
+    <button class="music-btn" onclick="playMusic()">▶ Play</button>
+    <button class="music-btn" onclick="stopMusic()" style="background:transparent;border-color:var(--error-red);color:var(--error-red);">⏹ Stop</button>
+    <span class="now-playing" id="nowPlaying"></span>
+</div>
+
+<button class="achievements-btn" onclick="toggleAchievements()" title="Achievements">🏆</button>
+<div class="achievements-panel" id="achievementsPanel">
+    <div class="panel-header">
+        <span>ACHIEVEMENTS</span>
+        <span id="achievementCount" style="color:var(--text-secondary);font-size:0.75rem;">0/12</span>
+    </div>
+    <div id="achievementsList">
+        <!-- Populated by JS -->
+    </div>
+</div>
+
+<div class="achievement-popup" id="achievementPopup">
+    <div class="pop-icon" id="popIcon">🏆</div>
+    <div class="pop-text">
+        <h3 id="popTitle">Achievement Unlocked!</h3>
+        <p id="popDesc">Description here</p>
+    </div>
+</div>
+
+<div class="easter-egg-toast" id="easterToast"></div>
+<div class="console-toast" id="consoleToast"></div>
+<div class="debug-overlay" id="debugOverlay">
+    <div class="debug-info">
+        <div>DEBUG_MODE: ACTIVE</div>
+        <div>FPS: <span id="fps">60</span></div>
+        <div>Memory: <span id="memory">--</span></div>
+        <div>Search Count: <span id="debugSearch">0</span></div>
+        <div>Aurelio Level: <span id="debugAurelio">0</span></div>
+        <div>Lemon Count: <span id="debugLemon">0</span></div>
+        <div>Konami: <span id="debugKonami">false</span></div>
+    </div>
+</div>
+
+<div class="status-bar">
+    <div class="status-left">
+        <span id="statusText">System Ready</span>
+        <span style="color:var(--terminal-blue);">●</span>
+        <span>Session: <span id="sessionTime">00:00:00</span></span>
+    </div>
+    <div>
+        <span style="color:var(--terminal-dim);">v10.0.2-beta</span>
+        <span style="margin-left:15px;color:var(--success-green);">● Secure</span>
+    </div>
 </div>
 
 <script>
-// Matrix background effect
-const canvas=document.getElementById('matrix-canvas');const ctx=canvas.getContext('2d');function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}resizeCanvas();window.addEventListener('resize',resizeCanvas);const chars='01XY+-*/<>[]{}|=•·';const fontSize=12;const columns=canvas.width/fontSize;const drops=[];for(let x=0;x<columns;x++)drops[x]=Math.random()*-100;function drawMatrix(){ctx.fillStyle='rgba(10,22,40,0.04)';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(59,130,246,0.3)';ctx.font=fontSize+'px monospace';for(let i=0;i<drops.length;i++){const text=chars.charAt(Math.floor(Math.random()*chars.length));ctx.fillText(text,i*fontSize,drops[i]*fontSize);if(drops[i]*fontSize>canvas.height&&Math.random()>0.975)drops[i]=0;drops[i]++}}setInterval(drawMatrix,50);
+// ===== STATE MANAGEMENT =====
+const state = {
+    booted: false,
+    achievements: [],
+    games: [],
+    easterEggs: {
+        lemon: 0,
+        aurelio: 0,
+        logoClicks: 0,
+        konami: false,
+        secretUnlocked: false,
+        godMode: false,
+        nightMode: false,
+        debug: false,
+        speedRun: false
+    },
+    sessionStart: Date.now(),
+    matrixIntensity: 0.08,
+    audioPlayer: null,
+    shutdownTimer: null,
+    shutdownActive: false
+};
 
-// 60 GAMES DATABASE
-const games=[
-  {name:"8 Ball Pool",emoji:"🎱",tag:"Sports",size:"24",url:"https://8ball-pool.github.io/"},
-  {name:"Ludo With Friends",emoji:"🎲",tag:"Multiplayer",size:"18",url:"https://zv1y2i8p.play.gamezop.com/g/SkhljT2fdgb"},
-  {name:"Basketball Stars",emoji:"🏀",tag:"Multiplayer",size:"32",url:"https://html5.gamedistribution.com/f7c4e66b484e45df86b7d46450aac477/"},
-  {name:"Stick Duel",emoji:"⚔️",tag:"Fighting",size:"15",url:"https://stick-duel-battle.github.io/"},
-  {name:"Poly Track",emoji:"🏎️",tag:"Racing",size:"45",url:"https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},
-  {name:"Jelly Truck",emoji:"🚚",tag:"Racing",size:"22",url:"https://jellytruck2.github.io/"},
-  {name:"Slope",emoji:"📐",tag:"Racing",size:"12",url:"https://slope-y8.com/"},
-  {name:"Slope 2",emoji:"📐",tag:"Racing",size:"15",url:"https://slopegame2.github.io/"},
-  {name:"Drift Hunters",emoji:"🏎️",tag:"Racing",size:"86",url:"https://drifthuntersonline.github.io/"},
-  {name:"Slow Roads",emoji:"🛣️",tag:"Racing",size:"34",url:"https://slowroads.io/"},
-  {name:"Subway Surfers",emoji:"🏃",tag:"Arcade",size:"67",url:"https://subway-surfer.github.io/"},
-  {name:"Temple Run 2",emoji:"🏛️",tag:"Arcade",size:"54",url:"https://temple-run-2.github.io/"},
-  {name:"Crossy Road",emoji:"🐔",tag:"Arcade",size:"23",url:"https://crossyroad66.github.io/"},
-  {name:"1v1.LOL",emoji:"🔫",tag:"Battle",size:"112",url:"https://1v1-lol-unblocked.github.io/"},
-  {name:"Shell Shockers",emoji:"🥚",tag:"FPS",size:"94",url:"https://shellshockers-unblocked.github.io/"},
-  {name:"Krunker.io",emoji:"🔫",tag:"FPS",size:"45",url:"https://krunker-io.github.io/"},
-  {name:"Slither.io",emoji:"🐍",tag:"Arcade",size:"18",url:"https://slither.io/"},
-  {name:"Agar.io",emoji:"⚪",tag:"Arcade",size:"22",url:"https://agar.io/"},
-  {name:"Smash Karts",emoji:"🏎️",tag:"Racing",size:"76",url:"https://smashkarts.io/"},
-  {name:"Zombs Royale",emoji:"🧟",tag:"Battle",size:"128",url:"https://zombsroyale.io/"},
-  {name:"Retro Bowl",emoji:"🏈",tag:"Sports",size:"43",url:"https://retrobowl97.github.io/"},
-  {name:"Thumb Fighter",emoji:"👊",tag:"Fighting",size:"16",url:"https://thumbfighter.github.io/"},
-  {name:"Rooftop Snipers",emoji:"🎯",tag:"Action",size:"21",url:"https://rooftop-snipers.github.io/"},
-  {name:"2048",emoji:"🔢",tag:"Puzzle",size:"4",url:"https://play2048.co/"},
-  {name:"Cookie Clicker",emoji:"🍪",tag:"Idle",size:"8",url:"https://cookieclicker-game.github.io/"},
-  {name:"Minesweeper",emoji:"💣",tag:"Puzzle",size:"6",url:"https://minesweeper.online/"},
-  {name:"Little Alchemy 2",emoji:"⚗️",tag:"Puzzle",size:"31",url:"https://littlealchemy2.com/"},
-  {name:"Sudoku",emoji:"🧩",tag:"Puzzle",size:"5",url:"https://zv1y2i8p.play.gamezop.com/g/rkHVpV2Yugb"},
-  {name:"Fleeing Complex",emoji:"🏃",tag:"Stealth",size:"42",url:"https://henry-stickmin.github.io/fleeingthecomplex/"},
-  {name:"Escaping Prison",emoji:"🔨",tag:"Stealth",size:"38",url:"https://henry-stickmin.github.io/escapingtheprison/"},
-  {name:"Stealing Diamond",emoji:"💎",tag:"Stealth",size:"35",url:"https://henry-stickmin.github.io/stealingthediamond/"},
-  {name:"Infiltrating Airship",emoji:"🎈",tag:"Stealth",size:"41",url:"https://henry-stickmin.github.io/infiltratingtheairship/"},
-  {name:"Papa's Pizzeria",emoji:"🍕",tag:"Sim",size:"28",url:"https://papas-pizzeria.github.io/"},
-  {name:"Papa's Pancakeria",emoji:"🥞",tag:"Sim",size:"26",url:"https://papaspancakeria.github.io/"},
-  {name:"Geometry Dash",emoji:"🔷",tag:"Platformer",size:"89",url:"https://geometry-dash-unbanned.github.io/"},
-  {name:"OvO",emoji:"🥚",tag:"Platformer",size:"33",url:"https://dedragames.com/games/ovo/1.3/"},
-  {name:"Vex 5",emoji:"🔺",tag:"Platformer",size:"47",url:"https://vex5.com/"},
-  {name:"Vex 6",emoji:"🔺",tag:"Platformer",size:"52",url:"https://vex6.com/"},
-  {name:"Big Tower Tiny Square",emoji:"🗼",tag:"Platformer",size:"29",url:"https://big-tower-tiny-square.com/"},
-  {name:"Pac-Man",emoji:"👻",tag:"Arcade",size:"12",url:"https://google-pacman.github.io/"},
-  {name:"Chrome Dino",emoji:"🦖",tag:"Arcade",size:"3",url:"https://chrome-dino-game.github.io/"},
-  {name:"Flappy Bird",emoji:"🐦",tag:"Arcade",size:"5",url:"https://flappy-bird.com/"},
-  {name:"Eaglercraft 1.8.8",emoji:"⛏️",tag:"Sandbox",size:"256",url:"https://g.deev.is/eaglercraft/"},
-  {name:"MineKhan",emoji:"⛏️",tag:"Sandbox",size:"178",url:"https://yikuansun.github.io/minekhan/"},
-  {name:"Voxel Builder",emoji:"🧊",tag:"Sandbox",size:"64",url:"https://voxelbuilder.github.io/"},
-  {name:"Run 3",emoji:"🏃",tag:"Platformer",size:"35",url:"https://run3unblocked.github.io/"},
-  {name:"Super Mario 64",emoji:"🍄",tag:"Platformer",size:"12",url:"https://sm64web.github.io/"},
-  {name:"Friday Night Funkin'",emoji:"🎤",tag:"Rhythm",size:"45",url:"https://fnf-unblocked.github.io/"},
-  {name:"Happy Wheels",emoji:"🦽",tag:"Racing",size:"22",url:"https://happywheelsunblocked.github.io/"},
-  {name:"Super Smash Flash 2",emoji:"⚔️",tag:"Fighting",size:"156",url:"https://super-smash-flash-2.github.io/"},
-  {name:"Bloons TD 6",emoji:"🎈",tag:"Strategy",size:"78",url:"https://bloons-td-6.github.io/"},
-  {name:"Stumble Guys",emoji:"🤼",tag:"Multiplayer",size:"89",url:"https://stumble-guys.github.io/"},
-  {name:"Wordle Unlimited",emoji:"📝",tag:"Puzzle",size:"2",url:"https://wordle-unlimited.github.io/"},
-  {name:"Tetris",emoji:"🧱",tag:"Arcade",size:"8",url:"https://tetris-unblocked.github.io/"},
-  {name:"Basketball Legends",emoji:"🏀",tag:"Sports",size:"28",url:"https://basketball-legends.github.io/"},
-  {name:"Soccer Skills",emoji:"⚽",tag:"Sports",size:"34",url:"https://soccer-skills.github.io/"},
-  {name:"Paper.io 2",emoji:"📄",tag:"Arcade",size:"18",url:"https://paper-io-2.github.io/"},
-  {name:"Diep.io",emoji:"🔵",tag:"Action",size:"25",url:"https://diep-io.github.io/"},
-  {name:"Getting Over It",emoji:"🔨",tag:"Platformer",size:"42",url:"https://getting-over-it.github.io/"},
-  {name:"Five Nights at Freddy's",emoji:"🐻",tag:"Horror",size:"56",url:"https://fnaf-online.github.io/"}
+// ===== ACHIEVEMENTS DATABASE =====
+const achievementsDB = [
+    {id: 'first_boot', name: 'First Boot', desc: 'Initialize the system', icon: '🖥️', unlocked: false},
+    {id: 'lemon_hunter', name: 'Lemon Hunter', desc: 'Search for lemons 5 times', icon: '🍋', unlocked: false},
+    {id: 'aurelio_victim', name: 'Aurelio\'s Wrath', desc: 'Trigger the shutdown sequence', icon: '🛑', unlocked: false},
+    {id: 'konami_master', name: 'Konami Code', desc: 'Enter the legendary code', icon: '⬆️', unlocked: false},
+    {id: 'logo_spammer', name: 'Logo Clicker', desc: 'Click the logo 10 times', icon: '🖱️', unlocked: false},
+    {id: 'secret_agent', name: 'Secret Agent', desc: 'Unlock the Secret Menu', icon: '🔐', unlocked: false},
+    {id: 'god_mode', name: 'God Mode', desc: 'Activate god mode', icon: '👑', unlocked: false},
+    {id: 'night_owl', name: 'Night Owl', desc: 'Enable night mode', icon: '🌙', unlocked: false},
+    {id: 'speed_demon', name: 'Speed Demon', desc: 'Enable speed run mode', icon: '⚡', unlocked: false},
+    {id: 'hacker', name: '1337 H4x0r', desc: 'Enable debug overlay', icon: '💻', unlocked: false},
+    {id: 'survivor', name: 'Survivor', desc: 'Survive Aurelio\'s lockdown', icon: '⏱️', unlocked: false},
+    {id: 'music_lover', name: 'DJ Lemon', desc: 'Play custom audio', icon: '🎵', unlocked: false}
 ];
 
-// LEMON UNLOCK SYSTEM (5 searches to unlock secret menu)
-let lemonCount = parseInt(localStorage.getItem('lemon_count') || '0');
-let secretUnlocked = localStorage.getItem('secret_unlocked') === 'true';
-
-// ACHIEVEMENTS
-const achievements=[
-  {id:"first_launch",name:"System Init",desc:"Boot up Lemons Proxy",icon:"🖥️",unlocked:false},
-  {id:"first_game",name:"Module Runner",desc:"Launch your first game",icon:"🎮",unlocked:false},
-  {id:"ten_games",name:"Power User",desc:"Launch 10 different games",icon:"⚡",unlocked:false},
-  {id:"search_try",name:"Network Scout",desc:"Visit the proxy tab",icon:"🔍",unlocked:false},
-  {id:"fullscreen",name:"Maximum Overdrive",desc:"Use fullscreen mode",icon:"⛶",unlocked:false},
-  {id:"konami",name:"Code Breaker",desc:"Enter the Konami Code",icon:"🔓",unlocked:false},
-  {id:"logo_clicker",name:"Curious Mind",desc:"Click the logo 5 times",icon:"🍋",unlocked:false},
-  {id:"secret_found",name:"Insider",desc:"Access the LEMON_PROTOCOL",icon:"🔐",unlocked:false}
+// ===== BOOT SEQUENCE =====
+const bootLines = [
+    {text: 'Initializing LEMONS_PROXY v10.0...', type: 'normal', delay: 100},
+    {text: 'Loading blueprint protocols...', type: 'normal', delay: 200},
+    {text: 'Connecting to secure nodes...', type: 'normal', delay: 300},
+    {text: 'Establishing encrypted tunnel...', type: 'normal', delay: 400},
+    {text: 'WARNING: Aurelio protection active', type: 'warn', delay: 600},
+    {text: 'Mounting virtual file systems...', type: 'normal', delay: 800},
+    {text: 'Loading game modules [400+]...', type: 'normal', delay: 1000},
+    {text: 'Compiling easter eggs...', type: 'normal', delay: 1200},
+    {text: 'Search "lemon" for secrets', type: 'dim', delay: 1400},
+    {text: 'System ready.', type: 'success', delay: 1600}
 ];
 
-// STATE
-let gamesLaunched=[];
-let logoClicks=0;
-let konamiSequence=[];
-const konamiCode=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+function initBoot() {
+    const container = document.getElementById('boot-content');
+    bootLines.forEach((line, i) => {
+        setTimeout(() => {
+            const div = document.createElement('div');
+            div.className = `boot-line ${line.type}`;
+            div.textContent = `> ${line.text}`;
+            container.appendChild(div);
+        }, line.delay);
+    });
+    
+    setTimeout(() => {
+        if (!state.booted) skipBoot();
+    }, 3500);
+}
 
-// Console
-console.log('%c LEMONS_PROXY v10.0 // System Online ', 'color: #3b82f6; font-family: monospace; border: 1px solid #3b82f6; padding: 5px;');
+function skipBoot() {
+    state.booted = true;
+    document.getElementById('boot-sequence').style.display = 'none';
+    unlockAchievement('first_boot');
+    initSystems();
+}
 
-// INIT
-document.addEventListener('DOMContentLoaded', () => {
-  renderGames();
-  renderAchievements();
-  updateStats();
-  loadSavedData();
-  document.addEventListener('keydown', handleKeydown);
-  
-  // Check if secret already unlocked
-  if (secretUnlocked) {
-    unlockSecretMenu();
-  }
+// ===== MATRIX BACKGROUND =====
+function initMatrix() {
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+    const drops = [];
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    
+    for (let i = 0; i < columns; i++) drops[i] = 1;
+    
+    function draw() {
+        if (state.easterEggs.speedRun) {
+            ctx.fillStyle = 'rgba(10, 22, 40, 0.3)';
+        } else {
+            ctx.fillStyle = `rgba(10, 22, 40, ${1 - state.matrixIntensity * 10})`;
+        }
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#3b82f6';
+        ctx.font = fontSize + 'px monospace';
+        
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i] += state.easterEggs.speedRun ? 3 : 1;
+        }
+    }
+    
+    setInterval(draw, state.easterEggs.speedRun ? 16 : 33);
+}
+
+// ===== GAMES DATABASE =====
+const games = [
+    {id: 1, name: "2048", icon: "🔢", tag: "PUZZLE", url: "https://games.lemonwesh.com/2048"},
+    {id: 2, name: "Slope", icon: "⛷️", tag: "ACTION", url: "https://games.lemonwesh.com/slope"},
+    {id: 3, name: "Tetris", icon: "🧱", tag: "CLASSIC", url: "https://games.lemonwesh.com/tetris"},
+    {id: 4, name: "Snake", icon: "🐍", tag: "CLASSIC", url: "https://games.lemonwesh.com/snake"},
+    {id: 5, name: "Chess", icon: "♟️", tag: "STRATEGY", url: "https://games.lemonwesh.com/chess"},
+    {id: 6, name: "Pacman", icon: "👻", tag: "ARCADE", url: "https://games.lemonwesh.com/pacman"},
+    {id: 7, name: "Space Invaders", icon: "👾", tag: "ARCADE", url: "https://games.lemonwesh.com/space-invaders"},
+    {id: 8, name: "Flappy Bird", icon: "🐦", tag: "CASUAL", url: "https://games.lemonwesh.com/flappy"},
+    {id: 9, name: "Minesweeper", icon: "💣", tag: "PUZZLE", url: "https://games.lemonwesh.com/minesweeper"},
+    {id: 10, name: "Solitaire", icon: "🃏", tag: "CARD", url: "https://games.lemonwesh.com/solitaire"},
+    {id: 11, name: "Pong", icon: "🏓", tag: "CLASSIC", url: "https://games.lemonwesh.com/pong"},
+    {id: 12, name: "Breakout", icon: "🧱", tag: "ARCADE", url: "https://games.lemonwesh.com/breakout"}
+];
+
+function initGames() {
+    const grid = document.getElementById('gamesGrid');
+    document.getElementById('gameCount').textContent = games.length;
+    
+    games.forEach(game => {
+        const module = document.createElement('div');
+        module.className = 'game-module';
+        module.innerHTML = `
+            <div class="module-header">
+                <span class="module-icon">${game.icon}</span>
+                <span class="module-tag">${game.tag}</span>
+            </div>
+            <div class="module-title">${game.name}</div>
+            <div class="module-meta">
+                <span>v1.0</span>
+                <span>></span>
+            </div>
+        `;
+        module.onclick = () => openGame(game);
+        grid.appendChild(module);
+    });
+}
+
+// ===== SEARCH SYSTEM WITH EASTER EGGS =====
+let searchDebounce;
+document.getElementById('gameSearch')?.addEventListener('input', function(e) {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => handleSearch(e.target.value.toLowerCase()), 500);
 });
 
-function handleKeydown(e) {
-  konamiSequence.push(e.key);
-  if (konamiSequence.length > 10) konamiSequence.shift();
-  if (konamiSequence.join(',') === konamiCode.join(',')) {
-    unlockAchievement('konami');
-    showToast("🔓 KONAMI CODE ACTIVATED\nSystem restrictions bypassed.", "unlocked");
-    document.body.style.filter = "hue-rotate(180deg)";
-    setTimeout(() => document.body.style.filter = "", 3000);
-  }
-}
-
-function dismissBoot() {
-  document.getElementById('boot-sequence').style.display = 'none';
-  playDystopianMusic();
-  unlockAchievement('first_launch');
-}
-
-function playDystopianMusic() {
-  const container = document.getElementById('musicContainer');
-  container.innerHTML = `<iframe width="0" height="0" src="https://www.youtube.com/embed/JvF3ps2JiYY?autoplay=1&loop=1&playlist=JvF3ps2JiYY" frameborder="0" allow="autoplay" allowfullscreen></iframe>`;
-  document.getElementById('nowPlaying').textContent = '♫ Now Playing: Dystopian Ambient';
-}
-
-function playMusic() {
-  const url = document.getElementById('musicUrl').value;
-  const container = document.getElementById('musicContainer');
-  const videoId = extractVideoID(url);
-  if (videoId) {
-    container.innerHTML = `<iframe width="0" height="0" src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}" frameborder="0" allow="autoplay" allowfullscreen></iframe>`;
-    document.getElementById('nowPlaying').textContent = '♫ Custom Track Active';
-  }
-}
-
-function stopMusic() {
-  document.getElementById('musicContainer').innerHTML = '';
-  document.getElementById('nowPlaying').textContent = '♫ Audio Stopped';
-}
-
-function extractVideoID(url) {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
-}
-
-function renderGames() {
-  const grid = document.getElementById('gamesGrid');
-  grid.innerHTML = games.map((game, index) => `
-    <div class="game-module" onclick="launchGame('${game.url}', '${game.name}')" data-name="${game.name.toLowerCase()}">
-      <div class="module-header">
-        <span class="module-icon">${game.emoji}</span>
-        <span class="module-tag">${game.tag}</span>
-      </div>
-      <div class="module-title">${game.name}</div>
-      <div class="module-meta">
-        <span>v1.0.${index}</span>
-        <span>${game.size}MB</span>
-      </div>
-    </div>
-  `).join('');
-}
-
-function launchGame(url, name) {
-  const viewer = document.getElementById('gameViewer');
-  const frame = document.getElementById('gameFrame');
-  const title = document.getElementById('viewerTitle');
-  
-  title.textContent = name.toUpperCase();
-  frame.src = url;
-  viewer.classList.add('active');
-  
-  if (!gamesLaunched.includes(name)) {
-    gamesLaunched.push(name);
-    if (gamesLaunched.length === 1) unlockAchievement('first_game');
-    if (gamesLaunched.length === 10) unlockAchievement('ten_games');
-    saveData();
-  }
-}
-
-function closeGame() {
-  document.getElementById('gameViewer').classList.remove('active');
-  document.getElementById('gameFrame').src = '';
-}
-
-function toggleFullscreen() {
-  const frame = document.getElementById('gameFrame');
-  if (frame.requestFullscreen) {
-    frame.requestFullscreen();
-    unlockAchievement('fullscreen');
-  }
-}
-
-function showSection(section) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(section).classList.add('active');
-  document.getElementById('nav-' + section).classList.add('active');
-  if (section === 'search') unlockAchievement('search_try');
-}
-
-// LEMON SEARCH SYSTEM (5 times to unlock secret menu)
-function searchGames() {
-  const input = document.getElementById('searchInput').value.toLowerCase();
-  const modules = document.querySelectorAll('.game-module');
-  
-  // Check for Aurelio (just for hidden message)
-  if (input === 'aurelio') {
-    showToast("🚫 ACCESS DENIED\nUser 'Aurelio' blacklisted from system.", "normal");
-    document.getElementById('searchInput').value = '';
-    return;
-  }
-  
-  // Check for Lemon (the unlock code)
-  if (input === 'lemon') {
-    handleLemonSearch();
-    document.getElementById('searchInput').value = '';
-    return;
-  }
-  
-  modules.forEach(module => {
-    const name = module.getAttribute('data-name');
-    module.style.display = name.includes(input) ? 'block' : 'none';
-  });
-}
-
-function handleLemonSearch() {
-  lemonCount++;
-  localStorage.setItem('lemon_count', lemonCount.toString());
-  
-  const remaining = 5 - lemonCount;
-  
-  if (lemonCount >= 5) {
-    unlockSecretMenu();
-    unlockAchievement('secret_found');
-    showToast("🔐 LEMON_PROTOCOL UNLOCKED\nSecret menu access granted.", "unlocked");
-  } else {
-    showToast(`🍋 LEMON DETECTED\nProtocol activation: ${remaining} more...`, "normal");
-  }
+function handleSearch(term) {
+    if (state.shutdownActive) return;
+    
+    // Aurelio Detection System
+    if (term.includes('aurelio')) {
+        state.easterEggs.aurelio++;
+        document.getElementById('debugAurelio').textContent = state.easterEggs.aurelio;
+        
+        const messages = [
+            "Aurelio is watching...",
+            "STOP searching for that.",
+            "This is your final warning.",
+            "You have angered Aurelio.",
+            "SYSTEM LOCKDOWN INITIATED"
+        ];
+        
+        if (state.easterEggs.aurelio <= 5) {
+            showToast(messages[state.easterEggs.aurelio - 1], state.easterEggs.aurelio >= 4 ? 'furious' : state.easterEggs.aurelio >= 3 ? 'angry' : 'normal');
+        }
+        
+        if (state.easterEggs.aurelio === 5) {
+            triggerShutdown();
+            unlockAchievement('aurelio_victim');
+        }
+        return;
+    }
+    
+    // Lemon Protocol
+    if (term.includes('lemon')) {
+        state.easterEggs.lemon++;
+        document.getElementById('debugLemon').textContent = state.easterEggs.lemon;
+        
+        const lemonMsgs = [
+            "🍋 Detected...",
+            "Lemon concentration increasing...",
+            "Citrus levels critical...",
+            "Sour protocols engaging...",
+            "🍋 LEMON PROTOCOL UNLOCKED 🍋"
+        ];
+        
+        showToast(lemonMsgs[state.easterEggs.lemon - 1], 'unlocked');
+        
+        if (state.easterEggs.lemon === 5 && !state.easterEggs.secretUnlocked) {
+            unlockSecretMenu();
+            unlockAchievement('lemon_hunter');
+            unlockAchievement('secret_agent');
+        }
+        return;
+    }
+    
+    // God Mode Code
+    if (term === 'idkfa') {
+        toggleGodMode();
+        document.getElementById('gameSearch').value = '';
+        return;
+    }
+    
+    // Normal search
+    const modules = document.querySelectorAll('.game-module');
+    modules.forEach(mod => {
+        const text = mod.textContent.toLowerCase();
+        mod.style.display = text.includes(term) ? 'block' : 'none';
+    });
+    
+    document.getElementById('debugSearch').textContent = term;
 }
 
 function unlockSecretMenu() {
-  secretUnlocked = true;
-  localStorage.setItem('secret_unlocked', 'true');
-  
-  const secretBtn = document.getElementById('nav-secret');
-  secretBtn.disabled = false;
-  secretBtn.style.opacity = '1';
-  secretBtn.style.color = 'var(--terminal-amber)';
-  secretBtn.textContent = 'LEMON_PROTOCOL';
-  document.getElementById('secretBadge').style.display = 'block';
+    state.easterEggs.secretUnlocked = true;
+    document.getElementById('secretMenu').classList.add('active');
+    showToast('SECRET MENU UNLOCKED\nCheck Home page!', 'unlocked');
 }
 
-// SECRET MENU FUNCTIONS
-function logToSecret(msg) {
-  const console = document.getElementById('secretConsole');
-  const line = document.createElement('div');
-  line.className = 'secret-console-line';
-  line.textContent = '> ' + msg;
-  console.appendChild(line);
-  console.scrollTop = console.scrollHeight;
+// ===== SHUTDOWN/AURELIO SYSTEM =====
+function triggerShutdown() {
+    state.shutdownActive = true;
+    const overlay = document.getElementById('shutdown-overlay');
+    const timer = document.querySelector('.shutdown-timer');
+    overlay.classList.add('active');
+    
+    let timeLeft = 60;
+    state.shutdownTimer = setInterval(() => {
+        timeLeft--;
+        timer.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            endShutdown();
+            unlockAchievement('survivor');
+        }
+    }, 1000);
+    
+    // Secret escape hatch - type 'sorry'
+    let buffer = '';
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (!state.shutdownActive) {
+            document.removeEventListener('keydown', escapeHandler);
+            return;
+        }
+        buffer += e.key.toLowerCase();
+        if (buffer.includes('sorry')) {
+            endShutdown();
+            document.removeEventListener('keydown', escapeHandler);
+        }
+        if (buffer.length > 10) buffer = buffer.slice(-10);
+    });
 }
 
-function rickRoll() {
-  window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
-  logToSecret('Redirecting to important educational content...');
+function endShutdown() {
+    state.shutdownActive = false;
+    clearInterval(state.shutdownTimer);
+    document.getElementById('shutdown-overlay').classList.remove('active');
+    state.easterEggs.aurelio = 0;
+    document.getElementById('debugAurelio').textContent = '0';
+    showToast('Lockdown ended. Behave yourself.', 'normal');
 }
 
-function matrixOverload() {
-  const canvas = document.getElementById('matrix-canvas');
-  canvas.style.opacity = '0.5';
-  showToast("💊 MATRIX OVERLOAD\nIntensifying background...", "unlocked");
-  logToSecret('Matrix density increased by 500%');
-  setTimeout(() => {
-    canvas.style.opacity = '0.08';
-  }, 10000);
+// ===== SECRET MENU FUNCTIONS =====
+function toggleMatrix() {
+    const canvas = document.getElementById('matrix-canvas');
+    canvas.style.opacity = canvas.style.opacity === '0' ? state.matrixIntensity : '0';
+    updateSecretStatus('Matrix toggled');
 }
 
-function hackerTyper() {
-  logToSecret('Initializing hack.exe...');
-  setTimeout(() => logToSecret('Bypassing firewall...'), 500);
-  setTimeout(() => logToSecret('Accessing mainframe...'), 1000);
-  setTimeout(() => logToSecret('Downloading classified data...'), 1500);
-  setTimeout(() => logToSecret('Just kidding. This is a fake hack.'), 2000);
+function setMatrixIntensity(val) {
+    state.matrixIntensity = val / 100;
+    document.getElementById('matrixValue').textContent = val + '%';
+    document.getElementById('matrix-canvas').style.opacity = state.matrixIntensity;
 }
 
-function fixAllGames() {
-  logToSecret('Scanning game modules...');
-  setTimeout(() => logToSecret('Error: Developer too lazy to fix URLs'), 1000);
-  setTimeout(() => logToSecret('Solution: Deal with it ¯\\_(ツ)_/¯'), 2000);
+function toggleNightMode() {
+    state.easterEggs.nightMode = !state.easterEggs.nightMode;
+    document.body.classList.toggle('night-mode');
+    updateSecretStatus('Night Mode: ' + (state.easterEggs.nightMode ? 'ON' : 'OFF'));
+    unlockAchievement('night_owl');
 }
 
-function confettiRain() {
-  const effect = document.getElementById('coolEffect');
-  effect.innerHTML = '🎉'.repeat(50);
-  effect.style.fontSize = '2rem';
-  effect.style.display = 'block';
-  effect.style.animation = 'rain 5s linear';
-  logToSecret('Party mode activated');
-  setTimeout(() => {
-    effect.style.display = 'none';
-  }, 5000);
+function toggleGodMode() {
+    state.easterEggs.godMode = !state.easterEggs.godMode;
+    document.body.classList.toggle('god-mode');
+    updateSecretStatus('GOD MODE: ' + (state.easterEggs.godMode ? 'ACTIVE' : 'INACTIVE'));
+    unlockAchievement('god_mode');
 }
 
-function revealTruth() {
-  logToSecret('WARNING: Classified information');
-  setTimeout(() => alert('fuck you aurelio'), 500);
+function toggleDebug() {
+    state.easterEggs.debug = !state.easterEggs.debug;
+    document.getElementById('debugOverlay').classList.toggle('active');
+    document.getElementById('debugKonami').textContent = state.easterEggs.konami;
+    updateSecretStatus('Debug Overlay: ' + (state.easterEggs.debug ? 'ON' : 'OFF'));
+    unlockAchievement('hacker');
 }
 
-function easterEggLogo() {
-  logoClicks++;
-  if (logoClicks === 5) {
-    unlockAchievement('logo_clicker');
-    showToast("🍋 LEMON PROTOCOL ACTIVATED\nCitrus levels critical.", "unlocked");
-  }
-  const logo = document.querySelector('.logo-icon');
-  logo.style.transform = `rotate(${logoClicks * 15}deg) scale(${1 + logoClicks * 0.1})`;
-  setTimeout(() => logo.style.transform = '', 300);
+function speedRunMode() {
+    state.easterEggs.speedRun = !state.easterEggs.speedRun;
+    document.body.classList.toggle('speed-mode');
+    updateSecretStatus('SPEED RUN: ' + (state.easterEggs.speedRun ? 'ENGAGED' : 'NORMAL'));
+    unlockAchievement('speed_demon');
+}
+
+function fakeDelete() {
+    updateSecretStatus('DELETING SYSTEM32...');
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            updateSecretStatus('SYSTEM32 DELETED... jk lol');
+            setTimeout(() => updateSecretStatus('PROTOCOL ACTIVE'), 2000);
+        } else {
+            updateSecretStatus(`DELETING... ${Math.floor(progress)}%`);
+        }
+    }, 200);
+}
+
+function fakeIPLog() {
+    const fakeIPs = ['192.168.1.105', '10.0.0.42', '172.16.0.7', '127.0.0.1'];
+    const ip = fakeIPs[Math.floor(Math.random() * fakeIPs.length)];
+    updateSecretStatus(`Logged IP: ${ip}\nLocation: Your Mom\'s House`);
+    setTimeout(() => updateSecretStatus('Just kidding. Privacy respected.'), 3000);
+}
+
+function unlockAllAchievements() {
+    achievementsDB.forEach(ach => {
+        if (!ach.unlocked) unlockAchievement(ach.id);
+    });
+    updateSecretStatus('All achievements unlocked');
+}
+
+function updateSecretStatus(msg) {
+    document.getElementById('secretStatus').textContent = msg;
+}
+
+// ===== KONAMI CODE =====
+let konamiBuffer = [];
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+
+document.addEventListener('keydown', (e) => {
+    konamiBuffer.push(e.key);
+    if (konamiBuffer.length > 10) konamiBuffer.shift();
+    
+    if (konamiBuffer.join(',') === konamiCode.join(',')) {
+        state.easterEggs.konami = true;
+        document.getElementById('debugKonami').textContent = 'true';
+        unlockAchievement('konami_master');
+        showToast('Konami Code Activated!\n30 Lives? Nope, just respect.', 'unlocked');
+        document.body.style.filter = 'hue-rotate(90deg)';
+        setTimeout(() => document.body.style.filter = '', 1000);
+    }
+    
+    // Ctrl+Shift+L shortcut
+    if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+        e.preventDefault();
+        document.getElementById('gameSearch')?.focus();
+        document.getElementById('gameSearch').value = 'lemon';
+        handleSearch('lemon');
+    }
+});
+
+// ===== LOGO EASTER EGG =====
+function logoClick() {
+    state.easterEggs.logoClicks++;
+    if (state.easterEggs.logoClicks === 10) {
+        unlockAchievement('logo_spammer');
+        showToast('Logo clicked 10 times!\nYou must really like lemons.', 'unlocked');
+    }
+    
+    if (state.easterEggs.logoClicks % 5 === 0) {
+        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'];
+        document.documentElement.style.setProperty('--terminal-blue', colors[Math.floor(Math.random() * colors.length)]);
+        setTimeout(() => {
+            document.documentElement.style.setProperty('--terminal-blue', '#3b82f6');
+        }, 500);
+    }
+}
+
+// ===== ACHIEVEMENT SYSTEM =====
+function initAchievements() {
+    const container = document.getElementById('achievementsList');
+    container.innerHTML = '';
+    
+    achievementsDB.forEach(ach => {
+        const item = document.createElement('div');
+        item.className = 'achievement-item' + (ach.unlocked ? ' unlocked' : '');
+        item.innerHTML = `
+            <div class="achievement-icon">${ach.unlocked ? ach.icon : '🔒'}</div>
+            <div class="achievement-info">
+                <h4>${ach.name}</h4>
+                <p>${ach.desc}</p>
+            </div>
+        `;
+        container.appendChild(item);
+    });
+    
+    const unlocked = achievementsDB.filter(a => a.unlocked).length;
+    document.getElementById('achievementCount').textContent = `${unlocked}/${achievementsDB.length}`;
 }
 
 function unlockAchievement(id) {
-  const ach = achievements.find(a => a.id === id);
-  if (ach && !ach.unlocked) {
-    ach.unlocked = true;
-    renderAchievements();
-    showToast(`🏆 ${ach.name}\n${ach.desc}`, "unlocked");
-    updateStats();
-    saveData();
-  }
+    const ach = achievementsDB.find(a => a.id === id);
+    if (ach && !ach.unlocked) {
+        ach.unlocked = true;
+        initAchievements();
+        showAchievementPopup(ach);
+        saveState();
+    }
 }
 
-function loadSavedData() {
-  const saved = localStorage.getItem('lemons_achievements');
-  const savedGames = localStorage.getItem('lemons_games');
-  if (saved) {
-    const unlocked = JSON.parse(saved);
-    unlocked.forEach(id => {
-      const ach = achievements.find(a => a.id === id);
-      if (ach) ach.unlocked = true;
-    });
-  }
-  if (savedGames) gamesLaunched = JSON.parse(savedGames);
-  renderAchievements();
-  updateStats();
-}
-
-function saveData() {
-  const unlocked = achievements.filter(a => a.unlocked).map(a => a.id);
-  localStorage.setItem('lemons_achievements', JSON.stringify(unlocked));
-  localStorage.setItem('lemons_games', JSON.stringify(gamesLaunched));
-}
-
-function renderAchievements() {
-  const list = document.getElementById('achievementsList');
-  const progress = document.getElementById('ach-progress');
-  const count = document.getElementById('achievements-count');
-  
-  list.innerHTML = achievements.map(ach => `
-    <div class="achievement-item ${ach.unlocked ? 'unlocked' : ''}">
-      <div class="achievement-icon">${ach.icon}</div>
-      <div class="achievement-info">
-        <h4>${ach.name}</h4>
-        <p>${ach.desc}</p>
-      </div>
-    </div>
-  `).join('');
-  
-  const unlockedCount = achievements.filter(a => a.unlocked).length;
-  progress.textContent = `${unlockedCount}/${achievements.length}`;
-  count.textContent = `${unlockedCount}/${achievements.length}`;
-}
-
-function showToast(message, type) {
-  const toast = document.getElementById('easterToast');
-  toast.textContent = message;
-  toast.className = 'easter-egg-toast show ' + type;
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 4000);
+function showAchievementPopup(ach) {
+    const popup = document.getElementById('achievementPopup');
+    document.getElementById('popIcon').textContent = ach.icon;
+    document.getElementById('popTitle').textContent = 'Achievement Unlocked!';
+    document.getElementById('popDesc').textContent = ach.name;
+    
+    popup.classList.add('show');
+    setTimeout(() => popup.classList.remove('show'), 3000);
 }
 
 function toggleAchievements() {
-  document.getElementById('achievementsPanel').classList.toggle('active');
+    document.getElementById('achievementsPanel').classList.toggle('active');
 }
 
-function updateStats() {
-  setInterval(() => {
-    const latency = Math.floor(Math.random() * 20) + 8;
-    const el = document.getElementById('latency');
-    if (el) el.textContent = latency + 'ms';
-  }, 5000);
+// ===== UTILITY FUNCTIONS =====
+function showSection(section) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(section)?.classList.add('active');
+    event.target.classList.add('active');
+    document.getElementById('statusText').textContent = `Viewing: ${section.toUpperCase()}`;
 }
 
-window.addEventListener('beforeunload', () => {
-  stopMusic();
-});
+function showToast(message, type = 'normal') {
+    const toast = document.getElementById('easterToast');
+    toast.textContent = message;
+    toast.className = 'easter-egg-toast show ' + type;
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function openGame(game) {
+    document.getElementById('viewerTitle').innerHTML = `> ${game.name.toUpperCase()} // ${game.tag}`;
+    document.getElementById('gameFrame').src = game.url;
+    document.getElementById('gameViewer').classList.add('active');
+    document.getElementById('statusText').textContent = `Playing: ${game.name}`;
+}
+
+function closeGame() {
+    document.getElementById('gameViewer').classList.remove('active');
+    document.getElementById('gameFrame').src = '';
+    document.getElementById('statusText').textContent = 'System Ready';
+}
+
+function reloadGame() {
+    document.getElementById('gameFrame').src = document.getElementById('gameFrame').src;
+}
+
+function toggleFullscreen() {
+    const frame = document.getElementById('gameFrame');
+    if (frame.requestFullscreen) frame.requestFullscreen();
+}
+
+function loadProxy() {
+    const url = document.getElementById('proxyUrl').value;
+    if (url) {
+        document.getElementById('proxyFrame').style.display = 'block';
+        document.getElementById('proxyIframe').src = url;
+    }
+}
+
+function playMusic() {
+    const url = document.getElementById('musicUrl').value;
+    if (url) {
+        if (state.audioPlayer) state.audioPlayer.pause();
+        state.audioPlayer = new Audio(url);
+        state.audioPlayer.play();
+        document.getElementById('nowPlaying').textContent = '▶ Playing...';
+        document.getElementById('nowPlaying').classList.add('active');
+        unlockAchievement('music_lover');
+    }
+}
+
+function stopMusic() {
+    if (state.audioPlayer) {
+        state.audioPlayer.pause();
+        document.getElementById('nowPlaying').classList.remove('active');
+    }
+}
+
+function dismissDevWarning() {
+    document.getElementById('devWarning').style.display = 'none';
+}
+
+function toggleCloak() {
+    const titles = ['Google', 'Classroom', 'Canvas', 'Home', 'Dashboard'];
+    const icons = [
+        'https://www.google.com/favicon.ico',
+        'https://ssl.gstatic.com/classroom/favicon.png',
+        'https://instructure.com/favicon.ico'
+    ];
+    const rand = Math.floor(Math.random() * titles.length);
+    document.title = titles[rand];
+    document.getElementById('favicon').href = icons[Math.floor(Math.random() * icons.length)];
+    showToast('Tab cloaked as: ' + titles[rand], 'normal');
+}
+
+function openTool(tool) {
+    showToast(`Opening ${tool}... (Demo only)`, 'normal');
+}
+
+// ===== SESSION TIMER =====
+setInterval(() => {
+    const elapsed = Math.floor((Date.now() - state.sessionStart) / 1000);
+    const hours = Math.floor(elapsed / 3600).toString().padStart(2, '0');
+    const mins = Math.floor((elapsed % 3600) / 60).toString().padStart(2, '0');
+    const secs = (elapsed % 60).toString().padStart(2, '0');
+    document.getElementById('sessionTime').textContent = `${hours}:${mins}:${secs}`;
+    
+    // Random latency fluctuation
+    if (Math.random() > 0.7) {
+        document.getElementById('latency').textContent = Math.floor(Math.random() * 20 + 5) + 'ms';
+    }
+    
+    // Update debug info
+    if (state.easterEggs.debug) {
+        document.getElementById('fps').textContent = Math.floor(Math.random() * 10 + 55);
+        document.getElementById('memory').textContent = (Math.random() * 100 + 200).toFixed(1) + 'MB';
+    }
+}, 1000);
+
+// ===== CLOCK =====
+setInterval(() => {
+    const now = new Date();
+    document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', {hour12: false});
+}, 1000);
+
+// ===== SAVE/LOAD STATE =====
+function saveState() {
+    localStorage.setItem('lemons_proxy_state', JSON.stringify({
+        achievements: achievementsDB.map(a => ({id: a.id, unlocked: a.unlocked})),
+        easterEggs: state.easterEggs
+    }));
+}
+
+function loadState() {
+    const saved = localStorage.getItem('lemons_proxy_state');
+    if (saved) {
+        const data = JSON.parse(saved);
+        data.achievements.forEach(savedAch => {
+            const ach = achievementsDB.find(a => a.id === savedAch.id);
+            if (ach) ach.unlocked = savedAch.unlocked;
+        });
+        Object.assign(state.easterEggs, data.easterEggs);
+        
+        if (state.easterEggs.secretUnlocked) {
+            document.getElementById('secretMenu').classList.add('active');
+        }
+    }
+}
+
+// ===== CONSOLE EASTER EGG =====
+console.log('%c🍋 LEMONS_PROXY v10.0', 'color: #3b82f6; font-size: 24px; font-weight: bold;');
+console.log('%cWelcome, hacker. Search for "lemon" 5 times to unlock secrets.', 'color: #f59e0b; font-size: 12px;');
+console.log('%cType idkfa in search for God Mode.', 'color: #ef4444; font-size: 12px;');
+
+// ===== INITIALIZATION =====
+function initSystems() {
+    initGames();
+    initAchievements();
+    initMatrix();
+    loadState();
+    
+    // Check if coming from lockdown
+    if (state.shutdownActive) {
+        document.getElementById('aurelioStatus').textContent = 'LOCKDOWN';
+        document.getElementById('aurelioStatus').style.color = 'var(--error-red)';
+    }
+}
+
+// Start
+initBoot();
 </script>
+
 </body>
 </html>
