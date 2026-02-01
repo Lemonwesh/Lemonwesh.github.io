@@ -22,7 +22,6 @@ body{background-color:var(--bg-primary);background-image:linear-gradient(var(--b
 @keyframes blink{50%{opacity:0}}
 .click-to-boot{margin-top:40px;color:var(--terminal-amber);font-size:1rem;cursor:pointer;opacity:0;animation:fadeInOut 2s infinite;animation-delay:3s;text-align:center;border:1px solid var(--terminal-amber);padding:15px;width:fit-content;border-radius:4px;align-self:center}
 @keyframes fadeInOut{0%,100%{opacity:0.3}50%{opacity:1}}
-/* Hidden message - almost invisible, selectable if you look closely */
 .hidden-message{position:fixed;bottom:2px;right:5px;font-size:8px;color:rgba(148,163,184,0.08);user-select:text;pointer-events:none;font-family:'JetBrains Mono',monospace;z-index:9999;letter-spacing:1px}
 header{background:var(--bg-secondary);border-bottom:1px solid var(--terminal-blue);padding:15px 25px;display:flex;align-items:center;justify-content:space-between;position:relative}
 .logo-container{display:flex;align-items:center;gap:12px;cursor:pointer}
@@ -114,7 +113,9 @@ nav button.active{border-bottom:2px solid var(--terminal-blue)}
 #shutdown-overlay.active{display:flex}
 .shutdown-text{font-size:8rem;color:#ff0000;font-weight:bold;text-transform:uppercase;letter-spacing:20px;animation:pulseRed 1s infinite;text-shadow:0 0 50px rgba(255,0,0,0.8)}
 @keyframes pulseRed{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(1.05)}}
-.shutdown-sub{color:#666;margin-top:20px;font-size:1.2rem}
+.shutdown-sub{color:#666;margin-top:20px;font-size:1.2rem;text-align:center}
+.shutdown-timer{color:#ff0000;font-size:2rem;margin-top:30px;font-weight:bold;animation:pulseRed 1s infinite}
+.shutdown-hint{color:#444;margin-top:15px;font-size:0.9rem}
 ::-webkit-scrollbar{width:8px}
 ::-webkit-scrollbar-track{background:var(--bg-primary)}
 ::-webkit-scrollbar-thumb{background:rgba(59,130,246,0.2);border-radius:4px}
@@ -125,12 +126,13 @@ nav button.active{border-bottom:2px solid var(--terminal-blue)}
 <body>
 
 <canvas id="matrix-canvas"></canvas>
-<!-- Secret message - practically invisible unless highlighted -->
 <div class="hidden-message">found you</div>
 <div class="easter-egg-toast" id="easterToast"></div>
 <div id="shutdown-overlay">
   <div class="shutdown-text">STOP</div>
-  <div class="shutdown-sub">SYSTEM TERMINATED // REFRESH TO RESET</div>
+  <div class="shutdown-sub">SYSTEM BREACH DETECTED<br>EMERGENCY LOCKDOWN ACTIVE</div>
+  <div class="shutdown-timer" id="shutdownTimer">60</div>
+  <div class="shutdown-hint">System will reboot automatically...</div>
 </div>
 
 <div id="boot-sequence">
@@ -290,7 +292,7 @@ const games=[
   {name:"Five Nights at Freddy's",emoji:"🐻",tag:"Horror",size:"56",url:"https://fnaf-online.github.io/"}
 ];
 
-// AURELIO RAGE SYSTEM (school-safe messages)
+// AURELIO RAGE SYSTEM
 let aurelioCount = parseInt(localStorage.getItem('aurelio_count') || '0');
 const aurelioMessages = [
   {msg: "⚠️ RESTRICTED ACCESS\nThat search term is forbidden.\nLogging incident...", type: "normal"},
@@ -300,7 +302,7 @@ const aurelioMessages = [
   {msg: "STOP", type: "shutdown"}
 ];
 
-// ACHIEVEMENTS - Clean names only
+// ACHIEVEMENTS
 const achievements=[
   {id:"first_launch",name:"System Init",desc:"Boot up Lemons Proxy",icon:"🖥️",unlocked:false},
   {id:"first_game",name:"Module Runner",desc:"Launch your first game",icon:"🎮",unlocked:false},
@@ -317,8 +319,9 @@ let gamesLaunched=[];
 let logoClicks=0;
 let konamiSequence=[];
 const konamiCode=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let shutdownTimer = null;
 
-// Console - subtle only
+// Console
 console.log('%c LEMONS_PROXY v10.0 // System Online ', 'color: #3b82f6; font-family: monospace; border: 1px solid #3b82f6; padding: 5px;');
 
 // INIT
@@ -433,7 +436,7 @@ function showSection(section) {
   if (section === 'search') unlockAchievement('search_try');
 }
 
-// ESCALATING SYSTEM RAGE (school-appropriate)
+// ESCALATING SYSTEM RAGE
 function searchGames() {
   const input = document.getElementById('searchInput').value.toLowerCase();
   const modules = document.querySelectorAll('.game-module');
@@ -499,11 +502,14 @@ function playErrorBeep() {
   } catch(e) {}
 }
 
+// SHOW SHUTDOWN WITH 60 SECOND TIMER
 function showShutdown() {
-  document.getElementById('shutdown-overlay').classList.add('active');
+  const overlay = document.getElementById('shutdown-overlay');
+  overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
   stopMusic();
   
+  // Play error sound
   try {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const oscillator = audioContext.createOscillator();
@@ -517,6 +523,35 @@ function showShutdown() {
     oscillator.start(audioContext.currentTime);
     oscillator.stop(audioContext.currentTime + 2);
   } catch(e) {}
+  
+  // Start 60 second countdown
+  let timeLeft = 60;
+  const timerElement = document.getElementById('shutdownTimer');
+  timerElement.textContent = timeLeft;
+  
+  shutdownTimer = setInterval(() => {
+    timeLeft--;
+    timerElement.textContent = timeLeft;
+    
+    if (timeLeft <= 0) {
+      clearInterval(shutdownTimer);
+      dismissShutdown();
+    }
+  }, 1000);
+}
+
+// AUTO-DISMISS SHUTDOWN AFTER TIMER
+function dismissShutdown() {
+  const overlay = document.getElementById('shutdown-overlay');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+  
+  // Reset aurelio count so they can use search again
+  aurelioCount = 0;
+  localStorage.setItem('aurelio_count', '0');
+  
+  // Show recovery message
+  showEasterEggToast("✅ SYSTEM RESTORED\nAll functions normalized.\nPlease avoid restricted queries.");
 }
 
 function easterEggLogo() {
@@ -611,6 +646,7 @@ function updateStats() {
 
 window.addEventListener('beforeunload', () => {
   stopMusic();
+  if (shutdownTimer) clearInterval(shutdownTimer);
 });
 </script>
 </body>
