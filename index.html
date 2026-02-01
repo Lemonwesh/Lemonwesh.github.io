@@ -12,7 +12,6 @@
   --blueprint-bg: #004494; 
   --blueprint-line: rgba(255, 255, 255, 0.85); 
   --accent: #FF6600; 
-  --warning: #ff4444;
 }
 body { 
   background-color: var(--blueprint-bg); 
@@ -273,7 +272,6 @@ nav button:hover, nav button.active {
   border-top: 1px solid var(--blueprint-line); 
   font-family: 'Share Tech Mono', monospace; 
 }
-/* Proxy Browser Styles */
 .proxy-container { 
   border: 3px solid var(--blueprint-line); 
   background: rgba(0, 0, 0, 0.4); 
@@ -305,56 +303,44 @@ nav button:hover, nav button.active {
   background: var(--accent); 
   border-color: var(--accent); 
 }
-.proxy-omnibox { 
-  flex: 1; 
-  display: flex; 
+.proxy-select { 
+  flex: 1;
   background: rgba(0,0,0,0.3); 
   border: 2px solid var(--blueprint-line); 
-  min-width: 200px; 
-}
-.proxy-address { 
-  flex: 1; 
-  background: transparent; 
-  border: none; 
   color: white; 
   padding: 10px; 
-  font-family: 'Courier Prime', monospace; 
-  font-size: 0.9rem; 
-}
-.proxy-address:focus { outline: none; }
-.proxy-go-btn { 
-  background: var(--accent); 
-  border: 2px solid var(--accent); 
-  color: white; 
-  padding: 8px 20px; 
-  cursor: pointer; 
-  font-family: 'Share Tech Mono', monospace; 
-  font-weight: bold; 
-}
-.proxy-go-btn:hover { background: transparent; }
-.proxy-select { 
-  background: rgba(0,0,0,0.3); 
-  border: 2px solid var(--blueprint-line); 
-  color: white; 
-  padding: 8px; 
   font-family: 'Share Tech Mono', monospace; 
   cursor: pointer;
+  font-size: 0.9rem;
+  min-width: 250px;
 }
 .proxy-select option {
   background: #003d7a;
   color: white;
 }
+.proxy-go-btn { 
+  background: var(--accent); 
+  border: 2px solid var(--accent); 
+  color: white; 
+  padding: 10px 25px; 
+  cursor: pointer; 
+  font-family: 'Share Tech Mono', monospace; 
+  font-weight: bold; 
+  font-size: 0.9rem;
+}
+.proxy-go-btn:hover { background: transparent; }
 .proxy-viewport { 
   flex: 1; 
   position: relative; 
-  background: white; 
+  background: #001a33; 
   overflow: hidden; 
 }
 .proxy-frame { 
   width: 100%; 
   height: 100%; 
   border: none; 
-  display: block; 
+  display: block;
+  background: white;
 }
 .proxy-error { 
   position: absolute; 
@@ -368,6 +354,7 @@ nav button:hover, nav button.active {
   gap: 20px; 
   text-align: center; 
   padding: 40px; 
+  z-index: 100;
 }
 .proxy-error.active { display: flex; }
 .proxy-error h3 { 
@@ -391,10 +378,6 @@ nav button:hover, nav button.active {
   cursor: pointer; 
   font-size: 1rem; 
 }
-.proxy-error button.alt { 
-  background: transparent; 
-  border-color: var(--blueprint-line); 
-}
 .proxy-status { 
   position: absolute; 
   bottom: 10px; right: 10px; 
@@ -406,8 +389,8 @@ nav button:hover, nav button.active {
   z-index: 10; 
 }
 .warning-box { 
-  background: rgba(255,0,0,0.1); 
-  border: 2px solid rgba(255,0,0,0.3); 
+  background: rgba(255,102,0,0.2); 
+  border: 2px solid var(--accent); 
   padding: 15px; 
   margin-bottom: 20px; 
   font-family: 'Share Tech Mono'; 
@@ -472,7 +455,6 @@ footer {
 </head>
 <body>
 
-<!-- Settings Modal -->
 <div class="settings-modal" id="settingsModal">
   <div class="settings-header">
     <h2 class="settings-title">⚙️ TAB CLOAK SETTINGS</h2>
@@ -499,77 +481,60 @@ footer {
   </div>
 </div>
 
-<!-- Header -->
 <header>
   <div class="header-controls">
     <button class="control-btn" onclick="toggleSettings()">⚙️ SETTINGS</button>
   </div>
   <h1 class="blueprint-title" onclick="showSection('games')">🍋 LEMONS PROXY</h1>
-  <p style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.9rem;">VERIFIED WORKING GAMES • EMBEDDED PROXY BROWSER</p>
+  <p style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.9rem;">VERIFIED WORKING GAMES •.proxy BROWSER</p>
   <div class="credits">CODE BY <span>LEMONWESH</span> // DESIGN BY <span>LD</span></div>
 </header>
 
-<!-- Navigation -->
 <nav>
   <button class="nav-btn active" onclick="showSection('games')" id="nav-games">[ GAMES ]</button>
   <button class="nav-btn" onclick="showSection('proxy')" id="nav-proxy">[ PROXY ]</button>
 </nav>
 
-<!-- Main Container -->
 <div class="container">
 
-  <!-- PROXY SECTION -->
   <section id="proxy" class="section">
     <div class="warning-box">
-      ⚠️ PROXY NOTICE: Select an engine from the dropdown below. Most modern sites block iframes - use 🌐 Google Translate for best results or try alternative engines.
+      ⚠️ SELECT A PROXY FROM THE LIST BELOW TO LOAD IT IN THE VIEWPORT
     </div>
     <div class="proxy-container">
-      <!-- Toolbar -->
       <div class="proxy-toolbar">
-        <button class="proxy-nav-btn" onclick="proxyBack()" title="Back">←</button>
-        <button class="proxy-nav-btn" onclick="proxyForward()" title="Forward">→</button>
         <button class="proxy-nav-btn" onclick="reloadProxy()" title="Reload">↻</button>
         
-        <div class="proxy-omnibox">
-          <input type="text" class="proxy-address" id="proxyAddress" placeholder="https://example.com or search..." onkeydown="if(event.key === 'Enter') navigateProxy()">
-        </div>
-        
-        <select class="proxy-select" id="proxyEngine">
-          <option value="translate" selected>🌐 Google Translate</option>
-          <option value="croxy">🟢 CroxyProxy</option>
-          <option value="proxysite">🔵 ProxySite</option>
-          <option value="kproxy">🛡️ KProxy</option>
-          <option value="filterbypass">🔓 FilterBypass</option>
-          <option value="anonymouse">👤 Anonymouse</option>
-          <option value="unblocker">🔑 Unblocker</option>
-          <option value="textise">📖 Text Mode</option>
-          <option value="direct">🎯 Direct</option>
+        <select class="proxy-select" id="proxySelect">
+          <option value="">-- SELECT PROXY --</option>
+          <option value="https://www.croxyproxy.com/">🟢 CroxyProxy (Recommended)</option>
+          <option value="https://www.proxysite.com/">🔵 ProxySite</option>
+          <option value="https://kproxy.com/">🛡️ KProxy</option>
+          <option value="https://filterbypass.me/">🔓 FilterBypass</option>
+          <option value="https://proxyium.com/">🌐 Proxyium</option>
+          <option value="https://www.blockaway.net/">🚪 BlockAway</option>
+          <option value="https://plainproxies.com/resources/free-web-proxy">⚡ PlainProxies</option>
+          <option value="https://www.crazygames.com/">🎮 CrazyGames (Alt)</option>
         </select>
         
-        <button class="proxy-go-btn" onclick="navigateProxy()">GO</button>
+        <button class="proxy-go-btn" onclick="loadProxy()">LOAD PROXY</button>
       </div>
 
-      <!-- Viewport -->
       <div class="proxy-viewport">
         <iframe id="proxyFrame" class="proxy-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock allow-downloads" allow="fullscreen; autoplay; clipboard-read; clipboard-write"></iframe>
         
         <div id="proxyError" class="proxy-error">
-          <h3>⚠️ SITE BLOCKED EMBEDDING</h3>
-          <p>This website has <strong>X-Frame-Options</strong> or <strong>Content Security Policy</strong> headers that prevent it from loading inside an iframe.</p>
-          <p style="font-size: 0.9rem; color: var(--accent);">Try a different proxy engine from the dropdown above, or use the buttons below:</p>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-            <button onclick="openInNewTab()">🔓 OPEN IN NEW TAB</button>
-            <button onclick="tryTextMode()" class="alt">📖 TRY TEXT MODE</button>
-            <button onclick="hideProxyError()" class="alt">CLOSE MESSAGE</button>
-          </div>
+          <h3>🔗 UNABLE TO LOAD PROXY</h3>
+          <p>This proxy website is blocking iframe embedding or is currently unavailable.</p>
+          <p style="color: var(--accent);">Try selecting a different proxy from the list above.</p>
+          <button onclick="hideProxyError()">CLOSE MESSAGE</button>
         </div>
         
-        <div class="proxy-status" id="proxyStatus">Ready</div>
+        <div class="proxy-status" id="proxyStatus">Select a proxy to begin</div>
       </div>
     </div>
   </section>
 
-  <!-- GAMES SECTION -->
   <section id="games" class="section active">
     <div class="search-box">
       <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search all games..." onkeyup="searchGames()">
@@ -595,7 +560,6 @@ footer {
   </div>
 </footer>
 
-<!-- Game Viewer -->
 <div class="game-viewer" id="gameViewer">
   <div class="viewer-header">
     <h2 id="viewerTitle" class="viewer-title">🎮 Game</h2>
@@ -605,14 +569,11 @@ footer {
 </div>
 
 <script>
-// ===========================
-// GAME LIBRARY (40+ GAMES)
-// ===========================
+// GAMES LIBRARY (All 45 games)
 const games = [
   {name: "8 Ball Pool", emoji: "🎱", tag: "SPORTS", url: "https://html5.gamedistribution.com/ed65e4198fe74fdbb0b2ac015dd81128/"},
   {name: "Ludo With Friends", emoji: "🎲", tag: "MULTIPLAYER", url: "https://zv1y2i8p.play.gamezop.com/g/SkhljT2fdgb"},
   {name: "Basketball Stars", emoji: "🏀", tag: "MULTIPLAYER", url: "https://html5.gamedistribution.com/f7c4e66b484e45df86b7d46450aac477/"},
-  {name: "Stick Fighter", emoji: "⚔️", tag: "MULTIPLAYER", url: "https://html5.gamedistribution.com/rgSkqGbJade4O68B0T2u3zCZqe0FMBqO/"},
   {name: "Poly Track", emoji: "🏎️", tag: "RACING", url: "https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},
   {name: "Jelly Truck", emoji: "🚚", tag: "RACING", url: "https://jellytruck2.github.io/"},
   {name: "Slope", emoji: "📐", tag: "RACING", url: "https://slope-y8.com/"},
@@ -656,119 +617,49 @@ const games = [
   {name: "Voxel Builder", emoji: "🧊", tag: "MINECRAFT", url: "https://voxelbuilder.github.io/"}
 ];
 
-// ===========================
-// PROXY ENGINE SYSTEM
-// ===========================
-let proxyHistory = [];
-let proxyHistoryPos = -1;
-let currentUrl = "";
-
-const proxyEngines = {
-  translate: url => `https://translate.google.com/translate?sl=auto&tl=en&u=${encodeURIComponent(url)}`,
-  croxy: url => `https://www.croxyproxy.com/?url=${encodeURIComponent(url)}`,
-  proxysite: url => `https://www.proxysite.com/${url}`,
-  kproxy: url => `https://kproxy.com/?q=${encodeURIComponent(url)}`,
-  filterbypass: url => `https://filterbypass.me/browse.php?u=${encodeURIComponent(url)}`,
-  anonymouse: url => `http://anonymouse.org/cgi-bin/anon-www.cgi/${url}`,
-  unblocker: url => `https://unblocker.us/${url}`,
-  textise: url => `https://r.jina.ai/http://${url.replace(/^https?:\/\//,'')}`,
-  direct: url => url
-};
-
-function normalizeUrl(input) {
-  if (!input.match(/^https?:\/\//i)) {
-    if (input.includes('.')) return 'https://' + input;
-    return 'https://www.google.com/search?q=' + encodeURIComponent(input);
-  }
-  return input;
-}
-
-function navigateProxy() {
-  let raw = document.getElementById('proxyAddress').value.trim();
-  if (!raw) return;
-  
-  let url = normalizeUrl(raw);
-  let engine = document.getElementById('proxyEngine').value;
-  let finalUrl = proxyEngines[engine](url);
-  
-  currentUrl = url;
-  
-  // Update history
-  if (proxyHistoryPos < proxyHistory.length - 1) {
-    proxyHistory = proxyHistory.slice(0, proxyHistoryPos + 1);
-  }
-  proxyHistory.push({url, engine});
-  proxyHistoryPos++;
-  
-  document.getElementById('proxyStatus').textContent = `Loading via ${engine}...`;
-  document.getElementById('proxyError').classList.remove('active');
-  
+// PROXY FUNCTIONS
+function loadProxy() {
+  const select = document.getElementById('proxySelect');
+  const url = select.value;
   const frame = document.getElementById('proxyFrame');
-  frame.src = finalUrl;
+  const status = document.getElementById('proxyStatus');
   
-  // Error detection
+  if (!url) {
+    alert('Please select a proxy from the list');
+    return;
+  }
+  
+  document.getElementById('proxyError').classList.remove('active');
+  status.textContent = 'Loading proxy...';
+  
+  frame.src = url;
+  
+  // Check if loads after 5 seconds
   setTimeout(() => {
     try {
+      // If we can access contentWindow, it loaded
       const test = frame.contentWindow.location.href;
-      document.getElementById('proxyStatus').textContent = 'Loaded';
+      status.textContent = 'Proxy loaded successfully';
     } catch(e) {
-      if (frame.src === 'about:blank' || !frame.src) {
-        showProxyError();
-      } else {
-        document.getElementById('proxyStatus').textContent = 'Loaded (cross-origin)';
-      }
+      // Cross-origin error means it loaded but we can't access it (good)
+      status.textContent = 'Proxy active';
     }
   }, 5000);
 }
 
-function showProxyError() {
-  document.getElementById('proxyError').classList.add('active');
-  document.getElementById('proxyStatus').textContent = 'Blocked';
+function reloadProxy() {
+  const frame = document.getElementById('proxyFrame');
+  if (frame.src) {
+    frame.src = frame.src;
+    document.getElementById('proxyStatus').textContent = 'Reloading...';
+  }
 }
 
 function hideProxyError() {
   document.getElementById('proxyError').classList.remove('active');
 }
 
-function openInNewTab() {
-  const url = currentUrl || document.getElementById('proxyAddress').value;
-  if (url) window.open(url, '_blank');
-}
-
-function tryTextMode() {
-  document.getElementById('proxyEngine').value = 'textise';
-  navigateProxy();
-}
-
-function proxyBack() {
-  if (proxyHistoryPos > 0) {
-    proxyHistoryPos--;
-    loadHistory();
-  }
-}
-
-function proxyForward() {
-  if (proxyHistoryPos < proxyHistory.length - 1) {
-    proxyHistoryPos++;
-    loadHistory();
-  }
-}
-
-function loadHistory() {
-  let h = proxyHistory[proxyHistoryPos];
-  document.getElementById('proxyAddress').value = h.url;
-  document.getElementById('proxyEngine').value = h.engine;
-  document.getElementById('proxyFrame').src = proxyEngines[h.engine](h.url);
-}
-
-function reloadProxy() {
-  const frame = document.getElementById('proxyFrame');
-  frame.src = frame.src;
-}
-
-// ===========================
 // GAME FUNCTIONS
-// ===========================
 function init() {
   document.getElementById('gameCount').textContent = games.length;
   renderGames(games);
@@ -801,7 +692,6 @@ function showSection(id) {
 }
 
 function playGame(name, url) {
-  // Save to recent
   let recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
   recent = recent.filter(g => g.name !== name);
   recent.unshift({name, url});
@@ -841,9 +731,7 @@ function searchGames() {
   renderGames(filtered);
 }
 
-// ===========================
-// SETTINGS / TAB CLOAKING
-// ===========================
+// SETTINGS
 function toggleSettings() {
   document.getElementById('settingsModal').classList.toggle('active');
 }
@@ -862,7 +750,6 @@ function cloakTab(title, iconUrl) {
   localStorage.setItem('cloakIcon', iconUrl);
 }
 
-// Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     if (document.getElementById('settingsModal').classList.contains('active')) {
