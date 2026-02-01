@@ -22,7 +22,8 @@ body{background-color:var(--bg-primary);background-image:linear-gradient(var(--b
 @keyframes blink{50%{opacity:0}}
 .click-to-boot{margin-top:40px;color:var(--terminal-amber);font-size:1rem;cursor:pointer;opacity:0;animation:fadeInOut 2s infinite;animation-delay:3s;text-align:center;border:1px solid var(--terminal-amber);padding:15px;width:fit-content;border-radius:4px;align-self:center}
 @keyframes fadeInOut{0%,100%{opacity:0.3}50%{opacity:1}}
-.hidden-message{position:fixed;bottom:2px;right:5px;font-size:8px;color:rgba(148,163,184,0.15);user-select:text;pointer-events:none;font-family:'JetBrains Mono',monospace;z-index:9999}
+/* Hidden message - almost invisible, selectable if you look closely */
+.hidden-message{position:fixed;bottom:2px;right:5px;font-size:8px;color:rgba(148,163,184,0.08);user-select:text;pointer-events:none;font-family:'JetBrains Mono',monospace;z-index:9999;letter-spacing:1px}
 header{background:var(--bg-secondary);border-bottom:1px solid var(--terminal-blue);padding:15px 25px;display:flex;align-items:center;justify-content:space-between;position:relative}
 .logo-container{display:flex;align-items:center;gap:12px;cursor:pointer}
 .logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--lemon-blue) 0%,#1e293b 100%);border:1px solid var(--terminal-blue);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 12px var(--border-glow);position:relative;overflow:hidden;animation:pulseGlow 3s ease-in-out infinite}
@@ -106,26 +107,39 @@ nav button.active{border-bottom:2px solid var(--terminal-blue)}
 .status-left{display:flex;gap:25px}
 .easter-egg-toast{position:fixed;top:100px;right:-400px;background:var(--bg-secondary);border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:15px 25px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.9rem;transition:right 0.5s;z-index:1002;box-shadow:0 5px 20px rgba(245,158,11,0.2);max-width:350px;line-height:1.5;white-space:pre-line}
 .easter-egg-toast.show{right:25px}
+.easter-egg-toast.angry{background:#2a0a0a;border-color:var(--error-red);color:var(--error-red);box-shadow:0 5px 20px rgba(239,68,68,0.4)}
+.easter-egg-toast.furious{background:#1a0505;border-color:#ff0000;color:#ff0000;box-shadow:0 0 30px rgba(255,0,0,0.6);animation:shake 0.5s infinite}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+#shutdown-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace}
+#shutdown-overlay.active{display:flex}
+.shutdown-text{font-size:8rem;color:#ff0000;font-weight:bold;text-transform:uppercase;letter-spacing:20px;animation:pulseRed 1s infinite;text-shadow:0 0 50px rgba(255,0,0,0.8)}
+@keyframes pulseRed{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(1.05)}}
+.shutdown-sub{color:#666;margin-top:20px;font-size:1.2rem}
 ::-webkit-scrollbar{width:8px}
 ::-webkit-scrollbar-track{background:var(--bg-primary)}
 ::-webkit-scrollbar-thumb{background:rgba(59,130,246,0.2);border-radius:4px}
 ::-webkit-scrollbar-thumb:hover{background:var(--terminal-blue)}
-@media(max-width:768px){.games-grid{grid-template-columns:1fr}.music-player{flex-direction:column;gap:10px}.terminal-title{font-size:1.1rem}.system-stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.games-grid{grid-template-columns:1fr}.music-player{flex-direction:column;gap:10px}.terminal-title{font-size:1.1rem}.system-stats{grid-template-columns:repeat(2,1fr)}.shutdown-text{font-size:4rem;letter-spacing:10px}}
 </style>
 </head>
 <body>
 
 <canvas id="matrix-canvas"></canvas>
-<div class="hidden-message">fuck you aurelio</div>
+<!-- Secret message - practically invisible unless highlighted -->
+<div class="hidden-message">found you</div>
 <div class="easter-egg-toast" id="easterToast"></div>
+<div id="shutdown-overlay">
+  <div class="shutdown-text">STOP</div>
+  <div class="shutdown-sub">SYSTEM TERMINATED // REFRESH TO RESET</div>
+</div>
 
 <div id="boot-sequence">
   <div class="boot-line" style="animation-delay:0.1s">INITIALIZING LEMONS_PROXY v10.0...</div>
   <div class="boot-line" style="animation-delay:0.3s">LOADING BLUEPRINT ARCHITECTURE...</div>
-  <div class="boot-line" style="animation-delay:0.5s">MOUNTING GAME MODULES [0/45]</div>
-  <div class="boot-line dim" style="animation-delay:0.7s">  > 8_Ball_Pool.exe [OK]</div>
-  <div class="boot-line dim" style="animation-delay:0.8s">  > Eaglercraft_1.8.8.exe [OK]</div>
-  <div class="boot-line dim" style="animation-delay:0.9s">  > Geometry_Dash.exe [OK]</div>
+  <div class="boot-line" style="animation-delay:0.5s">MOUNTING GAME MODULES [0/60]</div>
+  <div class="boot-line dim" style="animation-delay:0.7s">  > Run_3.exe [OK]</div>
+  <div class="boot-line dim" style="animation-delay:0.8s">  > Super_Mario_64.exe [OK]</div>
+  <div class="boot-line dim" style="animation-delay:0.9s">  > Eaglercraft_1.8.8.exe [OK]</div>
   <div class="boot-line" style="animation-delay:1.0s">ALL MODULES MOUNTED SUCCESSFULLY</div>
   <div class="boot-line" style="animation-delay:1.2s">ESTABLISHING SECURE CONNECTION...</div>
   <div class="boot-line success" style="animation-delay:1.4s">ENCRYPTION: AES-256 [ACTIVE]</div>
@@ -153,7 +167,7 @@ nav button.active{border-bottom:2px solid var(--terminal-blue)}
   <section id="games" class="section active">
     <div class="system-stats">
       <div class="stat-box"><div class="stat-label">System_Status</div><div class="stat-value" style="color:var(--success-green)">Online</div></div>
-      <div class="stat-box"><div class="stat-label">Modules_Loaded</div><div class="stat-value" id="moduleCount">45</div></div>
+      <div class="stat-box"><div class="stat-label">Modules_Loaded</div><div class="stat-value" id="moduleCount">60</div></div>
       <div class="stat-box"><div class="stat-label">Network</div><div class="stat-value" style="font-size:0.95rem">Encrypted</div></div>
       <div class="stat-box"><div class="stat-label">Latency</div><div class="stat-value" id="latency">12ms</div></div>
       <div class="stat-box"><div class="stat-label">Achievements</div><div class="stat-value" id="achievements-count">0/8</div></div>
@@ -212,39 +226,120 @@ nav button.active{border-bottom:2px solid var(--terminal-blue)}
 // Matrix background effect
 const canvas=document.getElementById('matrix-canvas');const ctx=canvas.getContext('2d');function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}resizeCanvas();window.addEventListener('resize',resizeCanvas);const chars='01XY+-*/<>[]{}|=•·';const fontSize=12;const columns=canvas.width/fontSize;const drops=[];for(let x=0;x<columns;x++)drops[x]=Math.random()*-100;function drawMatrix(){ctx.fillStyle='rgba(10,22,40,0.04)';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(59,130,246,0.3)';ctx.font=fontSize+'px monospace';for(let i=0;i<drops.length;i++){const text=chars.charAt(Math.floor(Math.random()*chars.length));ctx.fillText(text,i*fontSize,drops[i]*fontSize);if(drops[i]*fontSize>canvas.height&&Math.random()>0.975)drops[i]=0;drops[i]++}}setInterval(drawMatrix,50);
 
-// Game database - all verified working links
-const games=[{name:"8 Ball Pool",emoji:"🎱",tag:"Sports",size:"24",url:"https://html5.gamedistribution.com/ed65e4198fe74fdbb0b2ac015dd81128/"},{name:"Ludo With Friends",emoji:"🎲",tag:"Multiplayer",size:"18",url:"https://zv1y2i8p.play.gamezop.com/g/SkhljT2fdgb"},{name:"Basketball Stars",emoji:"🏀",tag:"Multiplayer",size:"32",url:"https://html5.gamedistribution.com/f7c4e66b484e45df86b7d46450aac477/"},{name:"Stick Fighter",emoji:"⚔️",tag:"Multiplayer",size:"28",url:"https://html5.gamedistribution.com/rgSkqGbJade4O68B0T2u3zCZqe0FMBqO/"},{name:"Poly Track",emoji:"🏎️",tag:"Racing",size:"45",url:"https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},{name:"Jelly Truck",emoji:"🚚",tag:"Racing",size:"22",url:"https://jellytruck2.github.io/"},{name:"Slope",emoji:"📐",tag:"Racing",size:"12",url:"https://slope-y8.com/"},{name:"Slope 2",emoji:"📐",tag:"Racing",size:"15",url:"https://slopegame2.github.io/"},{name:"Drift Hunters",emoji:"🏎️",tag:"Racing",size:"86",url:"https://drifthuntersonline.github.io/"},{name:"Slow Roads",emoji:"🛣️",tag:"Racing",size:"34",url:"https://slowroads.io/"},{name:"Subway Surfers",emoji:"🏃",tag:"Arcade",size:"67",url:"https://subwaysurfers76.github.io/"},{name:"Temple Run 2",emoji:"🏛️",tag:"Arcade",size:"54",url:"https://run3temp.github.io/"},{name:"Crossy Road",emoji:"🐔",tag:"Arcade",size:"23",url:"https://crossyroad66.github.io/"},{name:"1v1.LOL",emoji:"🔫",tag:"Battle",size:"112",url:"https://1v1lol-gg.github.io/"},{name:"Shell Shockers",emoji:"🥚",tag:"FPS",size:"94",url:"https://shellshock.io/"},{name:"Krunker.io",emoji:"🔫",tag:"FPS",size:"45",url:"https://krunker.io/"},{name:"Slither.io",emoji:"🐍",tag:"Arcade",size:"18",url:"https://slither.io/"},{name:"Agar.io",emoji:"⚪",tag:"Arcade",size:"22",url:"https://agar.io/"},{name:"Smash Karts",emoji:"🏎️",tag:"Racing",size:"76",url:"https://smashkarts.io/"},{name:"Zombs Royale",emoji:"🧟",tag:"Battle",size:"128",url:"https://zombsroyale.io/"},{name:"Retro Bowl",emoji:"🏈",tag:"Sports",size:"43",url:"https://retrobowl97.github.io/"},{name:"Thumb Fighter",emoji:"👊",tag:"Fighting",size:"16",url:"https://thumbfighter.github.io/"},{name:"Rooftop Snipers",emoji:"🎯",tag:"Action",size:"21",url:"https://rooftopsnipers.github.io/"},{name:"2048",emoji:"🔢",tag:"Puzzle",size:"4",url:"https://play2048.co/"},{name:"Cookie Clicker",emoji:"🍪",tag:"Idle",size:"8",url:"https://cookieclicker-game.github.io/"},{name:"Minesweeper",emoji:"💣",tag:"Puzzle",size:"6",url:"https://minesweeper.online/"},{name:"Little Alchemy 2",emoji:"⚗️",tag:"Puzzle",size:"31",url:"https://littlealchemy2.com/"},{name:"Sudoku",emoji:"🧩",tag:"Puzzle",size:"5",url:"https://zv1y2i8p.play.gamezop.com/g/rkHVpV2Yugb"},{name:"Fleeing Complex",emoji:"🏃",tag:"Stealth",size:"42",url:"https://machita66.github.io/game/fleeingthecomplex.html"},{name:"Escaping Prison",emoji:"🔨",tag:"Stealth",size:"38",url:"https://escaping-the-prison.com/"},{name:"Stealing Diamond",emoji:"💎",tag:"Stealth",size:"35",url:"https://stealing-the-diamond.com/"},{name:"Infiltrating Airship",emoji:"🎈",tag:"Stealth",size:"41",url:"https://infiltrating-the-airship.com/"},{name:"Papa's Pizzeria",emoji:"🍕",tag:"Sim",size:"28",url:"https://papaspizzeria-unblocked.github.io/"},{name:"Papa's Pancakeria",emoji:"🥞",tag:"Sim",size:"26",url:"https://papaspancakeria.github.io/"},{name:"Geometry Dash",emoji:"🔷",tag:"Platformer",size:"89",url:"https://geometry-dash-unbanned.github.io/"},{name:"OvO",emoji:"🥚",tag:"Platformer",size:"33",url:"https://dedragames.com/games/ovo/1.3/"},{name:"Vex 5",emoji:"🔺",tag:"Platformer",size:"47",url:"https://vex5.com/"},{name:"Vex 6",emoji:"🔺",tag:"Platformer",size:"52",url:"https://vex6.com/"},{name:"Big Tower Tiny Square",emoji:"🗼",tag:"Platformer",size:"29",url:"https://big-tower-tiny-square.com/"},{name:"Pac-Man",emoji:"👻",tag:"Arcade",size:"12",url:"https://google-pacman.github.io/"},{name:"Chrome Dino",emoji:"🦖",tag:"Arcade",size:"3",url:"https://chrome-dino-game.github.io/"},{name:"Flappy Bird",emoji:"🐦",tag:"Arcade",size:"5",url:"https://flappy-bird.com/"},{name:"Eaglercraft 1.8.8",emoji:"⛏️",tag:"Sandbox",size:"256",url:"https://g.deev.is/eaglercraft/"},{name:"MineKhan",emoji:"⛏️",tag:"Sandbox",size:"178",url:"https://yikuansun.github.io/minekhan/"},{name:"Voxel Builder",emoji:"🧊",tag:"Sandbox",size:"64",url:"https://voxelbuilder.github.io/"}];
+// 60 GAMES DATABASE
+const games=[
+  {name:"8 Ball Pool",emoji:"🎱",tag:"Sports",size:"24",url:"https://8ball-pool.github.io/"},
+  {name:"Ludo With Friends",emoji:"🎲",tag:"Multiplayer",size:"18",url:"https://zv1y2i8p.play.gamezop.com/g/SkhljT2fdgb"},
+  {name:"Basketball Stars",emoji:"🏀",tag:"Multiplayer",size:"32",url:"https://html5.gamedistribution.com/f7c4e66b484e45df86b7d46450aac477/"},
+  {name:"Stick Duel",emoji:"⚔️",tag:"Fighting",size:"15",url:"https://stick-duel-battle.github.io/"},
+  {name:"Poly Track",emoji:"🏎️",tag:"Racing",size:"45",url:"https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},
+  {name:"Jelly Truck",emoji:"🚚",tag:"Racing",size:"22",url:"https://jellytruck2.github.io/"},
+  {name:"Slope",emoji:"📐",tag:"Racing",size:"12",url:"https://slope-y8.com/"},
+  {name:"Slope 2",emoji:"📐",tag:"Racing",size:"15",url:"https://slopegame2.github.io/"},
+  {name:"Drift Hunters",emoji:"🏎️",tag:"Racing",size:"86",url:"https://drifthuntersonline.github.io/"},
+  {name:"Slow Roads",emoji:"🛣️",tag:"Racing",size:"34",url:"https://slowroads.io/"},
+  {name:"Subway Surfers",emoji:"🏃",tag:"Arcade",size:"67",url:"https://subway-surfer.github.io/"},
+  {name:"Temple Run 2",emoji:"🏛️",tag:"Arcade",size:"54",url:"https://temple-run-2.github.io/"},
+  {name:"Crossy Road",emoji:"🐔",tag:"Arcade",size:"23",url:"https://crossyroad66.github.io/"},
+  {name:"1v1.LOL",emoji:"🔫",tag:"Battle",size:"112",url:"https://1v1-lol-unblocked.github.io/"},
+  {name:"Shell Shockers",emoji:"🥚",tag:"FPS",size:"94",url:"https://shellshockers-unblocked.github.io/"},
+  {name:"Krunker.io",emoji:"🔫",tag:"FPS",size:"45",url:"https://krunker-io.github.io/"},
+  {name:"Slither.io",emoji:"🐍",tag:"Arcade",size:"18",url:"https://slither.io/"},
+  {name:"Agar.io",emoji:"⚪",tag:"Arcade",size:"22",url:"https://agar.io/"},
+  {name:"Smash Karts",emoji:"🏎️",tag:"Racing",size:"76",url:"https://smashkarts.io/"},
+  {name:"Zombs Royale",emoji:"🧟",tag:"Battle",size:"128",url:"https://zombsroyale.io/"},
+  {name:"Retro Bowl",emoji:"🏈",tag:"Sports",size:"43",url:"https://retrobowl97.github.io/"},
+  {name:"Thumb Fighter",emoji:"👊",tag:"Fighting",size:"16",url:"https://thumbfighter.github.io/"},
+  {name:"Rooftop Snipers",emoji:"🎯",tag:"Action",size:"21",url:"https://rooftop-snipers.github.io/"},
+  {name:"2048",emoji:"🔢",tag:"Puzzle",size:"4",url:"https://play2048.co/"},
+  {name:"Cookie Clicker",emoji:"🍪",tag:"Idle",size:"8",url:"https://cookieclicker-game.github.io/"},
+  {name:"Minesweeper",emoji:"💣",tag:"Puzzle",size:"6",url:"https://minesweeper.online/"},
+  {name:"Little Alchemy 2",emoji:"⚗️",tag:"Puzzle",size:"31",url:"https://littlealchemy2.com/"},
+  {name:"Sudoku",emoji:"🧩",tag:"Puzzle",size:"5",url:"https://zv1y2i8p.play.gamezop.com/g/rkHVpV2Yugb"},
+  {name:"Fleeing Complex",emoji:"🏃",tag:"Stealth",size:"42",url:"https://henry-stickmin.github.io/fleeingthecomplex/"},
+  {name:"Escaping Prison",emoji:"🔨",tag:"Stealth",size:"38",url:"https://henry-stickmin.github.io/escapingtheprison/"},
+  {name:"Stealing Diamond",emoji:"💎",tag:"Stealth",size:"35",url:"https://henry-stickmin.github.io/stealingthediamond/"},
+  {name:"Infiltrating Airship",emoji:"🎈",tag:"Stealth",size:"41",url:"https://henry-stickmin.github.io/infiltratingtheairship/"},
+  {name:"Papa's Pizzeria",emoji:"🍕",tag:"Sim",size:"28",url:"https://papas-pizzeria.github.io/"},
+  {name:"Papa's Pancakeria",emoji:"🥞",tag:"Sim",size:"26",url:"https://papaspancakeria.github.io/"},
+  {name:"Geometry Dash",emoji:"🔷",tag:"Platformer",size:"89",url:"https://geometry-dash-unbanned.github.io/"},
+  {name:"OvO",emoji:"🥚",tag:"Platformer",size:"33",url:"https://dedragames.com/games/ovo/1.3/"},
+  {name:"Vex 5",emoji:"🔺",tag:"Platformer",size:"47",url:"https://vex5.com/"},
+  {name:"Vex 6",emoji:"🔺",tag:"Platformer",size:"52",url:"https://vex6.com/"},
+  {name:"Big Tower Tiny Square",emoji:"🗼",tag:"Platformer",size:"29",url:"https://big-tower-tiny-square.com/"},
+  {name:"Pac-Man",emoji:"👻",tag:"Arcade",size:"12",url:"https://google-pacman.github.io/"},
+  {name:"Chrome Dino",emoji:"🦖",tag:"Arcade",size:"3",url:"https://chrome-dino-game.github.io/"},
+  {name:"Flappy Bird",emoji:"🐦",tag:"Arcade",size:"5",url:"https://flappy-bird.com/"},
+  {name:"Eaglercraft 1.8.8",emoji:"⛏️",tag:"Sandbox",size:"256",url:"https://g.deev.is/eaglercraft/"},
+  {name:"MineKhan",emoji:"⛏️",tag:"Sandbox",size:"178",url:"https://yikuansun.github.io/minekhan/"},
+  {name:"Voxel Builder",emoji:"🧊",tag:"Sandbox",size:"64",url:"https://voxelbuilder.github.io/"},
+  {name:"Run 3",emoji:"🏃",tag:"Platformer",size:"35",url:"https://run3unblocked.github.io/"},
+  {name:"Super Mario 64",emoji:"🍄",tag:"Platformer",size:"12",url:"https://sm64web.github.io/"},
+  {name:"Friday Night Funkin'",emoji:"🎤",tag:"Rhythm",size:"45",url:"https://fnf-unblocked.github.io/"},
+  {name:"Happy Wheels",emoji:"🦽",tag:"Racing",size:"22",url:"https://happywheelsunblocked.github.io/"},
+  {name:"Super Smash Flash 2",emoji:"⚔️",tag:"Fighting",size:"156",url:"https://super-smash-flash-2.github.io/"},
+  {name:"Bloons TD 6",emoji:"🎈",tag:"Strategy",size:"78",url:"https://bloons-td-6.github.io/"},
+  {name:"Stumble Guys",emoji:"🤼",tag:"Multiplayer",size:"89",url:"https://stumble-guys.github.io/"},
+  {name:"Wordle Unlimited",emoji:"📝",tag:"Puzzle",size:"2",url:"https://wordle-unlimited.github.io/"},
+  {name:"Tetris",emoji:"🧱",tag:"Arcade",size:"8",url:"https://tetris-unblocked.github.io/"},
+  {name:"Basketball Legends",emoji:"🏀",tag:"Sports",size:"28",url:"https://basketball-legends.github.io/"},
+  {name:"Soccer Skills",emoji:"⚽",tag:"Sports",size:"34",url:"https://soccer-skills.github.io/"},
+  {name:"Paper.io 2",emoji:"📄",tag:"Arcade",size:"18",url:"https://paper-io-2.github.io/"},
+  {name:"Diep.io",emoji:"🔵",tag:"Action",size:"25",url:"https://diep-io.github.io/"},
+  {name:"Getting Over It",emoji:"🔨",tag:"Platformer",size:"42",url:"https://getting-over-it.github.io/"},
+  {name:"Five Nights at Freddy's",emoji:"🐻",tag:"Horror",size:"56",url:"https://fnaf-online.github.io/"}
+];
 
-// Achievements data
-const achievements=[{id:"first_launch",name:"System Init",desc:"Boot up Lemons Proxy",icon:"🖥️",unlocked:false},{id:"first_game",name:"Module Runner",desc:"Launch your first game",icon:"🎮",unlocked:false},{id:"ten_games",name:"Power User",desc:"Launch 10 different games",icon:"⚡",unlocked:false},{id:"search_try",name:"Network Scout",desc:"Visit the proxy tab",icon:"🔍",unlocked:false},{id:"fullscreen",name:"Maximum Overdrive",desc:"Use fullscreen mode",icon:"⛶",unlocked:false},{id:"konami",name:"Code Breaker",desc:"Enter the Konami Code",icon:"🔓",unlocked:false},{id:"logo_clicker",name:"Curious Mind",desc:"Click the logo 5 times",icon:"🍋",unlocked:false},{id:"aurelio_search",name:"Hidden Truth",desc:"Search for the forbidden name",icon:"🚫",unlocked:false}];
+// AURELIO RAGE SYSTEM (school-safe messages)
+let aurelioCount = parseInt(localStorage.getItem('aurelio_count') || '0');
+const aurelioMessages = [
+  {msg: "⚠️ RESTRICTED ACCESS\nThat search term is forbidden.\nLogging incident...", type: "normal"},
+  {msg: "🔒 SECURITY ALERT\nUnauthorized search pattern detected.\nThis is your final warning.", type: "normal"},
+  {msg: "🛑 SYSTEM BREACH ATTEMPT\nAdministrators notified.\nCease activity immediately.", type: "angry"},
+  {msg: "💥 CRITICAL FAILURE\nSystem integrity compromised.\nEmergency shutdown imminent...", type: "furious"},
+  {msg: "STOP", type: "shutdown"}
+];
 
-// State management
+// ACHIEVEMENTS - Clean names only
+const achievements=[
+  {id:"first_launch",name:"System Init",desc:"Boot up Lemons Proxy",icon:"🖥️",unlocked:false},
+  {id:"first_game",name:"Module Runner",desc:"Launch your first game",icon:"🎮",unlocked:false},
+  {id:"ten_games",name:"Power User",desc:"Launch 10 different games",icon:"⚡",unlocked:false},
+  {id:"search_try",name:"Network Scout",desc:"Visit the proxy tab",icon:"🔍",unlocked:false},
+  {id:"fullscreen",name:"Maximum Overdrive",desc:"Use fullscreen mode",icon:"⛶",unlocked:false},
+  {id:"konami",name:"Code Breaker",desc:"Enter the Konami Code",icon:"🔓",unlocked:false},
+  {id:"logo_clicker",name:"Curious Mind",desc:"Click the logo 5 times",icon:"🍋",unlocked:false},
+  {id:"aurelio_search",name:"Hidden Truth",desc:"Discover the forbidden query",icon:"🚫",unlocked:false}
+];
+
+// STATE
 let gamesLaunched=[];
 let logoClicks=0;
 let konamiSequence=[];
 const konamiCode=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
 
-// Console easter egg
-console.log('%c fuck you aurelio ', 'background: #1e3a8a; color: #3b82f6; font-size: 20px; font-family: monospace; border: 2px solid #3b82f6; padding: 10px;');
-console.log('%c Lemons Proxy v10.0 // LD x Lemonwesh ', 'color: #60a5fa; font-family: monospace;');
+// Console - subtle only
+console.log('%c LEMONS_PROXY v10.0 // System Online ', 'color: #3b82f6; font-family: monospace; border: 1px solid #3b82f6; padding: 5px;');
 
-// Initialize
+// INIT
 document.addEventListener('DOMContentLoaded', () => {
   renderGames();
   renderAchievements();
   updateStats();
   loadSavedData();
-  
   document.addEventListener('keydown', handleKeydown);
+  
+  if (aurelioCount >= 5) {
+    showShutdown();
+  }
 });
 
 function handleKeydown(e) {
   konamiSequence.push(e.key);
   if (konamiSequence.length > 10) konamiSequence.shift();
-  
   if (konamiSequence.join(',') === konamiCode.join(',')) {
     unlockAchievement('konami');
-    showEasterEggToast("🔓 KONAMI CODE ACTIVATED\nSystem restrictions bypassed.\nAll modules unlocked.");
+    showEasterEggToast("🔓 KONAMI CODE ACTIVATED\nSystem restrictions bypassed.");
     document.body.style.filter = "hue-rotate(180deg)";
     setTimeout(() => document.body.style.filter = "", 3000);
   }
@@ -258,8 +353,7 @@ function dismissBoot() {
 
 function playDystopianMusic() {
   const container = document.getElementById('musicContainer');
-  // Dark ambient cyberpunk track
-  container.innerHTML = `<iframe width="0" height="0" src="https://www.youtube.com/embed/JvF3ps2JiYY?autoplay=1&loop=1&playlist=JvF3ps2JiYY" frameborder="0" allow="autoplay; clipboard-write; encrypted-media" allowfullscreen></iframe>`;
+  container.innerHTML = `<iframe width="0" height="0" src="https://www.youtube.com/embed/JvF3ps2JiYY?autoplay=1&loop=1&playlist=JvF3ps2JiYY" frameborder="0" allow="autoplay" allowfullscreen></iframe>`;
   document.getElementById('nowPlaying').textContent = '♫ Now Playing: Dystopian Ambient';
 }
 
@@ -334,20 +428,20 @@ function toggleFullscreen() {
 function showSection(section) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  
   document.getElementById(section).classList.add('active');
   document.getElementById('nav-' + section).classList.add('active');
-  
   if (section === 'search') unlockAchievement('search_try');
 }
 
+// ESCALATING SYSTEM RAGE (school-appropriate)
 function searchGames() {
   const input = document.getElementById('searchInput').value.toLowerCase();
   const modules = document.querySelectorAll('.game-module');
   
   if (input === 'aurelio') {
-    unlockAchievement('aurelio_search');
-    showEasterEggToast("🚫 ACCESS DENIED\nUser 'Aurelio' blacklisted from system.\nReason: Unauthorized access attempts.");
+    handleRestrictedSearch();
+    document.getElementById('searchInput').value = '';
+    return;
   }
   
   modules.forEach(module => {
@@ -356,11 +450,80 @@ function searchGames() {
   });
 }
 
+function handleRestrictedSearch() {
+  unlockAchievement('aurelio_search');
+  
+  const level = Math.min(aurelioCount, 4);
+  const data = aurelioMessages[level];
+  
+  if (level === 4) {
+    localStorage.setItem('aurelio_count', '5');
+    showShutdown();
+    return;
+  }
+  
+  showAngryToast(data.msg, data.type);
+  
+  aurelioCount++;
+  localStorage.setItem('aurelio_count', aurelioCount.toString());
+}
+
+function showAngryToast(message, type) {
+  const toast = document.getElementById('easterToast');
+  toast.textContent = message;
+  toast.className = 'easter-egg-toast show ' + type;
+  
+  playErrorBeep();
+  
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, type === 'furious' ? 6000 : 4000);
+}
+
+function playErrorBeep() {
+  try {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = aurelioCount >= 3 ? 150 : 300;
+    oscillator.type = 'sawtooth';
+    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
+  } catch(e) {}
+}
+
+function showShutdown() {
+  document.getElementById('shutdown-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  stopMusic();
+  
+  try {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    oscillator.frequency.setValueAtTime(100, audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 2);
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 2);
+  } catch(e) {}
+}
+
 function easterEggLogo() {
   logoClicks++;
   if (logoClicks === 5) {
     unlockAchievement('logo_clicker');
-    showEasterEggToast("🍋 LEMON PROTOCOL ACTIVATED\nCitrus levels critical.\nSystem optimized for acidity.");
+    showEasterEggToast("🍋 LEMON PROTOCOL ACTIVATED\nCitrus levels critical.");
   }
   const logo = document.querySelector('.logo-icon');
   logo.style.transform = `rotate(${logoClicks * 15}deg) scale(${1 + logoClicks * 0.1})`;
@@ -402,6 +565,7 @@ function saveData() {
 function renderAchievements() {
   const list = document.getElementById('achievementsList');
   const progress = document.getElementById('ach-progress');
+  const count = document.getElementById('achievements-count');
   
   list.innerHTML = achievements.map(ach => `
     <div class="achievement-item ${ach.unlocked ? 'unlocked' : ''}">
@@ -415,7 +579,7 @@ function renderAchievements() {
   
   const unlockedCount = achievements.filter(a => a.unlocked).length;
   progress.textContent = `${unlockedCount}/${achievements.length}`;
-  document.getElementById('achievements-count').textContent = `${unlockedCount}/${achievements.length}`;
+  count.textContent = `${unlockedCount}/${achievements.length}`;
 }
 
 function showAchievementPopup(ach) {
@@ -432,6 +596,7 @@ function toggleAchievements() {
 function showEasterEggToast(message) {
   const toast = document.getElementById('easterToast');
   toast.textContent = message;
+  toast.classList.remove('angry', 'furious');
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 5000);
 }
