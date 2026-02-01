@@ -111,7 +111,7 @@
             <button class="control-btn" onclick="toggleSettings()">⚙️ SETTINGS</button>
         </div>
         <h1 class="blueprint-title">Lemons Proxy</h1>
-        <p style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.9rem;">VERIFIED SINGLE-GAMES • WORKING PROXY BROWSER</p>
+        <p style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.9rem;">VERIFIED SINGLE-GAMES • RAMMERHEAD PROXY</p>
         <div class="credits">CODE BY <span>LEMONWESH</span> // DESIGN BY <span>LD</span></div>
         <div class="search-box">
             <input type="text" class="search-input" id="searchInput" placeholder="Search games..." onkeyup="searchGames()">
@@ -127,53 +127,46 @@
         <!-- PROXY SECTION -->
         <section id="proxy" class="section">
             <div style="background: rgba(0,0,0,0.4); border: 2px solid var(--blueprint-line); padding: 20px; margin-bottom: 20px; text-align: center;">
-                <h2 style="font-family: 'Share Tech Mono'; margin-bottom: 10px; color: var(--accent);">🔍 PROXY SEARCH ENGINE</h2>
-                <p style="font-size: 0.9rem; opacity: 0.9;">Enter any URL below to browse through encrypted proxy tunnels. Uses currently working CroxyProxy instances.</p>
+                <h2 style="font-family: 'Share Tech Mono'; margin-bottom: 10px; color: var(--accent);">🔍 RAMMERHEAD PROXY</h2>
+                <p style="font-size: 0.9rem; opacity: 0.9;">Session-based proxy. Opens in new tab to avoid blocks. Password: <strong>sharkie4life</strong></p>
             </div>
 
-            <div class="proxy-browser">
-                <div class="proxy-toolbar">
-                    <button class="proxy-btn" onclick="proxyBack()">← BACK</button>
-                    <button class="proxy-btn" onclick="proxyForward()">FORWARD →</button>
-                    <button class="proxy-btn" onclick="reloadProxy()">↻ RELOAD</button>
-                    <input type="text" class="proxy-address" id="proxyAddress" placeholder="Enter URL (https://...) or search query..." onkeydown="if(event.key === 'Enter') navigateProxy()">
-                    <select class="proxy-select" id="proxyEngine">
-                        <option value="direct">Direct (No Proxy)</option>
-                        <option value="croxy1" selected>CroxyProxy #1</option>
-                        <option value="croxy2">CroxyProxy #2</option>
-                        <option value="croxy3">CroxyProxy #3</option>
-                        <option value="textise">Text Mode (Reader)</option>
-                    </select>
-                    <button class="proxy-btn" onclick="navigateProxy()" style="background: var(--accent); border-color: var(--accent); font-weight: bold;">GO</button>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                <div style="border: 2px solid var(--blueprint-line); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--blueprint-line)'" onclick="window.open('https://demo-opensource.rammerhead.org', '_blank')">
+                    <h3 style="font-family: 'Share Tech Mono'; color: var(--accent); margin-bottom: 10px;">Official Demo</h3>
+                    <p style="font-size: 0.85rem;">demo-opensource.rammerhead.org</p>
                 </div>
-                
-                <div class="proxy-viewport">
-                    <iframe id="proxyFrame" class="proxy-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation allow-downloads" allow="fullscreen; autoplay; clipboard-read; clipboard-write"></iframe>
-                    
-                    <div id="proxyFallback" class="proxy-fallback" style="display: none;">
-                        <h3>⚠️ EMBED BLOCKED BY SECURITY POLICY</h3>
-                        <p>This website refuses to load inside an iframe (X-Frame-Options). This is common for Google, YouTube, Discord, and major platforms.</p>
-                        <button onclick="openProxyNewTab()">OPEN VIA PROXY (NEW TAB)</button>
-                        <button onclick="document.getElementById('proxyFallback').style.display='none'" style="background: transparent; border-color: var(--blueprint-line); margin-top: 10px;">CLOSE MESSAGE</button>
-                    </div>
-                    
-                    <div class="proxy-status" id="proxyStatus">Ready</div>
+                <div style="border: 2px solid var(--blueprint-line); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--blueprint-line)'" onclick="window.open('https://browser.rammerhead.org', '_blank')">
+                    <h3 style="font-family: 'Share Tech Mono'; color: var(--accent); margin-bottom: 10px;">Browser Version</h3>
+                    <p style="font-size: 0.85rem;">browser.rammerhead.org</p>
                 </div>
-                
-                <div class="proxy-links-grid">
-                    <div class="proxy-link-card" onclick="loadProxyHome('https://google.com')"><div class="proxy-link-name">Google</div></div>
-                    <div class="proxy-link-card" onclick="loadProxyHome('https://youtube.com')"><div class="proxy-link-name">YouTube</div></div>
-                    <div class="proxy-link-card" onclick="loadProxyHome('https://reddit.com')"><div class="proxy-link-name">Reddit</div></div>
-                    <div class="proxy-link-card" onclick="loadProxyHome('https://discord.com')"><div class="proxy-link-name">Discord</div></div>
-                    <div class="proxy-link-card" onclick="loadProxyHome('https://wikipedia.org')"><div class="proxy-link-name">Wikipedia</div></div>
-                    <div class="proxy-link-card" onclick="loadProxyHome('https://twitch.tv')"><div class="proxy-link-name">Twitch</div></div>
+                <div style="border: 2px solid var(--blueprint-line); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--blueprint-line)'" onclick="window.open('https://direct2.rammerhead.org', '_blank')">
+                    <h3 style="font-family: 'Share Tech Mono'; color: var(--accent); margin-bottom: 10px;">Direct2 Mirror</h3>
+                    <p style="font-size: 0.85rem;">direct2.rammerhead.org</p>
                 </div>
+                <div style="border: 2px solid var(--blueprint-line); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--blueprint-line)'" onclick="window.open('https://cloudflare.rammerhead.org', '_blank')">
+                    <h3 style="font-family: 'Share Tech Mono'; color: var(--accent); margin-bottom: 10px;">Cloudflare Mirror</h3>
+                    <p style="font-size: 0.85rem;">cloudflare.rammerhead.org</p>
+                </div>
+                <div style="border: 2px solid var(--blueprint-line); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--blueprint-line)'" onclick="window.open('https://coolsharks.info', '_blank')">
+                    <h3 style="font-family: 'Share Tech Mono'; color: var(--accent); margin-bottom: 10px;">Coolsharks</h3>
+                    <p style="font-size: 0.85rem;">coolsharks.info</p>
+                </div>
+                <div style="border: 2px solid var(--blueprint-line); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--blueprint-line)'" onclick="window.open('https://r.codewars.ml', '_blank')">
+                    <h3 style="font-family: 'Share Tech Mono'; color: var(--accent); margin-bottom: 10px;">Codewars Mirror</h3>
+                    <p style="font-size: 0.85rem;">r.codewars.ml</p>
+                </div>
+            </div>
+
+            <div style="background: rgba(255,102,0,0.1); border: 2px solid var(--accent); padding: 20px; text-align: center;">
+                <p style="font-family: 'Share Tech Mono'; font-size: 1rem;">💡 <strong>How to use:</strong> Click any link above → Enter password "sharkie4life" → Paste URL you want to visit</p>
+                <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.9;">Rammerhead saves your session (cookies/logins) between visits!</p>
             </div>
         </section>
 
         <!-- GAMES SECTION - ALL GAMES IN ONE AREA -->
         <section id="games" class="section active">
-            <div class="notice">✅ VERIFIED: All links lead to individual standalone games (Single instances, no portals)</div>
+            <div class="notice">✅ VERIFIED: All links lead to individual standalone games (NO PORTALS)</div>
             
             <div class="recent-section" id="recentSection">
                 <div class="recent-title">📌 RECENTLY PLAYED</div>
@@ -198,20 +191,19 @@
     </div>
 
     <script>
-        // ALL GAMES IN ONE MASTER LIST - Portals removed, Minecraft added
+        // ALL VERIFIED SINGLE-GAME LINKS - PORTALS REMOVED
         const games = [
-            // === RACING / DRIVING ===
+            // === RACING / DRIVING (Cleaned) ===
             {name: "Poly Track", url: "https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},
-            {name: "Drive Mad", url: "https://drivemadunblockedgames.github.io/"},
             {name: "Jelly Truck", url: "https://jellytruck2.github.io/"},
-            {name: "Slope", url: "https://slope-slope.github.io/"},
+            {name: "Slope", url: "https://finnbaltazar1111.github.io/slope/"}, // Single file version
             {name: "Slope 2", url: "https://slopegame2.github.io/"},
             {name: "Night City Racing", url: "https://nightcityracing.github.io/"},
             {name: "Top Speed 3D", url: "https://topspeed-3d.github.io/"},
             {name: "Drift Hunters", url: "https://drifthuntersonline.github.io/"},
             {name: "Slow Roads", url: "https://slowroads.io/"},
             {name: "Subway Surfers", url: "https://subwaysurfers76.github.io/"},
-            {name: "Temple Run 2", url: "https://run3temp.github.io/"}, // Fixed link
+            {name: "Temple Run 2", url: "https://run3temp.github.io/"},
             {name: "Crossy Road", url: "https://crossyroad66.github.io/"},
             
             // === COMPETITIVE IO (Single instances) ===
@@ -231,26 +223,23 @@
             {name: "Territorial.io", url: "https://territorial.io/"},
             {name: "Skribbl.io", url: "https://skribbl.io/"},
             
-            // === SPORTS ===
-            {name: "Soccer Random", url: "https://soccer-randomx.github.io/"},
-            {name: "Football Legends", url: "https://footballlegends-game.github.io/"}, // Fixed
+            // === SPORTS (Removed portals) ===
             {name: "Retro Bowl", url: "https://retrobowl97.github.io/"},
             {name: "Thumb Fighter", url: "https://thumbfighter.github.io/"},
+            {name: "Basketball Stars", url: "https://basketball-stars-game.github.io/"}, // Direct
             
             // === FIGHTING (Portals removed) ===
             {name: "Karate Bros", url: "https://karatebrosgame.github.io/"},
-            {name: "Boxing Random", url: "https://boxing-random-game.github.io/"},
-            {name: "Drunken Duel", url: "https://drunkenduel.github.io/"}, // Added replacement
-            {name: "Rooftop Snipers", url: "https://rooftopsnipers.github.io/"}, // Added replacement
+            {name: "Rooftop Snipers", url: "https://rooftopsnipers.github.io/"},
+            {name: "Getaway Shootout", url: "https://getaway-shootout.github.io/"},
             
-            // === PUZZLE / IDLE ===
+            // === PUZZLE / IDLE (Cleaned) ===
             {name: "2048", url: "https://cyberzhg.github.io/2048/"},
             {name: "Tetris", url: "https://ytiurin.github.io/tetris/"},
             {name: "Hextris", url: "https://hextris.github.io/"},
             {name: "Wordle Unlimited", url: "https://gland2k.github.io/wordleunlimited/"},
             {name: "Wordle", url: "https://wordle.com/"},
             {name: "Cookie Clicker", url: "https://cookieclicker-game.github.io/"},
-            {name: "Idle Breakout", url: "https://idlebreakout-game.github.io/"},
             {name: "Little Alchemy 2", url: "https://littlealchemy2.com/"},
             {name: "Sandboxels", url: "https://sandboxels.com/"},
             {name: "Cut the Rope", url: "https://www.cuttherope.com/"},
@@ -258,7 +247,7 @@
             {name: "Minesweeper", url: "https://minesweeper.online/"},
             {name: "WorldGuessr", url: "https://worldguessr.com/"},
             
-            // === HENRY STICKMIN (Individual Episodes) ===
+            // === HENRY STICKMIN ===
             {name: "Fleeing the Complex", url: "https://machita66.github.io/game/fleeingthecomplex.html"},
             {name: "Escaping the Prison", url: "https://escaping-the-prison.com/"},
             {name: "Stealing the Diamond", url: "https://stealing-the-diamond.com/"},
@@ -272,7 +261,7 @@
             // === PLATFORMER ===
             {name: "Geometry Dash", url: "https://geometry-dash-unbanned.github.io/"},
             {name: "Geometry Dash Lite", url: "https://geometrydash-lite2.github.io/"},
-            {name: "OvO", url: "https://ovo-unblock.github.io/"},
+            {name: "OvO", url: "https://dedragames.com/games/ovo/1.3/"}, // Official Dedra Games
             {name: "OvO Classic", url: "https://ovo-classic.github.io/play.html"},
             {name: "Vex 5", url: "https://vex5.com/"},
             {name: "Vex 6", url: "https://vex6.com/"},
@@ -284,25 +273,13 @@
             {name: "Chrome Dino", url: "https://chrome-dino-game.github.io/"},
             {name: "Flappy Bird", url: "https://flappy-bird.com/"},
 
-            // === MINECRAFT BROWSER GAMES (Added) ===
-            {name: "Eaglercraft 1.8.8", url: "https://eaglercraft.com/mc/1.8.8/"}, // Official Eagler
-            {name: "Eaglercraft 1.5.2", url: "https://eaglercraft.com/mc/1.5.2/"}, // Older version
-            {name: "MineKhan", url: "https://yikuansun.github.io/minekhan/"}, // Single-file clone
-            {name: "Voxel Builder", url: "https://voxelbuilder.github.io/"}, // Creative building
-            {name: "CraftMine", url: "https://www.craftmine.co/"} // Classic Minecraft clone
+            // === MINECRAFT (Official Links) ===
+            {name: "Eaglercraft 1.8.8", url: "https://g.deev.is/eaglercraft/"}, // Official
+            {name: "Eaglercraft 1.5.2", url: "https://g.deev.is/eaglercraft/beta/"},
+            {name: "MineKhan", url: "https://yikuansun.github.io/minekhan/"},
+            {name: "Voxel Builder", url: "https://voxelbuilder.github.io/"},
+            {name: "CraftMine", url: "https://www.craftmine.co/"}
         ];
-
-        // WORKING PROXY CONFIGURATION (CroxyProxy instances - currently active)
-        const proxyEngines = {
-            direct: { name: 'Direct', prefix: '', suffix: '' },
-            croxy1: { name: 'CroxyProxy Lite', prefix: 'https://www.croxyproxy.com/_proxy?url=', suffix: '' },
-            croxy2: { name: 'CroxyProxy Secure', prefix: 'https://www.croxyproxy.rocks/_proxy?url=', suffix: '' },
-            croxy3: { name: 'CroxyProxy Free', prefix: 'https://www.croxyproxy.net/_proxy?url=', suffix: '' },
-            textise: { name: 'Text Mode', prefix: 'https://r.jina.ai/http://', suffix: '' }
-        };
-
-        let proxyHistory = [];
-        let proxyHistoryPos = -1;
 
         function init() {
             document.getElementById('gameCount').textContent = games.length;
@@ -315,12 +292,6 @@
                 document.title = savedTitle;
                 document.getElementById('favicon').href = savedIcon;
             }
-
-            const frame = document.getElementById('proxyFrame');
-            frame.onload = function() {
-                document.getElementById('proxyStatus').textContent = 'Loaded: ' + (proxyHistory[proxyHistoryPos] || 'Ready');
-                setTimeout(() => { document.getElementById('proxyFallback').style.display = 'none'; }, 1000);
-            };
         }
 
         function renderGames(gameList) {
@@ -341,62 +312,6 @@
             event.target.classList.add('active');
         }
 
-        // PROXY FUNCTIONS
-        function navigateProxy() {
-            const input = document.getElementById('proxyAddress').value.trim();
-            const engine = document.getElementById('proxyEngine').value;
-            if (!input) return;
-            
-            let targetUrl = input;
-            if (!input.match(/^https?:\/\//i) && !input.includes('.')) {
-                targetUrl = 'https://duckduckgo.com/html/?q=' + encodeURIComponent(input);
-            } else if (!input.match(/^https?:\/\//i)) {
-                targetUrl = 'https://' + input;
-            }
-            
-            let finalUrl = targetUrl;
-            if (engine !== 'direct') {
-                const eng = proxyEngines[engine];
-                finalUrl = eng.prefix + encodeURIComponent(targetUrl) + eng.suffix;
-            }
-            
-            if (proxyHistoryPos < proxyHistory.length - 1) {
-                proxyHistory = proxyHistory.slice(0, proxyHistoryPos + 1);
-            }
-            proxyHistory.push(targetUrl);
-            proxyHistoryPos++;
-            
-            loadProxyUrl(finalUrl);
-        }
-
-        function loadProxyUrl(url) {
-            document.getElementById('proxyFallback').style.display = 'none';
-            document.getElementById('proxyStatus').textContent = 'Loading...';
-            document.getElementById('proxyFrame').src = url;
-            setTimeout(() => { document.getElementById('proxyFallback').style.display = 'flex'; }, 5000); // Show fallback if blocked
-        }
-
-        function loadProxyHome(url) {
-            document.getElementById('proxyAddress').value = url;
-            document.getElementById('proxyEngine').value = 'direct';
-            navigateProxy();
-        }
-
-        function proxyBack() { if (proxyHistoryPos > 0) { proxyHistoryPos--; document.getElementById('proxyAddress').value = proxyHistory[proxyHistoryPos]; navigateProxy(); } }
-        function proxyForward() { if (proxyHistoryPos < proxyHistory.length - 1) { proxyHistoryPos++; document.getElementById('proxyAddress').value = proxyHistory[proxyHistoryPos]; navigateProxy(); } }
-        function reloadProxy() { const frame = document.getElementById('proxyFrame'); frame.src = frame.src; }
-        function openProxyNewTab() {
-            const engine = document.getElementById('proxyEngine').value;
-            const currentTarget = proxyHistory[proxyHistoryPos] || 'https://google.com';
-            let url = currentTarget;
-            if (engine !== 'direct') {
-                const eng = proxyEngines[engine];
-                url = eng.prefix + encodeURIComponent(currentTarget);
-            }
-            window.open(url, '_blank');
-        }
-
-        // GAME FUNCTIONS
         function playGame(name, url) {
             let recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
             recent = recent.filter(g => g.name !== name);
