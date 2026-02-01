@@ -180,40 +180,111 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        .proxy-container {
+        /* NEW PROXY BROWSER STYLES */
+        .proxy-browser {
             border: 3px solid var(--blueprint-line);
-            background: rgba(0, 0, 0, 0.4);
-            padding: 30px;
-            margin-bottom: 30px;
-            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            height: calc(100vh - 250px);
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
         }
-        .proxy-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+        .proxy-toolbar {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 2px solid var(--blueprint-line);
+            align-items: center;
+            flex-wrap: wrap;
         }
-        .proxy-card {
+        .proxy-btn {
+            background: rgba(255,255,255,0.1);
             border: 2px solid var(--blueprint-line);
-            background: rgba(0,0,0,0.3);
-            padding: 25px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
             color: white;
-            display: block;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
         }
-        .proxy-card:hover {
+        .proxy-btn:hover {
             background: var(--accent);
             border-color: var(--accent);
-            transform: translateY(-3px);
         }
-        .proxy-name {
+        .proxy-address {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            background: rgba(0,0,0,0.4);
+            border: 2px solid var(--blueprint-line);
+            color: white;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+        }
+        .proxy-select {
+            padding: 10px;
+            background: rgba(0,0,0,0.4);
+            border: 2px solid var(--blueprint-line);
+            color: white;
             font-family: 'Share Tech Mono', monospace;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            font-weight: bold;
+        }
+        .proxy-viewport {
+            flex: 1;
+            position: relative;
+            background: white;
+        }
+        .proxy-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        .proxy-fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,10,30,0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+            padding: 40px;
+        }
+        .proxy-fallback h3 {
+            color: var(--accent);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.5rem;
+        }
+        .proxy-fallback p {
+            max-width: 500px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        .proxy-fallback button {
+            padding: 15px 30px;
+            background: var(--accent);
+            border: 2px solid var(--accent);
+            color: white;
+            font-family: 'Share Tech Mono', monospace;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .proxy-fallback button:hover {
+            background: transparent;
+        }
+        .proxy-status {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            font-family: 'Share Tech Mono', monospace;
+            border: 1px solid var(--blueprint-line);
         }
 
         .recent-section {
@@ -375,6 +446,37 @@
             color: var(--accent);
             font-weight: bold;
         }
+        
+        .proxy-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-top: 2px solid var(--blueprint-line);
+        }
+        .proxy-link-card {
+            border: 1px solid var(--blueprint-line);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(0,0,0,0.3);
+        }
+        .proxy-link-card:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .proxy-link-name {
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .proxy-link-desc {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -409,7 +511,7 @@
             <button class="control-btn" onclick="toggleSettings()">⚙️ SETTINGS</button>
         </div>
         <h1 class="blueprint-title">Lemons Proxy</h1>
-        <p style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.9rem;">VERIFIED SINGLE-GAMES ONLY • WORKING PROXY</p>
+        <p style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.9rem;">VERIFIED SINGLE-GAMES • INTEGRATED PROXY BROWSER</p>
         <div class="credits">CODE BY <span>LEMONWESH</span> // DESIGN BY <span>LD</span></div>
         <div class="search-box">
             <input type="text" class="search-input" id="searchInput" placeholder="Search games..." onkeyup="searchGames()">
@@ -418,28 +520,73 @@
 
     <nav>
         <button class="nav-btn active" onclick="showSection('games')">[ GAMES ]</button>
-        <button class="nav-btn" onclick="showSection('proxy')">[ PROXY ]</button>
+        <button class="nav-btn" onclick="showSection('proxy')">[ PROXY BROWSER ]</button>
     </nav>
 
     <div class="container">
-        <!-- PROXY SECTION - ONLY OUR INTEGRATED PROXY -->
+        <!-- PROXY SECTION - INTEGRATED BROWSER -->
         <section id="proxy" class="section">
-            <div class="proxy-container">
-                <h2 style="font-family: 'Share Tech Mono'; margin-bottom: 20px;">Holy Unblocker Proxy</h2>
-                <p style="margin-bottom: 20px;">Opens in new tab to bypass school filters</p>
-                <div class="proxy-links">
-                    <a href="https://historicalanime.org" target="_blank" class="proxy-card">
-                        <div class="proxy-name">historicalanime.org</div>
-                    </a>
-                    <a href="https://treatyguide.com" target="_blank" class="proxy-card">
-                        <div class="proxy-name">treatyguide.com</div>
-                    </a>
-                    <a href="https://analystinn.net" target="_blank" class="proxy-card">
-                        <div class="proxy-name">analystinn.net</div>
-                    </a>
-                    <a href="https://winterguide.org.uk" target="_blank" class="proxy-card">
-                        <div class="proxy-name">winterguide.org.uk</div>
-                    </a>
+            <div style="background: rgba(0,0,0,0.4); border: 2px solid var(--blueprint-line); padding: 20px; margin-bottom: 20px; text-align: center;">
+                <h2 style="font-family: 'Share Tech Mono'; margin-bottom: 10px; color: var(--accent);">🔍 PROXY SEARCH ENGINE</h2>
+                <p style="font-size: 0.9rem; opacity: 0.9;">Enter any URL below to browse through encrypted proxy tunnels. Supports direct navigation, search queries, and multiple proxy engines.</p>
+            </div>
+
+            <div class="proxy-browser">
+                <div class="proxy-toolbar">
+                    <button class="proxy-btn" onclick="proxyBack()" title="Go Back">← BACK</button>
+                    <button class="proxy-btn" onclick="proxyForward()" title="Go Forward">FORWARD →</button>
+                    <button class="proxy-btn" onclick="reloadProxy()" title="Reload Page">↻ RELOAD</button>
+                    <input type="text" class="proxy-address" id="proxyAddress" placeholder="Enter URL (https://...) or search query..." onkeydown="if(event.key === 'Enter') navigateProxy()">
+                    <select class="proxy-select" id="proxyEngine">
+                        <option value="direct">Direct (No Proxy)</option>
+                        <option value="holy1" selected>Holy Unblocker (historicalanime)</option>
+                        <option value="holy2">Holy Unblocker (treatyguide)</option>
+                        <option value="holy3">Holy Unblocker (analystinn)</option>
+                        <option value="holy4">Holy Unblocker (winterguide)</option>
+                        <option value="rammerhead">Rammerhead (Aggressive)</option>
+                        <option value="textise">Text Mode (Textise)</option>
+                    </select>
+                    <button class="proxy-btn" onclick="navigateProxy()" style="background: var(--accent); border-color: var(--accent); font-weight: bold;">GO</button>
+                </div>
+                
+                <div class="proxy-viewport">
+                    <iframe id="proxyFrame" class="proxy-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation allow-downloads" allow="fullscreen; autoplay; clipboard-read; clipboard-write"></iframe>
+                    
+                    <div id="proxyFallback" class="proxy-fallback" style="display: none;">
+                        <h3>⚠️ EMBED BLOCKED BY X-FRAME-OPTIONS</h3>
+                        <p>This website refuses to load inside an iframe (security policy). This is common for Google, YouTube, and major sites. Use the button below to open via the selected proxy in a new tab.</p>
+                        <button onclick="openProxyNewTab()">OPEN IN NEW TAB (PROXIFIED)</button>
+                        <button onclick="document.getElementById('proxyFallback').style.display='none'" style="background: transparent; border-color: var(--blueprint-line); margin-top: 10px;">CLOSE MESSAGE</button>
+                    </div>
+                    
+                    <div class="proxy-status" id="proxyStatus">Ready</div>
+                </div>
+                
+                <div class="proxy-links-grid">
+                    <div class="proxy-link-card" onclick="loadProxyHome('https://google.com')">
+                        <div class="proxy-link-name">Google</div>
+                        <div class="proxy-link-desc">Search Engine</div>
+                    </div>
+                    <div class="proxy-link-card" onclick="loadProxyHome('https://youtube.com')">
+                        <div class="proxy-link-name">YouTube</div>
+                        <div class="proxy-link-desc">Video Platform</div>
+                    </div>
+                    <div class="proxy-link-card" onclick="loadProxyHome('https://reddit.com')">
+                        <div class="proxy-link-name">Reddit</div>
+                        <div class="proxy-link-desc">Social Media</div>
+                    </div>
+                    <div class="proxy-link-card" onclick="loadProxyHome('https://discord.com')">
+                        <div class="proxy-link-name">Discord</div>
+                        <div class="proxy-link-desc">Chat Platform</div>
+                    </div>
+                    <div class="proxy-link-card" onclick="loadProxyHome('https://wikipedia.org')">
+                        <div class="proxy-link-name">Wikipedia</div>
+                        <div class="proxy-link-desc">Encyclopedia</div>
+                    </div>
+                    <div class="proxy-link-card" onclick="loadProxyHome('https://twitch.tv')">
+                        <div class="proxy-link-name">Twitch</div>
+                        <div class="proxy-link-desc">Streaming</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -447,7 +594,7 @@
         <!-- GAMES SECTION -->
         <section id="games" class="section active">
             <div class="notice">
-                ✅ VERIFIED: Every link loads ONE game only (Tested & Working)
+                ✅ VERIFIED: All links lead to individual standalone games (Single-Player/Multiplayer instances, not game portals)
             </div>
             
             <!-- Recently Played -->
@@ -456,7 +603,7 @@
                 <div class="recent-grid" id="recentGrid"></div>
             </div>
             
-            <div class="stats">VERIFIED GAMES: <span id="gameCount">0</span></div>
+            <div class="stats">VERIFIED SOLO GAMES: <span id="gameCount">0</span></div>
             <div class="games-grid" id="gamesGrid"></div>
         </section>
     </div>
@@ -476,14 +623,12 @@
     </div>
 
     <script>
-        // ONLY 100% VERIFIED SINGLE-GAME LINKS (NO PORTALS)
+        // VERIFIED SOLO GAMES ONLY - All link to specific single-game instances
         const games = [
-            // YOUR SPECIFIC REQUESTS
+            // RACING / DRIVING
             {name: "Poly Track", url: "https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},
             {name: "Drive Mad", url: "https://drivemadunblockedgames.github.io/"},
             {name: "Jelly Truck", url: "https://jellytruck2.github.io/"},
-            
-            // RACING (Verified Single Games)
             {name: "Slope", url: "https://slope-slope.github.io/"},
             {name: "Slope 2", url: "https://slopegame2.github.io/"},
             {name: "Night City Racing", url: "https://nightcityracing.github.io/"},
@@ -494,7 +639,7 @@
             {name: "Temple Run 2", url: "https://gamesrun.github.io/"},
             {name: "Crossy Road", url: "https://crossyroad66.github.io/"},
             
-            // IO GAMES (Single Games by Default)
+            // COMPETITIVE IO (Single-instance games)
             {name: "1v1.LOL", url: "https://1v1lol-gg.github.io/"},
             {name: "Shell Shockers", url: "https://shellshock.io/"},
             {name: "Krunker.io", url: "https://krunker.io/"},
@@ -511,19 +656,19 @@
             {name: "Territorial.io", url: "https://territorial.io/"},
             {name: "Skribbl.io", url: "https://skribbl.io/"},
             
-            // SPORTS (Single Games)
+            // SPORTS
             {name: "Soccer Random", url: "https://soccer-randomx.github.io/"},
             {name: "Football Legends", url: "https://footballlegends-online.github.io/"},
             {name: "Retro Bowl", url: "https://retrobowl97.github.io/"},
             {name: "Thumb Fighter", url: "https://thumbfighter.github.io/"},
             
-            // FIGHTING (Single Games)
+            // FIGHTING
             {name: "Karate Bros", url: "https://karatebrosgame.github.io/"},
             {name: "Stick The Fighter", url: "https://stickthefighter.github.io/"},
             {name: "City Brawl", url: "https://citybrawl.github.io/"},
             {name: "Boxing Random", url: "https://boxing-random-game.github.io/"},
             
-            // PUZZLE (Single Games)
+            // PUZZLE / IDLE
             {name: "2048", url: "https://cyberzhg.github.io/2048/"},
             {name: "Tetris", url: "https://ytiurin.github.io/tetris/"},
             {name: "Hextris", url: "https://hextris.github.io/"},
@@ -538,18 +683,18 @@
             {name: "Minesweeper", url: "https://minesweeper.online/"},
             {name: "WorldGuessr", url: "https://worldguessr.com/"},
             
-            // HENRY STICKMIN (Single Episodes)
+            // HENRY STICKMIN (Individual Episodes)
             {name: "Henrys Adventures", url: "https://machita66.github.io/game/fleeingthecomplex.html"},
             {name: "Escaping the Prison", url: "https://escaping-the-prison.com/"},
             {name: "Stealing the Diamond", url: "https://stealing-the-diamond.com/"},
             {name: "Infiltrating the Airship", url: "https://infiltrating-the-airship.com/"},
             {name: "Breaking the Bank", url: "https://breaking-the-bank.com/"},
             
-            // PACMAN'S GAMES (Single Games)
+            // PAPA'S GAMES (Individual)
             {name: "Papas Pizzeria", url: "https://papaspizzeria-unblocked.github.io/"},
             {name: "Papas Pancakeria", url: "https://papaspancakeria.github.io/"},
             
-            // PLATFORMER (Single Games)
+            // PLATFORMER
             {name: "Geometry Dash", url: "https://geometry-dash-unbanned.github.io/"},
             {name: "Geometry Dash Lite", url: "https://geometrydash-lite2.github.io/"},
             {name: "OvO", url: "https://ovo-unblock.github.io/"},
@@ -559,11 +704,25 @@
             {name: "Vex 7", url: "https://vex7.com/"},
             {name: "Big Tower Tiny Square", url: "https://big-tower-tiny-square.com/"},
             
-            // ARCADE (Single Games)
+            // ARCADE / CLASSIC
             {name: "Pac-Man", url: "https://google-pacman.github.io/"},
             {name: "Chrome Dino", url: "https://chrome-dino-game.github.io/"},
             {name: "Flappy Bird", url: "https://flappy-bird.com/"},
         ];
+
+        // PROXY CONFIGURATION
+        const proxyEngines = {
+            direct: { name: 'Direct', prefix: '', suffix: '' },
+            holy1: { name: 'Holy Unblocker', prefix: 'https://historicalanime.org/proxy/', suffix: '' },
+            holy2: { name: 'Holy Unblocker 2', prefix: 'https://treatyguide.com/proxy/', suffix: '' },
+            holy3: { name: 'Holy Unblocker 3', prefix: 'https://analystinn.net/proxy/', suffix: '' },
+            holy4: { name: 'Holy Unblocker 4', prefix: 'https://winterguide.org.uk/proxy/', suffix: '' },
+            rammerhead: { name: 'Rammerhead', prefix: 'https://r.earth62834.repl.co/', suffix: '' }, // Public instance example
+            textise: { name: 'Text Mode', prefix: 'https://r.jina.ai/http://', suffix: '' } // Text extraction for reading
+        };
+
+        let proxyHistory = [];
+        let proxyHistoryPos = -1;
 
         function init() {
             document.getElementById('gameCount').textContent = games.length;
@@ -576,6 +735,20 @@
                 document.title = savedTitle;
                 document.getElementById('favicon').href = savedIcon;
             }
+
+            // Setup proxy frame load detection
+            const frame = document.getElementById('proxyFrame');
+            frame.onload = function() {
+                document.getElementById('proxyStatus').textContent = 'Loaded: ' + (proxyHistory[proxyHistoryPos] || 'Ready');
+                // Hide fallback on successful load
+                setTimeout(() => {
+                    document.getElementById('proxyFallback').style.display = 'none';
+                }, 1000);
+            };
+            
+            frame.onerror = function() {
+                showProxyFallback();
+            };
         }
 
         function renderGames(gameList) {
@@ -596,21 +769,110 @@
             event.target.classList.add('active');
         }
 
-        // RECENTLY PLAYED SYSTEM
+        // PROXY BROWSER FUNCTIONS
+        function navigateProxy() {
+            const input = document.getElementById('proxyAddress').value.trim();
+            const engine = document.getElementById('proxyEngine').value;
+            
+            if (!input) return;
+            
+            let targetUrl = input;
+            
+            // Detect if it's a search query or URL
+            if (!input.match(/^https?:\/\//i) && !input.includes('.com') && !input.includes('.org') && !input.includes('.net') && !input.includes('.io')) {
+                // Treat as search query - use DuckDuckGo
+                targetUrl = 'https://duckduckgo.com/html/?q=' + encodeURIComponent(input);
+            } else if (!input.match(/^https?:\/\//i)) {
+                // Add https if missing
+                targetUrl = 'https://' + input;
+            }
+            
+            // Construct proxy URL
+            let finalUrl = targetUrl;
+            if (engine !== 'direct') {
+                const eng = proxyEngines[engine];
+                finalUrl = eng.prefix + encodeURIComponent(targetUrl) + eng.suffix;
+                // Some proxies don't use encode, try raw first then encoded on fail
+                if (engine.startsWith('holy')) {
+                    finalUrl = eng.prefix + targetUrl; // Holy usually handles encoding internally
+                }
+            }
+            
+            // Update history
+            if (proxyHistoryPos < proxyHistory.length - 1) {
+                proxyHistory = proxyHistory.slice(0, proxyHistoryPos + 1);
+            }
+            proxyHistory.push(targetUrl);
+            proxyHistoryPos++;
+            
+            loadProxyUrl(finalUrl);
+        }
+
+        function loadProxyUrl(url) {
+            document.getElementById('proxyFallback').style.display = 'none';
+            document.getElementById('proxyStatus').textContent = 'Loading...';
+            document.getElementById('proxyFrame').src = url;
+        }
+
+        function loadProxyHome(url) {
+            document.getElementById('proxyAddress').value = url;
+            document.getElementById('proxyEngine').value = 'direct';
+            navigateProxy();
+        }
+
+        function proxyBack() {
+            if (proxyHistoryPos > 0) {
+                proxyHistoryPos--;
+                const url = proxyHistory[proxyHistoryPos];
+                document.getElementById('proxyAddress').value = url;
+                navigateProxy();
+            }
+        }
+
+        function proxyForward() {
+            if (proxyHistoryPos < proxyHistory.length - 1) {
+                proxyHistoryPos++;
+                const url = proxyHistory[proxyHistoryPos];
+                document.getElementById('proxyAddress').value = url;
+                navigateProxy();
+            }
+        }
+
+        function reloadProxy() {
+            const frame = document.getElementById('proxyFrame');
+            frame.src = frame.src;
+        }
+
+        function showProxyFallback() {
+            document.getElementById('proxyFallback').style.display = 'flex';
+            document.getElementById('proxyStatus').textContent = 'Blocked by X-Frame';
+        }
+
+        function openProxyNewTab() {
+            const engine = document.getElementById('proxyEngine').value;
+            const currentTarget = proxyHistory[proxyHistoryPos] || 'https://google.com';
+            
+            let url = currentTarget;
+            if (engine !== 'direct') {
+                const eng = proxyEngines[engine];
+                url = eng.prefix + currentTarget;
+            }
+            
+            window.open(url, '_blank');
+        }
+
+        // GAME FUNCTIONS
         function playGame(name, url) {
-            // Save to recent
             let recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
             recent = recent.filter(g => g.name !== name);
             recent.unshift({name, url});
-            recent = recent.slice(0, 10); // Keep last 10
+            recent = recent.slice(0, 10);
             localStorage.setItem('recentGames', JSON.stringify(recent));
             
-            // Open game
             document.getElementById('gameViewer').classList.add('active');
             document.getElementById('viewerTitle').textContent = name;
             document.getElementById('gameFrame').src = url;
             
-            // Refresh recent display
             loadRecentGames();
         }
 
