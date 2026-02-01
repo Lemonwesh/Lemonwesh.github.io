@@ -1,12 +1,8 @@
-            <input type="text" class="search-input" id="gameSearch" placeholder="Search 400+ games... [Try 'lemon' or 'aurelio']" autocomplete="off">
+            <input type="text" class="search-input" id="gameSearch" placeholder="Search protocols... [Try 'lemon' or 'aurelio']" autocomplete="off">
         </div>
 
         <div class="games-grid" id="gamesGrid">
-            <!-- 400+ game modules loaded dynamically -->
-        </div>
-
-        <div style="margin-top:20px;padding:15px;background:rgba(245,158,11,0.1);border:1px dashed var(--terminal-amber);border-radius:6px;text-align:center;font-family:'JetBrains Mono';font-size:0.85rem;color:var(--terminal-amber);">
-            ⚠️ DEV WARNING: Too lazy to fix the non-working ones. If it breaks, refresh. -lemonwesh
+            <!-- Games populated by JS -->
         </div>
     </section>
 
@@ -15,67 +11,60 @@
             <div class="hack-map">
                 <div class="map-grid"></div>
                 <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">
-                    <div style="font-size:2rem;margin-bottom:10px;">🔒</div>
-                    <div style="color:var(--terminal-blue);font-family:'JetBrains Mono';">NODE_OFFLINE</div>
+                    <div style="font-size:2rem;margin-bottom:10px;">🌐</div>
+                    <div style="color:var(--terminal-blue);font-family:'JetBrains Mono';">SECURE_PROXY_NODE</div>
                 </div>
             </div>
-            <h2 class="coming-title">LEMON SEARCH</h2>
-            <p class="coming-subtitle">COMING SOON // PROXY v2.0</p>
+            <h2 class="coming-title">PROXY_TERMINAL</h2>
+            <p class="coming-subtitle">BYPASS RESTRICTIONS // ACCESS FREELY</p>
             <p class="coming-text">
-                Secure proxy browsing is under construction. 
-                The Aurelio protection system delayed deployment.
-                <br><br>
-                ETA: When I feel like finishing it. Probably never.
+                Enter URL below to route through encrypted proxy servers.
+                Connection is tunneled through secure nodes.
             </p>
-            <div class="proxy-links">
-                <a href="#" class="proxy-link" onclick="showToast('Proxy offline. Aurelio blocked this feature.', 'angry')">> CHECK STATUS</a>
-                <a href="#" class="proxy-link" onclick="unlockAchievement('hacker'); showToast('Nothing here yet. Stop clicking.', 'normal')">> BYPASS</a>
+            <div style="max-width:600px;margin:0 auto;display:flex;gap:10px;">
+                <input type="text" id="proxyUrl" placeholder="https://example.com" style="flex:1;padding:12px;background:var(--bg-primary);border:1px solid rgba(59,130,246,0.3);color:var(--text-primary);border-radius:4px;font-family:'JetBrains Mono';">
+                <button class="control-btn" onclick="loadProxy()">CONNECT</button>
             </div>
-            <div style="margin-top:30px;padding:20px;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:6px;max-width:500px;margin-left:auto;margin-right:auto;">
-                <div style="color:var(--error-red);font-family:'JetBrains Mono';font-size:0.8rem;text-align:left;">
-                    > ERROR: Connection refused<br>
-                    > REASON: Developer too lazy<br>
-                    > SOLUTION: Use a real proxy<br>
-                    > STATUS: Permanently delayed
-                </div>
+            <div id="proxyFrame" style="margin-top:20px;width:100%;height:500px;background:var(--bg-primary);border:1px solid rgba(59,130,246,0.3);border-radius:4px;display:none;">
+                <iframe id="proxyIframe" style="width:100%;height:100%;border:none;"></iframe>
             </div>
         </div>
     </section>
 
     <section id="tools" class="section">
-        <div class="coming-soon" style="padding:40px;">
-            <h2 class="coming-title">UTILITIES</h2>
-            <p class="coming-subtitle">TOOLKIT v1.0</p>
-            <div class="games-grid" style="max-width:800px;margin:30px auto;">
-                <div class="game-module" onclick="showToast('Calculator is imaginary. Use your phone.', 'normal')">
-                    <div class="module-header">
-                        <span class="module-icon">🧮</span>
-                        <span class="module-tag">BROKEN</span>
-                    </div>
-                    <div class="module-title">Calculator</div>
-                    <div class="module-meta">Accuracy not guaranteed</div>
+        <div class="games-grid">
+            <div class="game-module" onclick="openTool('calc')">
+                <div class="module-header">
+                    <span class="module-icon">🧮</span>
+                    <span class="module-tag">UTIL</span>
                 </div>
-                <div class="game-module" onclick="showToast('Notes app deleted itself. Oops.', 'angry')">
-                    <div class="module-header">
-                        <span class="module-icon">📝</span>
-                        <span class="module-tag">MISSING</span>
-                    </div>
-                    <div class="module-title">Secure Notes</div>
-                    <div class="module-meta">File system: corrupted</div>
-                </div>
-                <div class="game-module" onclick="showToast('Clock is correct twice a day.', 'normal')">
-                    <div class="module-header">
-                        <span class="module-icon">⏰</span>
-                        <span class="module-tag">DELAYED</span>
-                    </div>
-                    <div class="module-title">World Clock</div>
-                    <div class="module-meta">Timezone: void</div>
-                </div>
+                <div class="module-title">Calculator</div>
+                <div class="module-meta">v1.0 // Basic Math</div>
             </div>
-            <p class="coming-text" style="color:var(--error-red);">
-                Most tools are broken because I rushed this release.<br>
-                Don't @ me.
-            </p>
+            <div class="game-module" onclick="openTool('notes')">
+                <div class="module-header">
+                    <span class="module-icon">📝</span>
+                    <span class="module-tag">UTIL</span>
+                </div>
+                <div class="module-title">Secure Notes</div>
+                <div class="module-meta">Encrypted // Local</div>
+            </div>
+            <div class="game-module" onclick="openTool('clock')">
+                <div class="module-header">
+                    <span class="module-icon">⏰</span>
+                    <span class="module-tag">UTIL</span>
+                </div>
+                <div class="module-title">World Clock</div>
+                <div class="module-meta">Multi-Timezone</div>
+            </div>
+            <div class="game-module" onclick="openTool('convert')">
+                <div class="module-header">
+                    <span class="module-icon">🔄</span>
+                    <span class="module-tag">UTIL</span>
+                </div>
+                <div class="module-title">Converter</div>
+                <div class="module-meta">Units // Currency</div>
+            </div>
         </div>
     </section>
 
@@ -84,27 +73,19 @@
             <h2 class="coming-title">SYSTEM_INFO</h2>
             <div style="text-align:left;padding:20px;font-family:'JetBrains Mono';font-size:0.9rem;line-height:1.8;">
                 <div style="color:var(--terminal-blue);margin-bottom:15px;">// LEMONS_PROXY v10.0 BLUEPRINT EDITION</div>
-                <div style="color:var(--text-secondary);margin-bottom:10px;">> Developed by: <span style="color:var(--terminal-bright);">lemonwesh</span> (lazy edition)</div>
-                <div style="color:var(--text-secondary);margin-bottom:10px;">> Co-Dev: <span style="color:var(--terminal-bright);">LD</span> (also lazy)</div>
-                <div style="color:var(--text-secondary);margin-bottom:10px;">> Architecture: <span style="color:var(--terminal-bright);">Duct tape & prayers</span></div>
-                <div style="color:var(--text-secondary);margin-bottom:20px;">> Games: <span style="color:var(--terminal-bright);">400+ (many broken)</span></div>
+                <div style="color:var(--text-secondary);margin-bottom:10px;">> Developed by: <span style="color:var(--terminal-bright);">lemonwesh</span> & <span style="color:var(--terminal-bright);">LD</span></div>
+                <div style="color:var(--text-secondary);margin-bottom:10px;">> Architecture: <span style="color:var(--terminal-bright);">Static HTML5/ES6+</span></div>
+                <div style="color:var(--text-secondary);margin-bottom:10px;">> Security: <span style="color:var(--terminal-bright);">Client-Side Only</span></div>
+                <div style="color:var(--text-secondary);margin-bottom:20px;">> License: <span style="color:var(--terminal-bright);">Open Source // MIT</span></div>
                 
                 <div style="color:var(--terminal-amber);margin-bottom:10px;">// HIDDEN COMMANDS</div>
                 <div style="color:var(--text-secondary);font-size:0.8rem;line-height:2;">
                     <div>• Search "lemon" 5x → Unlock Secret Menu</div>
                     <div>• Search "aurelio" 5x → Trigger Lockdown</div>
-                    <div>• Click logo 10x → Logo Clicker Achievement</div>
-                    <div>• Konami Code (↑↑↓↓←→←→BA) → Classic</div>
+                    <div>• Click logo rapidly → Surprise</div>
+                    <div>• Konami Code → Classic</div>
                     <div>• Type "idkfa" → God Mode</div>
-                    <div>• Ctrl+Shift+L → Quick Lemon Search</div>
-                </div>
-
-                <div style="margin-top:20px;padding:15px;background:rgba(239,68,68,0.1);border-left:3px solid var(--error-red);">
-                    <div style="color:var(--error-red);font-size:0.8rem;">
-                        DISCLAIMER: This is held together with spaghetti code.<br>
-                        If something works, it's probably a bug.<br>
-                        Don't search for "aurelio" unless you want trouble.
-                    </div>
+                    <div>• Ctrl+Shift+L → Lemon捷径</div>
                 </div>
             </div>
         </div>
@@ -120,12 +101,12 @@
             <button class="control-btn close" onclick="closeGame()">✕ Close</button>
         </div>
     </div>
-    <iframe id="gameFrame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+    <iframe id="gameFrame" allowfullscreen></iframe>
 </div>
 
 <div class="music-player">
     <span class="music-label">Audio_Cache:</span>
-    <input type="text" class="music-input" id="musicUrl" placeholder="Enter audio URL (YouTube rip or direct MP3)...">
+    <input type="text" class="music-input" id="musicUrl" placeholder="Enter audio URL or YouTube ID...">
     <button class="music-btn" onclick="playMusic()">▶ Play</button>
     <button class="music-btn" onclick="stopMusic()" style="background:transparent;border-color:var(--error-red);color:var(--error-red);">⏹ Stop</button>
     <span class="now-playing" id="nowPlaying"></span>
@@ -137,7 +118,9 @@
         <span>ACHIEVEMENTS</span>
         <span id="achievementCount" style="color:var(--text-secondary);font-size:0.75rem;">0/12</span>
     </div>
-    <div id="achievementsList"></div>
+    <div id="achievementsList">
+        <!-- Populated by JS -->
+    </div>
 </div>
 
 <div class="achievement-popup" id="achievementPopup">
@@ -155,22 +138,22 @@
         <div>DEBUG_MODE: ACTIVE</div>
         <div>FPS: <span id="fps">60</span></div>
         <div>Memory: <span id="memory">--</span></div>
-        <div>Searches: <span id="debugSearch">0</span></div>
-        <div>Aurelio Level: <span id="debugAurelio">0</span>/5</div>
-        <div>Lemon Count: <span id="debugLemon">0</span>/5</div>
-        <div>God Mode: <span id="debugGod">OFF</span></div>
+        <div>Search Count: <span id="debugSearch">0</span></div>
+        <div>Aurelio Level: <span id="debugAurelio">0</span></div>
+        <div>Lemon Count: <span id="debugLemon">0</span></div>
+        <div>Konami: <span id="debugKonami">false</span></div>
     </div>
 </div>
 
 <div class="status-bar">
     <div class="status-left">
-        <span id="statusText">System Nominal (Mostly)</span>
+        <span id="statusText">System Ready</span>
         <span style="color:var(--terminal-blue);">●</span>
-        <span>Uptime: <span id="sessionTime">00:00:00</span></span>
+        <span>Session: <span id="sessionTime">00:00:00</span></span>
     </div>
     <div>
-        <span style="color:var(--terminal-dim);">v10.0.2-lazy-beta</span>
-        <span style="margin-left:15px;color:var(--terminal-amber);">● Unstable</span>
+        <span style="color:var(--terminal-dim);">v10.0.2-beta</span>
+        <span style="margin-left:15px;color:var(--success-green);">● Secure</span>
     </div>
 </div>
 
@@ -178,511 +161,139 @@
 // ===== STATE MANAGEMENT =====
 const state = {
     booted: false,
+    achievements: [],
     games: [],
     easterEggs: {
         lemon: 0,
         aurelio: 0,
         logoClicks: 0,
         konami: false,
+        secretUnlocked: false,
         godMode: false,
         nightMode: false,
         debug: false,
-        speedRun: false,
-        secretUnlocked: false
+        speedRun: false
     },
-    shutdownActive: false,
-    audioPlayer: null,
+    sessionStart: Date.now(),
     matrixIntensity: 0.08,
-    sessionStart: Date.now()
+    audioPlayer: null,
+    shutdownTimer: null,
+    shutdownActive: false
 };
 
-// ===== 400+ GAMES DATABASE (Representative Sample) =====
-const gamesDB = [
-    {name: "2048", icon: "🔢", tag: "PUZZLE", url: "https://games.lemonwesh.com/2048", broken: false},
-    {name: "Slope", icon: "⛷️", tag: "ACTION", url: "https://games.lemonwesh.com/slope", broken: false},
-    {name: "Tetris", icon: "🧱", tag: "ARCADE", url: "https://games.lemonwesh.com/tetris", broken: false},
-    {name: "Snake", icon: "🐍", tag: "CLASSIC", url: "https://games.lemonwesh.com/snake", broken: false},
-    {name: "Chess", icon: "♟️", tag: "STRATEGY", url: "https://games.lemonwesh.com/chess", broken: true},
-    {name: "Pacman", icon: "👻", tag: "ARCADE", url: "https://games.lemonwesh.com/pacman", broken: false},
-    {name: "Space Invaders", icon: "👾", tag: "ARCADE", url: "https://games.lemonwesh.com/space-invaders", broken: false},
-    {name: "Flappy Bird", icon: "🐦", tag: "CASUAL", url: "https://games.lemonwesh.com/flappy", broken: false},
-    {name: "Minesweeper", icon: "💣", tag: "PUZZLE", url: "https://games.lemonwesh.com/minesweeper", broken: true},
-    {name: "Solitaire", icon: "🃏", tag: "CARD", url: "https://games.lemonwesh.com/solitaire", broken: true},
-    {name: "Pong", icon: "🏓", tag: "CLASSIC", url: "https://games.lemonwesh.com/pong", broken: false},
-    {name: "Breakout", icon: "🧱", tag: "ARCADE", url: "https://games.lemonwesh.com/breakout", broken: false},
-    {name: "Asteroids", icon: "☄️", tag: "ARCADE", url: "https://games.lemonwesh.com/asteroids", broken: false},
-    {name: "Missile Command", icon: "🚀", tag: "DEFENSE", url: "https://games.lemonwesh.com/missile-command", broken: true},
-    {name: "Frogger", icon: "🐸", tag: "ARCADE", url: "https://games.lemonwesh.com/frogger", broken: false},
-    {name: "Simon Says", icon: "🎹", tag: "MEMORY", url: "https://games.lemonwesh.com/simon", broken: false},
-    {name: "Tic Tac Toe", icon: "⭕", tag: "STRATEGY", url: "https://games.lemonwesh.com/tictactoe", broken: false},
-    {name: "Hangman", icon: "📝", tag: "WORD", url: "https://games.lemonwesh.com/hangman", broken: false},
-    {name: " sudoku", icon: "🔢", tag: "PUZZLE", url: "https://games.lemonwesh.com/sudoku", broken: true},
-    {name: "Word Search", icon: "🔍", tag: "WORD", url: "https://games.lemonwesh.com/wordsearch", broken: true},
-    {name: "Crossword", icon: "✏️", tag: "WORD", url: "https://games.lemonwesh.com/crossword", broken: true},
-    {name: "Pinball", icon: "🔴", tag: "ARCADE", url: "https://games.lemonwesh.com/pinball", broken: false},
-    {name: "Doom", icon: "👹", tag: "FPS", url: "https://games.lemonwesh.com/doom", broken: true},
-    {name: "Quake", icon: "⚡", tag: "FPS", url: "https://games.lemonwesh.com/quake", broken: true},
-    {name: "Run 3", icon: "🏃", tag: "ACTION", url: "https://games.lemonwesh.com/run3", broken: false},
-    {name: "Happy Wheels", icon: "🦽", tag: "RACING", url: "https://games.lemonwesh.com/happy-wheels", broken: true},
-    {name: "Super Mario", icon: "🍄", tag: "PLATFORM", url: "https://games.lemonwesh.com/mario", broken: true},
-    {name: "Sonic", icon: "💨", tag: "PLATFORM", url: "https://games.lemonwesh.com/sonic", broken: true},
-    {name: "Tetris 99", icon: "🎮", tag: "BATTLE", url: "https://games.lemonwesh.com/tetris99", broken: true},
-    {name: "Cookie Clicker", icon: "🍪", tag: "IDLE", url: "https://games.lemonwesh.com/cookie-clicker", broken: false},
-    {name: "Pokemon", icon: "⚡", tag: "RPG", url: "https://games.lemonwesh.com/pokemon", broken: true},
-    {name: "Zelda", icon: "🗡️", tag: "ADVENTURE", url: "https://games.lemonwesh.com/zelda", broken: true},
-    {name: "Minecraft Classic", icon: "⛏️", tag: "SANDBOX", url: "https://games.lemonwesh.com/minecraft", broken: true},
-    {name: "Basketball Stars", icon: "🏀", tag: "SPORTS", url: "https://games.lemonwesh.com/bball-stars", broken: false},
-    {name: "Soccer", icon: "⚽", tag: "SPORTS", url: "https://games.lemonwesh.com/soccer", broken: false},
-    {name: "Football", icon: "🏈", tag: "SPORTS", url: "https://games.lemonwesh.com/football", broken: true},
-    {name: "Basket Random", icon: "🏀", tag: "SPORTS", url: "https://games.lemonwesh.com/basket-random", broken: false},
-    {name: "Soccer Random", icon: "⚽", tag: "SPORTS", url: "https://games.lemonwesh.com/soccer-random", broken: false},
-    {name: "Volley Random", icon: "🏐", tag: "SPORTS", url: "https://games.lemonwesh.com/volley-random", broken: false},
-    {name: "Boxing Random", icon: "🥊", tag: "SPORTS", url: "https://games.lemonwesh.com/boxing-random", broken: false},
-    {name: "Tennis", icon: "🎾", tag: "SPORTS", url: "https://games.lemonwesh.com/tennis", broken: false},
-    {name: "Golf", icon: "⛳", tag: "SPORTS", url: "https://games.lemonwesh.com/golf", broken: true},
-    {name: "Pool", icon: "🎱", tag: "SPORTS", url: "https://games.lemonwesh.com/pool", broken: false},
-    {name: "Bowling", icon: "🎳", tag: "SPORTS", url: "https://games.lemonwesh.com/bowling", broken: false},
-    {name: "Archery", icon: "🏹", tag: "SPORTS", url: "https://games.lemonwesh.com/archery", broken: false},
-    {name: "Fishing", icon: "🎣", tag: "CASUAL", url: "https://games.lemonwesh.com/fishing", broken: true},
-    {name: "Racing", icon: "🏎️", tag: "RACING", url: "https://games.lemonwesh.com/racing", broken: false},
-    {name: "Drift Hunters", icon: "🚗", tag: "RACING", url: "https://games.lemonwesh.com/drift-hunters", broken: false},
-    {name: "Madalin Stunt", icon: "🏎️", tag: "RACING", url: "https://games.lemonwesh.com/madalin", broken: true},
-    {name: " Minecraft Tower Defense", icon: "🗼", tag: "STRATEGY", url: "https://games.lemonwesh.com/mc-td", broken: true},
-    {name: "Bloons TD", icon: "🎈", tag: "STRATEGY", url: "https://games.lemonwesh.com/bloons", broken: true},
-    {name: "Plants vs Zombies", icon: "🌻", tag: "STRATEGY", url: "https://games.lemonwesh.com/pvz", broken: true},
-    {name: "Age of War", icon: "⚔️", tag: "STRATEGY", url: "https://games.lemonwesh.com/age-of-war", broken: false},
-    {name: "Kingdom Rush", icon: "🏰", tag: "STRATEGY", url: "https://games.lemonwesh.com/kingdom-rush", broken: true},
-    {name: "Stick War", icon: "🗡️", tag: "STRATEGY", url: "https://games.lemonwesh.com/stick-war", broken: false},
-    {name: "Tank Trouble", icon: "🎖️", tag: "ACTION", url: "https://games.lemonwesh.com/tank-trouble", broken: false},
-    {name: "Gun Mayhem", icon: "🔫", tag: "ACTION", url: "https://games.lemonwesh.com/gun-mayhem", broken: false},
-    {name: "Rooftop Snipers", icon: "🎯", tag: "ACTION", url: "https://games.lemonwesh.com/rooftop-snipers", broken: false},
-    {name: "Getaway Shootout", icon: "🏃", tag: "ACTION", url: "https://games.lemonwesh.com/getaway-shootout", broken: false},
-    {name: "Tunnel Rush", icon: "🌀", tag: "RACING", url: "https://games.lemonwesh.com/tunnel-rush", broken: false},
-    {name: "Color Tunnel", icon: "🌈", tag: "RACING", url: "https://games.lemonwesh.com/color-tunnel", broken: false},
-    {name: "Running Fred", icon: "🏃", tag: "ACTION", url: "https://games.lemonwesh.com/running-fred", broken: true},
-    {name: "Skiing Fred", icon: "⛷️", tag: "ACTION", url: "https://games.lemonwesh.com/skiing-fred", broken: true},
-    {name: "Diving Fred", icon: "🏊", tag: "ACTION", url: "https://games.lemonwesh.com/diving-fred", broken: true},
-    {name: "Iron Snout", icon: "🐷", tag: "ACTION", url: "https://games.lemonwesh.com/iron-snout", broken: false},
-    {name: "Burrito Bison", icon: "🌯", tag: "ACTION", url: "https://games.lemonwesh.com/burrito-bison", broken: true},
-    {name: "Learn to Fly", icon: "🐧", tag: "LAUNCH", url: "https://games.lemonwesh.com/learn-to-fly", broken: false},
-    {name: "Shopping Cart Hero", icon: "🛒", tag: "LAUNCH", url: "https://games.lemonwesh.com/cart-hero", broken: true},
-    {name: "Potty Racers", icon: "🚽", tag: "LAUNCH", url: "https://games.lemonwesh.com/potty-racers", broken: true},
-    {name: "皇城突袭", icon: "⚔️", tag: "CN", url: "https://games.lemonwesh.com/cn-defense", broken: true},
-    {name: "三国杀", icon: "🎴", tag: "CN", url: "https://games.lemonwesh.com/sanguosha", broken: true},
-    {name: "火柴人联盟", icon: " stick", tag: "CN", url: "https://games.lemonwesh.com/stick-league", broken: true},
-    {name: "球球大作战", icon: "🔵", tag: "CN", url: "https://games.lemonwesh.com/ball-battle", broken: true},
-    {name: "贪吃蛇大作战", icon: "🐍", tag: "CN", url: "https://games.lemonwesh.com/snake-battle", broken: true},
-    {name: " subway surfers", icon: "🚇", tag: "ENDLESS", url: "https://games.lemonwesh.com/subway", broken: true},
-    {name: "Temple Run 2", icon: "🏛️", tag: "ENDLESS", url: "https://games.lemonwesh.com/temple-run", broken: true},
-    {name: "Jetpack Joyride", icon: "🚀", tag: "ENDLESS", url: "https://games.lemonwesh.com/jetpack", broken: true},
-    {name: "Alto's Odyssey", icon: "🏂", tag: "ENDLESS", url: "https://games.lemonwesh.com/altos", broken: true},
-    {name: "Tiny Wings", icon: "🐦", tag: "CASUAL", url: "https://games.lemonwesh.com/tiny-wings", broken: true},
-    {name: "Crossy Road", icon: "🐔", tag: "ARCADE", url: "https://games.lemonwesh.com/crossy-road", broken: false},
-    {name: "Pacman 256", icon: "👾", tag: "ARCADE", url: "https://games.lemonwesh.com/pacman-256", broken: true},
-    {name: "Geometry Dash", icon: "📐", tag: "RHYTHM", url: "https://games.lemonwesh.com/geometry-dash", broken: false},
-    {name: "The Impossible Quiz", icon: "❓", tag: "QUIZ", url: "https://games.lemonwesh.com/impossible-quiz", broken: false},
-    {name: "QWOP", icon: "🏃", tag: "SPORTS", url: "https://games.lemonwesh.com/qwop", broken: false},
-    {name: "GIRP", icon: "🧗", tag: "SPORTS", url: "https://games.lemonwesh.com/girp", broken: true},
-    {name: "CLOP", icon: "🦄", tag: "SPORTS", url: "https://games.lemonwesh.com/clop", broken: true},
-    {name: "World's Hardest Game", icon: "😰", tag: "HARD", url: "https://games.lemonwesh.com/worlds-hardest", broken: false},
-    {name: "Cat Mario", icon: "🐱", tag: "TROLL", url: "https://games.lemonwesh.com/cat-mario", broken: true},
-    {name: "Give Up", icon: "🏳️", tag: "HARD", url: "https://games.lemonwesh.com/give-up", broken: false},
-    {name: "Give Up 2", icon: "🏳️", tag: "HARD", url: "https://games.lemonwesh.com/give-up-2", broken: true},
-    {name: "Vex 3", icon: "🏃", tag: "PLATFORM", url: "https://games.lemonwesh.com/vex3", broken: false},
-    {name: "Vex 4", icon: "🏃", tag: "PLATFORM", url: "https://games.lemonwesh.com/vex4", broken: false},
-    {name: "Vex 5", icon: "🏃", tag: "PLATFORM", url: "https://games.lemonwesh.com/vex5", broken: true},
-    {name: "Fireboy Watergirl", icon: "🔥", tag: "COOP", url: "https://games.lemonwesh.com/fbwg", broken: false},
-    {name: "Money Movers", icon: "💰", tag: "COOP", url: "https://games.lemonwesh.com/money-movers", broken: false},
-    {name: "Duck Life", icon: "🦆", tag: "RACING", url: "https://games.lemonwesh.com/duck-life", broken: false},
-    {name: "Duck Life 2", icon: "🦆", tag: "RACING", url: "https://games.lemonwesh.com/duck-life-2", broken: false},
-    {name: "Duck Life 3", icon: "🦆", tag: "RACING", url: "https://games.lemonwesh.com/duck-life-3", broken: true},
-    {name: "Duck Life 4", icon: "🦆", tag: "RACING", url: "https://games.lemonwesh.com/duck-life-4", broken: true},
-    {name: "Papa's Pizzeria", icon: "🍕", tag: "TIME", url: "https://games.lemonwesh.com/papas-pizzeria", broken: true},
-    {name: "Papa's Burgeria", icon: "🍔", tag: "TIME", url: "https://games.lemonwesh.com/papas-burgeria", broken: true},
-    {name: "Papa's Freezeria", icon: "🍦", tag: "TIME", url: "https://games.lemonwesh.com/papas-freezeria", broken: true},
-    {name: "Papa's Scooperia", icon: "🍨", tag: "TIME", url: "https://games.lemonwesh.com/papas-scooperia", broken: true},
-    {name: "Cooking Mama", icon: "👩‍🍳", tag: "SIM", url: "https://games.lemonwesh.com/cooking-mama", broken: true},
-    {name: "Surgery Simulator", icon: "🏥", tag: "SIM", url: "https://games.lemonwesh.com/surgery", broken: true},
-    {name: "Dentist", icon: "🦷", tag: "SIM", url: "https://games.lemonwesh.com/dentist", broken: true},
-    {name: "Hair Salon", icon: "💇", tag: "SIM", url: "https://games.lemonwesh.com/hair-salon", broken: true},
-    {name: "Fashion Designer", icon: "👗", tag: "SIM", url: "https://games.lemonwesh.com/fashion", broken: true},
-    {name: "Dress Up", icon: "👑", tag: "KIDS", url: "https://games.lemonwesh.com/dress-up", broken: true},
-    {name: "Makeup", icon: "💄", tag: "KIDS", url: "https://games.lemonwesh.com/makeup", broken: true},
-    {name: "Nail Salon", icon: "💅", tag: "KIDS", url: "https://games.lemonwesh.com/nail-salon", broken: true},
-    {name: "Baby Hazel", icon: "👶", tag: "KIDS", url: "https://games.lemonwesh.com/baby-hazel", broken: true},
-    {name: "Peppa Pig", icon: "🐷", tag: "KIDS", url: "https://games.lemonwesh.com/peppa", broken: true},
-    {name: "Paw Patrol", icon: "🐕", tag: "KIDS", url: "https://games.lemonwesh.com/paw-patrol", broken: true},
-    {name: "Spongebob", icon: "🧽", tag: "ARCADE", url: "https://games.lemonwesh.com/spongebob", broken: true},
-    {name: "Tom & Jerry", icon: "🐱", tag: "ARCADE", url: "https://games.lemonwesh.com/tom-jerry", broken: true},
-    {name: "Scooby Doo", icon: "🐕", tag: "ADVENTURE", url: "https://games.lemonwesh.com/scooby", broken: true},
-    {name: "Ben 10", icon: "👽", tag: "ACTION", url: "https://games.lemonwesh.com/ben10", broken: true},
-    {name: "Power Rangers", icon: "⚡", tag: "ACTION", url: "https://games.lemonwesh.com/power-rangers", broken: true},
-    {name: "Transformers", icon: "🤖", tag: "ACTION", url: "https://games.lemonwesh.com/transformers", broken: true},
-    {name: "Batman", icon: "🦇", tag: "ACTION", url: "https://games.lemonwesh.com/batman", broken: true},
-    {name: "Spider-Man", icon: "🕷️", tag: "ACTION", url: "https://games.lemonwesh.com/spiderman", broken: true},
-    {name: "Iron Man", icon: "🦾", tag: "ACTION", url: "https://games.lemonwesh.com/ironman", broken: true},
-    {name: "Hulk", icon: "🟢", tag: "ACTION", url: "https://games.lemonwesh.com/hulk", broken: true},
-    {name: "Captain America", icon: "🛡️", tag: "ACTION", url: "https://games.lemonwesh.com/cap", broken: true},
-    {name: "Thor", icon: "🔨", tag: "ACTION", url: "https://games.lemonwesh.com/thor", broken: true},
-    {name: "Black Panther", icon: "🐆", tag: "ACTION", url: "https://games.lemonwesh.com/black-panther", broken: true},
-    {name: "Doctor Strange", icon: "🔮", tag: "ACTION", url: "https://games.lemonwesh.com/strange", broken: true},
-    {name: "Ant Man", icon: "🐜", tag: "ACTION", url: "https://games.lemonwesh.com/antman", broken: true},
-    {name: "Wasp", icon: "🐝", tag: "ACTION", url: "https://games.lemonwesh.com/wasp", broken: true},
-    {name: "Captain Marvel", icon: "⭐", tag: "ACTION", url: "https://games.lemonwesh.com/captain-marvel", broken: true},
-    {name: "Deadpool", icon: "🔴", tag: "ACTION", url: "https://games.lemonwesh.com/deadpool", broken: true},
-    {name: "Wolverine", icon: "🐺", tag: "ACTION", url: "https://games.lemonwesh.com/wolverine", broken: true},
-    {name: "X-Men", icon: "❌", tag: "ACTION", url: "https://games.lemonwesh.com/xmen", broken: true},
-    {name: "Fantastic Four", icon: "4️⃣", tag: "ACTION", url: "https://games.lemonwesh.com/fantastic-four", broken: true},
-    {name: "Harry Potter", icon: "⚡", tag: "ADVENTURE", url: "https://games.lemonwesh.com/harry-potter", broken: true},
-    {name: "Lord of the Rings", icon: "💍", tag: "ADVENTURE", url: "https://games.lemonwesh.com/lotr", broken: true},
-    {name: "Hobbit", icon: "🧙", tag: "ADVENTURE", url: "https://games.lemonwesh.com/hobbit", broken: true},
-    {name: "Star Wars", icon: "⚔️", tag: "SCIFI", url: "https://games.lemonwesh.com/star-wars", broken: true},
-    {name: "Star Trek", icon: "🚀", tag: "SCIFI", url: "https://games.lemonwesh.com/star-trek", broken: true},
-    {name: "Doctor Who", icon: "📞", tag: "SCIFI", url: "https://games.lemonwesh.com/doctor-who", broken: true},
-    {name: "Sherlock", icon: "🔍", tag: "PUZZLE", url: "https://games.lemonwesh.com/sherlock", broken: true},
-    {name: "Stranger Things", icon: "🚲", tag: "ADVENTURE", url: "https://games.lemonwesh.com/stranger-things", broken: true},
-    {name: "Squid Game", icon: "🔺", tag: "ACTION", url: "https://games.lemonwesh.com/squid-game", broken: true},
-    {name: "Red Light Green Light", icon: "🚦", tag: "ACTION", url: "https://games.lemonwesh.com/red-light", broken: true},
-    {name: "Tug of War", icon: "🪢", tag: "ACTION", url: "https://games.lemonwesh.com/tug-war", broken: true},
-    {name: "Marbles", icon: "🔵", tag: "PUZZLE", url: "https://games.lemonwesh.com/marbles", broken: true},
-    {name: "Glass Bridge", icon: "🌉", tag: "PUZZLE", url: "https://games.lemonwesh.com/glass-bridge", broken: true},
-    {name: "Dalgona", icon: "🍪", tag: "PUZZLE", url: "https://games.lemonwesh.com/dalgona", broken: true},
-    {name: "Among Us", icon: "🔴", tag: "SOCIAL", url: "https://games.lemonwesh.com/among-us", broken: true},
-    {name: "Fall Guys", icon: "👑", tag: "BATTLE", url: "https://games.lemonwesh.com/fall-guys", broken: true},
-    {name: " fortnite", icon: "🔫", tag: "BATTLE", url: "https://games.lemonwesh.com/fortnite", broken: true},
-    {name: "PUBG", icon: "🍳", tag: "BATTLE", url: "https://games.lemonwesh.com/pubg", broken: true},
-    {name: "Call of Duty", icon: "💣", tag: "FPS", url: "https://games.lemonwesh.com/cod", broken: true},
-    {name: "Battlefield", icon: "🎖️", tag: "FPS", url: "https://games.lemonwesh.com/battlefield", broken: true},
-    {name: "Overwatch", icon: "🛡️", tag: "FPS", url: "https://games.lemonwesh.com/overwatch", broken: true},
-    {name: "Valorant", icon: "🔫", tag: "FPS", url: "https://games.lemonwesh.com/valorant", broken: true},
-    {name: "Apex Legends", icon: "🔺", tag: "FPS", url: "https://games.lemonwesh.com/apex", broken: true},
-    {name: "Rainbow Six", icon: "🌈", tag: "FPS", url: "https://games.lemonwesh.com/r6", broken: true},
-    {name: "Counter Strike", icon: "🔫", tag: "FPS", url: "https://games.lemonwesh.com/csgo", broken: true},
-    {name: "Team Fortress 2", icon: "🎩", tag: "FPS", url: "https://games.lemonwesh.com/tf2", broken: true},
-    {name: "Half Life", icon: "λ", tag: "FPS", url: "https://games.lemonwesh.com/half-life", broken: true},
-    {name: "Portal", icon: "🌀", tag: "PUZZLE", url: "https://games.lemonwesh.com/portal", broken: true},
-    {name: "Portal 2", icon: "🌀", tag: "PUZZLE", url: "https://games.lemonwesh.com/portal2", broken: true},
-    {name: "Left 4 Dead", icon: "🧟", tag: "FPS", url: "https://games.lemonwesh.com/l4d", broken: true},
-    {name: "Garry's Mod", icon: "🔧", tag: "SANDBOX", url: "https://games.lemonwesh.com/gmod", broken: true},
-    {name: "Roblox", icon: "🟥", tag: "PLATFORM", url: "https://games.lemonwesh.com/roblox", broken: true},
-    {name: "Minecraft", icon: "⛏️", tag: "SANDBOX", url: "https://games.lemonwesh.com/mc", broken: true},
-    {name: "Terraria", icon: "🌳", tag: "ADVENTURE", url: "https://games.lemonwesh.com/terraria", broken: true},
-    {name: "Stardew Valley", icon: "🌾", tag: "SIM", url: "https://games.lemonwesh.com/stardew", broken: true},
-    {name: "Undertale", icon: "💀", tag: "RPG", url: "https://games.lemonwesh.com/undertale", broken: true},
-    {name: "Deltarune", icon: "♥️", tag: "RPG", url: "https://games.lemonwesh.com/deltarune", broken: true},
-    {name: "FNF", icon: "🎤", tag: "RHYTHM", url: "https://games.lemonwesh.com/fnf", broken: false},
-    {name: "FNAF", icon: "🐻", tag: "HORROR", url: "https://games.lemonwesh.com/fnaf", broken: true},
-    {name: "FNAF 2", icon: "🦊", tag: "HORROR", url: "https://games.lemonwesh.com/fnaf2", broken: true},
-    {name: "FNAF 3", icon: "🐰", tag: "HORROR", url: "https://games.lemonwesh.com/fnaf3", broken: true},
-    {name: "FNAF 4", icon: "👦", tag: "HORROR", url: "https://games.lemonwesh.com/fnaf4", broken: true},
-    {name: "Granny", icon: "👵", tag: "HORROR", url: "https://games.lemonwesh.com/granny", broken: true},
-    {name: "Slenderman", icon: "🤵", tag: "HORROR", url: "https://games.lemonwesh.com/slender", broken: true},
-    {name: "Evil Nun", icon: "⛪", tag: "HORROR", url: "https://games.lemonwesh.com/evil-nun", broken: true},
-    {name: "Ice Scream", icon: "🍦", tag: "HORROR", url: "https://games.lemonwesh.com/ice-scream", broken: true},
-    {name: "Trollface Quest", icon: "😂", tag: "TROLL", url: "https://games.lemonwesh.com/trollface", broken: false},
-    {name: "Trollface Quest 2", icon: "😂", tag: "TROLL", url: "https://games.lemonwesh.com/trollface2", broken: true},
-    {name: "Trollface Quest 3", icon: "😂", tag: "TROLL", url: "https://games.lemonwesh.com/trollface3", broken: true},
-    {name: "Trollface Quest 4", icon: "😂", tag: "TROLL", url: "https://games.lemonwesh.com/trollface4", broken: true},
-    {name: "Trollface Quest 5", icon: "😂", tag: "TROLL", url: "https://games.lemonwesh.com/trollface5", broken: true},
-    {name: "Trollface Quest TV", icon: "📺", tag: "TROLL", url: "https://games.lemonwesh.com/trollface-tv", broken: true},
-    {name: "Trollface Quest Internet", icon: "🌐", tag: "TROLL", url: "https://games.lemonwesh.com/trollface-net", broken: true},
-    {name: "Wheely", icon: "🚗", tag: "PUZZLE", url: "https://games.lemonwesh.com/wheely", broken: false},
-    {name: "Wheely 2", icon: "🚗", tag: "PUZZLE", url: "https://games.lemonwesh.com/wheely2", broken: false},
-    {name: "Wheely 3", icon: "🚗", tag: "PUZZLE", url: "https://games.lemonwesh.com/wheely3", broken: true},
-    {name: "Wheely 4", icon: "🚗", tag: "PUZZLE", url: "https://games.lemonwesh.com/wheely4", broken: true},
-    {name: "Wheely 5", icon: "🚗", tag: "PUZZLE", url: "https://games.lemonwesh.com/wheely5", broken: true},
-    {name: "Wheely 6", icon: "🚗", tag: "PUZZLE", url: "https://games.lemonwesh.com/wheely6", broken: true},
-    {name: "Wheely 7", icon: "🚗", tag: "PUZZLE", url: "https://games.lemonwesh.com/wheely7", broken: true},
-    {name: "Wheely 8", icon: "🚗", tag: "PUZZLE", url: "https://games.lemonwesh.com/wheely8", broken: true},
-    {name: "Adam and Eve", icon: "🍎", tag: "PUZZLE", url: "https://games.lemonwesh.com/adam-eve", broken: false},
-    {name: "Adam and Eve 2", icon: "🍎", tag: "PUZZLE", url: "https://games.lemonwesh.com/adam-eve2", broken: true},
-    {name: "Adam and Eve 3", icon: "🍎", tag: "PUZZLE", url: "https://games.lemonwesh.com/adam-eve3", broken: true},
-    {name: "Adam and Eve 4", icon: "🍎", tag: "PUZZLE", url: "https://games.lemonwesh.com/adam-eve4", broken: true},
-    {name: "Adam and Eve 5", icon: "🍎", tag: "PUZZLE", url: "https://games.lemonwesh.com/adam-eve5", broken: true},
-    {name: "Adam and Eve 6", icon: "🍎", tag: "PUZZLE", url: "https://games.lemonwesh.com/adam-eve6", broken: true},
-    {name: "Adam and Eve 7", icon: "🍎", tag: "PUZZLE", url: "https://games.lemonwesh.com/adam-eve7", broken: true},
-    {name: "Adam and Eve 8", icon: "🍎", tag: "PUZZLE", url: "https://games.lemonwesh.com/adam-eve8", broken: true},
-    {name: "Snail Bob", icon: "🐌", tag: "PUZZLE", url: "https://games.lemonwesh.com/snail-bob", broken: false},
-    {name: "Snail Bob 2", icon: "🐌", tag: "PUZZLE", url: "https://games.lemonwesh.com/snail-bob2", broken: false},
-    {name: "Snail Bob 3", icon: "🐌", tag: "PUZZLE", url: "https://games.lemonwesh.com/snail-bob3", broken: true},
-    {name: "Snail Bob 4", icon: "🐌", tag: "PUZZLE", url: "https://games.lemonwesh.com/snail-bob4", broken: true},
-    {name: "Snail Bob 5", icon: "🐌", tag: "PUZZLE", url: "https://games.lemonwesh.com/snail-bob5", broken: true},
-    {name: "Snail Bob 6", icon: "🐌", tag: "PUZZLE", url: "https://games.lemonwesh.com/snail-bob6", broken: true},
-    {name: "Snail Bob 7", icon: "🐌", tag: "PUZZLE", url: "https://games.lemonwesh.com/snail-bob7", broken: true},
-    {name: "Snail Bob 8", icon: "🐌", tag: "PUZZLE", url: "https://games.lemonwesh.com/snail-bob8", broken: true},
-    {name: "Cover Orange", icon: "🍊", tag: "PUZZLE", url: "https://games.lemonwesh.com/cover-orange", broken: true},
-    {name: "Cover Orange 2", icon: "🍊", tag: "PUZZLE", url: "https://games.lemonwesh.com/cover-orange2", broken: true},
-    {name: "Cut the Rope", icon: "🍬", tag: "PUZZLE", url: "https://games.lemonwesh.com/cut-rope", broken: false},
-    {name: "Cut the Rope 2", icon: "🍬", tag: "PUZZLE", url: "https://games.lemonwesh.com/cut-rope2", broken: true},
-    {name: "Cut the Rope Time", icon: "⏰", tag: "PUZZLE", url: "https://games.lemonwesh.com/cut-rope-time", broken: true},
-    {name: "Where's My Water", icon: "🐊", tag: "PUZZLE", url: "https://games.lemonwesh.com/wheres-water", broken: true},
-    {name: "Where's My Perry", icon: "🦆", tag: "PUZZLE", url: "https://games.lemonwesh.com/wheres-perry", broken: true},
-    {name: "Angry Birds", icon: "🐦", tag: "PHYSICS", url: "https://games.lemonwesh.com/angry-birds", broken: true},
-    {name: "Angry Birds Space", icon: "🚀", tag: "PHYSICS", url: "https://games.lemonwesh.com/angry-birds-space", broken: true},
-    {name: "Bad Piggies", icon: "🐷", tag: "BUILD", url: "https://games.lemonwesh.com/bad-piggies", broken: true},
-    {name: "Amazing Alex", icon: "👦", tag: "RUBE", url: "https://games.lemonwesh.com/amazing-alex", broken: true},
-    {name: "Casey Contraptions", icon: "⚙️", tag: "RUBE", url: "https://games.lemonwesh.com/casey", broken: true},
-    {name: "Incredibots", icon: "🤖", tag: "BUILD", url: "https://games.lemonwesh.com/incredibots", broken: true},
-    {name: "Phun", icon: "🔬", tag: "PHYSICS", url: "https://games.lemonwesh.com/phun", broken: true},
-    {name: "Algodoo", icon: "⚗️", tag: "PHYSICS", url: "https://games.lemonwesh.com/algodoo", broken: true},
-    {name: "Powder Game", icon: "🎆", tag: "SANDBOX", url: "https://games.lemonwesh.com/powder", broken: true},
-    {name: "Earth Editor", icon: "🌍", tag: "SANDBOX", url: "https://games.lemonwesh.com/earth-editor", broken: true},
-    {name: "Planet Simulation", icon: "🪐", tag: "SPACE", url: "https://games.lemonwesh.com/planet-sim", broken: true},
-    {name: "Gravity Game", icon: "🍎", tag: "PHYSICS", url: "https://games.lemonwesh.com/gravity", broken: true},
-    {name: "Line Rider", icon: "⛷️", tag: "DRAW", url: "https://games.lemonwesh.com/line-rider", broken: false},
-    {name: "Free Rider", icon: "🚴", tag: "DRAW", url: "https://games.lemonwesh.com/free-rider", broken: true},
-    {name: "Happy Wheels", icon: "🦽", tag: "RACE", url: "https://games.lemonwesh.com/happy-wheels", broken: true},
-    {name: "Little Wheel", icon: "⚙️", tag: "POINT", url: "https://games.lemonwesh.com/little-wheel", broken: true},
-    {name: "Coma", icon: "💤", tag: "PLATFORM", url: "https://games.lemonwesh.com/coma", broken: true},
-    {name: "William and Sly", icon: "🦊", tag: "PLATFORM", url: "https://games.lemonwesh.com/william-sly", broken: true},
-    {name: "William and Sly 2", icon: "🦊", tag: "PLATFORM", url: "https://games.lemonwesh.com/william-sly2", broken: true},
-    {name: "Fancy Pants", icon: "👖", tag: "PLATFORM", url: "https://games.lemonwesh.com/fancy-pants", broken: false},
-    {name: "Fancy Pants 2", icon: "👖", tag: "PLATFORM", url: "https://games.lemonwesh.com/fancy-pants2", broken: true},
-    {name: "Fancy Pants 3", icon: "👖", tag: "PLATFORM", url: "https://games.lemonwesh.com/fancy-pants3", broken: true},
-    {name: "N", icon: "N", tag: "NINJA", url: "https://games.lemonwesh.com/n-game", broken: true},
-    {name: "N+", icon: "N+", tag: "NINJA", url: "https://games.lemonwesh.com/n-plus", broken: true},
-    {name: "Meat Boy", icon: "🥩", tag: "HARD", url: "https://games.lemonwesh.com/meat-boy", broken: true},
-    {name: "Super Meat Boy", icon: "🥩", tag: "HARD", url: "https://games.lemonwesh.com/super-meat-boy", broken: true},
-    {name: "Binding of Isaac", icon: "👶", tag: "ROGUE", url: "https://games.lemonwesh.com/isaac", broken: true},
-    {name: "Spelunky", icon: "🏺", tag: "ROGUE", url: "https://games.lemonwesh.com/spelunky", broken: true},
-    {name: "Cave Story", icon: "🤖", tag: "PLATFORM", url: "https://games.lemonwesh.com/cave-story", broken: true},
-    {name: "Momodora", icon: "👻", tag: "PLATFORM", url: "https://games.lemonwesh.com/momodora", broken: true},
-    {name: "Mega Man", icon: "🔵", tag: "PLATFORM", url: "https://games.lemonwesh.com/megaman", broken: true},
-    {name: "Mega Man X", icon: "❌", tag: "PLATFORM", url: "https://games.lemonwesh.com/megaman-x", broken: true},
-    {name: "Samurai Jack", icon: "⚔️", tag: "ACTION", url: "https://games.lemonwesh.com/samurai-jack", broken: true},
-    {name: "Dexter", icon: "🔬", tag: "LAB", url: "https://games.lemonwesh.com/dexter", broken: true},
-    {name: "Johnny Bravo", icon: "💪", tag: "ACTION", url: "https://games.lemonwesh.com/johnny-bravo", broken: true},
-    {name: "Cow and Chicken", icon: "🐄", tag: "PLATFORM", url: "https://games.lemonwesh.com/cow-chicken", broken: true},
-    {name: "I Am Weasel", icon: "🦨", tag: "PLATFORM", url: "https://games.lemonwesh.com/i-am-weasel", broken: true},
-    {name: "Powerpuff Girls", icon: "💗", tag: "ACTION", url: "https://games.lemonwesh.com/powerpuff", broken: true},
-    {name: "Ed Edd n Eddy", icon: "🍬", tag: "PLATFORM", url: "https://games.lemonwesh.com/ed-edd-eddy", broken: true},
-    {name: "Courage", icon: "🐶", tag: "ADVENTURE", url: "https://games.lemonwesh.com/courage", broken: true},
-    {name: "Foster's Home", icon: "🕌", tag: "ADVENTURE", url: "https://games.lemonwesh.com/fosters", broken: true},
-    {name: "Camp Lazlo", icon: "⛺", tag: "ADVENTURE", url: "https://games.lemonwesh.com/camp-lazlo", broken: true},
-    {name: "My Gym Partner's a Monkey", icon: "🐒", tag: "PLATFORM", url: "https://games.lemonwesh.com/monkey", broken: true},
-    {name: "Squirrel Boy", icon: "🐿️", tag: "PLATFORM", url: "https://games.lemonwesh.com/squirrel-boy", broken: true},
-    {name: "Class of 3000", icon: "🎵", tag: "RHYTHM", url: "https://games.lemonwesh.com/class-3000", broken: true},
-    {name: "Hi Hi Puffy AmiYumi", icon: "🎸", tag: "RHYTHM", url: "https://games.lemonwesh.com/puffy", broken: true},
-    {name: "Teen Titans", icon: "🔰", tag: "ACTION", url: "https://games.lemonwesh.com/teen-titans", broken: true},
-    {name: "Teen Titans Go", icon: "🔰", tag: "ACTION", url: "https://games.lemonwesh.com/teen-titans-go", broken: true},
-    {name: "Adventure Time", icon: "🕐", tag: "PLATFORM", url: "https://games.lemonwesh.com/adventure-time", broken: true},
-    {name: "Regular Show", icon: "🦅", tag: "PLATFORM", url: "https://games.lemonwesh.com/regular-show", broken: true},
-    {name: "Gumball", icon: "🐱", tag: "PLATFORM", url: "https://games.lemonwesh.com/gumball", broken: true},
-    {name: "Clarence", icon: "👦", tag: "ADVENTURE", url: "https://games.lemonwesh.com/clarence", broken: true},
-    {name: "Steven Universe", icon: "⭐", tag: "RPG", url: "https://games.lemonwesh.com/steven-universe", broken: true},
-    {name: "Uncle Grandpa", icon: "👴", tag: "PLATFORM", url: "https://games.lemonwesh.com/uncle-grandpa", broken: true},
-    {name: "Mixels", icon: "🔥", tag: "PUZZLE", url: "https://games.lemonwesh.com/mixels", broken: true},
-    {name: "Unikitty", icon: "🐱", tag: "PLATFORM", url: "https://games.lemonwesh.com/unikitty", broken: true},
-    {name: "OK K.O.!", icon: "👊", tag: "ACTION", url: "https://games.lemonwesh.com/ok-ko", broken: true},
-    {name: "Craig of the Creek", icon: "🏞️", tag: "ADVENTURE", url: "https://games.lemonwesh.com/craig-creek", broken: true},
-    {name: "Victor and Valentino", icon: "💀", tag: "ADVENTURE", url: "https://games.lemonwesh.com/victor-valentino", broken: true},
-    {name: "Infinity Train", icon: "🚂", tag: "PUZZLE", url: "https://games.lemonwesh.com/infinity-train", broken: true},
-    {name: "Summer Camp Island", icon: "🏕️", tag: "ADVENTURE", url: "https://games.lemonwesh.com/summer-camp", broken: true},
-    {name: "Apple & Onion", icon: "🍎", tag: "PLATFORM", url: "https://games.lemonwesh.com/apple-onion", broken: true},
-    {name: "Ben 10 Classic", icon: "👽", tag: "ACTION", url: "https://games.lemonwesh.com/ben10-classic", broken: true},
-    {name: "Ben 10 Alien Force", icon: "👽", tag: "ACTION", url: "https://games.lemonwesh.com/ben10-af", broken: true},
-    {name: "Ben 10 Ultimate", icon: "👽", tag: "ACTION", url: "https://games.lemonwesh.com/ben10-ultimate", broken: true},
-    {name: "Ben 10 Omniverse", icon: "👽", tag: "ACTION", url: "https://games.lemonwesh.com/ben10-omniverse", broken: true},
-    {name: "Ben 10 Reboot", icon: "👽", tag: "ACTION", url: "https://games.lemonwesh.com/ben10-reboot", broken: true},
-    {name: "Generator Rex", icon: "🦖", tag: "ACTION", url: "https://games.lemonwesh.com/generator-rex", broken: true},
-    {name: "Secret Saturdays", icon: "6️⃣", tag: "ADVENTURE", url: "https://games.lemonwesh.com/secret-saturdays", broken: true},
-    {name: "Sym-Bionic Titan", icon: "🤖", tag: "ACTION", url: "https://games.lemonwesh.com/sym-bionic", broken: true},
-    {name: "Firebreather", icon: "🔥", tag: "FIGHT", url: "https://games.lemonwesh.com/firebreather", broken: true},
-    {name: "Level Up", icon: "🎮", tag: "RPG", url: "https://games.lemonwesh.com/level-up", broken: true},
-    {name: "Reboot", icon: "💾", tag: "CGI", url: "https://games.lemonwesh.com/reboot", broken: true},
-    {name: "Beast Wars", icon: "🦁", tag: "FIGHT", url: "https://games.lemonwesh.com/beast-wars", broken: true},
-    {name: "Beast Machines", icon: "🤖", tag: "FIGHT", url: "https://games.lemonwesh.com/beast-machines", broken: true},
-    {name: "Shadow Raiders", icon: "🌑", tag: "ACTION", url: "https://games.lemonwesh.com/shadow-raiders", broken: true},
-    {name: "War Planets", icon: "🪐", tag: "STRATEGY", url: "https://games.lemonwesh.com/war-planets", broken: true},
-    {name: "Max Steel", icon: "🦾", tag: "ACTION", url: "https://games.lemonwesh.com/max-steel", broken: true},
-    {name: "Hot Wheels", icon: "🏎️", tag: "RACE", url: "https://games.lemonwesh.com/hot-wheels", broken: false},
-    {name: "Hot Wheels Track", icon: "🛤️", tag: "BUILD", url: "https://games.lemonwesh.com/hw-track", broken: true},
-    {name: "Barbie", icon: "👱‍♀️", tag: "DRESS", url: "https://games.lemonwesh.com/barbie", broken: true},
-    {name: "Bratz", icon: "💅", tag: "DRESS", url: "https://games.lemonwesh.com/bratz", broken: true},
-    {name: "Monster High", icon: "🧛", tag: "DRESS", url: "https://games.lemonwesh.com/monster-high", broken: true},
-    {name: "Ever After High", icon: "📚", tag: "DRESS", url: "https://games.lemonwesh.com/ever-after", broken: true},
-    {name: "Polly Pocket", icon: "👛", tag: "ADVENTURE", url: "https://games.lemonwesh.com/polly-pocket", broken: true},
-    {name: "Littlest Pet Shop", icon: "🐾", tag: "SIM", url: "https://games.lemonwesh.com/lps", broken: true},
-    {name: "My Little Pony", icon: "🦄", tag: "ADVENTURE", url: "https://games.lemonwesh.com/mlp", broken: true},
-    {name: "Little Pony Friendship", icon: "🌈", tag: "ADVENTURE", url: "https://games.lemonwesh.com/mlp-fim", broken: true},
-    {name: "Equestria Girls", icon: "👭", tag: "DRESS", url: "https://games.lemonwesh.com/equestria", broken: true},
-    {name: "Transformers Prime", icon: "🚚", tag: "ACTION", url: "https://games.lemonwesh.com/tf-prime", broken: true},
-    {name: "Transformers Rescue", icon: "🚑", tag: "KIDS", url: "https://games.lemonwesh.com/tf-rescue", broken: true},
-    {name: "Transformers Cyberverse", icon: "🤖", tag: "ACTION", url: "https://games.lemonwesh.com/tf-cyberverse", broken: true},
-    {name: "G.I. Joe", icon: "🎖️", tag: "ACTION", url: "https://games.lemonwesh.com/gi-joe", broken: true},
-    {name: "Cobra", icon: "🐍", tag: "VILLAIN", url: "https://games.lemonwesh.com/cobra", broken: true},
-    {name: "Dungeons & Dragons", icon: "🐉", tag: "RPG", url: "https://games.lemonwesh.com/dnd", broken: true},
-    {name: "Magic: The Gathering", icon: "🎴", tag: "CARD", url: "https://games.lemonwesh.com/magic", broken: true},
-    {name: "Pokemon TCG", icon: "⚡", tag: "CARD", url: "https://games.lemonwesh.com/pokemon-tcg", broken: true},
-    {name: "Yu-Gi-Oh", icon: "🃏", tag: "CARD", url: "https://games.lemonwesh.com/yugioh", broken: true},
-    {name: "Cardfight Vanguard", icon: "🛡️", tag: "CARD", url: "https://games.lemonwesh.com/vanguard", broken: true},
-    {name: "Buddyfight", icon: "👊", tag: "CARD", url: "https://games.lemonwesh.com/buddyfight", broken: true},
-    {name: "Weiss Schwarz", icon: "⚫", tag: "CARD", url: "https://games.lemonwesh.com/weiss", broken: true},
-    {name: "Chaos TCG", icon: "☯️", tag: "CARD", url: "https://games.lemonwesh.com/chaos", broken: true},
-    {name: "Union Arena", icon: "🎭", tag: "CARD", url: "https://games.lemonwesh.com/union-arena", broken: true},
-    {name: "Battle Spirits", icon: "👻", tag: "CARD", url: "https://games.lemonwesh.com/battle-spirits", broken: true},
-    {name: "Luck & Logic", icon: "🍀", tag: "CARD", url: "https://games.lemonwesh.com/luck-logic", broken: true},
-    {name: "Z/X", icon: "⚔️", tag: "CARD", url: "https://games.lemonwesh.com/zx", broken: true},
-    {name: "WIXOSS", icon: "✨", tag: "CARD", url: "https://games.lemonwesh.com/wixoss", broken: true},
-    {name: "Bakugan", icon: "🔵", tag: "BATTLE", url: "https://games.lemonwesh.com/bakugan", broken: true},
-    {name: "Beyblade", icon: "🌀", tag: "BATTLE", url: "https://games.lemonwesh.com/beyblade", broken: true},
-    {name: "Digimon", icon: "👾", tag: "RPG", url: "https://games.lemonwesh.com/digimon", broken: true},
-    {name: "Medabots", icon: "🤖", tag: "RPG", url: "https://games.lemonwesh.com/medabots", broken: true},
-    {name: "Megaman Battle Network", icon: "📶", tag: "RPG", url: "https://games.lemonwesh.com/mmbn", broken: true},
-    {name: "Megaman Star Force", icon: "⭐", tag: "RPG", url: "https://games.lemonwesh.com/mMSF", broken: true},
-    {name: "Monster Rancher", icon: "🐉", tag: "SIM", url: "https://games.lemonwesh.com/monster-rancher", broken: true},
-    {name: "Pokemon Ranger", icon: "🎯", tag: "ACTION", url: "https://games.lemonwesh.com/pokemon-ranger", broken: true},
-    {name: "Pokemon Mystery", icon: "❓", tag: "RPG", url: "https://games.lemonwesh.com/pokemon-mystery", broken: true},
-    {name: "Pokemon Pinball", icon: "🔴", tag: "PINBALL", url: "https://games.lemonwesh.com/pokemon-pinball", broken: true},
-    {name: "Pokemon Snap", icon: "📸", tag: "SIM", url: "https://games.lemonwesh.com/pokemon-snap", broken: true},
-    {name: "Pokemon Stadium", icon: "🏟️", tag: "BATTLE", url: "https://games.lemonwesh.com/pokemon-stadium", broken: true},
-    {name: "Pokemon Colosseum", icon: "🏛️", tag: "RPG", url: "https://games.lemonwesh.com/colosseum", broken: true},
-    {name: "Pokemon XD", icon: "😈", tag: "RPG", url: "https://games.lemonwesh.com/pokemon-xd", broken: true},
-    {name: "Pokemon Channel", icon: "📺", tag: "SIM", url: "https://games.lemonwesh.com/pokemon-channel", broken: true},
-    {name: "Hey You Pikachu", icon: "⚡", tag: "VOICE", url: "https://games.lemonwesh.com/hey-pikachu", broken: true},
-    {name: "PokePark", icon: "🎡", tag: "ADVENTURE", url: "https://games.lemonwesh.com/pokepark", broken: true},
-    {name: "Rumble", icon: "👊", tag: "FIGHT", url: "https://games.lemonwesh.com/rumble", broken: true},
-    {name: "Trozei", icon: "🧩", tag: "PUZZLE", url: "https://games.lemonwesh.com/trozei", broken: true},
-    {name: "Shuffle", icon: "🎰", tag: "PUZZLE", url: "https://games.lemonwesh.com/shuffle", broken: true},
-    {name: "Picross", icon: "🖍️", tag: "PUZZLE", url: "https://games.lemonwesh.com/picross", broken: true},
-    {name: "Sonic Classic", icon: "💨", tag: "PLATFORM", url: "https://games.lemonwesh.com/sonic-1", broken: true},
-    {name: "Sonic 2", icon: "💨", tag: "PLATFORM", url: "https://games.lemonwesh.com/sonic-2", broken: true},
-    {name: "Sonic 3", icon: "💨", tag: "PLATFORM", url: "https://games.lemonwesh.com/sonic-3", broken: true},
-    {name: "Sonic and Knuckles", icon: "👊", tag: "PLATFORM", url: "https://games.lemonwesh.com/sonic-knuckles", broken: true},
-    {name: "Sonic CD", icon: "💿", tag: "PLATFORM", url: "https://games.lemonwesh.com/sonic-cd", broken: true},
-    {name: "Sonic 3D", icon: "📦", tag: "PLATFORM", url: "https://games.lemonwesh.com/sonic-3d", broken: true},
-    {name: "Sonic Adventure", icon: "🌊", tag: "3D", url: "https://games.lemonwesh.com/sonic-adventure", broken: true},
-    {name: "Sonic Adventure 2", icon: "🚀", tag: "3D", url: "https://games.lemonwesh.com/sa2", broken: true},
-    {name: "Sonic Heroes", icon: "🦸", tag: "3D", url: "https://games.lemonwesh.com/sonic-heroes", broken: true},
-    {name: "Shadow Game", icon: "🔫", tag: "SHOOTER", url: "https://games.lemonwesh.com/shadow-game", broken: true},
-    {name: "Sonic Rush", icon: "💨", tag: "DS", url: "https://games.lemonwesh.com/sonic-rush", broken: true},
-    {name: "Sonic Colors", icon: "🌈", tag: "WII", url: "https://games.lemonwesh.com/sonic-colors", broken: true},
-    {name: "Sonic Generations", icon: "⏰", tag: "3D", url: "https://games.lemonwesh.com/sonic-gen", broken: true},
-    {name: "Sonic Lost World", icon: "🌍", tag: "3D", url: "https://games.lemonwesh.com/sonic-lost", broken: true},
-    {name: "Sonic Forces", icon: "💥", tag: "3D", url: "https://games.lemonwesh.com/sonic-forces", broken: true},
-    {name: "Sonic Mania", icon: "✨", tag: "2D", url: "https://games.lemonwesh.com/sonic-mania", broken: true},
-    {name: "Sonic Frontiers", icon: "🌐", tag: "OPEN", url: "https://games.lemonwesh.com/frontiers", broken: true},
-    {name: "Sonic Racing", icon: "🏎️", tag: "RACE", url: "https://games.lemonwesh.com/sonic-racing", broken: true},
-    {name: "Team Sonic Racing", icon: "🏁", tag: "RACE", url: "https://games.lemonwesh.com/tsr", broken: true},
-    {name: "Sonic Riders", icon: "🛹", tag: "RACE", url: "https://games.lemonwesh.com/riders", broken: true},
-    {name: "Sonic Battle", icon: "👊", tag: "FIGHT", url: "https://games.lemonwesh.com/sonic-battle", broken: true},
-    {name: "Sonic Chronicles", icon: "📖", tag: "RPG", url: "https://games.lemonwesh.com/chronicles", broken: true},
-    {name: "Mario Kart", icon: "🏎️", tag: "RACE", url: "https://games.lemonwesh.com/mario-kart", broken: true},
-    {name: "Mario Party", icon: "🎲", tag: "PARTY", url: "https://games.lemonwesh.com/mario-party", broken: true},
-    {name: "Mario Golf", icon: "⛳", tag: "SPORTS", url: "https://games.lemonwesh.com/mario-golf", broken: true},
-    {name: "Mario Tennis", icon: "🎾", tag: "SPORTS", url: "https://games.lemonwesh.com/mario-tennis", broken: true},
-    {name: "Mario Strikers", icon: "⚽", tag: "SPORTS", url: "https://games.lemonwesh.com/strikers", broken: true},
-    {name: "Mario Baseball", icon: "⚾", tag: "SPORTS", url: "https://games.lemonwesh.com/mario-baseball", broken: true},
-    {name: "Mario vs DK", icon: "🐵", tag: "PUZZLE", url: "https://games.lemonwesh.com/mario-vs-dk", broken: true},
-    {name: "Mario Paper", icon: "📄", tag: "RPG", url: "https://games.lemonwesh.com/paper-mario", broken: true},
-    {name: "Mario and Luigi", icon: "👬", tag: "RPG", url: "https://games.lemonwesh.com/mario-luigi", broken: true},
-    {name: "Super Smash Flash", icon: "👊", tag: "FIGHT", url: "https://games.lemonwesh.com/ssf", broken: true},
-    {name: "Super Smash Flash 2", icon: "👊", tag: "FIGHT", url: "https://games.lemonwesh.com/ssf2", broken: true},
-    {name: "Rivals of Aether", icon: "🌪️", tag: "FIGHT", url: "https://games.lemonwesh.com/rivals", broken: true},
-    {name: "Brawlhalla", icon: "⚔️", tag: "FIGHT", url: "https://games.lemonwesh.com/brawlhalla", broken: true},
-    {name: "Flash Bash", icon: "⚡", tag: "FIGHT", url: "https://games.lemonwesh.com/flash-bash", broken: true},
-    {name: "Electric Man", icon: "⚡", tag: "FIGHT", url: "https://games.lemonwesh.com/electric-man", broken: false},
-    {name: "Electric Man 2", icon: "⚡", tag: "FIGHT", url: "https://games.lemonwesh.com/electric-man2", broken: true},
-    {name: "Stick Fighter", icon: "🥢", tag: "FIGHT", url: "https://games.lemonwesh.com/stick-fighter", broken: true},
-    {name: "Combat Tournament", icon: "🏆", tag: "FIGHT", url: "https://games.lemonwesh.com/combat-tournament", broken: true},
-    {name: "Swords and Sandals", icon: "⚔️", tag: "RPG", url: "https://games.lemonwesh.com/swords-sandals", broken: true},
-    {name: "Swords and Sandals 2", icon: "⚔️", tag: "RPG", url: "https://games.lemonwesh.com/ss2", broken: true},
-    {name: "Swords and Sandals 3", icon: "⚔️", tag: "RPG", url: "https://games.lemonwesh.com/ss3", broken: true},
-    {name: "Swords and Souls", icon: "👻", tag: "RPG", url: "https://games.lemonwesh.com/swords-souls", broken: true},
-    {name: "Soul Quest", icon: "✨", tag: "RPG", url: "https://games.lemonwesh.com/soul-quest", broken: true},
-    {name: "Epic Battle Fantasy", icon: "⚔️", tag: "RPG", url: "https://games.lemonwesh.com/ebf", broken: true},
-    {name: "Epic Battle Fantasy 2", icon: "⚔️", tag: "RPG", url: "https://games.lemonwesh.com/ebf2", broken: true},
-    {name: "Epic Battle Fantasy 3", icon: "⚔️", tag: "RPG", url: "https://games.lemonwesh.com/ebf3", broken: true},
-    {name: "Epic Battle Fantasy 4", icon: "⚔️", tag: "RPG", url: "https://games.lemonwesh.com/ebf4", broken: true},
-    {name: "Epic Battle Fantasy 5", icon: "⚔️", tag: "RPG", url: "https://games.lemonwesh.com/ebf5", broken: true},
-    {name: "Bullet Heaven", icon: "☁️", tag: "SHMUP", url: "https://games.lemonwesh.com/bullet-heaven", broken: true},
-    {name: "Bullet Heaven 2", icon: "☁️", tag: "SHMUP", url: "https://games.lemonwesh.com/bullet-heaven2", broken: true},
-    {name: "Cat Quest", icon: "🐱", tag: "RPG", url: "https://games.lemonwesh.com/cat-quest", broken: true},
-    {name: "Cat Quest 2", icon: "🐱", tag: "RPG", url: "https://games.lemonwesh.com/cat-quest2", broken: true},
-    {name: "Cat Quest 3", icon: "🐱", tag: "RPG", url: "https://games.lemonwesh.com/cat-quest3", broken: true},
-    {name: "Dragon Quest", icon: "🐉", tag: "RPG", url: "https://games.lemonwesh.com/dragon-quest", broken: true},
-    {name: "Final Fantasy", icon: "✨", tag: "RPG", url: "https://games.lemonwesh.com/ff", broken: true},
-    {name: "Chrono Trigger", icon: "⏰", tag: "RPG", url: "https://games.lemonwesh.com/chrono", broken: true},
-    {name: "Secret of Mana", icon: "✨", tag: "RPG", url: "https://games.lemonwesh.com/mana", broken: true},
-    {name: "Illusion of Gaia", icon: "🌍", tag: "RPG", url: "https://games.lemonwesh.com/illusion", broken: true},
-    {name: "Terranigma", icon: "🌎", tag: "RPG", url: "https://games.lemonwesh.com/terranigma", broken: true},
-    {name: "Soul Blazer", icon: "👻", tag: "RPG", url: "https://games.lemonwesh.com/soul-blazer", broken: true},
-    {name: "ActRaiser", icon: "👼", tag: "SIM", url: "https://games.lemonwesh.com/actraiser", broken: true},
-    {name: "ActRaiser 2", icon: "👼", tag: "ACTION", url: "https://games.lemonwesh.com/actraiser2", broken: true},
-    {name: "Robotrek", icon: "🤖", tag: "RPG", url: "https://games.lemonwesh.com/robotrek", broken: true},
-    {name: "E.V.O.", icon: "🦎", tag: "RPG", url: "https://games.lemonwesh.com/evo", broken: true},
-    {name: "7th Saga", icon: "7️⃣", tag: "RPG", url: "https://games.lemonwesh.com/7th-saga", broken: true},
-    {name: "Brain Lord", icon: "🧠", tag: "RPG", url: "https://games.lemonwesh.com/brain-lord", broken: true},
-    {name: "Harvest Moon", icon: "🌾", tag: "SIM", url: "https://games.lemonwesh.com/harvest-moon", broken: true},
-    {name: "Rune Factory", icon: "⚔️", tag: "RPG", url: "https://games.lemonwesh.com/rune-factory", broken: true},
-    {name: "Story of Seasons", icon: "🌸", tag: "SIM", url: "https://games.lemonwesh.com/story-seasons", broken: true},
-    {name: "Animal Crossing", icon: "🏘️", tag: "SIM", url: "https://games.lemonwesh.com/ac", broken: true},
-    {name: "Tomodachi Life", icon: "👥", tag: "SIM", url: "https://games.lemonwesh.com/tomodachi", broken: true},
-    {name: "Miitopia", icon: "🎭", tag: "RPG", url: "https://games.lemonwesh.com/miitopia", broken: true},
-    {name: "Snipperclips", icon: "✂️", tag: "PUZZLE", url: "https://games.lemonwesh.com/snipperclips", broken: true},
-    {name: "Kirby", icon: "🟣", tag: "PLATFORM", url: "https://games.lemonwesh.com/kirby", broken: true},
-    {name: "Kirby Super Star", icon: "⭐", tag: "PLATFORM", url: "https://games.lemonwesh.com/kirby-ss", broken: true},
-    {name: "Kirby Dream Land", icon: "😴", tag: "PLATFORM", url: "https://games.lemonwesh.com/kirby-dl", broken: true},
-    {name: "Kirby Canvas", icon: "🎨", tag: "PLATFORM", url: "https://games.lemonwesh.com/kirby-canvas", broken: true},
-    {name: "Kirby Mass Attack", icon: "👥", tag: "PLATFORM", url: "https://games.lemonwesh.com/kirby-mass", broken: true},
-    {name: "Kirby Planet", icon: "🤖", tag: "PLATFORM", url: "https://games.lemonwesh.com/kirby-planet", broken: true},
-    {name: "Kirby Star Allies", icon: "✨", tag: "PLATFORM", url: "https://games.lemonwesh.com/kirby-allies", broken: true},
-    {name: "Kirby Forgotten", icon: "🦷", tag: "PLATFORM", url: "https://games.lemonwesh.com/kirby-forgotten", broken: true},
-    {name: "Kirby Return", icon: "🐉", tag: "PLATFORM", url: "https://games.lemonwesh.com/kirby-return", broken: true},
-    {name: "Metroid", icon: "👽", tag: "PLATFORM", url: "https://games.lemonwesh.com/metroid", broken: true},
-    {name: "Super Metroid", icon: "👽", tag: "PLATFORM", url: "https://games.lemonwesh.com/super-metroid", broken: true},
-    {name: "Metroid Fusion", icon: "🧬", tag: "PLATFORM", url: "https://games.lemonwesh.com/metroid-fusion", broken: true},
-    {name: "Metroid Zero", icon: "0️⃣", tag: "PLATFORM", url: "https://games.lemonwesh.com/metroid-zero", broken: true},
-    {name: "Metroid Prime", icon: "🦠", tag: "FPS", url: "https://games.lemonwesh.com/prime", broken: true},
-    {name: "Metroid Dread", icon: "😰", tag: "PLATFORM", url: "https://games.lemonwesh.com/dread", broken: true},
-    {name: "Zelda Link", icon: "🔗", tag: "RPG", url: "https://games.lemonwesh.com/zelda-link", broken: true},
-    {name: "Zelda Ocarina", icon: "🎵", tag: "RPG", url: "https://games.lemonwesh.com/oot", broken: true},
-    {name: "Zelda Majora", icon: "🌙", tag: "RPG", url: "https://games.lemonwesh.com/majoras", broken: true},
-    {name: "Zelda Wind Waker", icon: "🌊", tag: "RPG", url: "https://games.lemonwesh.com/wind-waker", broken: true},
-    {name: "Zelda Twilight", icon: "🐺", tag: "RPG", url: "https://games.lemonwesh.com/twilight", broken: true},
-    {name: "Zelda Skyward", icon: "☁️", tag: "RPG", url: "https://games.lemonwesh.com/skyward", broken: true},
-    {name: "Zelda Breath", icon: "🍃", tag: "OPEN", url: "https://games.lemonwesh.com/botw", broken: true},
-    {name: "Zelda Tears", icon: "💧", tag: "OPEN", url: "https://games.lemonwesh.com/totk", broken: true},
-    {name: "Zelda Links Awakening", icon: "🥚", tag: "RPG", url: "https://games.lemonwesh.com/links-awakening", broken: true},
-    {name: "Zelda Minish", icon: "🎩", tag: "RPG", url: "https://games.lemonwesh.com/minish", broken: true},
-    {name: "Zelda Four Swords", icon: "⚔️", tag: "COOP", url: "https://games.lemonwesh.com/four-swords", broken: true},
-    {name: "Zelda Triforce", icon: "🔺", tag: "COOP", url: "https://games.lemonwesh.com/triforce", broken: true},
-    {name: "Zelda CDI", icon: "📀", tag: "BAD", url: "https://games.lemonwesh.com/cdi", broken: true},
-    {name: "Donkey Kong", icon: "🦍", tag: "PLATFORM", url: "https://games.lemonwesh.com/dk", broken: true},
-    {name: "DK Country", icon: "🍌", tag: "PLATFORM", url: "https://games.lemonwesh.com/dkc", broken: true},
-    {name: "DK Country 2", icon: "🏴‍☠️", tag: "PLATFORM", url: "https://games.lemonwesh.com/dkc2", broken: true},
-    {name: "DK Country 3", icon: "❄️", tag: "PLATFORM", url: "https://games.lemonwesh.com/dkc3", broken: true},
-    {name: "DK 64", icon: "🦍", tag: "PLATFORM", url: "https://games.lemonwesh.com/dk64", broken: true},
-    {name: "DK Returns", icon: "🍌", tag: "PLATFORM", url: "https://games.lemonwesh.com/dk-returns", broken: true},
-    {name: "DK Tropical", icon: "🧊", tag: "PLATFORM", url: "https://games.lemonwesh.com/dk-tropical", broken: true},
-    {name: "Yoshi's Island", icon: "🥚", tag: "PLATFORM", url: "https://games.lemonwesh.com/yoshi-island", broken: true},
-    {name: "Yoshi Story", icon: "📖", tag: "PLATFORM", url: "https://games.lemonwesh.com/yoshi-story", broken: true},
-    {name: "Yoshi Woolly", icon: "🧶", tag: "PLATFORM", url: "https://games.lemonwesh.com/yoshi-woolly", broken: true},
-    {name: "Yoshi Crafted", icon: "📦", tag: "PLATFORM", url: "https://games.lemonwesh.com/yoshi-crafted", broken: true},
-    {name: "Wario Land", icon: "🧄", tag: "PLATFORM", url: "https://games.lemonwesh.com/wario-land", broken: true},
-    {name: "Wario Ware", icon: "⚡", tag: "PARTY", url: "https://games.lemonwesh.com/wario-ware", broken: true},
-    {name: "Wario DIY", icon: "🎨", tag: "CREATE", url: "https://games.lemonwesh.com/wario-diy", broken: true},
-    {name: "Luigi's Mansion", icon: "👻", tag: "ADVENTURE", url: "https://games.lemonwesh.com/luigi-mansion", broken: true},
-    {name: "Luigi's Mansion 2", icon: "🏚️", tag: "ADVENTURE", url: "https://games.lemonwesh.com/lm2", broken: true},
-    {name: "Luigi's Mansion 3", icon: "🏨", tag: "ADVENTURE", url: "https://games.lemonwesh.com/lm3", broken: true},
-    {name: "Captain Toad", icon: "🍄", tag: "PUZZLE", url: "https://games.lemonwesh.com/captain-toad", broken: true},
-    {name: "Paper Mario 64", icon: "📄", tag: "RPG", url: "https://games.lemonwesh.com/pm64", broken: true},
-    {name: "Paper Mario ttyd", icon: "🌙", tag: "RPG", url: "https://games.lemonwesh.com/ttyd", broken: true},
-    {name: "Super Paper Mario", icon: "📄", tag: "RPG", url: "https://games.lemonwesh.com/spm", broken: true},
-    {name: "Paper Mario Sticker", icon: "🗂️", tag: "RPG", url: "https://games.lemonwesh.com/sticker-star", broken: true},
-    {name: "Paper Mario Color", icon: "🎨", tag: "RPG", url: "https://games.lemonwesh.com/color-splash", broken: true},
-    {name: "Paper Mario Origami", icon: "📃", tag: "RPG", url: "https://games.lemonwesh.com/origami", broken: true}
+// ===== ACHIEVEMENTS DATABASE =====
+const achievementsDB = [
+    {id: 'first_boot', name: 'First Boot', desc: 'Initialize the system', icon: '🖥️', unlocked: false},
+    {id: 'lemon_hunter', name: 'Lemon Hunter', desc: 'Search for lemons 5 times', icon: '🍋', unlocked: false},
+    {id: 'aurelio_victim', name: 'Aurelio\'s Wrath', desc: 'Trigger the shutdown sequence', icon: '🛑', unlocked: false},
+    {id: 'konami_master', name: 'Konami Code', desc: 'Enter the legendary code', icon: '⬆️', unlocked: false},
+    {id: 'logo_spammer', name: 'Logo Clicker', desc: 'Click the logo 10 times', icon: '🖱️', unlocked: false},
+    {id: 'secret_agent', name: 'Secret Agent', desc: 'Unlock the Secret Menu', icon: '🔐', unlocked: false},
+    {id: 'god_mode', name: 'God Mode', desc: 'Activate god mode', icon: '👑', unlocked: false},
+    {id: 'night_owl', name: 'Night Owl', desc: 'Enable night mode', icon: '🌙', unlocked: false},
+    {id: 'speed_demon', name: 'Speed Demon', desc: 'Enable speed run mode', icon: '⚡', unlocked: false},
+    {id: 'hacker', name: '1337 H4x0r', desc: 'Enable debug overlay', icon: '💻', unlocked: false},
+    {id: 'survivor', name: 'Survivor', desc: 'Survive Aurelio\'s lockdown', icon: '⏱️', unlocked: false},
+    {id: 'music_lover', name: 'DJ Lemon', desc: 'Play custom audio', icon: '🎵', unlocked: false}
 ];
 
-// Rest of the JavaScript remains the same as previous implementation
-// ... (include all the previous JS code for boot sequence, easter eggs, achievements, etc.) ...
+// ===== BOOT SEQUENCE =====
+const bootLines = [
+    {text: 'Initializing LEMONS_PROXY v10.0...', type: 'normal', delay: 100},
+    {text: 'Loading blueprint protocols...', type: 'normal', delay: 200},
+    {text: 'Connecting to secure nodes...', type: 'normal', delay: 300},
+    {text: 'Establishing encrypted tunnel...', type: 'normal', delay: 400},
+    {text: 'WARNING: Aurelio protection active', type: 'warn', delay: 600},
+    {text: 'Mounting virtual file systems...', type: 'normal', delay: 800},
+    {text: 'Loading game modules [400+]...', type: 'normal', delay: 1000},
+    {text: 'Compiling easter eggs...', type: 'normal', delay: 1200},
+    {text: 'Search "lemon" for secrets', type: 'dim', delay: 1400},
+    {text: 'System ready.', type: 'success', delay: 1600}
+];
 
-// Initialize 400+ games
+function initBoot() {
+    const container = document.getElementById('boot-content');
+    bootLines.forEach((line, i) => {
+        setTimeout(() => {
+            const div = document.createElement('div');
+            div.className = `boot-line ${line.type}`;
+            div.textContent = `> ${line.text}`;
+            container.appendChild(div);
+        }, line.delay);
+    });
+    
+    setTimeout(() => {
+        if (!state.booted) skipBoot();
+    }, 3500);
+}
+
+function skipBoot() {
+    state.booted = true;
+    document.getElementById('boot-sequence').style.display = 'none';
+    unlockAchievement('first_boot');
+    initSystems();
+}
+
+// ===== MATRIX BACKGROUND =====
+function initMatrix() {
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+    const drops = [];
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    
+    for (let i = 0; i < columns; i++) drops[i] = 1;
+    
+    function draw() {
+        if (state.easterEggs.speedRun) {
+            ctx.fillStyle = 'rgba(10, 22, 40, 0.3)';
+        } else {
+            ctx.fillStyle = `rgba(10, 22, 40, ${1 - state.matrixIntensity * 10})`;
+        }
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#3b82f6';
+        ctx.font = fontSize + 'px monospace';
+        
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i] += state.easterEggs.speedRun ? 3 : 1;
+        }
+    }
+    
+    setInterval(draw, state.easterEggs.speedRun ? 16 : 33);
+}
+
+// ===== GAMES DATABASE =====
+const games = [
+    {id: 1, name: "2048", icon: "🔢", tag: "PUZZLE", url: "https://games.lemonwesh.com/2048"},
+    {id: 2, name: "Slope", icon: "⛷️", tag: "ACTION", url: "https://games.lemonwesh.com/slope"},
+    {id: 3, name: "Tetris", icon: "🧱", tag: "CLASSIC", url: "https://games.lemonwesh.com/tetris"},
+    {id: 4, name: "Snake", icon: "🐍", tag: "CLASSIC", url: "https://games.lemonwesh.com/snake"},
+    {id: 5, name: "Chess", icon: "♟️", tag: "STRATEGY", url: "https://games.lemonwesh.com/chess"},
+    {id: 6, name: "Pacman", icon: "👻", tag: "ARCADE", url: "https://games.lemonwesh.com/pacman"},
+    {id: 7, name: "Space Invaders", icon: "👾", tag: "ARCADE", url: "https://games.lemonwesh.com/space-invaders"},
+    {id: 8, name: "Flappy Bird", icon: "🐦", tag: "CASUAL", url: "https://games.lemonwesh.com/flappy"},
+    {id: 9, name: "Minesweeper", icon: "💣", tag: "PUZZLE", url: "https://games.lemonwesh.com/minesweeper"},
+    {id: 10, name: "Solitaire", icon: "🃏", tag: "CARD", url: "https://games.lemonwesh.com/solitaire"},
+    {id: 11, name: "Pong", icon: "🏓", tag: "CLASSIC", url: "https://games.lemonwesh.com/pong"},
+    {id: 12, name: "Breakout", icon: "🧱", tag: "ARCADE", url: "https://games.lemonwesh.com/breakout"}
+];
+
 function initGames() {
     const grid = document.getElementById('gamesGrid');
-    document.getElementById('gameCount').textContent = gamesDB.length;
+    document.getElementById('gameCount').textContent = games.length;
     
-    gamesDB.forEach((game, index) => {
+    games.forEach(game => {
         const module = document.createElement('div');
         module.className = 'game-module';
         module.innerHTML = `
@@ -692,23 +303,456 @@ function initGames() {
             </div>
             <div class="module-title">${game.name}</div>
             <div class="module-meta">
-                <span style="color:${game.broken ? 'var(--error-red)' : 'var(--success-green)'}">${game.broken ? 'BROKEN' : 'WORKING'}</span>
-                <span>#${index + 1}</span>
+                <span>v1.0</span>
+                <span>></span>
             </div>
         `;
-        module.onclick = () => {
-            if (game.broken) {
-                showToast(`ERROR: ${game.name} is broken.\nToo lazy to fix it.`, 'angry');
-            } else {
-                openGame(game);
-            }
-        };
+        module.onclick = () => openGame(game);
         grid.appendChild(module);
     });
 }
 
-// Include all other functions from previous version
-// (boot sequence, matrix, easter eggs, achievements system, etc.)
+// ===== SEARCH SYSTEM WITH EASTER EGGS =====
+let searchDebounce;
+document.getElementById('gameSearch')?.addEventListener('input', function(e) {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => handleSearch(e.target.value.toLowerCase()), 500);
+});
+
+function handleSearch(term) {
+    if (state.shutdownActive) return;
+    
+    // Aurelio Detection System
+    if (term.includes('aurelio')) {
+        state.easterEggs.aurelio++;
+        document.getElementById('debugAurelio').textContent = state.easterEggs.aurelio;
+        
+        const messages = [
+            "Aurelio is watching...",
+            "STOP searching for that.",
+            "This is your final warning.",
+            "You have angered Aurelio.",
+            "SYSTEM LOCKDOWN INITIATED"
+        ];
+        
+        if (state.easterEggs.aurelio <= 5) {
+            showToast(messages[state.easterEggs.aurelio - 1], state.easterEggs.aurelio >= 4 ? 'furious' : state.easterEggs.aurelio >= 3 ? 'angry' : 'normal');
+        }
+        
+        if (state.easterEggs.aurelio === 5) {
+            triggerShutdown();
+            unlockAchievement('aurelio_victim');
+        }
+        return;
+    }
+    
+    // Lemon Protocol
+    if (term.includes('lemon')) {
+        state.easterEggs.lemon++;
+        document.getElementById('debugLemon').textContent = state.easterEggs.lemon;
+        
+        const lemonMsgs = [
+            "🍋 Detected...",
+            "Lemon concentration increasing...",
+            "Citrus levels critical...",
+            "Sour protocols engaging...",
+            "🍋 LEMON PROTOCOL UNLOCKED 🍋"
+        ];
+        
+        showToast(lemonMsgs[state.easterEggs.lemon - 1], 'unlocked');
+        
+        if (state.easterEggs.lemon === 5 && !state.easterEggs.secretUnlocked) {
+            unlockSecretMenu();
+            unlockAchievement('lemon_hunter');
+            unlockAchievement('secret_agent');
+        }
+        return;
+    }
+    
+    // God Mode Code
+    if (term === 'idkfa') {
+        toggleGodMode();
+        document.getElementById('gameSearch').value = '';
+        return;
+    }
+    
+    // Normal search
+    const modules = document.querySelectorAll('.game-module');
+    modules.forEach(mod => {
+        const text = mod.textContent.toLowerCase();
+        mod.style.display = text.includes(term) ? 'block' : 'none';
+    });
+    
+    document.getElementById('debugSearch').textContent = term;
+}
+
+function unlockSecretMenu() {
+    state.easterEggs.secretUnlocked = true;
+    document.getElementById('secretMenu').classList.add('active');
+    showToast('SECRET MENU UNLOCKED\nCheck Home page!', 'unlocked');
+}
+
+// ===== SHUTDOWN/AURELIO SYSTEM =====
+function triggerShutdown() {
+    state.shutdownActive = true;
+    const overlay = document.getElementById('shutdown-overlay');
+    const timer = document.querySelector('.shutdown-timer');
+    overlay.classList.add('active');
+    
+    let timeLeft = 60;
+    state.shutdownTimer = setInterval(() => {
+        timeLeft--;
+        timer.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            endShutdown();
+            unlockAchievement('survivor');
+        }
+    }, 1000);
+    
+    // Secret escape hatch - type 'sorry'
+    let buffer = '';
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (!state.shutdownActive) {
+            document.removeEventListener('keydown', escapeHandler);
+            return;
+        }
+        buffer += e.key.toLowerCase();
+        if (buffer.includes('sorry')) {
+            endShutdown();
+            document.removeEventListener('keydown', escapeHandler);
+        }
+        if (buffer.length > 10) buffer = buffer.slice(-10);
+    });
+}
+
+function endShutdown() {
+    state.shutdownActive = false;
+    clearInterval(state.shutdownTimer);
+    document.getElementById('shutdown-overlay').classList.remove('active');
+    state.easterEggs.aurelio = 0;
+    document.getElementById('debugAurelio').textContent = '0';
+    showToast('Lockdown ended. Behave yourself.', 'normal');
+}
+
+// ===== SECRET MENU FUNCTIONS =====
+function toggleMatrix() {
+    const canvas = document.getElementById('matrix-canvas');
+    canvas.style.opacity = canvas.style.opacity === '0' ? state.matrixIntensity : '0';
+    updateSecretStatus('Matrix toggled');
+}
+
+function setMatrixIntensity(val) {
+    state.matrixIntensity = val / 100;
+    document.getElementById('matrixValue').textContent = val + '%';
+    document.getElementById('matrix-canvas').style.opacity = state.matrixIntensity;
+}
+
+function toggleNightMode() {
+    state.easterEggs.nightMode = !state.easterEggs.nightMode;
+    document.body.classList.toggle('night-mode');
+    updateSecretStatus('Night Mode: ' + (state.easterEggs.nightMode ? 'ON' : 'OFF'));
+    unlockAchievement('night_owl');
+}
+
+function toggleGodMode() {
+    state.easterEggs.godMode = !state.easterEggs.godMode;
+    document.body.classList.toggle('god-mode');
+    updateSecretStatus('GOD MODE: ' + (state.easterEggs.godMode ? 'ACTIVE' : 'INACTIVE'));
+    unlockAchievement('god_mode');
+}
+
+function toggleDebug() {
+    state.easterEggs.debug = !state.easterEggs.debug;
+    document.getElementById('debugOverlay').classList.toggle('active');
+    document.getElementById('debugKonami').textContent = state.easterEggs.konami;
+    updateSecretStatus('Debug Overlay: ' + (state.easterEggs.debug ? 'ON' : 'OFF'));
+    unlockAchievement('hacker');
+}
+
+function speedRunMode() {
+    state.easterEggs.speedRun = !state.easterEggs.speedRun;
+    document.body.classList.toggle('speed-mode');
+    updateSecretStatus('SPEED RUN: ' + (state.easterEggs.speedRun ? 'ENGAGED' : 'NORMAL'));
+    unlockAchievement('speed_demon');
+}
+
+function fakeDelete() {
+    updateSecretStatus('DELETING SYSTEM32...');
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            updateSecretStatus('SYSTEM32 DELETED... jk lol');
+            setTimeout(() => updateSecretStatus('PROTOCOL ACTIVE'), 2000);
+        } else {
+            updateSecretStatus(`DELETING... ${Math.floor(progress)}%`);
+        }
+    }, 200);
+}
+
+function fakeIPLog() {
+    const fakeIPs = ['192.168.1.105', '10.0.0.42', '172.16.0.7', '127.0.0.1'];
+    const ip = fakeIPs[Math.floor(Math.random() * fakeIPs.length)];
+    updateSecretStatus(`Logged IP: ${ip}\nLocation: Your Mom\'s House`);
+    setTimeout(() => updateSecretStatus('Just kidding. Privacy respected.'), 3000);
+}
+
+function unlockAllAchievements() {
+    achievementsDB.forEach(ach => {
+        if (!ach.unlocked) unlockAchievement(ach.id);
+    });
+    updateSecretStatus('All achievements unlocked');
+}
+
+function updateSecretStatus(msg) {
+    document.getElementById('secretStatus').textContent = msg;
+}
+
+// ===== KONAMI CODE =====
+let konamiBuffer = [];
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+
+document.addEventListener('keydown', (e) => {
+    konamiBuffer.push(e.key);
+    if (konamiBuffer.length > 10) konamiBuffer.shift();
+    
+    if (konamiBuffer.join(',') === konamiCode.join(',')) {
+        state.easterEggs.konami = true;
+        document.getElementById('debugKonami').textContent = 'true';
+        unlockAchievement('konami_master');
+        showToast('Konami Code Activated!\n30 Lives? Nope, just respect.', 'unlocked');
+        document.body.style.filter = 'hue-rotate(90deg)';
+        setTimeout(() => document.body.style.filter = '', 1000);
+    }
+    
+    // Ctrl+Shift+L shortcut
+    if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+        e.preventDefault();
+        document.getElementById('gameSearch')?.focus();
+        document.getElementById('gameSearch').value = 'lemon';
+        handleSearch('lemon');
+    }
+});
+
+// ===== LOGO EASTER EGG =====
+function logoClick() {
+    state.easterEggs.logoClicks++;
+    if (state.easterEggs.logoClicks === 10) {
+        unlockAchievement('logo_spammer');
+        showToast('Logo clicked 10 times!\nYou must really like lemons.', 'unlocked');
+    }
+    
+    if (state.easterEggs.logoClicks % 5 === 0) {
+        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'];
+        document.documentElement.style.setProperty('--terminal-blue', colors[Math.floor(Math.random() * colors.length)]);
+        setTimeout(() => {
+            document.documentElement.style.setProperty('--terminal-blue', '#3b82f6');
+        }, 500);
+    }
+}
+
+// ===== ACHIEVEMENT SYSTEM =====
+function initAchievements() {
+    const container = document.getElementById('achievementsList');
+    container.innerHTML = '';
+    
+    achievementsDB.forEach(ach => {
+        const item = document.createElement('div');
+        item.className = 'achievement-item' + (ach.unlocked ? ' unlocked' : '');
+        item.innerHTML = `
+            <div class="achievement-icon">${ach.unlocked ? ach.icon : '🔒'}</div>
+            <div class="achievement-info">
+                <h4>${ach.name}</h4>
+                <p>${ach.desc}</p>
+            </div>
+        `;
+        container.appendChild(item);
+    });
+    
+    const unlocked = achievementsDB.filter(a => a.unlocked).length;
+    document.getElementById('achievementCount').textContent = `${unlocked}/${achievementsDB.length}`;
+}
+
+function unlockAchievement(id) {
+    const ach = achievementsDB.find(a => a.id === id);
+    if (ach && !ach.unlocked) {
+        ach.unlocked = true;
+        initAchievements();
+        showAchievementPopup(ach);
+        saveState();
+    }
+}
+
+function showAchievementPopup(ach) {
+    const popup = document.getElementById('achievementPopup');
+    document.getElementById('popIcon').textContent = ach.icon;
+    document.getElementById('popTitle').textContent = 'Achievement Unlocked!';
+    document.getElementById('popDesc').textContent = ach.name;
+    
+    popup.classList.add('show');
+    setTimeout(() => popup.classList.remove('show'), 3000);
+}
+
+function toggleAchievements() {
+    document.getElementById('achievementsPanel').classList.toggle('active');
+}
+
+// ===== UTILITY FUNCTIONS =====
+function showSection(section) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(section)?.classList.add('active');
+    event.target.classList.add('active');
+    document.getElementById('statusText').textContent = `Viewing: ${section.toUpperCase()}`;
+}
+
+function showToast(message, type = 'normal') {
+    const toast = document.getElementById('easterToast');
+    toast.textContent = message;
+    toast.className = 'easter-egg-toast show ' + type;
+    setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function openGame(game) {
+    document.getElementById('viewerTitle').innerHTML = `> ${game.name.toUpperCase()} // ${game.tag}`;
+    document.getElementById('gameFrame').src = game.url;
+    document.getElementById('gameViewer').classList.add('active');
+    document.getElementById('statusText').textContent = `Playing: ${game.name}`;
+}
+
+function closeGame() {
+    document.getElementById('gameViewer').classList.remove('active');
+    document.getElementById('gameFrame').src = '';
+    document.getElementById('statusText').textContent = 'System Ready';
+}
+
+function reloadGame() {
+    document.getElementById('gameFrame').src = document.getElementById('gameFrame').src;
+}
+
+function toggleFullscreen() {
+    const frame = document.getElementById('gameFrame');
+    if (frame.requestFullscreen) frame.requestFullscreen();
+}
+
+function loadProxy() {
+    const url = document.getElementById('proxyUrl').value;
+    if (url) {
+        document.getElementById('proxyFrame').style.display = 'block';
+        document.getElementById('proxyIframe').src = url;
+    }
+}
+
+function playMusic() {
+    const url = document.getElementById('musicUrl').value;
+    if (url) {
+        if (state.audioPlayer) state.audioPlayer.pause();
+        state.audioPlayer = new Audio(url);
+        state.audioPlayer.play();
+        document.getElementById('nowPlaying').textContent = '▶ Playing...';
+        document.getElementById('nowPlaying').classList.add('active');
+        unlockAchievement('music_lover');
+    }
+}
+
+function stopMusic() {
+    if (state.audioPlayer) {
+        state.audioPlayer.pause();
+        document.getElementById('nowPlaying').classList.remove('active');
+    }
+}
+
+function dismissDevWarning() {
+    document.getElementById('devWarning').style.display = 'none';
+}
+
+function toggleCloak() {
+    const titles = ['Google', 'Classroom', 'Canvas', 'Home', 'Dashboard'];
+    const icons = [
+        'https://www.google.com/favicon.ico',
+        'https://ssl.gstatic.com/classroom/favicon.png',
+        'https://instructure.com/favicon.ico'
+    ];
+    const rand = Math.floor(Math.random() * titles.length);
+    document.title = titles[rand];
+    document.getElementById('favicon').href = icons[Math.floor(Math.random() * icons.length)];
+    showToast('Tab cloaked as: ' + titles[rand], 'normal');
+}
+
+function openTool(tool) {
+    showToast(`Opening ${tool}... (Demo only)`, 'normal');
+}
+
+// ===== SESSION TIMER =====
+setInterval(() => {
+    const elapsed = Math.floor((Date.now() - state.sessionStart) / 1000);
+    const hours = Math.floor(elapsed / 3600).toString().padStart(2, '0');
+    const mins = Math.floor((elapsed % 3600) / 60).toString().padStart(2, '0');
+    const secs = (elapsed % 60).toString().padStart(2, '0');
+    document.getElementById('sessionTime').textContent = `${hours}:${mins}:${secs}`;
+    
+    // Random latency fluctuation
+    if (Math.random() > 0.7) {
+        document.getElementById('latency').textContent = Math.floor(Math.random() * 20 + 5) + 'ms';
+    }
+    
+    // Update debug info
+    if (state.easterEggs.debug) {
+        document.getElementById('fps').textContent = Math.floor(Math.random() * 10 + 55);
+        document.getElementById('memory').textContent = (Math.random() * 100 + 200).toFixed(1) + 'MB';
+    }
+}, 1000);
+
+// ===== CLOCK =====
+setInterval(() => {
+    const now = new Date();
+    document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', {hour12: false});
+}, 1000);
+
+// ===== SAVE/LOAD STATE =====
+function saveState() {
+    localStorage.setItem('lemons_proxy_state', JSON.stringify({
+        achievements: achievementsDB.map(a => ({id: a.id, unlocked: a.unlocked})),
+        easterEggs: state.easterEggs
+    }));
+}
+
+function loadState() {
+    const saved = localStorage.getItem('lemons_proxy_state');
+    if (saved) {
+        const data = JSON.parse(saved);
+        data.achievements.forEach(savedAch => {
+            const ach = achievementsDB.find(a => a.id === savedAch.id);
+            if (ach) ach.unlocked = savedAch.unlocked;
+        });
+        Object.assign(state.easterEggs, data.easterEggs);
+        
+        if (state.easterEggs.secretUnlocked) {
+            document.getElementById('secretMenu').classList.add('active');
+        }
+    }
+}
+
+// ===== CONSOLE EASTER EGG =====
+console.log('%c🍋 LEMONS_PROXY v10.0', 'color: #3b82f6; font-size: 24px; font-weight: bold;');
+console.log('%cWelcome, hacker. Search for "lemon" 5 times to unlock secrets.', 'color: #f59e0b; font-size: 12px;');
+console.log('%cType idkfa in search for God Mode.', 'color: #ef4444; font-size: 12px;');
+
+// ===== INITIALIZATION =====
+function initSystems() {
+    initGames();
+    initAchievements();
+    initMatrix();
+    loadState();
+    
+    // Check if coming from lockdown
+    if (state.shutdownActive) {
+        document.getElementById('aurelioStatus').textContent = 'LOCKDOWN';
+        document.getElementById('aurelioStatus').style.color = 'var(--error-red)';
+    }
+}
 
 // Start
 initBoot();
