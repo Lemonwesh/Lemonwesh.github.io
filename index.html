@@ -1,4 +1,298 @@
-            <input type="text" class="search-input" id="gameSearch" placeholder="Search protocols... [Try 'lemon' or 'aurelio']" autocomplete="off">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LEMONS_PROXY // BLUEPRINT_TERMINAL_v10.0</title>
+<link id="favicon" rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23001133'/><text x='15' y='75' font-size='60'>🍋</text><text x='55' y='60' font-family='monospace' font-size='35' fill='%233b82f6' font-weight='bold'>&lt;/&gt;</text></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap');
+:root{--bg-primary:#0a1628;--bg-secondary:#111d32;--bg-tertiary:#1a2942;--blueprint-grid:rgba(59,130,246,0.06);--terminal-blue:#3b82f6;--terminal-bright:#60a5fa;--terminal-dim:#1e40af;--terminal-amber:#f59e0b;--border-glow:rgba(59,130,246,0.15);--lemon-blue:#1e3a8a;--error-red:#ef4444;--success-green:#10b981;--text-primary:#e2e8f0;--text-secondary:#94a3b8;--accent-cyan:#06b6d4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background-color:var(--bg-primary);background-image:linear-gradient(var(--blueprint-grid) 1px,transparent 1px),linear-gradient(90deg,var(--blueprint-grid) 1px,transparent 1px);background-size:40px 40px;font-family:'Inter','JetBrains Mono',sans-serif;font-weight:300;color:var(--text-primary);min-height:100vh;overflow-x:hidden;position:relative}
+#matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;opacity:0.08;pointer-events:none}
+#boot-sequence{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-primary);z-index:10000;display:flex;flex-direction:column;justify-content:center;padding:50px;font-family:'JetBrains Mono',monospace;font-size:0.95rem;line-height:1.8;font-weight:300}
+.boot-line{color:var(--terminal-blue);opacity:0;animation:typeLine 0.08s forwards;letter-spacing:0.5px}
+.boot-line.error{color:var(--error-red)}
+.boot-line.warn{color:var(--terminal-amber)}
+.boot-line.success{color:var(--success-green)}
+.boot-line.dim{color:var(--text-secondary)}
+@keyframes typeLine{to{opacity:1}}
+.boot-cursor{display:inline-block;width:8px;height:16px;background:var(--terminal-blue);margin-left:5px;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+.click-to-boot{margin-top:40px;color:var(--terminal-amber);font-size:1rem;cursor:pointer;opacity:0;animation:fadeInOut 2s infinite;animation-delay:3s;text-align:center;border:1px solid var(--terminal-amber);padding:15px;width:fit-content;border-radius:4px;align-self:center}
+@keyframes fadeInOut{0%,100%{opacity:0.3}50%{opacity:1}}
+.hidden-message{position:fixed;bottom:2px;right:5px;font-size:8px;color:rgba(148,163,184,0.06);user-select:text;pointer-events:none;font-family:'JetBrains Mono',monospace;z-index:9999;letter-spacing:1px}
+.dev-warning{position:fixed;top:0;left:0;width:100%;background:rgba(245,158,11,0.1);border-bottom:1px solid var(--terminal-amber);padding:8px 20px;text-align:center;font-size:0.8rem;color:var(--terminal-amber);z-index:9998;font-family:'JetBrains Mono',monospace;backdrop-filter:blur(5px);display:flex;justify-content:center;align-items:center;gap:15px}
+.dev-warning button{background:transparent;border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:2px 10px;font-size:0.7rem;cursor:pointer;border-radius:4px;font-family:'JetBrains Mono',monospace}
+.dev-warning button:hover{background:var(--terminal-amber);color:var(--bg-primary)}
+header{background:var(--bg-secondary);border-bottom:1px solid var(--terminal-blue);padding:15px 25px;display:flex;align-items:center;justify-content:space-between;position:relative;margin-top:35px}
+.logo-container{display:flex;align-items:center;gap:12px;cursor:pointer}
+.logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--lemon-blue) 0%,#1e293b 100%);border:1px solid var(--terminal-blue);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 12px var(--border-glow);position:relative;overflow:hidden;animation:pulseGlow 3s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 12px var(--border-glow)}50%{box-shadow:0 0 18px rgba(59,130,246,0.3)}}
+.logo-icon::after{content:"</>";position:absolute;bottom:2px;right:3px;font-size:8px;color:var(--terminal-blue);font-weight:500;background:rgba(0,0,0,0.6);padding:0 2px;border-radius:2px;font-family:'JetBrains Mono',monospace}
+.terminal-title{font-size:1.4rem;font-weight:400;color:var(--terminal-blue);text-transform:uppercase;letter-spacing:2px;font-family:'JetBrains Mono',monospace}
+.version-tag{font-size:0.65rem;color:var(--terminal-dim);background:rgba(59,130,246,0.1);padding:2px 6px;border-radius:3px;border:1px solid var(--terminal-dim);margin-left:8px;font-weight:400}
+.credits{color:var(--text-secondary);font-size:0.75rem;font-weight:300}
+nav{background:var(--bg-secondary);border-bottom:1px solid rgba(59,130,246,0.15);display:flex;justify-content:center;position:sticky;top:35px;z-index:100}
+nav button{background:transparent;border:none;border-right:1px solid rgba(59,130,246,0.15);color:var(--text-secondary);padding:14px 35px;font-family:'Inter',sans-serif;font-weight:400;font-size:0.85rem;cursor:pointer;text-transform:uppercase;letter-spacing:1.5px;transition:all 0.3s;position:relative}
+nav button:last-child{border-right:none}
+nav button:hover,nav button.active{background:rgba(59,130,246,0.08);color:var(--terminal-blue)}
+nav button.active{border-bottom:2px solid var(--terminal-blue)}
+nav button:disabled{opacity:0.3;cursor:not-allowed;pointer-events:none}
+.container{max-width:1400px;margin:0 auto;padding:25px;padding-bottom:140px}
+.section{display:none}
+.section.active{display:block;animation:fadeIn 0.4s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.system-stats{background:var(--bg-secondary);border:1px solid rgba(59,130,246,0.15);border-radius:6px;padding:18px 25px;margin-bottom:25px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:25px;position:relative}
+.system-stats::after{content:"BLUEPRINT_v10.0 // LEMONWESH x LD";position:absolute;top:5px;right:10px;font-size:0.6rem;color:var(--terminal-dim);opacity:0.4;font-family:'JetBrains Mono',monospace;font-weight:300}
+.stat-box{display:flex;flex-direction:column;gap:4px}
+.stat-label{color:var(--text-secondary);font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;font-weight:400}
+.stat-value{color:var(--terminal-blue);font-size:1.2rem;font-weight:400;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px}
+.search-container{margin-bottom:25px;position:relative}
+.search-input{width:100%;padding:14px 20px 14px 45px;background:var(--bg-secondary);border:1px solid rgba(59,130,246,0.2);color:var(--text-primary);font-family:'Inter',sans-serif;font-weight:300;font-size:0.95rem;border-radius:6px;outline:none;transition:all 0.3s}
+.search-input:focus{border-color:var(--terminal-blue);box-shadow:0 0 0 2px rgba(59,130,246,0.1)}
+.search-container::before{content:"⌕";position:absolute;left:18px;top:50%;transform:translateY(-50%);color:var(--terminal-blue);font-size:1.1rem;opacity:0.6}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.game-module{background:var(--bg-secondary);border:1px solid rgba(59,130,246,0.12);border-radius:6px;overflow:hidden;cursor:pointer;transition:all 0.25s;position:relative}
+.game-module::before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--terminal-blue),transparent);transform:scaleX(0);transition:transform 0.3s}
+.game-module:hover{transform:translateY(-4px);border-color:rgba(59,130,246,0.4);box-shadow:0 8px 25px rgba(59,130,246,0.12)}
+.game-module:hover::before{transform:scaleX(1)}
+.module-header{padding:18px;background:linear-gradient(135deg,rgba(30,58,138,0.15) 0%,transparent 100%);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(59,130,246,0.08)}
+.module-icon{font-size:1.9rem;filter:drop-shadow(0 0 3px rgba(59,130,246,0.3))}
+.module-tag{background:rgba(59,130,246,0.08);color:var(--terminal-bright);padding:3px 10px;border-radius:4px;font-size:0.65rem;text-transform:uppercase;border:1px solid rgba(59,130,246,0.2);font-weight:500;letter-spacing:0.5px}
+.module-title{padding:18px;font-size:1rem;font-weight:400;color:var(--text-primary);letter-spacing:0.3px}
+.module-meta{padding:0 18px 18px;color:var(--text-secondary);font-size:0.85rem;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-weight:300}
+.coming-soon{text-align:center;padding:60px 20px;background:var(--bg-secondary);border:1px dashed rgba(59,130,246,0.25);border-radius:8px;position:relative;overflow:hidden}
+.hack-map{width:100%;max-width:600px;margin:0 auto 30px;height:200px;background:rgba(10,22,40,0.6);border:1px solid rgba(59,130,246,0.15);border-radius:6px;position:relative;overflow:hidden}
+.map-grid{position:absolute;width:100%;height:100%;background-image:linear-gradient(rgba(59,130,246,0.1) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.1) 1px,transparent 1px);background-size:20px 20px}
+.coming-title{font-size:2rem;color:var(--terminal-blue);margin-bottom:10px;text-transform:uppercase;letter-spacing:4px;font-family:'JetBrains Mono',monospace;font-weight:300}
+.coming-subtitle{color:var(--terminal-dim);font-size:1.1rem;margin-bottom:20px;letter-spacing:2px}
+.coming-text{color:var(--text-secondary);font-size:0.95rem;max-width:500px;margin:0 auto 30px;line-height:1.6;font-weight:300}
+.proxy-links{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
+.proxy-link{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.25);color:var(--terminal-blue);padding:12px 24px;border-radius:4px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:0.85rem;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px}
+.proxy-link:hover{background:rgba(59,130,246,0.15);border-color:var(--terminal-blue);transform:translateY(-2px)}
+.game-viewer{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:var(--bg-primary);z-index:2000;flex-direction:column}
+.game-viewer.active{display:flex}
+.viewer-header{background:var(--bg-secondary);padding:15px 25px;border-bottom:1px solid var(--terminal-blue);display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,0.2)}
+.viewer-title{color:var(--terminal-blue);font-size:1rem;font-family:'JetBrains Mono',monospace;font-weight:400;letter-spacing:0.5px;display:flex;align-items:center;gap:10px}
+.controls-group{display:flex;gap:10px}
+.control-btn{background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);color:var(--terminal-blue);padding:8px 16px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;cursor:pointer;border-radius:4px;transition:all 0.2s;font-weight:400;display:flex;align-items:center;gap:6px}
+.control-btn:hover{background:rgba(59,130,246,0.2);border-color:var(--terminal-blue)}
+.control-btn.close{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.3);color:var(--error-red)}
+.control-btn.close:hover{background:rgba(239,68,68,0.2)}
+#gameFrame{flex:1;border:none;background:#000;width:100%}
+.music-player{position:fixed;bottom:45px;left:0;width:100%;background:var(--bg-secondary);border-top:1px solid rgba(59,130,246,0.15);padding:12px 25px;display:flex;align-items:center;gap:15px;z-index:998;backdrop-filter:blur(5px)}
+.music-label{color:var(--text-secondary);font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.music-input{flex:1;background:var(--bg-primary);border:1px solid rgba(59,130,246,0.2);color:var(--text-primary);padding:8px 14px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;font-weight:300;outline:none}
+.music-input:focus{border-color:var(--terminal-blue)}
+.music-btn{background:rgba(59,130,246,0.15);border:1px solid var(--terminal-blue);color:var(--terminal-blue);padding:8px 18px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;cursor:pointer;border-radius:4px;transition:all 0.2s;font-weight:400}
+.music-btn:hover{background:var(--terminal-blue);color:white}
+.now-playing{color:var(--terminal-bright);font-size:0.8rem;margin-left:10px;font-family:'JetBrains Mono',monospace;opacity:0;transition:opacity 0.3s}
+.now-playing.active{opacity:1}
+.achievements-btn{position:fixed;bottom:95px;right:25px;width:45px;height:45px;background:var(--bg-secondary);border:1px solid var(--terminal-blue);border-radius:50%;color:var(--terminal-blue);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:999;transition:all 0.3s}
+.achievements-btn:hover{transform:scale(1.1) rotate(10deg);box-shadow:0 0 15px var(--border-glow)}
+.achievements-panel{display:none;position:fixed;bottom:150px;right:25px;width:320px;background:var(--bg-secondary);border:1px solid rgba(59,130,246,0.25);border-radius:8px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.4);z-index:999;max-height:450px;overflow-y:auto}
+.achievements-panel.active{display:block;animation:slideUp 0.3s ease-out}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.panel-header{color:var(--terminal-blue);border-bottom:1px solid rgba(59,130,246,0.2);padding-bottom:12px;margin-bottom:15px;font-family:'JetBrains Mono',monospace;font-size:0.9rem;display:flex;justify-content:space-between;align-items:center;font-weight:400}
+.achievement-item{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:8px;background:rgba(59,130,246,0.04);border:1px solid rgba(59,130,246,0.1);border-radius:4px;opacity:0.4;transition:all 0.3s}
+.achievement-item.unlocked{opacity:1;background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.3)}
+.achievement-icon{font-size:1.4rem}
+.achievement-info h4{color:var(--text-primary);font-size:0.85rem;font-weight:500;margin-bottom:2px}
+.achievement-info p{color:var(--text-secondary);font-size:0.75rem;font-weight:300}
+.achievement-popup{position:fixed;top:100px;right:-350px;background:var(--bg-secondary);border:1px solid var(--terminal-blue);border-radius:6px;padding:15px 20px;display:flex;align-items:center;gap:15px;box-shadow:0 5px 25px rgba(59,130,246,0.2);z-index:1001;transition:right 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);max-width:300px}
+.achievement-popup.show{right:25px}
+.pop-icon{font-size:2rem}
+.pop-text h3{color:var(--terminal-bright);font-size:0.9rem;margin-bottom:3px;font-weight:500}
+.pop-text p{color:var(--text-secondary);font-size:0.8rem;font-weight:300}
+.status-bar{position:fixed;bottom:0;left:0;width:100%;background:var(--bg-secondary);border-top:1px solid rgba(59,130,246,0.15);padding:10px 25px;display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;z-index:997;color:var(--text-secondary);font-weight:300}
+.status-left{display:flex;gap:25px}
+.easter-egg-toast{position:fixed;top:100px;right:-400px;background:var(--bg-secondary);border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:15px 25px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.9rem;transition:right 0.5s;z-index:1002;box-shadow:0 5px 20px rgba(245,158,11,0.2);max-width:350px;line-height:1.5;white-space:pre-line}
+.easter-egg-toast.show{right:25px}
+.easter-egg-toast.angry{background:#2a0a0a;border-color:var(--error-red);color:var(--error-red);box-shadow:0 5px 20px rgba(239,68,68,0.4)}
+.easter-egg-toast.furious{background:#1a0505;border-color:#ff0000;color:#ff0000;box-shadow:0 0 30px rgba(255,0,0,0.6);animation:shake 0.5s infinite}
+.easter-egg-toast.unlocked{background:#0a2a1a;border-color:var(--success-green);color:var(--success-green);box-shadow:0 5px 20px rgba(16,185,129,0.3)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+#shutdown-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace}
+#shutdown-overlay.active{display:flex}
+.shutdown-text{font-size:8rem;color:#ff0000;font-weight:bold;text-transform:uppercase;letter-spacing:20px;animation:pulseRed 1s infinite;text-shadow:0 0 50px rgba(255,0,0,0.8)}
+@keyframes pulseRed{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(1.05)}}
+.shutdown-sub{color:#666;margin-top:20px;font-size:1.2rem;text-align:center}
+.shutdown-timer{color:#ff0000;font-size:2rem;margin-top:30px;font-weight:bold;animation:pulseRed 1s infinite}
+.shutdown-hint{color:#444;margin-top:15px;font-size:0.9rem}
+.secret-menu{background:var(--bg-secondary);border:2px solid var(--terminal-amber);border-radius:8px;padding:25px;margin-top:20px;position:relative;overflow:hidden;display:none}
+.secret-menu.active{display:block;animation:scanline 0.5s ease-out}
+.secret-menu::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--terminal-amber),transparent,var(--terminal-amber));animation:scan 2s linear infinite}
+@keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+@keyframes scanline{0%{clip-path:inset(0 100% 0 0)}100%{clip-path:inset(0 0 0 0)}}
+.secret-title{color:var(--terminal-amber);font-family:'JetBrains Mono',monospace;font-size:1.5rem;margin-bottom:20px;text-transform:uppercase;letter-spacing:2px;text-align:center;text-shadow:0 0 10px rgba(245,158,11,0.3)}
+.secret-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
+.secret-btn{background:rgba(245,158,11,0.1);border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:15px;font-family:'JetBrains Mono',monospace;cursor:pointer;border-radius:4px;transition:all 0.3s;text-transform:uppercase;font-size:0.8rem;letter-spacing:1px;position:relative;overflow:hidden}
+.secret-btn:hover{background:rgba(245,158,11,0.2);transform:translateY(-2px);box-shadow:0 5px 15px rgba(245,158,11,0.2)}
+.secret-btn.danger{border-color:var(--error-red);color:var(--error-red);background:rgba(239,68,68,0.1)}
+.secret-btn.danger:hover{background:rgba(239,68,68,0.2);box-shadow:0 5px 15px rgba(239,68,68,0.3)}
+.secret-btn.success{border-color:var(--success-green);color:var(--success-green);background:rgba(16,185,129,0.1)}
+.secret-btn.success:hover{background:rgba(16,185,129,0.2)}
+.secret-status{margin-top:15px;padding:10px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.2);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--terminal-amber);text-align:center;min-height:40px;display:flex;align-items:center;justify-content:center}
+.matrix-control{margin-top:15px;padding:15px;background:rgba(59,130,246,0.05);border:1px solid rgba(59,130,246,0.2);border-radius:4px}
+.matrix-control label{display:block;color:var(--terminal-blue);font-size:0.8rem;margin-bottom:8px;font-family:'JetBrains Mono',monospace}
+.matrix-slider{width:100%;height:6px;background:var(--bg-primary);outline:none;opacity:0.7;transition:opacity 0.2s;-webkit-appearance:none}
+.matrix-slider:hover{opacity:1}
+.matrix-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:var(--terminal-blue);cursor:pointer;border-radius:50%;box-shadow:0 0 10px rgba(59,130,246,0.5)}
+.debug-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9997;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(59,130,246,0.5);padding:10px;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(59,130,246,0.03) 2px,rgba(59,130,246,0.03) 4px)}
+.debug-overlay.active{display:block}
+.debug-info{position:absolute;top:10px;left:10px;background:rgba(10,22,40,0.9);padding:10px;border:1px solid rgba(59,130,246,0.3);border-radius:4px;max-width:300px}
+.god-mode{animation:godMode 3s infinite}
+@keyframes godMode{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(180deg)}}
+.night-mode{filter:invert(1) hue-rotate(180deg)}
+.speed-mode *{transition-duration:0.1s!important;animation-duration:0.1s!important}
+.console-toast{position:fixed;bottom:100px;left:25px;background:var(--bg-secondary);border:1px solid var(--success-green);color:var(--success-green);padding:10px 15px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:0.75rem;z-index:999;display:none;max-width:400px}
+.console-toast.active{display:block;animation:slideUp 0.3s ease-out}
+</style>
+</head>
+<body>
+
+<canvas id="matrix-canvas"></canvas>
+
+<div id="shutdown-overlay">
+    <div class="shutdown-text">STOP</div>
+    <div class="shutdown-sub">AURELIO PROTECTION SYSTEM ACTIVATED</div>
+    <div class="shutdown-timer">60</div>
+    <div class="shutdown-hint">Type 'sorry' or wait for lockout to expire</div>
+</div>
+
+<div id="boot-sequence">
+    <div id="boot-content"></div>
+    <div class="boot-cursor"></div>
+    <div class="click-to-boot" onclick="skipBoot()">[ CLICK TO INITIALIZE ]</div>
+</div>
+
+<div class="dev-warning" id="devWarning">
+    <span>⚠️ DEVELOPMENT MODE // UNAUTHORIZED ACCESS DETECTED</span>
+    <button onclick="dismissDevWarning()">ACKNOWLEDGE</button>
+</div>
+
+<div class="hidden-message">
+    user: lemonwesh | status: admin | access: unrestricted | protocol: lemon_v10.0 | ████████████████████
+</div>
+
+<header>
+    <div class="logo-container" onclick="logoClick()">
+        <div class="logo-icon">🍋</div>
+        <div>
+            <div class="terminal-title">LEMONS_PROXY<span class="version-tag">v10.0</span></div>
+            <div class="credits">blueprint terminal // by lemonwesh & ld</div>
+        </div>
+    </div>
+    <div style="display:flex;gap:15px;align-items:center;">
+        <button class="control-btn" onclick="toggleCloak()" title="Toggle Tab Cloak">
+            <span>👻</span> CLOAK
+        </button>
+        <div class="stat-value" id="clock" style="font-size:0.9rem;"></div>
+    </div>
+</header>
+
+<nav>
+    <button class="nav-btn active" onclick="showSection('home')">Home</button>
+    <button class="nav-btn" onclick="showSection('games')">Games</button>
+    <button class="nav-btn" onclick="showSection('proxy')">Proxy</button>
+    <button class="nav-btn" onclick="showSection('tools')">Tools</button>
+    <button class="nav-btn" onclick="showSection('about')">About</button>
+</nav>
+
+<div class="container">
+    
+    <section id="home" class="section active">
+        <div class="system-stats">
+            <div class="stat-box">
+                <span class="stat-label">System Status</span>
+                <span class="stat-value" style="color:var(--success-green);">ONLINE</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Latency</span>
+                <span class="stat-value" id="latency">12ms</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Active Nodes</span>
+                <span class="stat-value" id="nodes">420</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Encryption</span>
+                <span class="stat-value">AES-256</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Aurelio Status</span>
+                <span class="stat-value" id="aurelioStatus" style="color:var(--terminal-amber);">WATCHING</span>
+            </div>
+        </div>
+
+        <div class="coming-soon">
+            <div class="secret-menu" id="secretMenu">
+                <div class="secret-title">🍋 LEMON PROTOCOL UNLOCKED 🍋</div>
+                <div class="secret-grid">
+                    <button class="secret-btn" onclick="toggleMatrix()">Toggle Matrix</button>
+                    <button class="secret-btn" onclick="toggleNightMode()">Night Mode</button>
+                    <button class="secret-btn" onclick="toggleGodMode()">God Mode</button>
+                    <button class="secret-btn" onclick="toggleDebug()">Debug Overlay</button>
+                    <button class="secret-btn success" onclick="speedRunMode()">SPEED RUN</button>
+                    <button class="secret-btn danger" onclick="fakeDelete()">Delete System32</button>
+                    <button class="secret-btn" onclick="fakeIPLog()">Log IP Address</button>
+                    <button class="secret-btn" onclick="unlockAllAchievements()">Unlock All</button>
+                </div>
+                <div class="matrix-control">
+                    <label>Matrix Intensity: <span id="matrixValue">8%</span></label>
+                    <input type="range" class="matrix-slider" min="0" max="50" value="8" oninput="setMatrixIntensity(this.value)">
+                </div>
+                <div class="secret-status" id="secretStatus">PROTOCOL ACTIVE // WAITING FOR INPUT</div>
+            </div>
+
+            <div style="position:relative;width:200px;height:200px;margin:0 auto 30px;">
+                <svg viewBox="0 0 200 200" style="width:100%;height:100%;">
+                    <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(59,130,246,0.2)" stroke-width="1"/>
+                    <circle cx="100" cy="100" r="70" fill="none" stroke="rgba(59,130,246,0.4)" stroke-width="1" stroke-dasharray="10,5"/>
+                    <circle cx="100" cy="100" r="50" fill="none" stroke="rgba(59,130,246,0.6)" stroke-width="1"/>
+                    <line x1="100" y1="10" x2="100" y2="190" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+                    <line x1="10" y1="100" x2="190" y2="100" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+                    <circle cx="100" cy="100" r="5" fill="#3b82f6">
+                        <animate attributeName="r" values="5;8;5" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3rem;">🍋</div>
+            </div>
+            <h2 class="coming-title">WELCOME OPERATIVE</h2>
+            <p class="coming-subtitle">SECURE CONNECTION ESTABLISHED</p>
+            <p class="coming-text">
+                LEMONS_PROXY v10.0 is now online. All systems nominal. 
+                Search for "lemon" to unlock hidden protocols. 
+                Warning: Do not search for "aurelio" - system protection is active.
+            </p>
+            <div class="proxy-links">
+                <a href="#" class="proxy-link" onclick="showSection('games')">> GAMES</a>
+                <a href="#" class="proxy-link" onclick="showSection('proxy')">> BROWSER</a>
+                <a href="#" class="proxy-link" onclick="showSection('tools')">> TOOLS</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="games" class="section">
+        <div class="system-stats">
+            <div class="stat-box">
+                <span class="stat-label">Library Size</span>
+                <span class="stat-value" id="gameCount">0</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Recently Added</span>
+                <span class="stat-value">15</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Favorites</span>
+                <span class="stat-value" id="favCount">0</span>
+            </div>
+        </div>
+
+        <div class="search-container">
+                        <input type="text" class="search-input" id="gameSearch" placeholder="Search protocols... [Try 'lemon' or 'aurelio']" autocomplete="off">
         </div>
 
         <div class="games-grid" id="gamesGrid">
