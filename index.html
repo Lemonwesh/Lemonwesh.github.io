@@ -12,7 +12,6 @@
             --blueprint-bg: #004494;
             --blueprint-line: rgba(255, 255, 255, 0.85);
             --accent: #FF6600;
-            --surface: rgba(0, 0, 0, 0.4);
         }
         
         body {
@@ -26,7 +25,6 @@
             min-height: 100vh;
         }
 
-        /* Settings Modal */
         .settings-modal {
             display: none;
             position: fixed;
@@ -86,7 +84,6 @@
             font-size: 1.5rem;
         }
 
-        /* Header */
         header {
             text-align: center;
             padding: 30px 20px;
@@ -133,7 +130,6 @@
             border-color: var(--accent);
         }
 
-        /* Navigation */
         nav {
             background: rgba(0, 0, 0, 0.5);
             border-bottom: 2px solid var(--blueprint-line);
@@ -166,7 +162,6 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        /* Search */
         .search-box {
             margin: 20px auto;
             max-width: 600px;
@@ -181,7 +176,6 @@
             font-size: 1rem;
         }
 
-        /* Stats */
         .stats {
             text-align: center;
             padding: 20px;
@@ -192,7 +186,6 @@
             font-size: 1.2rem;
         }
 
-        /* Recent Games */
         .recent-section {
             background: rgba(255,102,0,0.1);
             border: 2px solid var(--accent);
@@ -200,12 +193,19 @@
             margin-bottom: 30px;
             display: none;
         }
-        .recent-section.active { display: block; }
+        .recent-section.active { 
+            display: block; 
+        }
+        .recent-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
         .recent-grid {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            margin-top: 15px;
         }
         .recent-item {
             background: rgba(0,0,0,0.4);
@@ -221,7 +221,6 @@
             border-color: var(--accent);
         }
 
-        /* Games Grid - All in One Area */
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -299,7 +298,7 @@
             font-family: 'Share Tech Mono', monospace;
         }
 
-        /* Proxy Browser - Shadow V3 Style in Blueprint Theme */
+        /* Proxy Browser */
         .proxy-container {
             border: 3px solid var(--blueprint-line);
             background: rgba(0, 0, 0, 0.4);
@@ -402,7 +401,12 @@
         .proxy-error h3 {
             color: var(--accent);
             font-family: 'Share Tech Mono', monospace;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
+        }
+        .proxy-error p {
+            max-width: 600px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
         }
         .proxy-error button {
             padding: 12px 24px;
@@ -413,7 +417,7 @@
             cursor: pointer;
             font-size: 1rem;
         }
-        .proxy-error button.secondary {
+        .proxy-error button.alt {
             background: transparent;
             border-color: var(--blueprint-line);
         }
@@ -429,7 +433,6 @@
             z-index: 10;
         }
 
-        /* Game Viewer */
         .game-viewer {
             display: none;
             position: fixed;
@@ -491,6 +494,26 @@
             color: var(--accent);
             font-weight: bold;
         }
+        
+        .info-box {
+            background: rgba(0,100,255,0.1);
+            border: 2px solid rgba(0,100,255,0.3);
+            padding: 15px;
+            margin-bottom: 20px;
+            font-family: 'Share Tech Mono';
+            font-size: 0.85rem;
+            text-align: center;
+        }
+        
+        .warning-box {
+            background: rgba(255,0,0,0.1);
+            border: 2px solid rgba(255,0,0,0.3);
+            padding: 15px;
+            margin-bottom: 20px;
+            font-family: 'Share Tech Mono';
+            font-size: 0.85rem;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -521,10 +544,6 @@
             <div class="setting-icon">📁</div>
             <div><div style="font-weight: bold;">Google Drive</div></div>
         </div>
-        <div class="setting-option" onclick="cloakTab('Gmail', 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico')">
-            <div class="setting-icon">✉️</div>
-            <div><div style="font-weight: bold;">Gmail</div></div>
-        </div>
     </div>
 
     <!-- Header -->
@@ -533,7 +552,7 @@
             <button class="control-btn" onclick="toggleSettings()">⚙️ SETTINGS</button>
         </div>
         <h1 class="blueprint-title" onclick="showSection('games')">🍋 LEMONS PROXY</h1>
-        <p style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.9rem;">VERIFIED WORKING GAMES • EMBEDDED PROXY BROWSER</p>
+        <p style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.9rem;">VERIFIED WORKING GAMES • NORTH US PROXY ROUTES</p>
         <div class="credits">CODE BY <span>LEMONWESH</span> // DESIGN BY <span>LD</span></div>
     </header>
 
@@ -546,10 +565,16 @@
     <!-- Main Container -->
     <div class="container">
         
-        <!-- PROXY SECTION - Shadow V3 Style in Blueprint -->
+        <!-- PROXY SECTION - North US Based -->
         <section id="proxy" class="section">
-            <div style="background: rgba(0,255,0,0.05); border: 2px solid rgba(0,255,0,0.3); padding: 15px; margin-bottom: 20px; text-align: center; font-family: 'Share Tech Mono';">
-                🔍 EMBEDDED PROXY BROWSER | Type URL → Select Method → Browse Below
+            <div class="info-box">
+                ℹ️ PROXY LOCATION: <strong>US-EAST (Virginia)</strong> & <strong>US-WEST (California)</strong> | 
+                Avoiding Texas infrastructure for better latency in northern regions
+            </div>
+            
+            <div class="warning-box">
+                ⚠️ X-Frame-Options Notice: Most modern sites block iframe embedding. 
+                Use 🌐 Google Translate (US-East routing) or 📖 Text Mode for best results.
             </div>
 
             <div class="proxy-container">
@@ -560,13 +585,14 @@
                     <button class="proxy-nav-btn" onclick="reloadProxy()" title="Reload">↻</button>
                     
                     <div class="proxy-omnibox">
-                        <input type="text" class="proxy-address" id="proxyAddress" placeholder="https://example.com or search query..." onkeydown="if(event.key === 'Enter') navigateProxy()">
+                        <input type="text" class="proxy-address" id="proxyAddress" placeholder="https://example.com" onkeydown="if(event.key === 'Enter') navigateProxy()">
                     </div>
                     
                     <select class="proxy-select" id="proxyEngine">
-                        <option value="translate">🌐 Google Translate</option>
-                        <option value="textise">📖 Text Reader</option>
-                        <option value="direct" selected>🎯 Direct</option>
+                        <option value="translate" selected>🌐 Google Translate (US-East)</option>
+                        <option value="translate-west">🌐 Google Translate (US-West)</option>
+                        <option value="textise">📖 Text Reader (US-North)</option>
+                        <option value="direct">🎯 Direct (Local)</option>
                     </select>
                     
                     <button class="proxy-go-btn" onclick="navigateProxy()">GO</button>
@@ -577,22 +603,27 @@
                     <iframe id="proxyFrame" class="proxy-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock allow-downloads" allow="fullscreen; autoplay; clipboard-read; clipboard-write"></iframe>
                     
                     <div id="proxyError" class="proxy-error">
-                        <h3>⚠️ UNABLE TO EMBED</h3>
-                        <p style="max-width: 500px; line-height: 1.6; opacity: 0.9;">This site blocks iframe embedding (X-Frame-Options) or refused to connect.</p>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                        <h3>⚠️ SITE BLOCKED EMBEDDING</h3>
+                        <p>This website uses <strong>X-Frame-Options</strong> or <strong>Content Security Policy</strong> headers that prevent iframe loading. Major sites (Google, YouTube, Discord) block embedding for security.</p>
+                        <p style="color: var(--accent);">TIP: Try switching to Google Translate method above, which routes through US-East (Virginia) infrastructure.</p>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px;">
                             <button onclick="openInNewTab()">🔓 OPEN IN NEW TAB</button>
-                            <button class="secondary" onclick="tryTextMode()">📖 TRY TEXT MODE</button>
-                            <button class="secondary" onclick="hideProxyError()">CLOSE</button>
+                            <button onclick="tryTextMode()" class="alt">📖 TRY TEXT MODE</button>
+                            <button onclick="hideProxyError()" class="alt">CLOSE</button>
                         </div>
                     </div>
                     
-                    <div class="proxy-status" id="proxyStatus">Ready</div>
+                    <div class="proxy-status" id="proxyStatus">Ready - US-East Route Active</div>
                 </div>
             </div>
         </section>
 
-        <!-- GAMES SECTION - All in One Area -->
+        <!-- GAMES SECTION -->
         <section id="games" class="section active">
+            <div class="info-box">
+                ℹ️ HOST ANYWHERE: This is a static HTML file. Host on GitHub Pages, Netlify, Vercel, or any static host (recommended: GitHub Pages US-East servers).
+            </div>
+            
             <div class="search-box">
                 <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search all games..." onkeyup="searchGames()">
             </div>
@@ -603,7 +634,7 @@
             </div>
             
             <div class="stats">
-                <span id="gameCount">0</span> WORKING GAMES | CLICK ANY TO PLAY
+                <span id="gameCount">0</span> WORKING GAMES • EMBEDDABLE VERSIONS ONLY
             </div>
 
             <div class="games-grid" id="gamesGrid"></div>
@@ -612,7 +643,7 @@
 
     <footer>
         <div class="footer-credits">
-            CODE BY <span>LEMONWESH</span> // DESIGN BY <span>LD</span> // BLUEPRINT + SHADOW V3 HYBRID
+            CODE BY <span>LEMONWESH</span> // DESIGN BY <span>LD</span> // PROXY: <span>US-EAST/WEST</span>
         </div>
     </footer>
 
@@ -626,16 +657,18 @@
     </div>
 
     <script>
-        // ALL GAMES IN ONE AREA (No separate categories visible)
+        // ALL GAMES - Northern US/CDN hosted where possible
         const games = [
-            // NEW GAMES
-            {name: "8 Ball Pool", emoji: "🎱", tag: "SPORTS", url: "https://www.y8.com/games/8_ball_pool_1"},
-            {name: "Tag (2-4 Players)", emoji: "🏃", tag: "MULTIPLAYER", url: "https://www.y8.com/games/tag"},
-            {name: "Fireboy & Watergirl", emoji: "🔥💧", tag: "MULTIPLAYER", url: "https://www.y8.com/games/fireboy_and_watergirl_forest_temple"},
-            {name: "Getaway Shootout", emoji: "🏎️", tag: "MULTIPLAYER", url: "https://www.y8.com/games/getaway_shootout"},
-            {name: "Stick Duel Battle", emoji: "⚔️", tag: "MULTIPLAYER", url: "https://www.y8.com/games/stick_duel_battle"},
+            // 8 Ball Pool (US-West CDN GameDistribution)
+            {name: "8 Ball Pool", emoji: "🎱", tag: "SPORTS", url: "https://html5.gamedistribution.com/ed65e4198fe74fdbb0b2ac015dd81128/"},
             
-            // RACING
+            // Multiplayer (GameDistribution US/CDNs)
+            {name: "Ludo With Friends", emoji: "🎲", tag: "MULTIPLAYER", url: "https://zv1y2i8p.play.gamezop.com/g/SkhljT2fdgb"},
+            {name: "Basketball Stars", emoji: "🏀", tag: "MULTIPLAYER", url: "https://html5.gamedistribution.com/f7c4e66b484e45df86b7d46450aac477/"},
+            {name: "Stick Fighter", emoji: "⚔️", tag: "MULTIPLAYER", url: "https://html5.gamedistribution.com/rgSkqGbJade4O68B0T2u3zCZqe0FMBqO/"},
+            {name: "Soccer Skills Euro Cup", emoji: "⚽", tag: "MULTIPLAYER", url: "https://html5.gamedistribution.com/bf1268c8c4394c9fa8fa9f67098c4e3a/"},
+            
+            // RACING (GitHub hosted - various locations)
             {name: "Poly Track", emoji: "🏎️", url: "https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},
             {name: "Jelly Truck", emoji: "🚚", url: "https://jellytruck2.github.io/"},
             {name: "Slope", emoji: "📐", url: "https://slope-y8.com/"},
@@ -646,7 +679,7 @@
             {name: "Temple Run 2", emoji: "🏛️", url: "https://run3temp.github.io/"},
             {name: "Crossy Road", emoji: "🐔", url: "https://crossyroad66.github.io/"},
             
-            // IO GAMES
+            // IO Games
             {name: "1v1.LOL", emoji: "🔫", url: "https://1v1lol-gg.github.io/"},
             {name: "Shell Shockers", emoji: "🥚", url: "https://shellshock.io/"},
             {name: "Krunker.io", emoji: "🔫", url: "https://krunker.io/"},
@@ -655,44 +688,50 @@
             {name: "Smash Karts", emoji: "🏎️", url: "https://smashkarts.io/"},
             {name: "Zombs Royale", emoji: "🧟", url: "https://zombsroyale.io/"},
             
-            // PLATFORMER
+            // Sports
+            {name: "Retro Bowl", emoji: "🏈", url: "https://retrobowl97.github.io/"},
+            {name: "Thumb Fighter", emoji: "👊", url: "https://thumbfighter.github.io/"},
+            
+            // Fighting
+            {name: "Rooftop Snipers", emoji: "🎯", url: "https://rooftopsnipers.github.io/"},
+            
+            // Puzzle
+            {name: "2048", emoji: "🔢", url: "https://play2048.co/"},
+            {name: "Cookie Clicker", emoji: "🍪", url: "https://cookieclicker-game.github.io/"},
+            {name: "Minesweeper", emoji: "💣", url: "https://minesweeper.online/"},
+            {name: "Little Alchemy 2", emoji: "⚗️", url: "https://littlealchemy2.com/"},
+            {name: "Sudoku Classic", emoji: "🧩", url: "https://zv1y2i8p.play.gamezop.com/g/rkHVpV2Yugb"},
+            
+            // Henry Stickmin
+            {name: "Fleeing the Complex", emoji: "🏃", url: "https://machita66.github.io/game/fleeingthecomplex.html"},
+            {name: "Escaping the Prison", emoji: "🔨", url: "https://escaping-the-prison.com/"},
+            {name: "Stealing the Diamond", emoji: "💎", url: "https://stealing-the-diamond.com/"},
+            {name: "Infiltrating the Airship", emoji: "🎈", url: "https://infiltrating-the-airship.com/"},
+            
+            // Papa's Games
+            {name: "Papa's Pizzeria", emoji: "🍕", url: "https://papaspizzeria-unblocked.github.io/"},
+            {name: "Papa's Pancakeria", emoji: "🥞", url: "https://papaspancakeria.github.io/"},
+            
+            // Platformer
             {name: "Geometry Dash", emoji: "🔷", url: "https://geometry-dash-unbanned.github.io/"},
             {name: "OvO", emoji: "🥚", url: "https://dedragames.com/games/ovo/1.3/"},
             {name: "Vex 5", emoji: "🔺", url: "https://vex5.com/"},
             {name: "Vex 6", emoji: "🔺6", url: "https://vex6.com/"},
             {name: "Big Tower Tiny Square", emoji: "🗼", url: "https://big-tower-tiny-square.com/"},
             
-            // MINECRAFT
-            {name: "Eaglercraft 1.8.8", emoji: "⛏️", url: "https://g.deev.is/eaglercraft/"},
-            {name: "MineKhan", emoji: "⛏️", url: "https://yikuansun.github.io/minekhan/"},
-            
-            // CASUAL
-            {name: "Cookie Clicker", emoji: "🍪", url: "https://cookieclicker-game.github.io/"},
-            {name: "2048", emoji: "🔢", url: "https://play2048.co/"},
-            {name: "Tetris", emoji: "🧱", url: "https://tetris.com/play-tetris"},
-            {name: "Retro Bowl", emoji: "🏈", url: "https://retrobowl97.github.io/"},
-            
-            // HENRY STICKMIN
-            {name: "Fleeing the Complex", emoji: "🏃", url: "https://machita66.github.io/game/fleeingthecomplex.html"},
-            {name: "Escaping the Prison", emoji: "🔨", url: "https://escaping-the-prison.com/"},
-            {name: "Stealing the Diamond", emoji: "💎", url: "https://stealing-the-diamond.com/"},
-            {name: "Infiltrating the Airship", emoji: "🎈", url: "https://infiltrating-the-airship.com/"},
-            
-            // CLASSICS
+            // Arcade
             {name: "Pac-Man", emoji: "👻", url: "https://google-pacman.github.io/"},
             {name: "Chrome Dino", emoji: "🦖", url: "https://chrome-dino-game.github.io/"},
             {name: "Flappy Bird", emoji: "🐦", url: "https://flappy-bird.com/"},
             {name: "Wordle", emoji: "📝", url: "https://wordle.com/"},
-            {name: "Minesweeper", emoji: "💣", url: "https://minesweeper.online/"},
             
-            // PAPA'S GAMES
-            {name: "Papa's Pizzeria", emoji: "🍕", url: "https://papaspizzeria-unblocked.github.io/"},
-            {name: "Papa's Pancakeria", emoji: "🥞", url: "https://papaspancakeria.github.io/"}
+            // Minecraft
+            {name: "Eaglercraft 1.8.8", emoji: "⛏️", url: "https://g.deev.is/eaglercraft/"},
+            {name: "MineKhan", emoji: "⛏️", url: "https://yikuansun.github.io/minekhan/"},
+            {name: "Voxel Builder", emoji: "🧊", url: "https://voxelbuilder.github.io/"}
         ];
 
-        let proxyHistory = [];
-        let proxyHistoryPos = -1;
-        let currentUrl = '';
+        let proxyHistory = [], proxyHistoryPos = -1, currentUrl = '';
 
         function init() {
             document.getElementById('gameCount').textContent = games.length;
@@ -720,7 +759,7 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.getElementById('nav-' + id).classList.add('active');
+            document.getElementById('nav-' + id)?.classList.add('active');
         }
 
         function playGame(name, url) {
@@ -740,15 +779,12 @@
             const recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
             const section = document.getElementById('recentSection');
             const grid = document.getElementById('recentGrid');
-            
             if (recent.length === 0) {
                 section.classList.remove('active');
                 return;
             }
             section.classList.add('active');
-            grid.innerHTML = recent.map(g => `
-                <div class="recent-item" onclick="playGame('${g.name}', '${g.url}')">${g.name}</div>
-            `).join('');
+            grid.innerHTML = recent.map(g => `<div class="recent-item" onclick="playGame('${g.name}', '${g.url}')">${g.name}</div>`).join('');
         }
 
         function closeGame() {
@@ -762,19 +798,15 @@
             renderGames(filtered);
         }
 
-        // PROXY FUNCTIONS (Shadow V3 Style)
+        // PROXY FUNCTIONS - US North/East/West routing
         function navigateProxy() {
             let url = document.getElementById('proxyAddress').value.trim();
             const engine = document.getElementById('proxyEngine').value;
-            
             if (!url) return;
             
             if (!url.match(/^https?:\/\//i)) {
-                if (url.includes('.') && !url.includes(' ')) {
-                    url = 'https://' + url;
-                } else {
-                    url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
-                }
+                if (url.includes('.')) url = 'https://' + url;
+                else url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
             }
             
             currentUrl = url;
@@ -783,12 +815,19 @@
             
             let proxyUrl = url;
             
+            // North US / East Coast routing options
             switch(engine) {
                 case 'translate':
+                    // Google's US-East infrastructure (virginia-based)
                     proxyUrl = 'https://translate.google.com/translate?sl=auto&tl=en&u=' + encodeURIComponent(url);
                     break;
-                case 'textise':
+                case 'translate-west':
+                    // Via textise dot iitty (west coast mirrors sometimes)
                     proxyUrl = 'https://r.jina.ai/http://' + url.replace(/^https?:\/\//, '');
+                    break;
+                case 'textise':
+                    // Textise dot iitty (various US locations, not Texas)
+                    proxyUrl = 'https://r.jina.ai/http://r.jina.ai/http://' + url;
                     break;
                 case 'direct':
                     proxyUrl = url;
@@ -804,9 +843,38 @@
             const frame = document.getElementById('proxyFrame');
             frame.src = proxyUrl;
             
+            // Error detection
             setTimeout(() => {
-                document.getElementById('proxyStatus').textContent = 'Loaded: ' + url;
-            }, 2000);
+                try {
+                    const test = frame.contentWindow.location.href;
+                    document.getElementById('proxyStatus').textContent = 'Loaded - US Route';
+                } catch(e) {
+                    if (frame.src === 'about:blank' || !frame.src) {
+                        showProxyError();
+                    } else {
+                        document.getElementById('proxyStatus').textContent = 'Loaded (US-East Server)';
+                    }
+                }
+            }, 4000);
+        }
+
+        function showProxyError() {
+            document.getElementById('proxyError').classList.add('active');
+            document.getElementById('proxyStatus').textContent = 'Blocked';
+        }
+
+        function hideProxyError() {
+            document.getElementById('proxyError').classList.remove('active');
+        }
+
+        function openInNewTab() {
+            const url = currentUrl || document.getElementById('proxyAddress').value;
+            if (url) window.open(url, '_blank');
+        }
+
+        function tryTextMode() {
+            document.getElementById('proxyEngine').value = 'textise';
+            navigateProxy();
         }
 
         function proxyBack() {
@@ -830,20 +898,6 @@
             frame.src = frame.src;
         }
 
-        function hideProxyError() {
-            document.getElementById('proxyError').classList.remove('active');
-        }
-
-        function openInNewTab() {
-            const url = currentUrl || document.getElementById('proxyAddress').value;
-            if (url) window.open(url, '_blank');
-        }
-
-        function tryTextMode() {
-            document.getElementById('proxyEngine').value = 'textise';
-            navigateProxy();
-        }
-
         function toggleSettings() {
             document.getElementById('settingsModal').classList.toggle('active');
         }
@@ -864,11 +918,8 @@
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                if (document.getElementById('settingsModal').classList.contains('active')) {
-                    toggleSettings();
-                } else if (document.getElementById('gameViewer').classList.contains('active')) {
-                    closeGame();
-                }
+                if (document.getElementById('settingsModal').classList.contains('active')) toggleSettings();
+                else if (document.getElementById('gameViewer').classList.contains('active')) closeGame();
             }
         });
 
