@@ -303,16 +303,32 @@ nav button:hover, nav button.active {
   background: var(--accent); 
   border-color: var(--accent); 
 }
+.proxy-omnibox { 
+  flex: 2; 
+  display: flex; 
+  background: rgba(0,0,0,0.3); 
+  border: 2px solid var(--blueprint-line); 
+  min-width: 200px; 
+}
+.proxy-address { 
+  flex: 1; 
+  background: transparent; 
+  border: none; 
+  color: white; 
+  padding: 10px; 
+  font-family: 'Courier Prime', monospace; 
+  font-size: 0.9rem; 
+}
+.proxy-address:focus { outline: none; }
 .proxy-select { 
-  flex: 1;
+  flex: 1; 
   background: rgba(0,0,0,0.3); 
   border: 2px solid var(--blueprint-line); 
   color: white; 
   padding: 10px; 
   font-family: 'Share Tech Mono', monospace; 
   cursor: pointer;
-  font-size: 0.9rem;
-  min-width: 250px;
+  min-width: 180px;
 }
 .proxy-select option {
   background: #003d7a;
@@ -326,7 +342,6 @@ nav button:hover, nav button.active {
   cursor: pointer; 
   font-family: 'Share Tech Mono', monospace; 
   font-weight: bold; 
-  font-size: 0.9rem;
 }
 .proxy-go-btn:hover { background: transparent; }
 .proxy-viewport { 
@@ -378,23 +393,13 @@ nav button:hover, nav button.active {
   cursor: pointer; 
   font-size: 1rem; 
 }
-.proxy-status { 
-  position: absolute; 
-  bottom: 10px; right: 10px; 
-  background: rgba(0,0,0,0.8); 
-  padding: 5px 10px; 
-  font-size: 0.75rem; 
-  font-family: 'Share Tech Mono', monospace; 
-  border: 1px solid var(--blueprint-line); 
-  z-index: 10; 
-}
 .warning-box { 
   background: rgba(255,102,0,0.2); 
   border: 2px solid var(--accent); 
   padding: 15px; 
   margin-bottom: 20px; 
   font-family: 'Share Tech Mono'; 
-  font-size: 0.9rem; 
+  font-size: 0.85rem; 
   text-align: center; 
 }
 .game-viewer { 
@@ -486,51 +491,54 @@ footer {
     <button class="control-btn" onclick="toggleSettings()">⚙️ SETTINGS</button>
   </div>
   <h1 class="blueprint-title" onclick="showSection('games')">🍋 LEMONS PROXY</h1>
-  <p style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.9rem;">VERIFIED WORKING GAMES •.proxy BROWSER</p>
+  <p style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.9rem;">VERIFIED GAMES • SEARCH ENGINE PORTAL</p>
   <div class="credits">CODE BY <span>LEMONWESH</span> // DESIGN BY <span>LD</span></div>
 </header>
 
 <nav>
   <button class="nav-btn active" onclick="showSection('games')" id="nav-games">[ GAMES ]</button>
-  <button class="nav-btn" onclick="showSection('proxy')" id="nav-proxy">[ PROXY ]</button>
+  <button class="nav-btn" onclick="showSection('proxy')" id="nav-proxy">[ SEARCH ]</button>
 </nav>
 
 <div class="container">
 
   <section id="proxy" class="section">
     <div class="warning-box">
-      ⚠️ SELECT A PROXY FROM THE LIST BELOW TO LOAD IT IN THE VIEWPORT
+      🔍 SELECT A SEARCH ENGINE & TYPE QUERY, OR LEAVE BLANK TO VISIT HOMEPAGE. IF BLOCKED, AUTO-OPENS IN NEW TAB.
     </div>
     <div class="proxy-container">
       <div class="proxy-toolbar">
         <button class="proxy-nav-btn" onclick="reloadProxy()" title="Reload">↻</button>
         
-        <select class="proxy-select" id="proxySelect">
-          <option value="">-- SELECT PROXY --</option>
-          <option value="https://www.croxyproxy.com/">🟢 CroxyProxy (Recommended)</option>
-          <option value="https://www.proxysite.com/">🔵 ProxySite</option>
-          <option value="https://kproxy.com/">🛡️ KProxy</option>
-          <option value="https://filterbypass.me/">🔓 FilterBypass</option>
-          <option value="https://proxyium.com/">🌐 Proxyium</option>
-          <option value="https://www.blockaway.net/">🚪 BlockAway</option>
-          <option value="https://plainproxies.com/resources/free-web-proxy">⚡ PlainProxies</option>
-          <option value="https://www.crazygames.com/">🎮 CrazyGames (Alt)</option>
+        <div class="proxy-omnibox">
+          <input type="text" class="proxy-address" id="searchQuery" placeholder="Search query or leave blank for homepage..." onkeydown="if(event.key === 'Enter') searchWeb()">
+        </div>
+        
+        <select class="proxy-select" id="searchEngine">
+          <option value="duckduckgo">🔍 DuckDuckGo</option>
+          <option value="brave">🦁 Brave Search</option>
+          <option value="startpage">🛡️ Startpage</option>
+          <option value="metager">🌿 MetaGer</option>
+          <option value="mojeek">🕸️ Mojeek</option>
+          <option value="bing">🔵 Bing</option>
+          <option value="ecosia">🌳 Ecosia</option>
+          <option value="yahoo">🟣 Yahoo</option>
+          <option value="wolfram">🧮 WolframAlpha</option>
+          <option value="jina">📖 Text Reader (Jina)</option>
         </select>
         
-        <button class="proxy-go-btn" onclick="loadProxy()">LOAD PROXY</button>
+        <button class="proxy-go-btn" onclick="searchWeb()">SEARCH</button>
       </div>
 
       <div class="proxy-viewport">
-        <iframe id="proxyFrame" class="proxy-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock allow-downloads" allow="fullscreen; autoplay; clipboard-read; clipboard-write"></iframe>
+        <iframe id="proxyFrame" class="proxy-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" allow="fullscreen"></iframe>
         
         <div id="proxyError" class="proxy-error">
-          <h3>🔗 UNABLE TO LOAD PROXY</h3>
-          <p>This proxy website is blocking iframe embedding or is currently unavailable.</p>
-          <p style="color: var(--accent);">Try selecting a different proxy from the list above.</p>
+          <h3>🔒 IFRAME BLOCKED</h3>
+          <p>This search engine blocks embedding for security.</p>
+          <p style="color: var(--accent);">Opened in new tab automatically!</p>
           <button onclick="hideProxyError()">CLOSE MESSAGE</button>
         </div>
-        
-        <div class="proxy-status" id="proxyStatus">Select a proxy to begin</div>
       </div>
     </div>
   </section>
@@ -569,7 +577,7 @@ footer {
 </div>
 
 <script>
-// GAMES LIBRARY (All 45 games)
+// GAMES LIBRARY
 const games = [
   {name: "8 Ball Pool", emoji: "🎱", tag: "SPORTS", url: "https://html5.gamedistribution.com/ed65e4198fe74fdbb0b2ac015dd81128/"},
   {name: "Ludo With Friends", emoji: "🎲", tag: "MULTIPLAYER", url: "https://zv1y2i8p.play.gamezop.com/g/SkhljT2fdgb"},
@@ -617,41 +625,115 @@ const games = [
   {name: "Voxel Builder", emoji: "🧊", tag: "MINECRAFT", url: "https://voxelbuilder.github.io/"}
 ];
 
-// PROXY FUNCTIONS
-function loadProxy() {
-  const select = document.getElementById('proxySelect');
-  const url = select.value;
+// SEARCH ENGINES CONFIG
+const searchEngines = {
+  duckduckgo: { 
+    name: "DuckDuckGo", 
+    home: "https://duckduckgo.com/",
+    search: "https://duckduckgo.com/?q="
+  },
+  brave: { 
+    name: "Brave Search", 
+    home: "https://search.brave.com/",
+    search: "https://search.brave.com/search?q="
+  },
+  startpage: { 
+    name: "Startpage", 
+    home: "https://www.startpage.com/",
+    search: "https://www.startpage.com/do/dsearch?query="
+  },
+  metager: { 
+    name: "MetaGer", 
+    home: "https://metager.org/",
+    search: "https://metager.org/meta/meta.ger3?eingabe="
+  },
+  mojeek: { 
+    name: "Mojeek", 
+    home: "https://www.mojeek.com/",
+    search: "https://www.mojeek.com/search?q="
+  },
+  bing: { 
+    name: "Bing", 
+    home: "https://www.bing.com/",
+    search: "https://www.bing.com/search?q="
+  },
+  ecosia: { 
+    name: "Ecosia", 
+    home: "https://www.ecosia.org/",
+    search: "https://www.ecosia.org/search?q="
+  },
+  yahoo: { 
+    name: "Yahoo", 
+    home: "https://www.yahoo.com/",
+    search: "https://search.yahoo.com/search?p="
+  },
+  wolfram: { 
+    name: "WolframAlpha", 
+    home: "https://www.wolframalpha.com/",
+    search: "https://www.wolframalpha.com/input?i="
+  },
+  jina: { 
+    name: "Text Reader", 
+    home: "https://r.jina.ai/http://example.com",
+    search: "https://r.jina.ai/http://",
+    isText: true
+  }
+};
+
+let currentSearchUrl = '';
+
+function searchWeb() {
+  const engine = document.getElementById('searchEngine').value;
+  const query = document.getElementById('searchQuery').value.trim();
   const frame = document.getElementById('proxyFrame');
-  const status = document.getElementById('proxyStatus');
+  const errorDiv = document.getElementById('proxyError');
   
-  if (!url) {
-    alert('Please select a proxy from the list');
-    return;
+  errorDiv.classList.remove('active');
+  
+  const config = searchEngines[engine];
+  let url;
+  
+  if (query) {
+    if (config.isText) {
+      // For text reader, check if URL or search
+      if (query.includes('.') && !query.includes(' ')) {
+        url = config.search + query;
+      } else {
+        url = config.search + "google.com/search?q=" + encodeURIComponent(query);
+      }
+    } else {
+      url = config.search + encodeURIComponent(query);
+    }
+  } else {
+    url = config.home;
   }
   
-  document.getElementById('proxyError').classList.remove('active');
-  status.textContent = 'Loading proxy...';
+  currentSearchUrl = url;
   
+  // Try iframe first
   frame.src = url;
   
-  // Check if loads after 5 seconds
+  // Check if blocked after 3 seconds
   setTimeout(() => {
     try {
-      // If we can access contentWindow, it loaded
-      const test = frame.contentWindow.location.href;
-      status.textContent = 'Proxy loaded successfully';
-    } catch(e) {
-      // Cross-origin error means it loaded but we can't access it (good)
-      status.textContent = 'Proxy active';
+      // If we can't access it but it's not about:blank, it loaded (cross-origin success)
+      if (frame.contentWindow.location.href === 'about:blank' && frame.src !== 'about:blank') {
+        // It blocked
+        throw new Error('Blocked');
+      }
+    } catch (e) {
+      // Cross-origin error or blocked - open in new tab
+      window.open(url, '_blank');
+      errorDiv.classList.add('active');
+      frame.src = '';
     }
-  }, 5000);
+  }, 3000);
 }
 
 function reloadProxy() {
   const frame = document.getElementById('proxyFrame');
-  if (frame.src) {
-    frame.src = frame.src;
-    document.getElementById('proxyStatus').textContent = 'Reloading...';
+  if (currentSearchUrl) {
+    frame.src = currentSearchUrl;
   }
 }
 
@@ -752,11 +834,8 @@ function cloakTab(title, iconUrl) {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    if (document.getElementById('settingsModal').classList.contains('active')) {
-      toggleSettings();
-    } else if (document.getElementById('gameViewer').classList.contains('active')) {
-      closeGame();
-    }
+    if (document.getElementById('settingsModal').classList.contains('active')) toggleSettings();
+    else if (document.getElementById('gameViewer').classList.contains('active')) closeGame();
   }
 });
 
