@@ -23,7 +23,13 @@ body{background-color:var(--bg-primary);background-image:linear-gradient(var(--b
 .click-to-boot{margin-top:40px;color:var(--terminal-amber);font-size:1rem;cursor:pointer;opacity:0;animation:fadeInOut 2s infinite;animation-delay:3s;text-align:center;border:1px solid var(--terminal-amber);padding:15px;width:fit-content;border-radius:4px;align-self:center}
 @keyframes fadeInOut{0%,100%{opacity:0.3}50%{opacity:1}}
 .hidden-message{position:fixed;bottom:2px;right:5px;font-size:8px;color:rgba(148,163,184,0.08);user-select:text;pointer-events:none;font-family:'JetBrains Mono',monospace;z-index:9999;letter-spacing:1px}
-header{background:var(--bg-secondary);border-bottom:1px solid var(--terminal-blue);padding:15px 25px;display:flex;align-items:center;justify-content:space-between;position:relative}
+
+/* Lazy dev tooltip */
+.dev-warning{position:fixed;top:0;left:0;width:100%;background:rgba(245,158,11,0.1);border-bottom:1px solid var(--terminal-amber);padding:8px 20px;text-align:center;font-size:0.8rem;color:var(--terminal-amber);z-index:9998;font-family:'JetBrains Mono',monospace;backdrop-filter:blur(5px);display:flex;justify-content:center;align-items:center;gap:15px}
+.dev-warning button{background:transparent;border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:2px 10px;font-size:0.7rem;cursor:pointer;border-radius:4px;font-family:'JetBrains Mono',monospace}
+.dev-warning button:hover{background:var(--terminal-amber);color:var(--bg-primary)}
+
+header{background:var(--bg-secondary);border-bottom:1px solid var(--terminal-blue);padding:15px 25px;display:flex;align-items:center;justify-content:space-between;position:relative;margin-top:35px}
 .logo-container{display:flex;align-items:center;gap:12px;cursor:pointer}
 .logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--lemon-blue) 0%,#1e293b 100%);border:1px solid var(--terminal-blue);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 12px var(--border-glow);position:relative;overflow:hidden;animation:pulseGlow 3s ease-in-out infinite}
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 12px var(--border-glow)}50%{box-shadow:0 0 18px rgba(59,130,246,0.3)}}
@@ -31,11 +37,12 @@ header{background:var(--bg-secondary);border-bottom:1px solid var(--terminal-blu
 .terminal-title{font-size:1.4rem;font-weight:400;color:var(--terminal-blue);text-transform:uppercase;letter-spacing:2px;font-family:'JetBrains Mono',monospace}
 .version-tag{font-size:0.65rem;color:var(--terminal-dim);background:rgba(59,130,246,0.1);padding:2px 6px;border-radius:3px;border:1px solid var(--terminal-dim);margin-left:8px;font-weight:400}
 .credits{color:var(--text-secondary);font-size:0.75rem;font-weight:300}
-nav{background:var(--bg-secondary);border-bottom:1px solid rgba(59,130,246,0.15);display:flex;justify-content:center;position:sticky;top:0;z-index:100}
+nav{background:var(--bg-secondary);border-bottom:1px solid rgba(59,130,246,0.15);display:flex;justify-content:center;position:sticky;top:35px;z-index:100}
 nav button{background:transparent;border:none;border-right:1px solid rgba(59,130,246,0.15);color:var(--text-secondary);padding:14px 35px;font-family:'Inter',sans-serif;font-weight:400;font-size:0.85rem;cursor:pointer;text-transform:uppercase;letter-spacing:1.5px;transition:all 0.3s;position:relative}
 nav button:last-child{border-right:none}
 nav button:hover,nav button.active{background:rgba(59,130,246,0.08);color:var(--terminal-blue)}
 nav button.active{border-bottom:2px solid var(--terminal-blue)}
+nav button:disabled{opacity:0.3;cursor:not-allowed;pointer-events:none}
 .container{max-width:1400px;margin:0 auto;padding:25px;padding-bottom:140px}
 .section{display:none}
 .section.active{display:block;animation:fadeIn 0.4s ease-out}
@@ -106,21 +113,27 @@ nav button.active{border-bottom:2px solid var(--terminal-blue)}
 .status-left{display:flex;gap:25px}
 .easter-egg-toast{position:fixed;top:100px;right:-400px;background:var(--bg-secondary);border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:15px 25px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.9rem;transition:right 0.5s;z-index:1002;box-shadow:0 5px 20px rgba(245,158,11,0.2);max-width:350px;line-height:1.5;white-space:pre-line}
 .easter-egg-toast.show{right:25px}
-.easter-egg-toast.angry{background:#2a0a0a;border-color:var(--error-red);color:var(--error-red);box-shadow:0 5px 20px rgba(239,68,68,0.4)}
-.easter-egg-toast.furious{background:#1a0505;border-color:#ff0000;color:#ff0000;box-shadow:0 0 30px rgba(255,0,0,0.6);animation:shake 0.5s infinite}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-#shutdown-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace}
-#shutdown-overlay.active{display:flex}
-.shutdown-text{font-size:8rem;color:#ff0000;font-weight:bold;text-transform:uppercase;letter-spacing:20px;animation:pulseRed 1s infinite;text-shadow:0 0 50px rgba(255,0,0,0.8)}
-@keyframes pulseRed{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(1.05)}}
-.shutdown-sub{color:#666;margin-top:20px;font-size:1.2rem;text-align:center}
-.shutdown-timer{color:#ff0000;font-size:2rem;margin-top:30px;font-weight:bold;animation:pulseRed 1s infinite}
-.shutdown-hint{color:#444;margin-top:15px;font-size:0.9rem}
+.easter-egg-toast.unlocked{background:#0a2a1a;border-color:var(--success-green);color:var(--success-green);box-shadow:0 5px 20px rgba(16,185,129,0.3)}
+
+/* Secret Menu Styles */
+.secret-menu{background:var(--bg-secondary);border:2px solid var(--terminal-amber);border-radius:8px;padding:25px;margin-top:20px;position:relative;overflow:hidden}
+.secret-menu::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--terminal-amber),transparent,var(--terminal-amber));animation:scan 2s linear infinite}
+@keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.secret-title{color:var(--terminal-amber);font-family:'JetBrains Mono',monospace;font-size:1.5rem;margin-bottom:20px;text-transform:uppercase;letter-spacing:2px;text-align:center;text-shadow:0 0 10px rgba(245,158,11,0.3)}
+.secret-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
+.secret-btn{background:rgba(245,158,11,0.1);border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:15px;font-family:'JetBrains Mono',monospace;cursor:pointer;border-radius:4px;transition:all 0.3s;text-align:center;font-size:0.85rem}
+.secret-btn:hover{background:rgba(245,158,11,0.2);transform:translateY(-2px);box-shadow:0 5px 15px rgba(245,158,11,0.2)}
+.secret-console{background:#000;border:1px solid var(--terminal-amber);border-radius:4px;padding:15px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--terminal-amber);height:200px;overflow-y:auto;margin-top:20px;position:relative}
+.secret-console-line{margin-bottom:5px;opacity:0;animation:typeConsole 0.3s forwards}
+@keyframes typeConsole{to{opacity:1}}
+.matrix-intensity{width:100%;margin:10px 0}
+.cool-effect{position:fixed;pointer-events:none;z-index:9997;width:100%;height:100%;top:0;left:0;display:none}
+.cool-effect.active{display:block}
 ::-webkit-scrollbar{width:8px}
 ::-webkit-scrollbar-track{background:var(--bg-primary)}
 ::-webkit-scrollbar-thumb{background:rgba(59,130,246,0.2);border-radius:4px}
 ::-webkit-scrollbar-thumb:hover{background:var(--terminal-blue)}
-@media(max-width:768px){.games-grid{grid-template-columns:1fr}.music-player{flex-direction:column;gap:10px}.terminal-title{font-size:1.1rem}.system-stats{grid-template-columns:repeat(2,1fr)}.shutdown-text{font-size:4rem;letter-spacing:10px}}
+@media(max-width:768px){.games-grid{grid-template-columns:1fr}.music-player{flex-direction:column;gap:10px}.terminal-title{font-size:1.1rem}.system-stats{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -128,11 +141,12 @@ nav button.active{border-bottom:2px solid var(--terminal-blue)}
 <canvas id="matrix-canvas"></canvas>
 <div class="hidden-message">found you</div>
 <div class="easter-egg-toast" id="easterToast"></div>
-<div id="shutdown-overlay">
-  <div class="shutdown-text">STOP</div>
-  <div class="shutdown-sub">SYSTEM BREACH DETECTED<br>EMERGENCY LOCKDOWN ACTIVE</div>
-  <div class="shutdown-timer" id="shutdownTimer">60</div>
-  <div class="shutdown-hint">System will reboot automatically...</div>
+<div class="cool-effect" id="coolEffect"></div>
+
+<!-- Dev Warning -->
+<div class="dev-warning" id="devWarning">
+  <span>⚠️ DEV_NOTICE: Some games don't work and I'm too lazy to find working URLs. Deal with it.</span>
+  <button onclick="document.getElementById('devWarning').style.display='none'">[ DISMISS ]</button>
 </div>
 
 <div id="boot-sequence">
@@ -163,6 +177,10 @@ nav button.active{border-bottom:2px solid var(--terminal-blue)}
 <nav>
   <button class="nav-btn active" onclick="showSection('games')" id="nav-games">Game_Modules</button>
   <button class="nav-btn" onclick="showSection('search')" id="nav-search">Network_Proxy</button>
+  <button class="nav-btn" onclick="showSection('secret')" id="nav-secret" disabled style="opacity:0.3;position:relative">
+    ????
+    <span style="position:absolute;top:-5px;right:-5px;width:10px;height:10px;background:var(--terminal-amber);border-radius:50%;display:none" id="secretBadge"></span>
+  </button>
 </nav>
 
 <div class="container">
@@ -187,6 +205,27 @@ nav button.active{border-bottom:2px solid var(--terminal-blue)}
       <div class="proxy-links">
         <a href="https://www.croxyproxy.com/" target="_blank" class="proxy-link">> CroxyProxy</a>
         <a href="https://www.blockaway.net/" target="_blank" class="proxy-link">> BlockAway</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="secret" class="section">
+    <div class="secret-menu">
+      <div class="secret-title">🔐 LEMON_PROTOCOL // UNLOCKED</div>
+      <div class="secret-grid">
+        <button class="secret-btn" onclick="rickRoll()">🎵 Play Cool Song</button>
+        <button class="secret-btn" onclick="matrixOverload()">💊 Matrix Overload</button>
+        <button class="secret-btn" onclick="hackerTyper()">👨‍💻 Hacker Typer</button>
+        <button class="secret-btn" onclick="fixAllGames()">🔧 Fix All Games (Fake)</button>
+        <button class="secret-btn" onclick="confettiRain()">🎉 Party Mode</button>
+        <button class="secret-btn" onclick="revealTruth()">🚫 Reveal Hidden Truth</button>
+      </div>
+      <div class="secret-console" id="secretConsole">
+        <div class="secret-console-line" style="animation-delay:0s">> LEMON_PROTOCOL v9.9.9 initialized...</div>
+        <div class="secret-console-line" style="animation-delay:0.5s">> Root access granted to user: LEMONWESH</div>
+        <div class="secret-console-line" style="animation-delay:1s">> Warning: Security protocols bypassed</div>
+        <div class="secret-console-line" style="animation-delay:1.5s">> Secret menu loaded successfully</div>
+        <div class="secret-console-line" style="animation-delay:2s">> Waiting for input...</div>
       </div>
     </div>
   </section>
@@ -292,15 +331,9 @@ const games=[
   {name:"Five Nights at Freddy's",emoji:"🐻",tag:"Horror",size:"56",url:"https://fnaf-online.github.io/"}
 ];
 
-// AURELIO RAGE SYSTEM
-let aurelioCount = parseInt(localStorage.getItem('aurelio_count') || '0');
-const aurelioMessages = [
-  {msg: "⚠️ RESTRICTED ACCESS\nThat search term is forbidden.\nLogging incident...", type: "normal"},
-  {msg: "🔒 SECURITY ALERT\nUnauthorized search pattern detected.\nThis is your final warning.", type: "normal"},
-  {msg: "🛑 SYSTEM BREACH ATTEMPT\nAdministrators notified.\nCease activity immediately.", type: "angry"},
-  {msg: "💥 CRITICAL FAILURE\nSystem integrity compromised.\nEmergency shutdown imminent...", type: "furious"},
-  {msg: "STOP", type: "shutdown"}
-];
+// LEMON UNLOCK SYSTEM (5 searches to unlock secret menu)
+let lemonCount = parseInt(localStorage.getItem('lemon_count') || '0');
+let secretUnlocked = localStorage.getItem('secret_unlocked') === 'true';
 
 // ACHIEVEMENTS
 const achievements=[
@@ -311,7 +344,7 @@ const achievements=[
   {id:"fullscreen",name:"Maximum Overdrive",desc:"Use fullscreen mode",icon:"⛶",unlocked:false},
   {id:"konami",name:"Code Breaker",desc:"Enter the Konami Code",icon:"🔓",unlocked:false},
   {id:"logo_clicker",name:"Curious Mind",desc:"Click the logo 5 times",icon:"🍋",unlocked:false},
-  {id:"aurelio_search",name:"Hidden Truth",desc:"Discover the forbidden query",icon:"🚫",unlocked:false}
+  {id:"secret_found",name:"Insider",desc:"Access the LEMON_PROTOCOL",icon:"🔐",unlocked:false}
 ];
 
 // STATE
@@ -319,7 +352,6 @@ let gamesLaunched=[];
 let logoClicks=0;
 let konamiSequence=[];
 const konamiCode=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-let shutdownTimer = null;
 
 // Console
 console.log('%c LEMONS_PROXY v10.0 // System Online ', 'color: #3b82f6; font-family: monospace; border: 1px solid #3b82f6; padding: 5px;');
@@ -332,8 +364,9 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSavedData();
   document.addEventListener('keydown', handleKeydown);
   
-  if (aurelioCount >= 5) {
-    showShutdown();
+  // Check if secret already unlocked
+  if (secretUnlocked) {
+    unlockSecretMenu();
   }
 });
 
@@ -342,7 +375,7 @@ function handleKeydown(e) {
   if (konamiSequence.length > 10) konamiSequence.shift();
   if (konamiSequence.join(',') === konamiCode.join(',')) {
     unlockAchievement('konami');
-    showEasterEggToast("🔓 KONAMI CODE ACTIVATED\nSystem restrictions bypassed.");
+    showToast("🔓 KONAMI CODE ACTIVATED\nSystem restrictions bypassed.", "unlocked");
     document.body.style.filter = "hue-rotate(180deg)";
     setTimeout(() => document.body.style.filter = "", 3000);
   }
@@ -436,13 +469,21 @@ function showSection(section) {
   if (section === 'search') unlockAchievement('search_try');
 }
 
-// ESCALATING SYSTEM RAGE
+// LEMON SEARCH SYSTEM (5 times to unlock secret menu)
 function searchGames() {
   const input = document.getElementById('searchInput').value.toLowerCase();
   const modules = document.querySelectorAll('.game-module');
   
+  // Check for Aurelio (just for hidden message)
   if (input === 'aurelio') {
-    handleRestrictedSearch();
+    showToast("🚫 ACCESS DENIED\nUser 'Aurelio' blacklisted from system.", "normal");
+    document.getElementById('searchInput').value = '';
+    return;
+  }
+  
+  // Check for Lemon (the unlock code)
+  if (input === 'lemon') {
+    handleLemonSearch();
     document.getElementById('searchInput').value = '';
     return;
   }
@@ -453,112 +494,94 @@ function searchGames() {
   });
 }
 
-function handleRestrictedSearch() {
-  unlockAchievement('aurelio_search');
+function handleLemonSearch() {
+  lemonCount++;
+  localStorage.setItem('lemon_count', lemonCount.toString());
   
-  const level = Math.min(aurelioCount, 4);
-  const data = aurelioMessages[level];
+  const remaining = 5 - lemonCount;
   
-  if (level === 4) {
-    localStorage.setItem('aurelio_count', '5');
-    showShutdown();
-    return;
+  if (lemonCount >= 5) {
+    unlockSecretMenu();
+    unlockAchievement('secret_found');
+    showToast("🔐 LEMON_PROTOCOL UNLOCKED\nSecret menu access granted.", "unlocked");
+  } else {
+    showToast(`🍋 LEMON DETECTED\nProtocol activation: ${remaining} more...`, "normal");
   }
-  
-  showAngryToast(data.msg, data.type);
-  
-  aurelioCount++;
-  localStorage.setItem('aurelio_count', aurelioCount.toString());
 }
 
-function showAngryToast(message, type) {
-  const toast = document.getElementById('easterToast');
-  toast.textContent = message;
-  toast.className = 'easter-egg-toast show ' + type;
+function unlockSecretMenu() {
+  secretUnlocked = true;
+  localStorage.setItem('secret_unlocked', 'true');
   
-  playErrorBeep();
-  
+  const secretBtn = document.getElementById('nav-secret');
+  secretBtn.disabled = false;
+  secretBtn.style.opacity = '1';
+  secretBtn.style.color = 'var(--terminal-amber)';
+  secretBtn.textContent = 'LEMON_PROTOCOL';
+  document.getElementById('secretBadge').style.display = 'block';
+}
+
+// SECRET MENU FUNCTIONS
+function logToSecret(msg) {
+  const console = document.getElementById('secretConsole');
+  const line = document.createElement('div');
+  line.className = 'secret-console-line';
+  line.textContent = '> ' + msg;
+  console.appendChild(line);
+  console.scrollTop = console.scrollHeight;
+}
+
+function rickRoll() {
+  window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
+  logToSecret('Redirecting to important educational content...');
+}
+
+function matrixOverload() {
+  const canvas = document.getElementById('matrix-canvas');
+  canvas.style.opacity = '0.5';
+  showToast("💊 MATRIX OVERLOAD\nIntensifying background...", "unlocked");
+  logToSecret('Matrix density increased by 500%');
   setTimeout(() => {
-    toast.classList.remove('show');
-  }, type === 'furious' ? 6000 : 4000);
+    canvas.style.opacity = '0.08';
+  }, 10000);
 }
 
-function playErrorBeep() {
-  try {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    oscillator.frequency.value = aurelioCount >= 3 ? 150 : 300;
-    oscillator.type = 'sawtooth';
-    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-    
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.5);
-  } catch(e) {}
+function hackerTyper() {
+  logToSecret('Initializing hack.exe...');
+  setTimeout(() => logToSecret('Bypassing firewall...'), 500);
+  setTimeout(() => logToSecret('Accessing mainframe...'), 1000);
+  setTimeout(() => logToSecret('Downloading classified data...'), 1500);
+  setTimeout(() => logToSecret('Just kidding. This is a fake hack.'), 2000);
 }
 
-// SHOW SHUTDOWN WITH 60 SECOND TIMER
-function showShutdown() {
-  const overlay = document.getElementById('shutdown-overlay');
-  overlay.classList.add('active');
-  document.body.style.overflow = 'hidden';
-  stopMusic();
-  
-  // Play error sound
-  try {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    oscillator.frequency.setValueAtTime(100, audioContext.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 2);
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 2);
-  } catch(e) {}
-  
-  // Start 60 second countdown
-  let timeLeft = 60;
-  const timerElement = document.getElementById('shutdownTimer');
-  timerElement.textContent = timeLeft;
-  
-  shutdownTimer = setInterval(() => {
-    timeLeft--;
-    timerElement.textContent = timeLeft;
-    
-    if (timeLeft <= 0) {
-      clearInterval(shutdownTimer);
-      dismissShutdown();
-    }
-  }, 1000);
+function fixAllGames() {
+  logToSecret('Scanning game modules...');
+  setTimeout(() => logToSecret('Error: Developer too lazy to fix URLs'), 1000);
+  setTimeout(() => logToSecret('Solution: Deal with it ¯\\_(ツ)_/¯'), 2000);
 }
 
-// AUTO-DISMISS SHUTDOWN AFTER TIMER
-function dismissShutdown() {
-  const overlay = document.getElementById('shutdown-overlay');
-  overlay.classList.remove('active');
-  document.body.style.overflow = '';
-  
-  // Reset aurelio count so they can use search again
-  aurelioCount = 0;
-  localStorage.setItem('aurelio_count', '0');
-  
-  // Show recovery message
-  showEasterEggToast("✅ SYSTEM RESTORED\nAll functions normalized.\nPlease avoid restricted queries.");
+function confettiRain() {
+  const effect = document.getElementById('coolEffect');
+  effect.innerHTML = '🎉'.repeat(50);
+  effect.style.fontSize = '2rem';
+  effect.style.display = 'block';
+  effect.style.animation = 'rain 5s linear';
+  logToSecret('Party mode activated');
+  setTimeout(() => {
+    effect.style.display = 'none';
+  }, 5000);
+}
+
+function revealTruth() {
+  logToSecret('WARNING: Classified information');
+  setTimeout(() => alert('fuck you aurelio'), 500);
 }
 
 function easterEggLogo() {
   logoClicks++;
   if (logoClicks === 5) {
     unlockAchievement('logo_clicker');
-    showEasterEggToast("🍋 LEMON PROTOCOL ACTIVATED\nCitrus levels critical.");
+    showToast("🍋 LEMON PROTOCOL ACTIVATED\nCitrus levels critical.", "unlocked");
   }
   const logo = document.querySelector('.logo-icon');
   logo.style.transform = `rotate(${logoClicks * 15}deg) scale(${1 + logoClicks * 0.1})`;
@@ -570,7 +593,7 @@ function unlockAchievement(id) {
   if (ach && !ach.unlocked) {
     ach.unlocked = true;
     renderAchievements();
-    showAchievementPopup(ach);
+    showToast(`🏆 ${ach.name}\n${ach.desc}`, "unlocked");
     updateStats();
     saveData();
   }
@@ -617,23 +640,17 @@ function renderAchievements() {
   count.textContent = `${unlockedCount}/${achievements.length}`;
 }
 
-function showAchievementPopup(ach) {
-  const popup = document.getElementById('achievementPopup');
-  document.getElementById('pop-achievement-text').textContent = ach.name;
-  popup.classList.add('show');
-  setTimeout(() => popup.classList.remove('show'), 4000);
+function showToast(message, type) {
+  const toast = document.getElementById('easterToast');
+  toast.textContent = message;
+  toast.className = 'easter-egg-toast show ' + type;
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 4000);
 }
 
 function toggleAchievements() {
   document.getElementById('achievementsPanel').classList.toggle('active');
-}
-
-function showEasterEggToast(message) {
-  const toast = document.getElementById('easterToast');
-  toast.textContent = message;
-  toast.classList.remove('angry', 'furious');
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 5000);
 }
 
 function updateStats() {
@@ -646,7 +663,6 @@ function updateStats() {
 
 window.addEventListener('beforeunload', () => {
   stopMusic();
-  if (shutdownTimer) clearInterval(shutdownTimer);
 });
 </script>
 </body>
