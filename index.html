@@ -1,1139 +1,291 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LEMONS_PROXY // TERMINAL_v9.0</title>
-<link id="favicon" rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23001133'/><text x='15' y='75' font-size='60'>🍋</text><text x='55' y='60' font-family='monospace' font-size='35' fill='%2300ff41' font-weight='bold'>&lt;/&gt;</text></svg>">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Share+Tech+Mono&display=swap');
-
-:root {
-  --bg-primary: #0a0e27;
-  --bg-secondary: #111936;
-  --bg-tertiary: #1a2744;
-  --blueprint-grid: rgba(0, 255, 65, 0.05);
-  --terminal-green: #00ff41;
-  --terminal-dim: #008f11;
-  --terminal-amber: #ffb000;
-  --border-glow: rgba(0, 255, 65, 0.3);
-  --lemon-blue: #1e3a8a;
-  --error-red: #ff0040;
-  --matrix-green: #0f3d0f;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: var(--bg-primary);
-  background-image: 
-    linear-gradient(var(--blueprint-grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--blueprint-grid) 1px, transparent 1px),
-    linear-gradient(rgba(0, 20, 0, 0.9) 50%, rgba(0, 10, 0, 0.9) 50%);
-  background-size: 40px 40px, 40px 40px, 100% 4px;
-  font-family: 'Fira Code', 'Share Tech Mono', monospace;
-  color: var(--terminal-green);
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
-}
-
-/* Matrix Rain Effect */
-#matrix-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  opacity: 0.15;
-  pointer-events: none;
-}
-
-/* CRT Scanlines */
-body::before {
-  content: " ";
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-              linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  background-size: 100% 4px, 6px 100%;
-  z-index: 9999;
-  pointer-events: none;
-  animation: flicker 0.15s infinite;
-}
-
-@keyframes flicker {
-  0% { opacity: 0.97; }
-  50% { opacity: 1; }
-  100% { opacity: 0.98; }
-}
-
-/* Header / Terminal Bar */
-header {
-  background: var(--bg-secondary);
-  border-bottom: 2px solid var(--terminal-green);
-  padding: 20px;
-  position: relative;
-  box-shadow: 0 0 20px var(--border-glow);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  overflow: hidden;
-}
-
-header::after {
-  content: "SYSTEM_SECURE // CONNECTION_ENCRYPTED // PROXY_NODE_ACTIVE";
-  position: absolute;
-  bottom: 5px;
-  right: 20px;
-  font-size: 0.7rem;
-  color: var(--terminal-dim);
-  animation: scrollText 20s linear infinite;
-  white-space: nowrap;
-  opacity: 0.6;
-}
-
-@keyframes scrollText {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
-
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  z-index: 10;
-}
-
-.logo-icon {
-  width: 55px;
-  height: 55px;
-  background: linear-gradient(135deg, var(--lemon-blue) 0%, #0f172a 100%);
-  border: 2px solid var(--terminal-green);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  box-shadow: 0 0 15px var(--border-glow);
-  position: relative;
-  animation: pulseGlow 2s ease-in-out infinite;
-}
-
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 15px var(--border-glow); }
-  50% { box-shadow: 0 0 25px var(--terminal-green), 0 0 10px var(--terminal-green); }
-}
-
-.logo-icon::after {
-  content: "{ }";
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  font-size: 10px;
-  color: var(--terminal-green);
-  font-weight: bold;
-  background: rgba(0,0,0,0.8);
-  padding: 0 3px;
-}
-
-.terminal-title {
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: var(--terminal-green);
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  text-shadow: 0 0 10px var(--terminal-green);
-  position: relative;
-}
-
-.terminal-title::before {
-  content: "root@lemons-proxy:~$ ";
-  display: block;
-  font-size: 0.8rem;
-  color: var(--terminal-dim);
-  margin-bottom: 5px;
-  letter-spacing: 2px;
-}
-
-.cursor {
-  display: inline-block;
-  width: 12px;
-  height: 1em;
-  background: var(--terminal-green);
-  animation: blink 1s step-end infinite;
-  margin-left: 5px;
-  box-shadow: 0 0 10px var(--terminal-green);
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
-}
-
-.credits {
-  position: absolute;
-  bottom: 8px;
-  left: 20px;
-  color: var(--terminal-dim);
-  font-size: 0.75rem;
-  font-family: 'Share Tech Mono', monospace;
-}
-
-/* Navigation - Terminal Style */
-nav {
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--terminal-dim);
-  display: flex;
-  justify-content: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.8);
-}
-
-nav button {
-  background: transparent;
-  border: none;
-  border-right: 1px solid var(--terminal-dim);
-  color: var(--terminal-dim);
-  padding: 18px 40px;
-  font-family: inherit;
-  cursor: pointer;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  transition: all 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-
-nav button::before {
-  content: "[";
-  color: var(--terminal-green);
-  margin-right: 5px;
-  opacity: 0;
-  transition: all 0.3s;
-}
-
-nav button::after {
-  content: "]";
-  color: var(--terminal-green);
-  margin-left: 5px;
-  opacity: 0;
-  transition: all 0.3s;
-}
-
-nav button:hover, nav button.active {
-  background: rgba(0, 255, 65, 0.1);
-  color: var(--terminal-green);
-  text-shadow: 0 0 10px var(--terminal-green);
-  box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.1);
-}
-
-nav button.active::before, nav button.active::after,
-nav button:hover::before, nav button:hover::after {
-  opacity: 1;
-}
-
-nav button.active {
-  border-bottom: 3px solid var(--terminal-green);
-  box-shadow: 0 0 15px var(--border-glow);
-}
-
-/* Main Container */
-.container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 30px;
-  padding-bottom: 100px;
-}
-
-.section { display: none; }
-.section.active { display: block; animation: bootUp 0.5s ease-out; }
-
-@keyframes bootUp {
-  0% { opacity: 0; transform: translateY(20px); filter: blur(5px); }
-  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
-}
-
-/* System Stats Bar */
-.system-stats {
-  background: var(--bg-secondary);
-  border: 1px solid var(--terminal-dim);
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 30px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  position: relative;
-  overflow: hidden;
-}
-
-.system-stats::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--terminal-green), transparent);
-  animation: scanLine 3s linear infinite;
-}
-
-@keyframes scanLine {
-  0% { left: -100%; }
-  100% { left: 100%; }
-}
-
-.stat-box {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.stat-label {
-  color: var(--terminal-dim);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.stat-value {
-  color: var(--terminal-green);
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-shadow: 0 0 5px var(--terminal-green);
-  font-family: 'Share Tech Mono', monospace;
-}
-
-/* Search Bar */
-.search-container {
-  margin-bottom: 30px;
-  position: relative;
-}
-
-.search-input {
-  width: 100%;
-  padding: 20px 25px 20px 50px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--terminal-dim);
-  color: var(--terminal-green);
-  font-family: inherit;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  transition: all 0.3s;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: var(--terminal-green);
-  box-shadow: 0 0 0 3px var(--border-glow), inset 0 0 10px rgba(0,0,0,0.5);
-}
-
-.search-container::before {
-  content: ">";
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--terminal-green);
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-/* Games Grid - Terminal Modules */
-.games-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
-}
-
-.game-module {
-  background: var(--bg-secondary);
-  border: 1px solid var(--terminal-dim);
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.3s;
-  position: relative;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-}
-
-.game-module::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, var(--terminal-green), var(--terminal-dim));
-  transform: scaleX(0);
-  transition: transform 0.3s;
-}
-
-.game-module:hover {
-  transform: translateY(-5px);
-  border-color: var(--terminal-green);
-  box-shadow: 0 10px 30px rgba(0, 255, 65, 0.2);
-}
-
-.game-module:hover::before {
-  transform: scaleX(1);
-}
-
-.module-header {
-  padding: 20px;
-  background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--terminal-dim);
-}
-
-.module-icon {
-  font-size: 2rem;
-  filter: drop-shadow(0 0 5px var(--terminal-green));
-}
-
-.module-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.75rem;
-  color: var(--terminal-dim);
-  text-transform: uppercase;
-}
-
-.status-active {
-  width: 8px;
-  height: 8px;
-  background: var(--terminal-green);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--terminal-green);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-.module-tag {
-  background: rgba(0, 255, 65, 0.1);
-  color: var(--terminal-green);
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  border: 1px solid rgba(0, 255, 65, 0.3);
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
-.module-title {
-  padding: 20px;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--terminal-green);
-  font-family: 'Share Tech Mono', monospace;
-  letter-spacing: 1px;
-}
-
-.module-meta {
-  padding: 0 20px 20px;
-  color: var(--terminal-dim);
-  font-size: 0.9rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.module-size {
-  font-family: 'Share Tech Mono', monospace;
-  color: var(--terminal-amber);
-}
-
-/* Coming Soon Section */
-.coming-soon {
-  text-align: center;
-  padding: 100px 20px;
-  background: var(--bg-secondary);
-  border: 2px dashed var(--terminal-dim);
-  border-radius: 12px;
-  position: relative;
-  overflow: hidden;
-}
-
-.coming-soon::before {
-  content: "01001000 01001001 01000100 01000100 01000101 01001110";
-  position: absolute;
-  top: 20px;
-  left: 0;
-  width: 100%;
-  font-size: 0.8rem;
-  color: var(--terminal-dim);
-  opacity: 0.3;
-  letter-spacing: 5px;
-  animation: binaryScroll 10s linear infinite;
-}
-
-@keyframes binaryScroll {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
-
-.hack-map {
-  width: 100%;
-  max-width: 600px;
-  margin: 30px auto;
-  height: 200px;
-  background: var(--bg-primary);
-  border: 1px solid var(--terminal-dim);
-  border-radius: 8px;
-  position: relative;
-  overflow: hidden;
-}
-
-.map-dot {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: var(--terminal-green);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--terminal-green);
-  animation: mapPulse 3s infinite;
-}
-
-.map-line {
-  position: absolute;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--terminal-green), transparent);
-  opacity: 0.5;
-  animation: lineMove 4s linear infinite;
-}
-
-@keyframes mapPulse {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.5); }
-}
-
-@keyframes lineMove {
-  0% { transform: translateX(-100%); opacity: 0; }
-  50% { opacity: 0.8; }
-  100% { transform: translateX(200%); opacity: 0; }
-}
-
-.coming-title {
-  font-size: 2rem;
-  color: var(--terminal-amber);
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  letter-spacing: 5px;
-  text-shadow: 0 0 20px var(--terminal-amber);
-  font-family: 'Share Tech Mono', monospace;
-}
-
-.coming-text {
-  color: var(--terminal-dim);
-  font-size: 1.1rem;
-  max-width: 500px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
-
-/* Game Viewer */
-.game-viewer {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: var(--bg-primary);
-  z-index: 2000;
-  flex-direction: column;
-}
-
-.game-viewer.active { display: flex; }
-
-.viewer-header {
-  background: var(--bg-secondary);
-  padding: 20px;
-  border-bottom: 2px solid var(--terminal-green);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 0 20px var(--border-glow);
-}
-
-.viewer-title {
-  color: var(--terminal-green);
-  font-size: 1.3rem;
-  font-family: 'Share Tech Mono', monospace;
-  text-shadow: 0 0 10px var(--terminal-green);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.close-game {
-  background: var(--error-red);
-  border: 1px solid var(--error-red);
-  color: white;
-  padding: 12px 24px;
-  font-family: inherit;
-  font-weight: 600;
-  border-radius: 6px;
-  cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  transition: all 0.3s;
-  box-shadow: 0 0 15px rgba(255, 0, 64, 0.4);
-}
-
-.close-game:hover {
-  background: transparent;
-  color: var(--error-red);
-  box-shadow: 0 0 20px var(--error-red);
-}
-
-#gameFrame {
-  flex: 1;
-  border: none;
-  background: #000;
-  box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
-}
-
-/* Boot Sequence Overlay */
-#boot-sequence {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: var(--bg-primary);
-  z-index: 10000;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 50px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 1.2rem;
-  line-height: 2;
-}
-
-.boot-line {
-  color: var(--terminal-green);
-  opacity: 0;
-  animation: typeLine 0.1s forwards;
-}
-
-.boot-line.error { color: var(--error-red); }
-.boot-line.warn { color: var(--terminal-amber); }
-.boot-line.success { color: var(--terminal-green); text-shadow: 0 0 10px var(--terminal-green); }
-
-@keyframes typeLine {
-  to { opacity: 1; }
-}
-
-.boot-cursor {
-  display: inline-block;
-  width: 10px;
-  height: 18px;
-  background: var(--terminal-green);
-  margin-left: 5px;
-  animation: blink 0.5s infinite;
-}
-
-/* Glitch Effect */
-.glitch {
-  position: relative;
-  color: var(--terminal-green);
-}
-
-.glitch::before, .glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.glitch::before {
-  left: 2px;
-  text-shadow: -1px 0 var(--error-red);
-  clip: rect(44px, 450px, 56px, 0);
-  animation: glitch-anim 5s infinite linear;
-}
-
-.glitch::after {
-  left: -2px;
-  text-shadow: -1px 0 var(--terminal-amber);
-  clip: rect(44px, 450px, 56px, 0);
-  animation: glitch-anim2 5s infinite linear;
-}
-
-@keyframes glitch-anim {
-  0%, 100% { clip: rect(14px, 9999px, 127px, 0); }
-  20% { clip: rect(8px, 9999px, 79px, 0); }
-  40% { clip: rect(25px, 9999px, 12px, 0); }
-  60% { clip: rect(4px, 9999px, 117px, 0); }
-  80% { clip: rect(108px, 9999px, 92px, 0); }
-}
-
-@keyframes glitch-anim2 {
-  0%, 100% { clip: rect(65px, 9999px, 119px, 0); }
-  20% { clip: rect(33px, 9999px, 5px, 0); }
-  40% { clip: rect(95px, 9999px, 87px, 0); }
-  60% { clip: rect(14px, 9999px, 4px, 0); }
-  80% { clip: rect(102px, 9999px, 46px, 0); }
-}
-
-/* Footer */
-.status-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: var(--bg-secondary);
-  border-top: 2px solid var(--terminal-green);
-  padding: 15px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.85rem;
-  font-family: 'Share Tech Mono', monospace;
-  box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
-  z-index: 1000;
-}
-
-.status-left {
-  display: flex;
-  gap: 30px;
-  color: var(--terminal-dim);
-}
-
-.status-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  background: var(--terminal-green);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--terminal-green);
-  animation: pulse 2s infinite;
-}
-
-.memory-bar {
-  width: 100px;
-  height: 8px;
-  background: var(--bg-tertiary);
-  border-radius: 4px;
-  overflow: hidden;
-  display: inline-block;
-  margin-left: 10px;
-}
-
-.memory-fill {
-  height: 100%;
-  width: 64%;
-  background: linear-gradient(90deg, var(--terminal-green), var(-- terminal-amber));
-  animation: memoryFluctuate 4s ease-in-out infinite;
-}
-
-@keyframes memoryFluctuate {
-  0%, 100% { width: 64%; }
-  50% { width: 78%; }
-}
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 12px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); border-left: 1px solid var(--terminal-dim); }
-::-webkit-scrollbar-thumb { background: var(--terminal-dim); border: 2px solid var(--bg-primary); border-radius: 6px; }
-::-webkit-scrollbar-thumb:hover { background: var(--terminal-green); box-shadow: 0 0 10px var(--terminal-green); }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .terminal-title { font-size: 1.5rem; }
-  .terminal-title::before { font-size: 0.6rem; }
-  .games-grid { grid-template-columns: 1fr; }
-  .system-stats { grid-template-columns: 1fr; }
-  nav button { padding: 15px 20px; font-size: 0.8rem; }
-}
-</style>
-</head>
-<body>
-
-<!-- Matrix Rain Canvas -->
-<canvas id="matrix-canvas"></canvas>
-
-<!-- Boot Sequence -->
-<div id="boot-sequence">
-  <div class="boot-line" style="animation-delay: 0.2s;">BIOS DATE 01/15/2024 14:22:51 VER 9.0.1</div>
-  <div class="boot-line" style="animation-delay: 0.4s;">CPU: LEMON_CORE™ i9-9900K @ 5.00GHz</div>
-  <div class="boot-line" style="animation-delay: 0.6s;">DETECTING PRIMARY MASTER ... SUCCESS</div>
-  <div class="boot-line error" style="animation-delay: 0.8s;">WARNING: PROXY MODULE OFFLINE - BYPASS ENGAGED</div>
-  <div class="boot-line" style="animation-delay: 1.0s;">LOADING KERNEL MODULES ...................... OK</div>
-  <div class="boot-line" style="animation-delay: 1.2s;">MOUNTING ENCRYPTED VOLUME .................. OK</div>
-  <div class="boot-line warn" style="animation-delay: 1.4s;">INIT: GAME_MODULES LOADING [45/45]</div>
-  <div class="boot-line" style="animation-delay: 1.6s;">ESTABLISHING SECURE CONNECTION ............. <span class="success">ENCRYPTED</span></div>
-  <div class="boot-line" style="animation-delay: 1.8s;">SYSTEM READY<span class="boot-cursor"></span></div>
-</div>
-
-<header>
-  <div class="logo-container" onclick="showSection('games')">
-    <div class="logo-icon">🍋</div>
-    <h1 class="terminal-title glitch" data-text="LEMONS_PROXY">LEMONS_PROXY<span class="cursor"></span></h1>
-  </div>
-  <div class="credits">SECURE_TERMINAL_v9.0 // ENCRYPTED_SESSION</div>
-</header>
-
-<nav>
-  <button class="nav-btn active" onclick="showSection('games')" id="nav-games">GAME_MODULES</button>
-  <button class="nav-btn" onclick="showSection('search')" id="nav-search">SEARCH_PROXY</button>
-</nav>
-
-<div class="container">
-
-  <!-- GAMES SECTION -->
-  <section id="games" class="section active">
-    <div class="system-stats">
-      <div class="stat-box">
-        <div class="stat-label">SYSTEM_STATUS</div>
-        <div class="stat-value">ONLINE</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">MODULES_LOADED</div>
-        <div class="stat-value" id="moduleCount">45</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">CONNECTION</div>
-        <div class="stat-value">ENCRYPTED</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">LATENCY</div>
-        <div class="stat-value" id="latency">12ms</div>
-      </div>
-    </div>
-
-    <div class="search-container">
-      <input type="text" class="search-input" id="searchInput" placeholder="SEARCH_MODULE_DATABASE..." onkeyup="searchGames()">
-    </div>
-
-    <div class="games-grid" id="gamesGrid"></div>
-  </section>
-
-  <!-- SEARCH COMING SOON SECTION -->
-  <section id="search" class="section">
-    <div class="coming-soon">
-      <div class="hack-map" id="hackMap">
-        <!-- Map dots and lines generated by JS -->
-      </div>
-      
-      <div class="coming-title">LEMONS_SEARCH</div>
-      <div style="color: var(--error-red); font-size: 1.5rem; margin-bottom: 20px; font-family: 'Share Tech Mono'; text-shadow: 0 0 10px var(--error-red);">
-        [ COMING_SOON ]
-      </div>
-      <div class="coming-text">
-        ADVANCED PROXY PROTOCOLS CURRENTLY OFFLINE.<br>
-        ENGINEERING TEAM WORKING ON DEPLOYMENT.<br>
-        <br>
-        <span style="color: var(--terminal-green);">> ESTIMATED_COMPLETION: TBD</span><br>
-        <span style="color: var(--terminal-dim);">> USE_GAME_MODULES_FOR_NOW</span>
-      </div>
-      
-      <div style="margin-top: 40px; padding: 20px; background: rgba(0,255,65,0.05); border: 1px solid var(--terminal-dim); border-radius: 8px; display: inline-block;">
-        <div style="color: var(--terminal-amber); font-size: 0.9rem; margin-bottom:10px;">ALTERNATIVE_ACCESS:</div>
-        <a href="https://www.croxyproxy.com/" target="_blank" style="color: var(--terminal-green); text-decoration: none; display: block; margin: 5px 0;">> CROXYPROXY [EXTERNAL]</a>
-        <a href="https://www.blockaway.net/" target="_blank" style="color: var(--terminal-green); text-decoration: none; display: block; margin: 5px 0;">> BLOCKAWAY [EXTERNAL]</a>
-      </div>
-    </div>
-  </section>
-
-</div>
-
-<!-- Footer -->
-<div class="status-bar">
-  <div class="status-left">
-    <div class="status-item">
-      <span class="status-dot"></span>
-      <span>SERVER_NODE_01</span>
-    </div>
-    <div class="status-item">
-      <span>MEM:</span>
-      <div class="memory-bar"><div class="memory-fill"></div></div>
-      <span>64%</span>
-    </div>
-    <div class="status-item">
-      <span>UPTIME: 14d 22h 16m</span>
-    </div>
-  </div>
-  <div style="color: var(--terminal-green); text-shadow: 0 0 5px var(--terminal-green);">
-    🍋 LEMONS_PROXY v9.0 // TERMINAL_MODE
-  </div>
-</div>
-
-<!-- Game Viewer -->
-<div class="game-viewer" id="gameViewer">
-  <div class="viewer-header">
-    <div class="viewer-title">> EXECUTING_MODULE: <span id="viewerTitle">UNKNOWN</span></div>
-    <button class="close-game" onclick="closeGame()">[ TERMINATE_PROCESS ]</button>
-  </div>
-  <iframe id="gameFrame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"></iframe>
-</div>
-
 <script>
-// Complete Game Database (All 45 Games)
-const games = [
-  {name: "8_Ball_Pool.exe", emoji: "🎱", tag: "SPORTS", size: "24MB"},
-  {name: "Ludo_Friends.exe", emoji: "🎲", tag: "MULTIPLAYER", size: "18MB"},
-  {name: "Basketball_Stars.exe", emoji: "🏀", tag: "MULTIPLAYER", size: "32MB"},
-  {name: "Stick_Fighter.exe", emoji: "⚔️", tag: "MULTIPLAYER", size: "28MB"},
-  {name: "Poly_Track.exe", emoji: "🏎️", tag: "RACING", size: "45MB"},
-  {name: "Jelly_Truck.exe", emoji: "🚚", tag: "RACING", size: "22MB"},
-  {name: "Slope_v1.exe", emoji: "📐", tag: "RACING", size: "12MB"},
-  {name: "Slope_v2.exe", emoji: "📐2", tag: "RACING", size: "15MB"},
-  {name: "Drift_Hunters.exe", emoji: "🏎️", tag: "RACING", size: "86MB"},
-  {name: "Slow_Roads.exe", emoji: "🛣️", tag: "RACING", size: "34MB"},
-  {name: "Subway_Surfers.exe", emoji: "🏃", tag: "ARCADE", size: "67MB"},
-  {name: "Temple_Run_2.exe", emoji: "🏛️", tag: "ARCADE", size: "54MB"},
-  {name: "Crossy_Road.exe", emoji: "🐔", tag: "ARCADE", size: "23MB"},
-  {name: "1v1.LOL.exe", emoji: "🔫", tag: "BATTLE_ROYALE", size: "112MB"},
-  {name: "Shell_Shockers.exe", emoji: "🥚", tag: "FPS", size: "94MB"},
-  {name: "Krunker.io.exe", emoji: "🔫", tag: "FPS", size: "45MB"},
-  {name: "Slither.io.exe", emoji: "🐍", tag: "ARCADE", size: "18MB"},
-  {name: "Agar.io.exe", emoji: "⚪", tag: "ARCADE", size: "22MB"},
-  {name: "Smash_Karts.exe", emoji: "🏎️", tag: "RACING", size: "76MB"},
-  {name: "Zombs_Royale.exe", emoji: "🧟", tag: "BATTLE_ROYALE", size: "128MB"},
-  {name: "Retro_Bowl.exe", emoji: "🏈", tag: "SPORTS", size: "43MB"},
-  {name: "Thumb_Fighter.exe", emoji: "👊", tag: "FIGHTING", size: "16MB"},
-  {name: "Rooftop_Snipers.exe", emoji: "🎯", tag: "ACTION", size: "21MB"},
-  {name: "2048.exe", emoji: "🔢", tag: "PUZZLE", size: "4MB"},
-  {name: "Cookie_Clicker.exe", emoji: "🍪", tag: "IDLE", size: "8MB"},
-  {name: "Minesweeper.exe", emoji: "💣", tag: "PUZZLE", size: "6MB"},
-  {name: "Little_Alchemy_2.exe", emoji: "⚗️", tag: "PUZZLE", size: "31MB"},
-  {name: "Sudoku.exe", emoji: "🧩", tag: "PUZZLE", size: "5MB"},
-  {name: "Fleeing_Complex.exe", emoji: "🏃", tag: "STEALTH", size: "42MB"},
-  {name: "Escaping_Prison.exe", emoji: "🔨", tag: "STEALTH", size: "38MB"},
-  {name: "Stealing_Diamond.exe", emoji: "💎", tag: "STEALTH", size: "35MB"},
-  {name: "Infiltrating_Airship.exe", emoji: "🎈", tag: "STEALTH", size: "41MB"},
-  {name: "Papas_Pizzeria.exe", emoji: "🍕", tag: "SIMULATION", size: "28MB"},
-  {name: "Papas_Pancakeria.exe", emoji: "🥞", tag: "SIMULATION", size: "26MB"},
-  {name: "Geometry_Dash.exe", emoji: "🔷", tag: "PLATFORMER", size: "89MB"},
-  {name: "OvO.exe", emoji: "🥚", tag: "PLATFORMER", size: "33MB"},
-  {name: "Vex_5.exe", emoji: "🔺", tag: "PLATFORMER", size: "47MB"},
-  {name: "Vex_6.exe", emoji: "🔺6", tag: "PLATFORMER", size: "52MB"},
-  {name: "Big_Tower_Tiny_Square.exe", emoji: "🗼", tag: "PLATFORMER", size: "29MB"},
-  {name: "Pacman.exe", emoji: "👻", tag: "ARCADE", size: "12MB"},
-  {name: "Chrome_Dino.exe", emoji: "🦖", tag: "ARCADE", size: "3MB"},
-  {name: "Flappy_Bird.exe", emoji: "🐦", tag: "ARCADE", size: "5MB"},
-  {name: "Eaglercraft_1.8.8.exe", emoji: "⛏️", tag: "SANDBOX", size: "256MB"},
-  {name: "MineKhan.exe", emoji: "⛏️", tag: "SANDBOX", size: "178MB"},
-  {name: "Voxel_Builder.exe", emoji: "🧊", tag: "SANDBOX", size: "64MB"}
+// Complete the achievements array
+const achievements = [
+  {id: "first_launch", name: "System Init", desc: "Boot up Lemons Proxy", icon: "🖥️", unlocked: false},
+  {id: "first_game", name: "Module Runner", desc: "Launch your first game", icon: "🎮", unlocked: false},
+  {id: "ten_games", name: "Power User", desc: "Launch 10 different games", icon: "⚡", unlocked: false},
+  {id: "search_try", name: "Network Scout", desc: "Visit the proxy tab", icon: "🔍", unlocked: false},
+  {id: "fullscreen", name: "Maximum Overdrive", desc: "Use fullscreen mode", icon: "⛶", unlocked: false},
+  {id: "konami", name: "Code Breaker", desc: "Enter the Konami Code", icon: "🔓", unlocked: false},
+  {id: "logo_clicker", name: "Curious Mind", desc: "Click the logo 5 times", icon: "🍋", unlocked: false},
+  {id: "aurelio_search", name: "Hidden Truth", desc: "Search for the forbidden name", icon: "🚫", unlocked: false}
 ];
 
-const gameUrls = {
-  "8_Ball_Pool.exe": "https://html5.gamedistribution.com/ed65e4198fe74fdbb0b2ac015dd81128/",
-  "Ludo_Friends.exe": "https://zv1y2i8p.play.gamezop.com/g/SkhljT2fdgb",
-  "Basketball_Stars.exe": "https://html5.gamedistribution.com/f7c4e66b484e45df86b7d46450aac477/",
-  "Stick_Fighter.exe": "https://html5.gamedistribution.com/rgSkqGbJade4O68B0T2u3zCZqe0FMBqO/",
-  "Poly_Track.exe": "https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html",
-  "Jelly_Truck.exe": "https://jellytruck2.github.io/",
-  "Slope_v1.exe": "https://slope-y8.com/",
-  "Slope_v2.exe": "https://slopegame2.github.io/",
-  "Drift_Hunters.exe": "https://drifthuntersonline.github.io/",
-  "Slow_Roads.exe": "https://slowroads.io/",
-  "Subway_Surfers.exe": "https://subwaysurfers76.github.io/",
-  "Temple_Run_2.exe": "https://run3temp.github.io/",
-  "Crossy_Road.exe": "https://crossyroad66.github.io/",
-  "1v1.LOL.exe": "https://1v1lol-gg.github.io/",
-  "Shell_Shockers.exe": "https://shellshock.io/",
-  "Krunker.io.exe": "https://krunker.io/",
-  "Slither.io.exe": "https://slither.io/",
-  "Agar.io.exe": "https://agar.io/",
-  "Smash_Karts.exe": "https://smashkarts.io/",
-  "Zombs_Royale.exe": "https://zombsroyale.io/",
-  "Retro_Bowl.exe": "https://retrobowl97.github.io/",
-  "Thumb_Fighter.exe": "https://thumbfighter.github.io/",
-  "Rooftop_Snipers.exe": "https://rooftopsnipers.github.io/",
-  "2048.exe": "https://play2048.co/",
-  "Cookie_Clicker.exe": "https://cookieclicker-game.github.io/",
-  "Minesweeper.exe": "https://minesweeper.online/",
-  "Little_Alchemy_2.exe": "https://littlealchemy2.com/",
-  "Sudoku.exe": "https://zv1y2i8p.play.gamezop.com/g/rkHVpV2Yugb",
-  "Fleeing_Complex.exe": "https://machita66.github.io/game/fleeingthecomplex.html",
-  "Escaping_Prison.exe": "https://escaping-the-prison.com/",
-  "Stealing_Diamond.exe": "https://stealing-the-diamond.com/",
-  "Infiltrating_Airship.exe": "https://infiltrating-the-airship.com/",
-  "Papas_Pizzeria.exe": "https://papaspizzeria-unblocked.github.io/",
-  "Papas_Pancakeria.exe": "https://papaspancakeria.github.io/",
-  "Geometry_Dash.exe": "https://geometry-dash-unbanned.github.io/",
-  "OvO.exe": "https://dedragames.com/games/ovo/1.3/",
-  "Vex_5.exe": "https://vex5.com/",
-  "Vex_6.exe": "https://vex6.com/",
-  "Big_Tower_Tiny_Square.exe": "https://big-tower-tiny-square.com/",
-  "Pacman.exe": "https://google-pacman.github.io/",
-  "Chrome_Dino.exe": "https://chrome-dino-game.github.io/",
-  "Flappy_Bird.exe": "https://flappy-bird.com/",
-  "Eaglercraft_1.8.8.exe": "https://g.deev.is/eaglercraft/",
-  "MineKhan.exe": "https://yikuansun.github.io/minekhan/",
-  "Voxel_Builder.exe": "https://voxelbuilder.github.io/"
-};
+// State management
+let gamesLaunched = [];
+let logoClicks = 0;
+let konamiSequence = [];
+let musicPlaying = false;
+let achievementsUnlocked = [];
 
-// Matrix Rain Effect
-const canvas = document.getElementById('matrix-canvas');
-const ctx = canvas.getContext('2d');
+// Konami code: ↑↑↓↓←→←→BA
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const nums = '0123456789';
-const alphabet = katakana + latin + nums;
-
-const fontSize = 16;
-const columns = canvas.width/fontSize;
-const drops = [];
-
-for(let x = 0; x < columns; x++) {
-  drops[x] = Math.random() * -1000;
-}
-
-function drawMatrix() {
-  ctx.fillStyle = 'rgba(10, 14, 39, 0.05)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+// Efficient initialization
+document.addEventListener('DOMContentLoaded', () => {
+  renderGames();
+  renderAchievements();
+  updateStats();
+  checkFirstLaunch();
   
-  ctx.fillStyle = '#0F0';
-  ctx.font = fontSize + 'px monospace';
+  // Keyboard listener for Konami and search easter egg
+  document.addEventListener('keydown', handleKeydown);
   
-  for(let i = 0; i < drops.length; i++) {
-    const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-    ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-    
-    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975)
-      drops[i] = 0;
-    
-    drops[i]++;
+  // Console easter egg
+  console.log('%c fuck you aurelio ', 'background: #1e3a8a; color: #3b82f6; font-size: 20px; font-family: monospace; border: 2px solid #3b82f6; padding: 10px;');
+  console.log('%c Lemons Proxy v10.0 // LD x Lemonwesh ', 'color: #60a5fa; font-family: monospace;');
+});
+
+function handleKeydown(e) {
+  // Konami code detection
+  konamiSequence.push(e.key);
+  if (konamiSequence.length > 10) konamiSequence.shift();
+  
+  if (konamiSequence.join(',') === konamiCode.join(',')) {
+    unlockAchievement('konami');
+    showEasterEggToast("🔓 KONAMI CODE ACTIVATED\nSystem restrictions bypassed.\nAll modules unlocked.");
+    document.body.style.filter = "hue-rotate(180deg)";
+    setTimeout(() => document.body.style.filter = "", 3000);
   }
 }
 
-setInterval(drawMatrix, 35);
-
-// Boot Sequence
-setTimeout(() => {
+function dismissBoot() {
   document.getElementById('boot-sequence').style.display = 'none';
-}, 2500);
-
-// Initialize
-function init() {
-  document.getElementById('moduleCount').textContent = games.length;
-  renderGames(games);
-  generateHackMap();
-  updateLatency();
-  setInterval(updateLatency, 2000);
+  playDystopianMusic();
+  unlockAchievement('first_launch');
 }
 
-function renderGames(gameList) {
+function playDystopianMusic() {
+  // Auto-play dystopian ambient music using YouTube iframe API workaround
+  const container = document.getElementById('musicContainer');
+  const videoId = 'JvF3ps2JiYY'; // Dystopian ambient track
+  
+  // Create invisible iframe for autoplay (muted workaround for browser policies)
+  container.innerHTML = `
+    <iframe 
+      width="0" 
+      height="0" 
+      src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=1" 
+      frameborder="0" 
+      allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+    </iframe>
+  `;
+  
+  // Try to unmute after user interaction (click)
+  setTimeout(() => {
+    const iframes = container.getElementsByTagName('iframe');
+    if (iframes.length > 0) {
+      // Replace with unmuted version
+      iframes[0].src = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=0`;
+    }
+    musicPlaying = true;
+    document.getElementById('nowPlaying').textContent = '♫ Now Playing: Dystopian Ambient';
+  }, 1000);
+}
+
+function playMusic() {
+  const url = document.getElementById('musicUrl').value;
+  const container = document.getElementById('musicContainer');
+  const videoId = extractVideoID(url);
+  
+  if (videoId) {
+    container.innerHTML = `
+      <iframe 
+        width="0" 
+        height="0" 
+        src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}" 
+        frameborder="0" 
+        allow="autoplay; clipboard-write; encrypted-media" 
+        allowfullscreen>
+      </iframe>
+    `;
+    musicPlaying = true;
+    document.getElementById('nowPlaying').textContent = '♫ Custom Track Active';
+    document.getElementById('nowPlaying').classList.add('active');
+  }
+}
+
+function stopMusic() {
+  document.getElementById('musicContainer').innerHTML = '';
+  musicPlaying = false;
+  document.getElementById('nowPlaying').textContent = '♫ Audio Stopped';
+}
+
+function extractVideoID(url) {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+function renderGames() {
   const grid = document.getElementById('gamesGrid');
-  grid.innerHTML = gameList.map(game => `
-    <div class="game-module" onclick="launchGame('${game.name}')">
+  grid.innerHTML = games.map((game, index) => `
+    <div class="game-module" onclick="launchGame('${game.url}', '${game.name}')" data-name="${game.name.toLowerCase()}">
       <div class="module-header">
         <span class="module-icon">${game.emoji}</span>
-        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 5px;">
-          <span class="module-tag">${game.tag}</span>
-          <div class="module-status">
-            <span class="status-active"></span>
-            <span>ONLINE</span>
-          </div>
-        </div>
+        <span class="module-tag">${game.tag}</span>
       </div>
       <div class="module-title">${game.name}</div>
       <div class="module-meta">
-        <span style="color: var(--terminal-dim);">v2.0.1</span>
-        <span class="module-size">${game.size}</span>
+        <span>v1.0.${index}</span>
+        <span>${game.size}MB</span>
       </div>
     </div>
   `).join('');
 }
 
-function generateHackMap() {
-  const map = document.getElementById('hackMap');
-  for(let i = 0; i < 15; i++) {
-    const dot = document.createElement('div');
-    dot.className = 'map-dot';
-    dot.style.left = Math.random() * 100 + '%';
-    dot.style.top = Math.random() * 100 + '%';
-    dot.style.animationDelay = Math.random() * 3 + 's';
-    map.appendChild(dot);
-    
-    const line = document.createElement('div');
-    line.className = 'map-line';
-    line.style.left = Math.random() * 100 + '%';
-    line.style.top = Math.random() * 100 + '%';
-    line.style.width = Math.random() * 100 + 50 + 'px';
-    line.style.animationDelay = Math.random() * 4 + 's';
-    map.appendChild(line);
-  }
-}
-
-function updateLatency() {
-  const latency = Math.floor(Math.random() * 30) + 8;
-  document.getElementById('latency').textContent = latency + 'ms';
-}
-
-function showSection(id) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.getElementById('nav-'+id)?.classList.add('active');
-}
-
-function launchGame(moduleName) {
-  const url = gameUrls[moduleName];
-  if(!url) return;
+function launchGame(url, name) {
+  const viewer = document.getElementById('gameViewer');
+  const frame = document.getElementById('gameFrame');
+  const title = document.getElementById('viewerTitle');
   
-  document.getElementById('gameViewer').classList.add('active');
-  document.getElementById('viewerTitle').textContent = moduleName;
-  document.getElementById('gameFrame').src = url;
+  title.textContent = name.toUpperCase();
+  frame.src = url;
+  viewer.classList.add('active');
+  
+  // Track for achievements
+  if (!gamesLaunched.includes(name)) {
+    gamesLaunched.push(name);
+    if (gamesLaunched.length === 1) unlockAchievement('first_game');
+    if (gamesLaunched.length === 10) unlockAchievement('ten_games');
+  }
+  
+  // Update module count display
+  document.getElementById('moduleCount').textContent = '45';
 }
 
 function closeGame() {
-  document.getElementById('gameViewer').classList.remove('active');
-  document.getElementById('gameFrame').src = '';
+  const viewer = document.getElementById('gameViewer');
+  const frame = document.getElementById('gameFrame');
+  viewer.classList.remove('active');
+  frame.src = '';
+}
+
+function toggleFullscreen() {
+  const frame = document.getElementById('gameFrame');
+  if (frame.requestFullscreen) {
+    frame.requestFullscreen();
+    unlockAchievement('fullscreen');
+  }
+}
+
+function showSection(section) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  
+  document.getElementById(section).classList.add('active');
+  document.getElementById('nav-' + section).classList.add('active');
+  
+  if (section === 'search') unlockAchievement('search_try');
 }
 
 function searchGames() {
-  const query = document.getElementById('searchInput').value.toLowerCase();
-  const filtered = games.filter(g => g.name.toLowerCase().includes(query));
-  renderGames(filtered);
+  const input = document.getElementById('searchInput').value.toLowerCase();
+  const modules = document.querySelectorAll('.game-module');
+  
+  // Easter egg: search for "aurelio"
+  if (input === 'aurelio') {
+    unlockAchievement('aurelio_search');
+    showEasterEggToast("🚫 ACCESS DENIED\nUser 'Aurelio' blacklisted from system.\nReason: Unauthorized access attempts.");
+  }
+  
+  modules.forEach(module => {
+    const name = module.getAttribute('data-name');
+    module.style.display = name.includes(input) ? 'block' : 'none';
+  });
 }
 
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape' && document.getElementById('gameViewer').classList.contains('active')) {
-    closeGame();
+function easterEggLogo() {
+  logoClicks++;
+  if (logoClicks === 5) {
+    unlockAchievement('logo_clicker');
+    showEasterEggToast("🍋 LEMON PROTOCOL ACTIVATED\nCitrus levels critical.\nSystem optimized for acidity.");
   }
-});
+  
+  // Visual feedback
+  const logo = document.querySelector('.logo-icon');
+  logo.style.transform = `rotate(${logoClicks * 15}deg) scale(${1 + logoClicks * 0.1})`;
+  setTimeout(() => logo.style.transform = '', 300);
+}
 
-window.onload = init;
+function unlockAchievement(id) {
+  const ach = achievements.find(a => a.id === id);
+  if (ach && !ach.unlocked && !achievementsUnlocked.includes(id)) {
+    ach.unlocked = true;
+    achievementsUnlocked.push(id);
+    renderAchievements();
+    showAchievementPopup(ach);
+    updateStats();
+    
+    // Save to localStorage for persistence
+    localStorage.setItem('lemons_achievements', JSON.stringify(achievementsUnlocked));
+  }
+}
+
+function checkFirstLaunch() {
+  const saved = localStorage.getItem('lemons_achievements');
+  if (saved) {
+    achievementsUnlocked = JSON.parse(saved);
+    achievementsUnlocked.forEach(id => {
+      const ach = achievements.find(a => a.id === id);
+      if (ach) ach.unlocked = true;
+    });
+    renderAchievements();
+    updateStats();
+  }
+}
+
+function renderAchievements() {
+  const list = document.getElementById('achievementsList');
+  const progress = document.getElementById('ach-progress');
+  
+  list.innerHTML = achievements.map(ach => `
+    <div class="achievement-item ${ach.unlocked ? 'unlocked' : ''}">
+      <div class="achievement-icon">${ach.icon}</div>
+      <div class="achievement-info">
+        <h4>${ach.name}</h4>
+        <p>${ach.desc}</p>
+      </div>
+    </div>
+  `).join('');
+  
+  const unlockedCount = achievements.filter(a => a.unlocked).length;
+  progress.textContent = `${unlockedCount}/${achievements.length}`;
+  document.getElementById('achievements-count').textContent = `${unlockedCount}/${achievements.length}`;
+}
+
+function showAchievementPopup(ach) {
+  const popup = document.getElementById('achievementPopup');
+  document.getElementById('pop-achievement-text').textContent = ach.name;
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 4000);
+}
+
+function toggleAchievements() {
+  document.getElementById('achievementsPanel').classList.toggle('active');
+}
+
+function showEasterEggToast(message) {
+  const toast = document.getElementById('easterToast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 5000);
+}
+
+function updateStats() {
+  // Simulate dynamic latency
+  setInterval(() => {
+    const latency = Math.floor(Math.random() * 20) + 8;
+    const el = document.getElementById('latency');
+    if (el) el.textContent = latency + 'ms';
+  }, 5000);
+}
+
+// Prevent memory leaks - cleanup on page unload
+window.addEventListener('beforeunload', () => {
+  stopMusic();
+});
 </script>
 </body>
 </html>
