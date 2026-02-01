@@ -3,283 +3,696 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Classroom</title>
-    <link id="favicon" rel="icon" href="https://ssl.gstatic.com/classroom/ic_product_classroom_32.png">
+    <title>Lemons Proxy</title>
+    <link id="favicon" rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍋</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --blueprint-bg: #004494; --blueprint-line: rgba(255,255,255,0.85); --accent: #FF6600; }
-        body { background-color: var(--blueprint-bg); background-image: linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px); background-size: 20px 20px; font-family: 'Courier Prime', monospace; color: white; min-height: 100vh; }
+        :root {
+            --blueprint-bg: #004494;
+            --blueprint-line: rgba(255, 255, 255, 0.85);
+            --accent: #FF6600;
+            --surface: rgba(0, 0, 0, 0.4);
+        }
         
-        .settings-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,10,30,0.95); z-index: 3000; padding: 40px; overflow-y: auto; }
+        body {
+            background-color: var(--blueprint-bg);
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: 'Courier Prime', monospace;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Settings Modal */
+        .settings-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 10, 30, 0.95);
+            z-index: 3000;
+            padding: 40px;
+            overflow-y: auto;
+        }
         .settings-modal.active { display: block; }
-        .settings-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--blueprint-line); padding-bottom: 20px; margin-bottom: 30px; }
-        .settings-title { font-family: 'Share Tech Mono', monospace; font-size: 2rem; }
-        .close-settings { background: #ff4444; border: 2px solid #ff4444; color: white; padding: 10px 25px; font-family: 'Share Tech Mono', monospace; cursor: pointer; }
-        .setting-option { background: rgba(0,0,0,0.4); border: 2px solid var(--blueprint-line); padding: 20px; margin-bottom: 20px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 20px; }
-        .setting-option:hover { background: var(--accent); border-color: var(--accent); }
-        .setting-icon { width: 40px; height: 40px; background: white; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--blueprint-line);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .settings-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 2rem;
+        }
+        .close-settings {
+            background: #ff4444;
+            border: 2px solid #ff4444;
+            color: white;
+            padding: 10px 25px;
+            font-family: 'Share Tech Mono', monospace;
+            cursor: pointer;
+        }
+        .setting-option {
+            background: rgba(0,0,0,0.4);
+            border: 2px solid var(--blueprint-line);
+            padding: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .setting-option:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .setting-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
 
-        header { text-align: center; padding: 30px 20px; border-bottom: 4px double var(--blueprint-line); background: rgba(0,0,0,0.4); position: relative; }
-        .blueprint-title { font-family: 'Share Tech Mono', monospace; font-size: 2.5rem; text-transform: uppercase; letter-spacing: 8px; }
-        .credits { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; opacity: 0.7; color: rgba(255,255,255,0.8); letter-spacing: 2px; }
-        .header-controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 15px; }
-        .control-btn { background: rgba(255,255,255,0.1); border: 2px solid var(--blueprint-line); color: white; padding: 8px 15px; cursor: pointer; font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; }
-        .control-btn:hover { background: var(--accent); border-color: var(--accent); }
-        .search-box { margin-top: 20px; max-width: 600px; margin-left: auto; margin-right: auto; }
-        .search-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 2px solid var(--blueprint-line); color: white; font-family: 'Courier Prime', monospace; font-size: 1rem; }
+        /* Header */
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 4px double var(--blueprint-line);
+            background: rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+        .blueprint-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            cursor: pointer;
+        }
+        .credits {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            color: rgba(255,255,255,0.8);
+            letter-spacing: 2px;
+        }
+        .header-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        .control-btn {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid var(--blueprint-line);
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+        }
+        .control-btn:hover, .control-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
 
-        nav { background: rgba(0,0,0,0.5); border-bottom: 2px solid var(--blueprint-line); padding: 15px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; position: sticky; top: 0; z-index: 100; }
-        nav button { background: transparent; border: 2px solid var(--blueprint-line); color: white; padding: 10px 20px; font-family: 'Share Tech Mono', monospace; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; transition: all 0.3s; }
-        nav button:hover, nav button.active { background: var(--accent); border-color: var(--accent); }
+        /* Navigation */
+        nav {
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 2px solid var(--blueprint-line);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav button {
+            background: transparent;
+            border: 2px solid var(--blueprint-line);
+            color: white;
+            padding: 10px 20px;
+            font-family: 'Share Tech Mono', monospace;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        nav button:hover, nav button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
 
-        .container { max-width: 1600px; margin: 30px auto; padding: 0 20px; }
+        .container { max-width: 1400px; margin: 30px auto; padding: 0 20px; }
         .section { display: none; }
         .section.active { display: block; }
 
-        .proxy-browser { border: 3px solid var(--blueprint-line); background: rgba(0,0,0,0.6); height: calc(100vh - 250px); min-height: 600px; display: flex; flex-direction: column; }
-        .proxy-toolbar { display: flex; gap: 10px; padding: 15px; background: rgba(0,0,0,0.5); border-bottom: 2px solid var(--blueprint-line); align-items: center; flex-wrap: wrap; }
-        .proxy-btn { background: rgba(255,255,255,0.1); border: 2px solid var(--blueprint-line); color: white; padding: 8px 15px; cursor: pointer; font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; }
-        .proxy-btn:hover { background: var(--accent); border-color: var(--accent); }
-        .proxy-address { flex: 1; min-width: 200px; padding: 10px; background: rgba(0,0,0,0.4); border: 2px solid var(--blueprint-line); color: white; font-family: 'Courier Prime', monospace; font-size: 0.9rem; }
-        .proxy-select { padding: 10px; background: rgba(0,0,0,0.4); border: 2px solid var(--blueprint-line); color: white; font-family: 'Share Tech Mono', monospace; }
-        .proxy-viewport { flex: 1; position: relative; background: white; }
-        .proxy-frame { width: 100%; height: 100%; border: none; display: block; }
-        .proxy-fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,10,30,0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px; text-align: center; padding: 40px; }
-        .proxy-fallback h3 { color: var(--accent); font-family: 'Share Tech Mono', monospace; font-size: 1.5rem; }
-        .proxy-fallback button { padding: 15px 30px; background: var(--accent); border: 2px solid var(--accent); color: white; font-family: 'Share Tech Mono', monospace; cursor: pointer; font-size: 1rem; }
-        .proxy-status { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); padding: 5px 10px; font-size: 0.75rem; font-family: 'Share Tech Mono', monospace; border: 1px solid var(--blueprint-line); }
+        /* Search */
+        .search-box {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid var(--blueprint-line);
+            color: white;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+        }
 
-        .recent-section { background: rgba(255,102,0,0.1); border: 2px solid var(--accent); padding: 20px; margin-bottom: 30px; display: none; }
+        /* Stats */
+        .stats {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid var(--blueprint-line);
+            margin-bottom: 30px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
+        }
+
+        /* Recent Games */
+        .recent-section {
+            background: rgba(255,102,0,0.1);
+            border: 2px solid var(--accent);
+            padding: 20px;
+            margin-bottom: 30px;
+            display: none;
+        }
         .recent-section.active { display: block; }
-        .recent-title { font-family: 'Share Tech Mono', monospace; font-size: 1.2rem; margin-bottom: 15px; color: var(--accent); }
-        .recent-grid { display: flex; gap: 10px; flex-wrap: wrap; }
-        .recent-item { background: rgba(0,0,0,0.4); border: 1px solid var(--blueprint-line); padding: 10px 15px; cursor: pointer; font-size: 0.85rem; font-family: 'Share Tech Mono', monospace; transition: all 0.2s; }
-        .recent-item:hover { background: var(--accent); border-color: var(--accent); }
+        .recent-grid {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .recent-item {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--blueprint-line);
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-family: 'Share Tech Mono', monospace;
+            transition: all 0.2s;
+        }
+        .recent-item:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
 
-        .stats { text-align: center; padding: 20px; background: rgba(0,0,0,0.3); border: 2px solid var(--blueprint-line); margin-bottom: 30px; font-family: 'Share Tech Mono', monospace; font-size: 1.2rem; }
+        /* Games Grid - All in One Area */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .game-card {
+            border: 2px solid var(--blueprint-line);
+            background: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        .game-emoji {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            background: rgba(0,0,0,0.6);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--blueprint-line);
+        }
+        .game-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--accent);
+            color: white;
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            border: 1px solid var(--blueprint-line);
+        }
+        .game-thumb {
+            width: 100%;
+            height: 140px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 2px solid var(--blueprint-line);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-align: center;
+            padding: 10px;
+            text-transform: uppercase;
+        }
+        .game-title {
+            padding: 12px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+        .play-tag {
+            background: rgba(255,102,0,0.2);
+            color: var(--accent);
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            text-align: center;
+            border-top: 1px solid var(--blueprint-line);
+            font-family: 'Share Tech Mono', monospace;
+        }
 
-        .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-        .game-card { border: 2px solid var(--blueprint-line); background: rgba(0,0,0,0.3); cursor: pointer; transition: all 0.3s; overflow: hidden; display: flex; flex-direction: column; }
-        .game-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
-        .game-thumb { width: 100%; height: 140px; background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); display: flex; align-items: center; justify-content: center; border-bottom: 2px solid var(--blueprint-line); font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; color: var(--accent); text-align: center; padding: 10px; text-transform: uppercase; }
-        .game-title { padding: 12px; font-family: 'Share Tech Mono', monospace; font-size: 0.95rem; flex: 1; }
-        .play-tag { background: rgba(255,102,0,0.2); color: var(--accent); padding: 5px 10px; font-size: 0.75rem; text-align: center; border-top: 1px solid var(--blueprint-line); font-family: 'Share Tech Mono', monospace; }
+        /* Proxy Browser - Shadow V3 Style in Blueprint Theme */
+        .proxy-container {
+            border: 3px solid var(--blueprint-line);
+            background: rgba(0, 0, 0, 0.4);
+            height: calc(100vh - 200px);
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+        .proxy-toolbar {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 2px solid var(--blueprint-line);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .proxy-nav-btn {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid var(--blueprint-line);
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            min-width: 40px;
+        }
+        .proxy-nav-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .proxy-omnibox {
+            flex: 1;
+            display: flex;
+            background: rgba(0,0,0,0.3);
+            border: 2px solid var(--blueprint-line);
+            min-width: 200px;
+        }
+        .proxy-address {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 10px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+        }
+        .proxy-address:focus {
+            outline: none;
+        }
+        .proxy-go-btn {
+            background: var(--accent);
+            border: 2px solid var(--accent);
+            color: white;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+        }
+        .proxy-go-btn:hover {
+            background: transparent;
+        }
+        .proxy-select {
+            background: rgba(0,0,0,0.3);
+            border: 2px solid var(--blueprint-line);
+            color: white;
+            padding: 8px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .proxy-viewport {
+            flex: 1;
+            position: relative;
+            background: white;
+            overflow: hidden;
+        }
+        .proxy-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        .proxy-error {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,10,30,0.95);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+            padding: 40px;
+        }
+        .proxy-error.active {
+            display: flex;
+        }
+        .proxy-error h3 {
+            color: var(--accent);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.5rem;
+        }
+        .proxy-error button {
+            padding: 12px 24px;
+            background: var(--accent);
+            border: 2px solid var(--accent);
+            color: white;
+            font-family: 'Share Tech Mono', monospace;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .proxy-error button.secondary {
+            background: transparent;
+            border-color: var(--blueprint-line);
+        }
+        .proxy-status {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 5px 10px;
+            font-size: 0.75rem;
+            font-family: 'Share Tech Mono', monospace;
+            border: 1px solid var(--blueprint-line);
+            z-index: 10;
+        }
 
-        .notice { background: rgba(0,255,0,0.1); border: 2px solid rgba(0,255,0,0.3); padding: 15px; margin-bottom: 30px; text-align: center; font-family: 'Share Tech Mono', monospace; }
+        /* Game Viewer */
+        .game-viewer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 10, 30, 0.98);
+            z-index: 2000;
+            padding: 20px;
+        }
+        .game-viewer.active {
+            display: block;
+        }
+        .viewer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--blueprint-line);
+        }
+        .viewer-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.3rem;
+        }
+        .game-frame {
+            width: 100%;
+            height: calc(100% - 80px);
+            border: 3px solid var(--blueprint-line);
+            background: white;
+        }
+        .close-btn {
+            background: #ff4444;
+            border: 2px solid #ff4444;
+            color: white;
+            padding: 10px 25px;
+            font-family: 'Share Tech Mono', monospace;
+            cursor: pointer;
+        }
+        .close-btn:hover {
+            background: transparent;
+        }
 
-        .game-viewer { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,10,30,0.98); z-index: 2000; padding: 20px; }
-        .game-viewer.active { display: block; }
-        .viewer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid var(--blueprint-line); }
-        .viewer-title { font-family: 'Share Tech Mono', monospace; font-size: 1.3rem; }
-        .game-frame { width: 100%; height: calc(100% - 80px); border: 3px solid var(--blueprint-line); background: white; }
-        .close-btn { background: #ff4444; border: 2px solid #ff4444; color: white; padding: 10px 25px; font-family: 'Share Tech Mono', monospace; cursor: pointer; }
-
-        footer { text-align: center; padding: 30px; border-top: 2px solid var(--blueprint-line); background: rgba(0,0,0,0.4); margin-top: 50px; font-family: 'Share Tech Mono', monospace; }
-        .footer-credits { font-size: 0.9rem; color: rgba(255,255,255,0.9); letter-spacing: 3px; }
-        .footer-credits span { color: var(--accent); font-weight: bold; }
-
-        .proxy-links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin-top: 20px; padding: 20px; background: rgba(0,0,0,0.3); border-top: 2px solid var(--blueprint-line); }
-        .proxy-link-card { border: 1px solid var(--blueprint-line); padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(0,0,0,0.3); }
-        .proxy-link-card:hover { background: var(--accent); border-color: var(--accent); }
-        .proxy-link-name { font-family: 'Share Tech Mono', monospace; font-weight: bold; margin-bottom: 5px; }
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 2px solid var(--blueprint-line);
+            background: rgba(0, 0, 0, 0.4);
+            margin-top: 50px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .footer-credits {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.9);
+            letter-spacing: 3px;
+        }
+        .footer-credits span {
+            color: var(--accent);
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+    <!-- Settings Modal -->
     <div class="settings-modal" id="settingsModal">
         <div class="settings-header">
-            <h2 class="settings-title">⚙️ Tab Cloak Settings</h2>
+            <h2 class="settings-title">⚙️ TAB CLOAK SETTINGS</h2>
             <button class="close-settings" onclick="toggleSettings()">CLOSE</button>
         </div>
-        <p style="margin-bottom: 30px; opacity: 0.9;">Click an option to disguise this tab:</p>
+        
+        <div class="setting-option" onclick="resetToLemons()">
+            <div class="setting-icon">🍋</div>
+            <div>
+                <div style="font-weight: bold;">Reset to Lemons Proxy</div>
+                <div style="font-size: 0.85rem; opacity: 0.8;">Restore original title and lemon icon</div>
+            </div>
+        </div>
+        
         <div class="setting-option" onclick="cloakTab('Google Classroom', 'https://ssl.gstatic.com/classroom/ic_product_classroom_32.png')">
-            <div class="setting-icon">📚</div><div><div style="font-weight: bold;">Google Classroom</div></div>
+            <div class="setting-icon">📚</div>
+            <div><div style="font-weight: bold;">Google Classroom</div></div>
         </div>
         <div class="setting-option" onclick="cloakTab('Canvas', 'https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico')">
-            <div class="setting-icon">🎓</div><div><div style="font-weight: bold;">Canvas</div></div>
+            <div class="setting-icon">🎓</div>
+            <div><div style="font-weight: bold;">Canvas</div></div>
         </div>
         <div class="setting-option" onclick="cloakTab('Google Drive', 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png')">
-            <div class="setting-icon">📁</div><div><div style="font-weight: bold;">Google Drive</div></div>
+            <div class="setting-icon">📁</div>
+            <div><div style="font-weight: bold;">Google Drive</div></div>
         </div>
         <div class="setting-option" onclick="cloakTab('Gmail', 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico')">
-            <div class="setting-icon">✉️</div><div><div style="font-weight: bold;">Gmail</div></div>
+            <div class="setting-icon">✉️</div>
+            <div><div style="font-weight: bold;">Gmail</div></div>
         </div>
     </div>
 
+    <!-- Header -->
     <header>
         <div class="header-controls">
             <button class="control-btn" onclick="toggleSettings()">⚙️ SETTINGS</button>
         </div>
-        <h1 class="blueprint-title">Lemons Proxy</h1>
-        <p style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.9rem;">VERIFIED SINGLE-GAMES • RAMMERHEAD PROXY</p>
+        <h1 class="blueprint-title" onclick="showSection('games')">🍋 LEMONS PROXY</h1>
+        <p style="margin-top: 10px; font-family: 'Share Tech Mono'; font-size: 0.9rem;">VERIFIED WORKING GAMES • EMBEDDED PROXY BROWSER</p>
         <div class="credits">CODE BY <span>LEMONWESH</span> // DESIGN BY <span>LD</span></div>
-        <div class="search-box">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search games..." onkeyup="searchGames()">
-        </div>
     </header>
 
+    <!-- Navigation -->
     <nav>
-        <button class="nav-btn active" onclick="showSection('games')">[ GAMES ]</button>
-        <button class="nav-btn" onclick="showSection('proxy')">[ PROXY BROWSER ]</button>
+        <button class="nav-btn active" onclick="showSection('games')" id="nav-games">[ GAMES ]</button>
+        <button class="nav-btn" onclick="showSection('proxy')" id="nav-proxy">[ PROXY ]</button>
     </nav>
 
+    <!-- Main Container -->
     <div class="container">
-        <!-- PROXY SECTION -->
+        
+        <!-- PROXY SECTION - Shadow V3 Style in Blueprint -->
         <section id="proxy" class="section">
-            <div style="background: rgba(0,0,0,0.4); border: 2px solid var(--blueprint-line); padding: 20px; margin-bottom: 20px; text-align: center;">
-                <h2 style="font-family: 'Share Tech Mono'; margin-bottom: 10px; color: var(--accent);">🔍 RAMMERHEAD PROXY</h2>
-                <p style="font-size: 0.9rem; opacity: 0.9;">Session-based proxy. Opens in new tab to avoid blocks. Password: <strong>sharkie4life</strong></p>
+            <div style="background: rgba(0,255,0,0.05); border: 2px solid rgba(0,255,0,0.3); padding: 15px; margin-bottom: 20px; text-align: center; font-family: 'Share Tech Mono';">
+                🔍 EMBEDDED PROXY BROWSER | Type URL → Select Method → Browse Below
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-bottom: 30px;">
-                <div style="border: 2px solid var(--blueprint-line); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--blueprint-line)'" onclick="window.open('https://demo-opensource.rammerhead.org', '_blank')">
-                    <h3 style="font-family: 'Share Tech Mono'; color: var(--accent); margin-bottom: 10px;">Official Demo</h3>
-                    <p style="font-size: 0.85rem;">demo-opensource.rammerhead.org</p>
+            <div class="proxy-container">
+                <!-- Toolbar -->
+                <div class="proxy-toolbar">
+                    <button class="proxy-nav-btn" onclick="proxyBack()" title="Back">←</button>
+                    <button class="proxy-nav-btn" onclick="proxyForward()" title="Forward">→</button>
+                    <button class="proxy-nav-btn" onclick="reloadProxy()" title="Reload">↻</button>
+                    
+                    <div class="proxy-omnibox">
+                        <input type="text" class="proxy-address" id="proxyAddress" placeholder="https://example.com or search query..." onkeydown="if(event.key === 'Enter') navigateProxy()">
+                    </div>
+                    
+                    <select class="proxy-select" id="proxyEngine">
+                        <option value="translate">🌐 Google Translate</option>
+                        <option value="textise">📖 Text Reader</option>
+                        <option value="direct" selected>🎯 Direct</option>
+                    </select>
+                    
+                    <button class="proxy-go-btn" onclick="navigateProxy()">GO</button>
                 </div>
-                <div style="border: 2px solid var(--blueprint-line); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--blueprint-line)'" onclick="window.open('https://browser.rammerhead.org', '_blank')">
-                    <h3 style="font-family: 'Share Tech Mono'; color: var(--accent); margin-bottom: 10px;">Browser Version</h3>
-                    <p style="font-size: 0.85rem;">browser.rammerhead.org</p>
-                </div>
-                <div style="border: 2px solid var(--blueprint-line); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--blueprint-line)'" onclick="window.open('https://direct2.rammerhead.org', '_blank')">
-                    <h3 style="font-family: 'Share Tech Mono'; color: var(--accent); margin-bottom: 10px;">Direct2 Mirror</h3>
-                    <p style="font-size: 0.85rem;">direct2.rammerhead.org</p>
-                </div>
-                <div style="border: 2px solid var(--blueprint-line); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--blueprint-line)'" onclick="window.open('https://cloudflare.rammerhead.org', '_blank')">
-                    <h3 style="font-family: 'Share Tech Mono'; color: var(--accent); margin-bottom: 10px;">Cloudflare Mirror</h3>
-                    <p style="font-size: 0.85rem;">cloudflare.rammerhead.org</p>
-                </div>
-                <div style="border: 2px solid var(--blueprint-line); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--blueprint-line)'" onclick="window.open('https://coolsharks.info', '_blank')">
-                    <h3 style="font-family: 'Share Tech Mono'; color: var(--accent); margin-bottom: 10px;">Coolsharks</h3>
-                    <p style="font-size: 0.85rem;">coolsharks.info</p>
-                </div>
-                <div style="border: 2px solid var(--blueprint-line); padding: 20px; text-align: center; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--blueprint-line)'" onclick="window.open('https://r.codewars.ml', '_blank')">
-                    <h3 style="font-family: 'Share Tech Mono'; color: var(--accent); margin-bottom: 10px;">Codewars Mirror</h3>
-                    <p style="font-size: 0.85rem;">r.codewars.ml</p>
-                </div>
-            </div>
 
-            <div style="background: rgba(255,102,0,0.1); border: 2px solid var(--accent); padding: 20px; text-align: center;">
-                <p style="font-family: 'Share Tech Mono'; font-size: 1rem;">💡 <strong>How to use:</strong> Click any link above → Enter password "sharkie4life" → Paste URL you want to visit</p>
-                <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.9;">Rammerhead saves your session (cookies/logins) between visits!</p>
+                <!-- Viewport -->
+                <div class="proxy-viewport">
+                    <iframe id="proxyFrame" class="proxy-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock allow-downloads" allow="fullscreen; autoplay; clipboard-read; clipboard-write"></iframe>
+                    
+                    <div id="proxyError" class="proxy-error">
+                        <h3>⚠️ UNABLE TO EMBED</h3>
+                        <p style="max-width: 500px; line-height: 1.6; opacity: 0.9;">This site blocks iframe embedding (X-Frame-Options) or refused to connect.</p>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                            <button onclick="openInNewTab()">🔓 OPEN IN NEW TAB</button>
+                            <button class="secondary" onclick="tryTextMode()">📖 TRY TEXT MODE</button>
+                            <button class="secondary" onclick="hideProxyError()">CLOSE</button>
+                        </div>
+                    </div>
+                    
+                    <div class="proxy-status" id="proxyStatus">Ready</div>
+                </div>
             </div>
         </section>
 
-        <!-- GAMES SECTION - ALL GAMES IN ONE AREA -->
+        <!-- GAMES SECTION - All in One Area -->
         <section id="games" class="section active">
-            <div class="notice">✅ VERIFIED: All links lead to individual standalone games (NO PORTALS)</div>
-            
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search all games..." onkeyup="searchGames()">
+            </div>
+
             <div class="recent-section" id="recentSection">
                 <div class="recent-title">📌 RECENTLY PLAYED</div>
                 <div class="recent-grid" id="recentGrid"></div>
             </div>
             
-            <div class="stats">VERIFIED SOLO GAMES: <span id="gameCount">0</span></div>
+            <div class="stats">
+                <span id="gameCount">0</span> WORKING GAMES | CLICK ANY TO PLAY
+            </div>
+
             <div class="games-grid" id="gamesGrid"></div>
         </section>
     </div>
 
     <footer>
-        <div class="footer-credits">CODE BY <span>LEMONWESH</span> // DESIGN BY <span>LD</span></div>
+        <div class="footer-credits">
+            CODE BY <span>LEMONWESH</span> // DESIGN BY <span>LD</span> // BLUEPRINT + SHADOW V3 HYBRID
+        </div>
     </footer>
 
+    <!-- Game Viewer -->
     <div class="game-viewer" id="gameViewer">
         <div class="viewer-header">
-            <h2 id="viewerTitle" class="viewer-title">Game</h2>
-            <button class="close-btn" onclick="closeGame()">[ CLOSE ]</button>
+            <h2 id="viewerTitle" class="viewer-title">🎮 Game</h2>
+            <button class="close-btn" onclick="closeGame()">✕ CLOSE</button>
         </div>
         <iframe id="gameFrame" class="game-frame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"></iframe>
     </div>
 
     <script>
-        // ALL VERIFIED SINGLE-GAME LINKS - PORTALS REMOVED
+        // ALL GAMES IN ONE AREA (No separate categories visible)
         const games = [
-            // === RACING / DRIVING (Cleaned) ===
-            {name: "Poly Track", url: "https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},
-            {name: "Jelly Truck", url: "https://jellytruck2.github.io/"},
-            {name: "Slope", url: "https://finnbaltazar1111.github.io/slope/"}, // Single file version
-            {name: "Slope 2", url: "https://slopegame2.github.io/"},
-            {name: "Night City Racing", url: "https://nightcityracing.github.io/"},
-            {name: "Top Speed 3D", url: "https://topspeed-3d.github.io/"},
-            {name: "Drift Hunters", url: "https://drifthuntersonline.github.io/"},
-            {name: "Slow Roads", url: "https://slowroads.io/"},
-            {name: "Subway Surfers", url: "https://subwaysurfers76.github.io/"},
-            {name: "Temple Run 2", url: "https://run3temp.github.io/"},
-            {name: "Crossy Road", url: "https://crossyroad66.github.io/"},
+            // NEW GAMES
+            {name: "8 Ball Pool", emoji: "🎱", tag: "SPORTS", url: "https://www.y8.com/games/8_ball_pool_1"},
+            {name: "Tag (2-4 Players)", emoji: "🏃", tag: "MULTIPLAYER", url: "https://www.y8.com/games/tag"},
+            {name: "Fireboy & Watergirl", emoji: "🔥💧", tag: "MULTIPLAYER", url: "https://www.y8.com/games/fireboy_and_watergirl_forest_temple"},
+            {name: "Getaway Shootout", emoji: "🏎️", tag: "MULTIPLAYER", url: "https://www.y8.com/games/getaway_shootout"},
+            {name: "Stick Duel Battle", emoji: "⚔️", tag: "MULTIPLAYER", url: "https://www.y8.com/games/stick_duel_battle"},
             
-            // === COMPETITIVE IO (Single instances) ===
-            {name: "1v1.LOL", url: "https://1v1lol-gg.github.io/"},
-            {name: "Shell Shockers", url: "https://shellshock.io/"},
-            {name: "Krunker.io", url: "https://krunker.io/"},
-            {name: "Venge.io", url: "https://venge.io/"},
-            {name: "Agar.io", url: "https://agar.io/"},
-            {name: "Slither.io", url: "https://slither.io/"},
-            {name: "Hole.io", url: "https://hole.io/"},
-            {name: "Paper.io 2", url: "https://paper.io/"},
-            {name: "Diep.io", url: "https://diep.io/"},
-            {name: "Smash Karts", url: "https://smashkarts.io/"},
-            {name: "Zombs Royale", url: "https://zombsroyale.io/"},
-            {name: "Build Royale", url: "https://buildroyale.io/"},
-            {name: "JustFall.LOL", url: "https://justfall.lol/"},
-            {name: "Territorial.io", url: "https://territorial.io/"},
-            {name: "Skribbl.io", url: "https://skribbl.io/"},
+            // RACING
+            {name: "Poly Track", emoji: "🏎️", url: "https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},
+            {name: "Jelly Truck", emoji: "🚚", url: "https://jellytruck2.github.io/"},
+            {name: "Slope", emoji: "📐", url: "https://slope-y8.com/"},
+            {name: "Slope 2", emoji: "📐2", url: "https://slopegame2.github.io/"},
+            {name: "Drift Hunters", emoji: "🏎️", url: "https://drifthuntersonline.github.io/"},
+            {name: "Slow Roads", emoji: "🛣️", url: "https://slowroads.io/"},
+            {name: "Subway Surfers", emoji: "🏃", url: "https://subwaysurfers76.github.io/"},
+            {name: "Temple Run 2", emoji: "🏛️", url: "https://run3temp.github.io/"},
+            {name: "Crossy Road", emoji: "🐔", url: "https://crossyroad66.github.io/"},
             
-            // === SPORTS (Removed portals) ===
-            {name: "Retro Bowl", url: "https://retrobowl97.github.io/"},
-            {name: "Thumb Fighter", url: "https://thumbfighter.github.io/"},
-            {name: "Basketball Stars", url: "https://basketball-stars-game.github.io/"}, // Direct
+            // IO GAMES
+            {name: "1v1.LOL", emoji: "🔫", url: "https://1v1lol-gg.github.io/"},
+            {name: "Shell Shockers", emoji: "🥚", url: "https://shellshock.io/"},
+            {name: "Krunker.io", emoji: "🔫", url: "https://krunker.io/"},
+            {name: "Slither.io", emoji: "🐍", url: "https://slither.io/"},
+            {name: "Agar.io", emoji: "⚪", url: "https://agar.io/"},
+            {name: "Smash Karts", emoji: "🏎️", url: "https://smashkarts.io/"},
+            {name: "Zombs Royale", emoji: "🧟", url: "https://zombsroyale.io/"},
             
-            // === FIGHTING (Portals removed) ===
-            {name: "Karate Bros", url: "https://karatebrosgame.github.io/"},
-            {name: "Rooftop Snipers", url: "https://rooftopsnipers.github.io/"},
-            {name: "Getaway Shootout", url: "https://getaway-shootout.github.io/"},
+            // PLATFORMER
+            {name: "Geometry Dash", emoji: "🔷", url: "https://geometry-dash-unbanned.github.io/"},
+            {name: "OvO", emoji: "🥚", url: "https://dedragames.com/games/ovo/1.3/"},
+            {name: "Vex 5", emoji: "🔺", url: "https://vex5.com/"},
+            {name: "Vex 6", emoji: "🔺6", url: "https://vex6.com/"},
+            {name: "Big Tower Tiny Square", emoji: "🗼", url: "https://big-tower-tiny-square.com/"},
             
-            // === PUZZLE / IDLE (Cleaned) ===
-            {name: "2048", url: "https://cyberzhg.github.io/2048/"},
-            {name: "Tetris", url: "https://ytiurin.github.io/tetris/"},
-            {name: "Hextris", url: "https://hextris.github.io/"},
-            {name: "Wordle Unlimited", url: "https://gland2k.github.io/wordleunlimited/"},
-            {name: "Wordle", url: "https://wordle.com/"},
-            {name: "Cookie Clicker", url: "https://cookieclicker-game.github.io/"},
-            {name: "Little Alchemy 2", url: "https://littlealchemy2.com/"},
-            {name: "Sandboxels", url: "https://sandboxels.com/"},
-            {name: "Cut the Rope", url: "https://www.cuttherope.com/"},
-            {name: "Tomb of the Mask", url: "https://tomb-of-the-mask.com/"},
-            {name: "Minesweeper", url: "https://minesweeper.online/"},
-            {name: "WorldGuessr", url: "https://worldguessr.com/"},
+            // MINECRAFT
+            {name: "Eaglercraft 1.8.8", emoji: "⛏️", url: "https://g.deev.is/eaglercraft/"},
+            {name: "MineKhan", emoji: "⛏️", url: "https://yikuansun.github.io/minekhan/"},
             
-            // === HENRY STICKMIN ===
-            {name: "Fleeing the Complex", url: "https://machita66.github.io/game/fleeingthecomplex.html"},
-            {name: "Escaping the Prison", url: "https://escaping-the-prison.com/"},
-            {name: "Stealing the Diamond", url: "https://stealing-the-diamond.com/"},
-            {name: "Infiltrating the Airship", url: "https://infiltrating-the-airship.com/"},
-            {name: "Breaking the Bank", url: "https://breaking-the-bank.com/"},
+            // CASUAL
+            {name: "Cookie Clicker", emoji: "🍪", url: "https://cookieclicker-game.github.io/"},
+            {name: "2048", emoji: "🔢", url: "https://play2048.co/"},
+            {name: "Tetris", emoji: "🧱", url: "https://tetris.com/play-tetris"},
+            {name: "Retro Bowl", emoji: "🏈", url: "https://retrobowl97.github.io/"},
             
-            // === PAPA'S GAMES ===
-            {name: "Papas Pizzeria", url: "https://papaspizzeria-unblocked.github.io/"},
-            {name: "Papas Pancakeria", url: "https://papaspancakeria.github.io/"},
+            // HENRY STICKMIN
+            {name: "Fleeing the Complex", emoji: "🏃", url: "https://machita66.github.io/game/fleeingthecomplex.html"},
+            {name: "Escaping the Prison", emoji: "🔨", url: "https://escaping-the-prison.com/"},
+            {name: "Stealing the Diamond", emoji: "💎", url: "https://stealing-the-diamond.com/"},
+            {name: "Infiltrating the Airship", emoji: "🎈", url: "https://infiltrating-the-airship.com/"},
             
-            // === PLATFORMER ===
-            {name: "Geometry Dash", url: "https://geometry-dash-unbanned.github.io/"},
-            {name: "Geometry Dash Lite", url: "https://geometrydash-lite2.github.io/"},
-            {name: "OvO", url: "https://dedragames.com/games/ovo/1.3/"}, // Official Dedra Games
-            {name: "OvO Classic", url: "https://ovo-classic.github.io/play.html"},
-            {name: "Vex 5", url: "https://vex5.com/"},
-            {name: "Vex 6", url: "https://vex6.com/"},
-            {name: "Vex 7", url: "https://vex7.com/"},
-            {name: "Big Tower Tiny Square", url: "https://big-tower-tiny-square.com/"},
+            // CLASSICS
+            {name: "Pac-Man", emoji: "👻", url: "https://google-pacman.github.io/"},
+            {name: "Chrome Dino", emoji: "🦖", url: "https://chrome-dino-game.github.io/"},
+            {name: "Flappy Bird", emoji: "🐦", url: "https://flappy-bird.com/"},
+            {name: "Wordle", emoji: "📝", url: "https://wordle.com/"},
+            {name: "Minesweeper", emoji: "💣", url: "https://minesweeper.online/"},
             
-            // === ARCADE / CLASSIC ===
-            {name: "Pac-Man", url: "https://google-pacman.github.io/"},
-            {name: "Chrome Dino", url: "https://chrome-dino-game.github.io/"},
-            {name: "Flappy Bird", url: "https://flappy-bird.com/"},
-
-            // === MINECRAFT (Official Links) ===
-            {name: "Eaglercraft 1.8.8", url: "https://g.deev.is/eaglercraft/"}, // Official
-            {name: "Eaglercraft 1.5.2", url: "https://g.deev.is/eaglercraft/beta/"},
-            {name: "MineKhan", url: "https://yikuansun.github.io/minekhan/"},
-            {name: "Voxel Builder", url: "https://voxelbuilder.github.io/"},
-            {name: "CraftMine", url: "https://www.craftmine.co/"}
+            // PAPA'S GAMES
+            {name: "Papa's Pizzeria", emoji: "🍕", url: "https://papaspizzeria-unblocked.github.io/"},
+            {name: "Papa's Pancakeria", emoji: "🥞", url: "https://papaspancakeria.github.io/"}
         ];
+
+        let proxyHistory = [];
+        let proxyHistoryPos = -1;
+        let currentUrl = '';
 
         function init() {
             document.getElementById('gameCount').textContent = games.length;
@@ -287,20 +700,18 @@
             loadRecentGames();
             
             const savedTitle = localStorage.getItem('cloakTitle');
-            const savedIcon = localStorage.getItem('cloakIcon');
-            if (savedTitle && savedIcon) {
-                document.title = savedTitle;
-                document.getElementById('favicon').href = savedIcon;
-            }
+            if (savedTitle) document.title = savedTitle;
         }
 
         function renderGames(gameList) {
             const grid = document.getElementById('gamesGrid');
             grid.innerHTML = gameList.map(game => `
                 <div class="game-card" onclick="playGame('${game.name}', '${game.url}')">
+                    ${game.tag ? `<span class="game-tag">${game.tag}</span>` : ''}
+                    <span class="game-emoji">${game.emoji}</span>
                     <div class="game-thumb">${game.name}</div>
                     <div class="game-title">${game.name}</div>
-                    <div class="play-tag">PLAY NOW</div>
+                    <div class="play-tag">CLICK TO PLAY</div>
                 </div>
             `).join('');
         }
@@ -309,18 +720,18 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            event.target.classList.add('active');
+            document.getElementById('nav-' + id).classList.add('active');
         }
 
         function playGame(name, url) {
             let recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
             recent = recent.filter(g => g.name !== name);
             recent.unshift({name, url});
-            recent = recent.slice(0, 10);
+            recent = recent.slice(0, 8);
             localStorage.setItem('recentGames', JSON.stringify(recent));
             
             document.getElementById('gameViewer').classList.add('active');
-            document.getElementById('viewerTitle').textContent = name;
+            document.getElementById('viewerTitle').textContent = '🎮 ' + name;
             document.getElementById('gameFrame').src = url;
             loadRecentGames();
         }
@@ -330,9 +741,14 @@
             const section = document.getElementById('recentSection');
             const grid = document.getElementById('recentGrid');
             
-            if (recent.length === 0) { section.classList.remove('active'); return; }
+            if (recent.length === 0) {
+                section.classList.remove('active');
+                return;
+            }
             section.classList.add('active');
-            grid.innerHTML = recent.map(g => `<div class="recent-item" onclick="playGame('${g.name}', '${g.url}')">${g.name}</div>`).join('');
+            grid.innerHTML = recent.map(g => `
+                <div class="recent-item" onclick="playGame('${g.name}', '${g.url}')">${g.name}</div>
+            `).join('');
         }
 
         function closeGame() {
@@ -346,8 +762,99 @@
             renderGames(filtered);
         }
 
-        function toggleSettings() { document.getElementById('settingsModal').classList.toggle('active'); }
-        
+        // PROXY FUNCTIONS (Shadow V3 Style)
+        function navigateProxy() {
+            let url = document.getElementById('proxyAddress').value.trim();
+            const engine = document.getElementById('proxyEngine').value;
+            
+            if (!url) return;
+            
+            if (!url.match(/^https?:\/\//i)) {
+                if (url.includes('.') && !url.includes(' ')) {
+                    url = 'https://' + url;
+                } else {
+                    url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+                }
+            }
+            
+            currentUrl = url;
+            document.getElementById('proxyStatus').textContent = 'Loading...';
+            document.getElementById('proxyError').classList.remove('active');
+            
+            let proxyUrl = url;
+            
+            switch(engine) {
+                case 'translate':
+                    proxyUrl = 'https://translate.google.com/translate?sl=auto&tl=en&u=' + encodeURIComponent(url);
+                    break;
+                case 'textise':
+                    proxyUrl = 'https://r.jina.ai/http://' + url.replace(/^https?:\/\//, '');
+                    break;
+                case 'direct':
+                    proxyUrl = url;
+                    break;
+            }
+            
+            if (proxyHistoryPos < proxyHistory.length - 1) {
+                proxyHistory = proxyHistory.slice(0, proxyHistoryPos + 1);
+            }
+            proxyHistory.push(url);
+            proxyHistoryPos++;
+            
+            const frame = document.getElementById('proxyFrame');
+            frame.src = proxyUrl;
+            
+            setTimeout(() => {
+                document.getElementById('proxyStatus').textContent = 'Loaded: ' + url;
+            }, 2000);
+        }
+
+        function proxyBack() {
+            if (proxyHistoryPos > 0) {
+                proxyHistoryPos--;
+                document.getElementById('proxyAddress').value = proxyHistory[proxyHistoryPos];
+                navigateProxy();
+            }
+        }
+
+        function proxyForward() {
+            if (proxyHistoryPos < proxyHistory.length - 1) {
+                proxyHistoryPos++;
+                document.getElementById('proxyAddress').value = proxyHistory[proxyHistoryPos];
+                navigateProxy();
+            }
+        }
+
+        function reloadProxy() {
+            const frame = document.getElementById('proxyFrame');
+            frame.src = frame.src;
+        }
+
+        function hideProxyError() {
+            document.getElementById('proxyError').classList.remove('active');
+        }
+
+        function openInNewTab() {
+            const url = currentUrl || document.getElementById('proxyAddress').value;
+            if (url) window.open(url, '_blank');
+        }
+
+        function tryTextMode() {
+            document.getElementById('proxyEngine').value = 'textise';
+            navigateProxy();
+        }
+
+        function toggleSettings() {
+            document.getElementById('settingsModal').classList.toggle('active');
+        }
+
+        function resetToLemons() {
+            document.title = 'Lemons Proxy';
+            document.getElementById('favicon').href = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍋</text></svg>';
+            localStorage.removeItem('cloakTitle');
+            localStorage.removeItem('cloakIcon');
+        }
+
         function cloakTab(title, iconUrl) {
             document.title = title;
             document.getElementById('favicon').href = iconUrl;
@@ -356,9 +863,12 @@
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === '`' || e.key === 'Escape') {
-                if (document.getElementById('settingsModal').classList.contains('active')) toggleSettings();
-                else closeGame();
+            if (e.key === 'Escape') {
+                if (document.getElementById('settingsModal').classList.contains('active')) {
+                    toggleSettings();
+                } else if (document.getElementById('gameViewer').classList.contains('active')) {
+                    closeGame();
+                }
             }
         });
 
