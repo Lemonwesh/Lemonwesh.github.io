@@ -1,43 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LEMONS_PROXY // BLUEPRINT_TERMINAL_v10.0</title>
+<link id="favicon" rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23001133'/><text x='15' y='75' font-size='60'>🍋</text><text x='55' y='60' font-family='monospace' font-size='35' fill='%233b82f6' font-weight='bold'>&lt;/&gt;</text></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap');
+:root{--bg-primary:#0a1628;--bg-secondary:#111d32;--bg-tertiary:#1a2942;--blueprint-grid:rgba(59,130,246,0.06);--terminal-blue:#3b82f6;--terminal-bright:#60a5fa;--terminal-dim:#1e40af;--terminal-amber:#f59e0b;--border-glow:rgba(59,130,246,0.15);--lemon-blue:#1e3a8a;--error-red:#ef4444;--success-green:#10b981;--text-primary:#e2e8f0;--text-secondary:#94a3b8;--accent-cyan:#06b6d4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background-color:var(--bg-primary);background-image:linear-gradient(var(--blueprint-grid) 1px,transparent 1px),linear-gradient(90deg,var(--blueprint-grid) 1px,transparent 1px);background-size:40px 40px;font-family:'Inter','JetBrains Mono',sans-serif;font-weight:300;color:var(--text-primary);min-height:100vh;overflow-x:hidden;position:relative}
+#matrix-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;opacity:0.08;pointer-events:none}
+#boot-sequence{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-primary);z-index:10000;display:flex;flex-direction:column;justify-content:center;padding:50px;font-family:'JetBrains Mono',monospace;font-size:0.95rem;line-height:1.8;font-weight:300}
+.boot-line{color:var(--terminal-blue);opacity:0;animation:typeLine 0.08s forwards;letter-spacing:0.5px}
+.boot-line.error{color:var(--error-red)}
+.boot-line.warn{color:var(--terminal-amber)}
+.boot-line.success{color:var(--success-green)}
+.boot-line.dim{color:var(--text-secondary)}
+@keyframes typeLine{to{opacity:1}}
+.boot-cursor{display:inline-block;width:8px;height:16px;background:var(--terminal-blue);margin-left:5px;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+.click-to-boot{margin-top:40px;color:var(--terminal-amber);font-size:1rem;cursor:pointer;opacity:0;animation:fadeInOut 2s infinite;animation-delay:3s;text-align:center;border:1px solid var(--terminal-amber);padding:15px;width:fit-content;border-radius:4px;align-self:center}
+@keyframes fadeInOut{0%,100%{opacity:0.3}50%{opacity:1}}
+.hidden-message{position:fixed;bottom:2px;right:5px;font-size:8px;color:rgba(148,163,184,0.15);user-select:text;pointer-events:none;font-family:'JetBrains Mono',monospace;z-index:9999}
+header{background:var(--bg-secondary);border-bottom:1px solid var(--terminal-blue);padding:15px 25px;display:flex;align-items:center;justify-content:space-between;position:relative}
+.logo-container{display:flex;align-items:center;gap:12px;cursor:pointer}
+.logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--lemon-blue) 0%,#1e293b 100%);border:1px solid var(--terminal-blue);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 12px var(--border-glow);position:relative;overflow:hidden;animation:pulseGlow 3s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 12px var(--border-glow)}50%{box-shadow:0 0 18px rgba(59,130,246,0.3)}}
+.logo-icon::after{content:"</>";position:absolute;bottom:2px;right:3px;font-size:8px;color:var(--terminal-blue);font-weight:500;background:rgba(0,0,0,0.6);padding:0 2px;border-radius:2px;font-family:'JetBrains Mono',monospace}
+.terminal-title{font-size:1.4rem;font-weight:400;color:var(--terminal-blue);text-transform:uppercase;letter-spacing:2px;font-family:'JetBrains Mono',monospace}
+.version-tag{font-size:0.65rem;color:var(--terminal-dim);background:rgba(59,130,246,0.1);padding:2px 6px;border-radius:3px;border:1px solid var(--terminal-dim);margin-left:8px;font-weight:400}
+.credits{color:var(--text-secondary);font-size:0.75rem;font-weight:300}
+nav{background:var(--bg-secondary);border-bottom:1px solid rgba(59,130,246,0.15);display:flex;justify-content:center;position:sticky;top:0;z-index:100}
+nav button{background:transparent;border:none;border-right:1px solid rgba(59,130,246,0.15);color:var(--text-secondary);padding:14px 35px;font-family:'Inter',sans-serif;font-weight:400;font-size:0.85rem;cursor:pointer;text-transform:uppercase;letter-spacing:1.5px;transition:all 0.3s;position:relative}
+nav button:last-child{border-right:none}
+nav button:hover,nav button.active{background:rgba(59,130,246,0.08);color:var(--terminal-blue)}
+nav button.active{border-bottom:2px solid var(--terminal-blue)}
+.container{max-width:1400px;margin:0 auto;padding:25px;padding-bottom:140px}
+.section{display:none}
+.section.active{display:block;animation:fadeIn 0.4s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.system-stats{background:var(--bg-secondary);border:1px solid rgba(59,130,246,0.15);border-radius:6px;padding:18px 25px;margin-bottom:25px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:25px;position:relative}
+.system-stats::after{content:"BLUEPRINT_v10.0 // LEMONWESH x LD";position:absolute;top:5px;right:10px;font-size:0.6rem;color:var(--terminal-dim);opacity:0.4;font-family:'JetBrains Mono',monospace;font-weight:300}
+.stat-box{display:flex;flex-direction:column;gap:4px}
+.stat-label{color:var(--text-secondary);font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;font-weight:400}
+.stat-value{color:var(--terminal-blue);font-size:1.2rem;font-weight:400;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px}
+.search-container{margin-bottom:25px;position:relative}
+.search-input{width:100%;padding:14px 20px 14px 45px;background:var(--bg-secondary);border:1px solid rgba(59,130,246,0.2);color:var(--text-primary);font-family:'Inter',sans-serif;font-weight:300;font-size:0.95rem;border-radius:6px;outline:none;transition:all 0.3s}
+.search-input:focus{border-color:var(--terminal-blue);box-shadow:0 0 0 2px rgba(59,130,246,0.1)}
+.search-container::before{content:"⌕";position:absolute;left:18px;top:50%;transform:translateY(-50%);color:var(--terminal-blue);font-size:1.1rem;opacity:0.6}
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.game-module{background:var(--bg-secondary);border:1px solid rgba(59,130,246,0.12);border-radius:6px;overflow:hidden;cursor:pointer;transition:all 0.25s;position:relative}
+.game-module::before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--terminal-blue),transparent);transform:scaleX(0);transition:transform 0.3s}
+.game-module:hover{transform:translateY(-4px);border-color:rgba(59,130,246,0.4);box-shadow:0 8px 25px rgba(59,130,246,0.12)}
+.game-module:hover::before{transform:scaleX(1)}
+.module-header{padding:18px;background:linear-gradient(135deg,rgba(30,58,138,0.15) 0%,transparent 100%);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(59,130,246,0.08)}
+.module-icon{font-size:1.9rem;filter:drop-shadow(0 0 3px rgba(59,130,246,0.3))}
+.module-tag{background:rgba(59,130,246,0.08);color:var(--terminal-bright);padding:3px 10px;border-radius:4px;font-size:0.65rem;text-transform:uppercase;border:1px solid rgba(59,130,246,0.2);font-weight:500;letter-spacing:0.5px}
+.module-title{padding:18px;font-size:1rem;font-weight:400;color:var(--text-primary);letter-spacing:0.3px}
+.module-meta{padding:0 18px 18px;color:var(--text-secondary);font-size:0.85rem;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-weight:300}
+.coming-soon{text-align:center;padding:60px 20px;background:var(--bg-secondary);border:1px dashed rgba(59,130,246,0.25);border-radius:8px;position:relative;overflow:hidden}
+.hack-map{width:100%;max-width:600px;margin:0 auto 30px;height:200px;background:rgba(10,22,40,0.6);border:1px solid rgba(59,130,246,0.15);border-radius:6px;position:relative;overflow:hidden}
+.map-grid{position:absolute;width:100%;height:100%;background-image:linear-gradient(rgba(59,130,246,0.1) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.1) 1px,transparent 1px);background-size:20px 20px}
+.coming-title{font-size:2rem;color:var(--terminal-blue);margin-bottom:10px;text-transform:uppercase;letter-spacing:4px;font-family:'JetBrains Mono',monospace;font-weight:300}
+.coming-subtitle{color:var(--terminal-dim);font-size:1.1rem;margin-bottom:20px;letter-spacing:2px}
+.coming-text{color:var(--text-secondary);font-size:0.95rem;max-width:500px;margin:0 auto 30px;line-height:1.6;font-weight:300}
+.proxy-links{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
+.proxy-link{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.25);color:var(--terminal-blue);padding:12px 24px;border-radius:4px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:0.85rem;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px}
+.proxy-link:hover{background:rgba(59,130,246,0.15);border-color:var(--terminal-blue);transform:translateY(-2px)}
+.game-viewer{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:var(--bg-primary);z-index:2000;flex-direction:column}
+.game-viewer.active{display:flex}
+.viewer-header{background:var(--bg-secondary);padding:15px 25px;border-bottom:1px solid var(--terminal-blue);display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,0.2)}
+.viewer-title{color:var(--terminal-blue);font-size:1rem;font-family:'JetBrains Mono',monospace;font-weight:400;letter-spacing:0.5px;display:flex;align-items:center;gap:10px}
+.controls-group{display:flex;gap:10px}
+.control-btn{background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);color:var(--terminal-blue);padding:8px 16px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;cursor:pointer;border-radius:4px;transition:all 0.2s;font-weight:400;display:flex;align-items:center;gap:6px}
+.control-btn:hover{background:rgba(59,130,246,0.2);border-color:var(--terminal-blue)}
+.control-btn.close{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.3);color:var(--error-red)}
+.control-btn.close:hover{background:rgba(239,68,68,0.2)}
+#gameFrame{flex:1;border:none;background:#000;width:100%}
+.music-player{position:fixed;bottom:45px;left:0;width:100%;background:var(--bg-secondary);border-top:1px solid rgba(59,130,246,0.15);padding:12px 25px;display:flex;align-items:center;gap:15px;z-index:998;backdrop-filter:blur(5px)}
+.music-label{color:var(--text-secondary);font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;font-family:'JetBrains Mono',monospace}
+.music-input{flex:1;background:var(--bg-primary);border:1px solid rgba(59,130,246,0.2);color:var(--text-primary);padding:8px 14px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;font-weight:300;outline:none}
+.music-input:focus{border-color:var(--terminal-blue)}
+.music-btn{background:rgba(59,130,246,0.15);border:1px solid var(--terminal-blue);color:var(--terminal-blue);padding:8px 18px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;cursor:pointer;border-radius:4px;transition:all 0.2s;font-weight:400}
+.music-btn:hover{background:var(--terminal-blue);color:white}
+.now-playing{color:var(--terminal-bright);font-size:0.8rem;margin-left:10px;font-family:'JetBrains Mono',monospace;opacity:0;transition:opacity 0.3s}
+.now-playing.active{opacity:1}
+.achievements-btn{position:fixed;bottom:95px;right:25px;width:45px;height:45px;background:var(--bg-secondary);border:1px solid var(--terminal-blue);border-radius:50%;color:var(--terminal-blue);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:999;transition:all 0.3s}
+.achievements-btn:hover{transform:scale(1.1) rotate(10deg);box-shadow:0 0 15px var(--border-glow)}
+.achievements-panel{display:none;position:fixed;bottom:150px;right:25px;width:320px;background:var(--bg-secondary);border:1px solid rgba(59,130,246,0.25);border-radius:8px;padding:20px;box-shadow:0 10px 40px rgba(0,0,0,0.4);z-index:999;max-height:450px;overflow-y:auto}
+.achievements-panel.active{display:block;animation:slideUp 0.3s ease-out}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.panel-header{color:var(--terminal-blue);border-bottom:1px solid rgba(59,130,246,0.2);padding-bottom:12px;margin-bottom:15px;font-family:'JetBrains Mono',monospace;font-size:0.9rem;display:flex;justify-content:space-between;align-items:center;font-weight:400}
+.achievement-item{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:8px;background:rgba(59,130,246,0.04);border:1px solid rgba(59,130,246,0.1);border-radius:4px;opacity:0.4;transition:all 0.3s}
+.achievement-item.unlocked{opacity:1;background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.3)}
+.achievement-icon{font-size:1.4rem}
+.achievement-info h4{color:var(--text-primary);font-size:0.85rem;font-weight:500;margin-bottom:2px}
+.achievement-info p{color:var(--text-secondary);font-size:0.75rem;font-weight:300}
+.achievement-popup{position:fixed;top:100px;right:-350px;background:var(--bg-secondary);border:1px solid var(--terminal-blue);border-radius:6px;padding:15px 20px;display:flex;align-items:center;gap:15px;box-shadow:0 5px 25px rgba(59,130,246,0.2);z-index:1001;transition:right 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);max-width:300px}
+.achievement-popup.show{right:25px}
+.pop-icon{font-size:2rem}
+.pop-text h3{color:var(--terminal-bright);font-size:0.9rem;margin-bottom:3px;font-weight:500}
+.pop-text p{color:var(--text-secondary);font-size:0.8rem;font-weight:300}
+.status-bar{position:fixed;bottom:0;left:0;width:100%;background:var(--bg-secondary);border-top:1px solid rgba(59,130,246,0.15);padding:10px 25px;display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;z-index:997;color:var(--text-secondary);font-weight:300}
+.status-left{display:flex;gap:25px}
+.easter-egg-toast{position:fixed;top:100px;right:-400px;background:var(--bg-secondary);border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:15px 25px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.9rem;transition:right 0.5s;z-index:1002;box-shadow:0 5px 20px rgba(245,158,11,0.2);max-width:350px;line-height:1.5;white-space:pre-line}
+.easter-egg-toast.show{right:25px}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg-primary)}
+::-webkit-scrollbar-thumb{background:rgba(59,130,246,0.2);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--terminal-blue)}
+@media(max-width:768px){.games-grid{grid-template-columns:1fr}.music-player{flex-direction:column;gap:10px}.terminal-title{font-size:1.1rem}.system-stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<canvas id="matrix-canvas"></canvas>
+<div class="hidden-message">fuck you aurelio</div>
+<div class="easter-egg-toast" id="easterToast"></div>
+
+<div id="boot-sequence">
+  <div class="boot-line" style="animation-delay:0.1s">INITIALIZING LEMONS_PROXY v10.0...</div>
+  <div class="boot-line" style="animation-delay:0.3s">LOADING BLUEPRINT ARCHITECTURE...</div>
+  <div class="boot-line" style="animation-delay:0.5s">MOUNTING GAME MODULES [0/45]</div>
+  <div class="boot-line dim" style="animation-delay:0.7s">  > 8_Ball_Pool.exe [OK]</div>
+  <div class="boot-line dim" style="animation-delay:0.8s">  > Eaglercraft_1.8.8.exe [OK]</div>
+  <div class="boot-line dim" style="animation-delay:0.9s">  > Geometry_Dash.exe [OK]</div>
+  <div class="boot-line" style="animation-delay:1.0s">ALL MODULES MOUNTED SUCCESSFULLY</div>
+  <div class="boot-line" style="animation-delay:1.2s">ESTABLISHING SECURE CONNECTION...</div>
+  <div class="boot-line success" style="animation-delay:1.4s">ENCRYPTION: AES-256 [ACTIVE]</div>
+  <div class="boot-line error" style="animation-delay:1.6s">WARNING: PROXY_MODULE_OFFLINE</div>
+  <div class="boot-line warn" style="animation-delay:1.8s">FALLBACK_MODE: GAME_MODULES_ONLY</div>
+  <div class="boot-line" style="animation-delay:2.0s">AUTHORS: LEMONWESH x LD <span style="color:var(--terminal-dim)">(dist. v.10)</span></div>
+  <div class="boot-line success" style="animation-delay:2.2s">SYSTEM READY<span class="boot-cursor"></span></div>
+  <div class="click-to-boot" onclick="dismissBoot()">[ CLICK TO INITIALIZE ]</div>
+</div>
+
+<header>
+  <div class="logo-container" onclick="easterEggLogo()">
+    <div class="logo-icon">🍋</div>
+    <div><span class="terminal-title">LEMONS_PROXY</span><span class="version-tag">v10.0</span></div>
+  </div>
+  <div class="credits">Blueprint Terminal // Engineered by LD & Lemonwesh</div>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showSection('games')" id="nav-games">Game_Modules</button>
+  <button class="nav-btn" onclick="showSection('search')" id="nav-search">Network_Proxy</button>
+</nav>
+
+<div class="container">
+  <section id="games" class="section active">
+    <div class="system-stats">
+      <div class="stat-box"><div class="stat-label">System_Status</div><div class="stat-value" style="color:var(--success-green)">Online</div></div>
+      <div class="stat-box"><div class="stat-label">Modules_Loaded</div><div class="stat-value" id="moduleCount">45</div></div>
+      <div class="stat-box"><div class="stat-label">Network</div><div class="stat-value" style="font-size:0.95rem">Encrypted</div></div>
+      <div class="stat-box"><div class="stat-label">Latency</div><div class="stat-value" id="latency">12ms</div></div>
+      <div class="stat-box"><div class="stat-label">Achievements</div><div class="stat-value" id="achievements-count">0/8</div></div>
+    </div>
+    <div class="search-container"><input type="text" class="search-input" id="searchInput" placeholder="Search module database..." onkeyup="searchGames()"></div>
+    <div class="games-grid" id="gamesGrid"></div>
+  </section>
+
+  <section id="search" class="section">
+    <div class="coming-soon">
+      <div class="hack-map" id="hackMap"><div class="map-grid"></div></div>
+      <div class="coming-title">LEMONS_SEARCH</div>
+      <div class="coming-subtitle">[ COMING_SOON ]</div>
+      <div class="coming-text">Advanced network protocols currently offline.<br>Engineering team working on deployment.<br><br><span style="color:var(--terminal-blue);font-family:'JetBrains Mono'">> Estimated: TBD</span></div>
+      <div class="proxy-links">
+        <a href="https://www.croxyproxy.com/" target="_blank" class="proxy-link">> CroxyProxy</a>
+        <a href="https://www.blockaway.net/" target="_blank" class="proxy-link">> BlockAway</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="music-player">
+  <span class="music-label">Audio_Input:</span>
+  <input type="text" class="music-input" id="musicUrl" value="https://www.youtube.com/watch?v=JvF3ps2JiYY" placeholder="YouTube URL...">
+  <button class="music-btn" onclick="playMusic()">Play</button>
+  <button class="music-btn" onclick="stopMusic()" style="background:transparent;color:var(--text-secondary);border-color:rgba(255,255,255,0.2)">Stop</button>
+  <span class="now-playing active" id="nowPlaying">♫ Standby...</span>
+</div>
+<div id="musicContainer" style="display:none"></div>
+
+<button class="achievements-btn" onclick="toggleAchievements()">🏆</button>
+<div class="achievements-panel" id="achievementsPanel">
+  <div class="panel-header"><span>System Achievements</span><span id="ach-progress">0/8</span></div>
+  <div id="achievementsList"></div>
+</div>
+<div class="achievement-popup" id="achievementPopup"><div class="pop-icon">🏆</div><div class="pop-text"><h3>Achievement Unlocked</h3><p id="pop-achievement-text">Description</p></div></div>
+
+<div class="status-bar">
+  <div class="status-left"><span>Node: US-East-1</span><span>Mem: 4.2GB/8GB</span><span>Uptime: 99.9%</span></div>
+  <div style="color:var(--terminal-blue);font-family:'JetBrains Mono';font-weight:400">🍋 LEMONS_PROXY v10.0 // LD x LEMONWESH</div>
+</div>
+
+<div class="game-viewer" id="gameViewer">
+  <div class="viewer-header">
+    <div class="viewer-title">> EXECUTING: <span id="viewerTitle">Unknown</span></div>
+    <div class="controls-group">
+      <button class="control-btn" onclick="toggleFullscreen()" id="fullscreenBtn">⛶ Fullscreen</button>
+      <button class="control-btn close" onclick="closeGame()">✕ Close</button>
+    </div>
+  </div>
+  <iframe id="gameFrame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"></iframe>
+</div>
+
 <script>
-// Complete the achievements array
-const achievements = [
-  {id: "first_launch", name: "System Init", desc: "Boot up Lemons Proxy", icon: "🖥️", unlocked: false},
-  {id: "first_game", name: "Module Runner", desc: "Launch your first game", icon: "🎮", unlocked: false},
-  {id: "ten_games", name: "Power User", desc: "Launch 10 different games", icon: "⚡", unlocked: false},
-  {id: "search_try", name: "Network Scout", desc: "Visit the proxy tab", icon: "🔍", unlocked: false},
-  {id: "fullscreen", name: "Maximum Overdrive", desc: "Use fullscreen mode", icon: "⛶", unlocked: false},
-  {id: "konami", name: "Code Breaker", desc: "Enter the Konami Code", icon: "🔓", unlocked: false},
-  {id: "logo_clicker", name: "Curious Mind", desc: "Click the logo 5 times", icon: "🍋", unlocked: false},
-  {id: "aurelio_search", name: "Hidden Truth", desc: "Search for the forbidden name", icon: "🚫", unlocked: false}
-];
+// Matrix background effect
+const canvas=document.getElementById('matrix-canvas');const ctx=canvas.getContext('2d');function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}resizeCanvas();window.addEventListener('resize',resizeCanvas);const chars='01XY+-*/<>[]{}|=•·';const fontSize=12;const columns=canvas.width/fontSize;const drops=[];for(let x=0;x<columns;x++)drops[x]=Math.random()*-100;function drawMatrix(){ctx.fillStyle='rgba(10,22,40,0.04)';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(59,130,246,0.3)';ctx.font=fontSize+'px monospace';for(let i=0;i<drops.length;i++){const text=chars.charAt(Math.floor(Math.random()*chars.length));ctx.fillText(text,i*fontSize,drops[i]*fontSize);if(drops[i]*fontSize>canvas.height&&Math.random()>0.975)drops[i]=0;drops[i]++}}setInterval(drawMatrix,50);
+
+// Game database - all verified working links
+const games=[{name:"8 Ball Pool",emoji:"🎱",tag:"Sports",size:"24",url:"https://html5.gamedistribution.com/ed65e4198fe74fdbb0b2ac015dd81128/"},{name:"Ludo With Friends",emoji:"🎲",tag:"Multiplayer",size:"18",url:"https://zv1y2i8p.play.gamezop.com/g/SkhljT2fdgb"},{name:"Basketball Stars",emoji:"🏀",tag:"Multiplayer",size:"32",url:"https://html5.gamedistribution.com/f7c4e66b484e45df86b7d46450aac477/"},{name:"Stick Fighter",emoji:"⚔️",tag:"Multiplayer",size:"28",url:"https://html5.gamedistribution.com/rgSkqGbJade4O68B0T2u3zCZqe0FMBqO/"},{name:"Poly Track",emoji:"🏎️",tag:"Racing",size:"45",url:"https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},{name:"Jelly Truck",emoji:"🚚",tag:"Racing",size:"22",url:"https://jellytruck2.github.io/"},{name:"Slope",emoji:"📐",tag:"Racing",size:"12",url:"https://slope-y8.com/"},{name:"Slope 2",emoji:"📐",tag:"Racing",size:"15",url:"https://slopegame2.github.io/"},{name:"Drift Hunters",emoji:"🏎️",tag:"Racing",size:"86",url:"https://drifthuntersonline.github.io/"},{name:"Slow Roads",emoji:"🛣️",tag:"Racing",size:"34",url:"https://slowroads.io/"},{name:"Subway Surfers",emoji:"🏃",tag:"Arcade",size:"67",url:"https://subwaysurfers76.github.io/"},{name:"Temple Run 2",emoji:"🏛️",tag:"Arcade",size:"54",url:"https://run3temp.github.io/"},{name:"Crossy Road",emoji:"🐔",tag:"Arcade",size:"23",url:"https://crossyroad66.github.io/"},{name:"1v1.LOL",emoji:"🔫",tag:"Battle",size:"112",url:"https://1v1lol-gg.github.io/"},{name:"Shell Shockers",emoji:"🥚",tag:"FPS",size:"94",url:"https://shellshock.io/"},{name:"Krunker.io",emoji:"🔫",tag:"FPS",size:"45",url:"https://krunker.io/"},{name:"Slither.io",emoji:"🐍",tag:"Arcade",size:"18",url:"https://slither.io/"},{name:"Agar.io",emoji:"⚪",tag:"Arcade",size:"22",url:"https://agar.io/"},{name:"Smash Karts",emoji:"🏎️",tag:"Racing",size:"76",url:"https://smashkarts.io/"},{name:"Zombs Royale",emoji:"🧟",tag:"Battle",size:"128",url:"https://zombsroyale.io/"},{name:"Retro Bowl",emoji:"🏈",tag:"Sports",size:"43",url:"https://retrobowl97.github.io/"},{name:"Thumb Fighter",emoji:"👊",tag:"Fighting",size:"16",url:"https://thumbfighter.github.io/"},{name:"Rooftop Snipers",emoji:"🎯",tag:"Action",size:"21",url:"https://rooftopsnipers.github.io/"},{name:"2048",emoji:"🔢",tag:"Puzzle",size:"4",url:"https://play2048.co/"},{name:"Cookie Clicker",emoji:"🍪",tag:"Idle",size:"8",url:"https://cookieclicker-game.github.io/"},{name:"Minesweeper",emoji:"💣",tag:"Puzzle",size:"6",url:"https://minesweeper.online/"},{name:"Little Alchemy 2",emoji:"⚗️",tag:"Puzzle",size:"31",url:"https://littlealchemy2.com/"},{name:"Sudoku",emoji:"🧩",tag:"Puzzle",size:"5",url:"https://zv1y2i8p.play.gamezop.com/g/rkHVpV2Yugb"},{name:"Fleeing Complex",emoji:"🏃",tag:"Stealth",size:"42",url:"https://machita66.github.io/game/fleeingthecomplex.html"},{name:"Escaping Prison",emoji:"🔨",tag:"Stealth",size:"38",url:"https://escaping-the-prison.com/"},{name:"Stealing Diamond",emoji:"💎",tag:"Stealth",size:"35",url:"https://stealing-the-diamond.com/"},{name:"Infiltrating Airship",emoji:"🎈",tag:"Stealth",size:"41",url:"https://infiltrating-the-airship.com/"},{name:"Papa's Pizzeria",emoji:"🍕",tag:"Sim",size:"28",url:"https://papaspizzeria-unblocked.github.io/"},{name:"Papa's Pancakeria",emoji:"🥞",tag:"Sim",size:"26",url:"https://papaspancakeria.github.io/"},{name:"Geometry Dash",emoji:"🔷",tag:"Platformer",size:"89",url:"https://geometry-dash-unbanned.github.io/"},{name:"OvO",emoji:"🥚",tag:"Platformer",size:"33",url:"https://dedragames.com/games/ovo/1.3/"},{name:"Vex 5",emoji:"🔺",tag:"Platformer",size:"47",url:"https://vex5.com/"},{name:"Vex 6",emoji:"🔺",tag:"Platformer",size:"52",url:"https://vex6.com/"},{name:"Big Tower Tiny Square",emoji:"🗼",tag:"Platformer",size:"29",url:"https://big-tower-tiny-square.com/"},{name:"Pac-Man",emoji:"👻",tag:"Arcade",size:"12",url:"https://google-pacman.github.io/"},{name:"Chrome Dino",emoji:"🦖",tag:"Arcade",size:"3",url:"https://chrome-dino-game.github.io/"},{name:"Flappy Bird",emoji:"🐦",tag:"Arcade",size:"5",url:"https://flappy-bird.com/"},{name:"Eaglercraft 1.8.8",emoji:"⛏️",tag:"Sandbox",size:"256",url:"https://g.deev.is/eaglercraft/"},{name:"MineKhan",emoji:"⛏️",tag:"Sandbox",size:"178",url:"https://yikuansun.github.io/minekhan/"},{name:"Voxel Builder",emoji:"🧊",tag:"Sandbox",size:"64",url:"https://voxelbuilder.github.io/"}];
+
+// Achievements data
+const achievements=[{id:"first_launch",name:"System Init",desc:"Boot up Lemons Proxy",icon:"🖥️",unlocked:false},{id:"first_game",name:"Module Runner",desc:"Launch your first game",icon:"🎮",unlocked:false},{id:"ten_games",name:"Power User",desc:"Launch 10 different games",icon:"⚡",unlocked:false},{id:"search_try",name:"Network Scout",desc:"Visit the proxy tab",icon:"🔍",unlocked:false},{id:"fullscreen",name:"Maximum Overdrive",desc:"Use fullscreen mode",icon:"⛶",unlocked:false},{id:"konami",name:"Code Breaker",desc:"Enter the Konami Code",icon:"🔓",unlocked:false},{id:"logo_clicker",name:"Curious Mind",desc:"Click the logo 5 times",icon:"🍋",unlocked:false},{id:"aurelio_search",name:"Hidden Truth",desc:"Search for the forbidden name",icon:"🚫",unlocked:false}];
 
 // State management
-let gamesLaunched = [];
-let logoClicks = 0;
-let konamiSequence = [];
-let musicPlaying = false;
-let achievementsUnlocked = [];
+let gamesLaunched=[];
+let logoClicks=0;
+let konamiSequence=[];
+const konamiCode=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
 
-// Konami code: ↑↑↓↓←→←→BA
-const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+// Console easter egg
+console.log('%c fuck you aurelio ', 'background: #1e3a8a; color: #3b82f6; font-size: 20px; font-family: monospace; border: 2px solid #3b82f6; padding: 10px;');
+console.log('%c Lemons Proxy v10.0 // LD x Lemonwesh ', 'color: #60a5fa; font-family: monospace;');
 
-// Efficient initialization
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
   renderGames();
   renderAchievements();
   updateStats();
-  checkFirstLaunch();
+  loadSavedData();
   
-  // Keyboard listener for Konami and search easter egg
   document.addEventListener('keydown', handleKeydown);
-  
-  // Console easter egg
-  console.log('%c fuck you aurelio ', 'background: #1e3a8a; color: #3b82f6; font-size: 20px; font-family: monospace; border: 2px solid #3b82f6; padding: 10px;');
-  console.log('%c Lemons Proxy v10.0 // LD x Lemonwesh ', 'color: #60a5fa; font-family: monospace;');
 });
 
 function handleKeydown(e) {
-  // Konami code detection
   konamiSequence.push(e.key);
   if (konamiSequence.length > 10) konamiSequence.shift();
   
@@ -56,59 +257,24 @@ function dismissBoot() {
 }
 
 function playDystopianMusic() {
-  // Auto-play dystopian ambient music using YouTube iframe API workaround
   const container = document.getElementById('musicContainer');
-  const videoId = 'JvF3ps2JiYY'; // Dystopian ambient track
-  
-  // Create invisible iframe for autoplay (muted workaround for browser policies)
-  container.innerHTML = `
-    <iframe 
-      width="0" 
-      height="0" 
-      src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=1" 
-      frameborder="0" 
-      allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-      allowfullscreen>
-    </iframe>
-  `;
-  
-  // Try to unmute after user interaction (click)
-  setTimeout(() => {
-    const iframes = container.getElementsByTagName('iframe');
-    if (iframes.length > 0) {
-      // Replace with unmuted version
-      iframes[0].src = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&mute=0`;
-    }
-    musicPlaying = true;
-    document.getElementById('nowPlaying').textContent = '♫ Now Playing: Dystopian Ambient';
-  }, 1000);
+  // Dark ambient cyberpunk track
+  container.innerHTML = `<iframe width="0" height="0" src="https://www.youtube.com/embed/JvF3ps2JiYY?autoplay=1&loop=1&playlist=JvF3ps2JiYY" frameborder="0" allow="autoplay; clipboard-write; encrypted-media" allowfullscreen></iframe>`;
+  document.getElementById('nowPlaying').textContent = '♫ Now Playing: Dystopian Ambient';
 }
 
 function playMusic() {
   const url = document.getElementById('musicUrl').value;
   const container = document.getElementById('musicContainer');
   const videoId = extractVideoID(url);
-  
   if (videoId) {
-    container.innerHTML = `
-      <iframe 
-        width="0" 
-        height="0" 
-        src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}" 
-        frameborder="0" 
-        allow="autoplay; clipboard-write; encrypted-media" 
-        allowfullscreen>
-      </iframe>
-    `;
-    musicPlaying = true;
+    container.innerHTML = `<iframe width="0" height="0" src="https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}" frameborder="0" allow="autoplay" allowfullscreen></iframe>`;
     document.getElementById('nowPlaying').textContent = '♫ Custom Track Active';
-    document.getElementById('nowPlaying').classList.add('active');
   }
 }
 
 function stopMusic() {
   document.getElementById('musicContainer').innerHTML = '';
-  musicPlaying = false;
   document.getElementById('nowPlaying').textContent = '♫ Audio Stopped';
 }
 
@@ -144,22 +310,17 @@ function launchGame(url, name) {
   frame.src = url;
   viewer.classList.add('active');
   
-  // Track for achievements
   if (!gamesLaunched.includes(name)) {
     gamesLaunched.push(name);
     if (gamesLaunched.length === 1) unlockAchievement('first_game');
     if (gamesLaunched.length === 10) unlockAchievement('ten_games');
+    saveData();
   }
-  
-  // Update module count display
-  document.getElementById('moduleCount').textContent = '45';
 }
 
 function closeGame() {
-  const viewer = document.getElementById('gameViewer');
-  const frame = document.getElementById('gameFrame');
-  viewer.classList.remove('active');
-  frame.src = '';
+  document.getElementById('gameViewer').classList.remove('active');
+  document.getElementById('gameFrame').src = '';
 }
 
 function toggleFullscreen() {
@@ -184,7 +345,6 @@ function searchGames() {
   const input = document.getElementById('searchInput').value.toLowerCase();
   const modules = document.querySelectorAll('.game-module');
   
-  // Easter egg: search for "aurelio"
   if (input === 'aurelio') {
     unlockAchievement('aurelio_search');
     showEasterEggToast("🚫 ACCESS DENIED\nUser 'Aurelio' blacklisted from system.\nReason: Unauthorized access attempts.");
@@ -202,8 +362,6 @@ function easterEggLogo() {
     unlockAchievement('logo_clicker');
     showEasterEggToast("🍋 LEMON PROTOCOL ACTIVATED\nCitrus levels critical.\nSystem optimized for acidity.");
   }
-  
-  // Visual feedback
   const logo = document.querySelector('.logo-icon');
   logo.style.transform = `rotate(${logoClicks * 15}deg) scale(${1 + logoClicks * 0.1})`;
   setTimeout(() => logo.style.transform = '', 300);
@@ -211,29 +369,34 @@ function easterEggLogo() {
 
 function unlockAchievement(id) {
   const ach = achievements.find(a => a.id === id);
-  if (ach && !ach.unlocked && !achievementsUnlocked.includes(id)) {
+  if (ach && !ach.unlocked) {
     ach.unlocked = true;
-    achievementsUnlocked.push(id);
     renderAchievements();
     showAchievementPopup(ach);
     updateStats();
-    
-    // Save to localStorage for persistence
-    localStorage.setItem('lemons_achievements', JSON.stringify(achievementsUnlocked));
+    saveData();
   }
 }
 
-function checkFirstLaunch() {
+function loadSavedData() {
   const saved = localStorage.getItem('lemons_achievements');
+  const savedGames = localStorage.getItem('lemons_games');
   if (saved) {
-    achievementsUnlocked = JSON.parse(saved);
-    achievementsUnlocked.forEach(id => {
+    const unlocked = JSON.parse(saved);
+    unlocked.forEach(id => {
       const ach = achievements.find(a => a.id === id);
       if (ach) ach.unlocked = true;
     });
-    renderAchievements();
-    updateStats();
   }
+  if (savedGames) gamesLaunched = JSON.parse(savedGames);
+  renderAchievements();
+  updateStats();
+}
+
+function saveData() {
+  const unlocked = achievements.filter(a => a.unlocked).map(a => a.id);
+  localStorage.setItem('lemons_achievements', JSON.stringify(unlocked));
+  localStorage.setItem('lemons_games', JSON.stringify(gamesLaunched));
 }
 
 function renderAchievements() {
@@ -274,7 +437,6 @@ function showEasterEggToast(message) {
 }
 
 function updateStats() {
-  // Simulate dynamic latency
   setInterval(() => {
     const latency = Math.floor(Math.random() * 20) + 8;
     const el = document.getElementById('latency');
@@ -282,7 +444,6 @@ function updateStats() {
   }, 5000);
 }
 
-// Prevent memory leaks - cleanup on page unload
 window.addEventListener('beforeunload', () => {
   stopMusic();
 });
