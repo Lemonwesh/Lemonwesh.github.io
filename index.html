@@ -178,7 +178,7 @@ nav button.active::after {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Browser/Proxy Section */
+/* Browser Window */
 .browser-window {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -196,7 +196,7 @@ nav button.active::after {
   padding: 15px 20px;
   border-bottom: 1px solid var(--border);
   display: flex;
-  gap: 15px;
+  gap: 10px;
   align-items: center;
 }
 
@@ -249,26 +249,11 @@ nav button.active::after {
 
 #urlInput:focus { outline: none; }
 
-.engine-select {
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  padding: 10px 40px 10px 15px;
-  font-family: inherit;
-  font-size: 0.9rem;
-  border-radius: 8px;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%233b82f6' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-}
-
 .go-btn {
   background: linear-gradient(135deg, var(--accent) 0%, #2563eb 100%);
   border: none;
   color: white;
-  padding: 10px 25px;
+  padding: 10px 24px;
   font-family: inherit;
   font-weight: 600;
   border-radius: 8px;
@@ -295,7 +280,7 @@ nav button.active::after {
   display: block;
 }
 
-.error-overlay {
+.loading-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   background: var(--bg-primary);
@@ -304,63 +289,25 @@ nav button.active::after {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  text-align: center;
-  padding: 40px;
   z-index: 50;
 }
 
-.error-overlay.active { display: flex; }
+.loading-overlay.active { display: flex; }
 
-.error-icon {
-  font-size: 4rem;
-  opacity: 0.5;
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-.error-title {
-  color: var(--accent-tertiary);
-  font-size: 1.5rem;
-  font-weight: 700;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-.error-text {
-  color: var(--text-secondary);
-  max-width: 500px;
-  line-height: 1.6;
-}
-
-.error-actions {
-  display: flex;
-  gap: 15px;
-  margin-top: 10px;
-}
-
-.error-btn {
-  padding: 12px 24px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  font-family: inherit;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: all 0.2s;
-}
-
-.error-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.error-btn.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: white;
-}
-
-.error-btn.primary:hover {
-  background: #2563eb;
-}
-
-/* Games Section */
+/* Games Grid */
 .search-box {
   margin-bottom: 25px;
 }
@@ -540,87 +487,6 @@ nav button.active::after {
   background: white;
 }
 
-/* Settings */
-.settings-modal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(10, 14, 26, 0.95);
-  z-index: 3000;
-  padding: 40px;
-  backdrop-filter: blur(10px);
-}
-
-.settings-modal.active { display: block; }
-
-.settings-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 20px;
-  margin-bottom: 30px;
-}
-
-.settings-title {
-  color: var(--accent);
-  font-size: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.close-settings {
-  background: var(--accent-tertiary);
-  border: none;
-  color: white;
-  padding: 12px 24px;
-  font-family: inherit;
-  cursor: pointer;
-  border-radius: 8px;
-  font-weight: 600;
-}
-
-.setting-option {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  padding: 25px;
-  margin-bottom: 15px;
-  cursor: pointer;
-  transition: all 0.3s;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.setting-option:hover {
-  border-color: var(--accent);
-  transform: translateX(10px);
-}
-
-.setting-icon {
-  font-size: 2rem;
-  width: 60px;
-  height: 60px;
-  background: var(--bg-tertiary);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.setting-info h3 {
-  color: var(--text-primary);
-  margin-bottom: 5px;
-  font-size: 1.1rem;
-}
-
-.setting-info p {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
 /* Status Bar */
 .status-bar {
   position: fixed;
@@ -658,13 +524,11 @@ nav button.active::after {
   50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--bg-primary); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-/* Responsive */
 @media (max-width: 768px) {
   .terminal-title { font-size: 1.5rem; }
   .logo-icon { width: 40px; height: 40px; font-size: 22px; }
@@ -676,68 +540,22 @@ nav button.active::after {
 </head>
 <body>
 
-<!-- Settings Modal -->
-<div class="settings-modal" id="settingsModal">
-  <div class="settings-header">
-    <h2 class="settings-title">System Configuration</h2>
-    <button class="close-settings" onclick="toggleSettings()">[ CLOSE ]</button>
-  </div>
-  
-  <div class="setting-option" onclick="resetIdentity()">
-    <div class="setting-icon">🍋</div>
-    <div class="setting-info">
-      <h3>Reset Identity</h3>
-      <p>Restore original Lemon Proxy branding and icon</p>
-    </div>
-  </div>
-  
-  <div class="setting-option" onclick="cloakIdentity('Google Classroom', 'https://ssl.gstatic.com/classroom/ic_product_classroom_32.png')">
-    <div class="setting-icon">📚</div>
-    <div class="setting-info">
-      <h3>Google Classroom</h3>
-      <p>Disguise as educational platform</p>
-    </div>
-  </div>
-  
-  <div class="setting-option" onclick="cloakIdentity('Canvas', 'https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico')">
-    <div class="setting-icon">🎓</div>
-    <div class="setting-info">
-      <h3>Canvas LMS</h3>
-      <p>Academic learning management system cover</p>
-    </div>
-  </div>
-  
-  <div class="setting-option" onclick="cloakIdentity('Google Drive', 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png')">
-    <div class="setting-icon">📁</div>
-    <div class="setting-info">
-      <h3>Google Drive</h3>
-      <p>Cloud storage service appearance</p>
-    </div>
-  </div>
-</div>
-
-<!-- Header -->
 <header>
-  <button onclick="toggleSettings()" style="position: absolute; right: 20px; background: var(--bg-tertiary); border: 1px solid var(--border); color: var(--accent); padding: 10px 18px; font-family: inherit; cursor: pointer; border-radius: 8px; font-size: 0.85rem; font-weight: 600;">⚙️ CONFIG</button>
-  
   <div class="logo-container" onclick="showSection('games')">
     <div class="logo-icon">🍋</div>
     <h1 class="terminal-title">LEMONS_PROXY<span class="cursor"></span></h1>
   </div>
-  
-  <div class="credits">SECURE GATEWAY v2.0 // LEMONWESH x LD</div>
+  <div class="credits">SECURE GATEWAY v3.0 // LEMONWESH x LD</div>
 </header>
 
-<!-- Navigation -->
 <nav>
   <button class="nav-btn active" onclick="showSection('games')" id="nav-games">[ GAMES ]</button>
   <button class="nav-btn" onclick="showSection('proxy')" id="nav-proxy">[ BROWSER ]</button>
 </nav>
 
-<!-- Main Container -->
 <div class="container">
 
-  <!-- PROXY/BROWSER SECTION -->
+  <!-- PROXY SECTION -->
   <section id="proxy" class="section">
     <div class="browser-window">
       <div class="browser-toolbar">
@@ -747,47 +565,30 @@ nav button.active::after {
         
         <div class="address-bar">
           <span class="address-icon">🔒</span>
-          <input type="text" id="urlInput" placeholder="Enter URL or search term..." onkeydown="if(event.key === 'Enter') navigateBrowser()">
+          <input type="text" id="urlInput" placeholder="Enter URL (e.g., google.com)..." onkeydown="if(event.key === 'Enter') navigateBrowser()">
         </div>
-        
-        <select class="engine-select" id="searchEngine">
-          <option value="duckduckgo">DuckDuckGo</option>
-          <option value="brave">Brave Search</option>
-          <option value="startpage">Startpage</option>
-          <option value="metager">MetaGer</option>
-          <option value="mojeek">Mojeek</option>
-          <option value="bing">Bing</option>
-          <option value="ecosia">Ecosia</option>
-          <option value="yahoo">Yahoo</option>
-          <option value="wolfram">WolframAlpha</option>
-          <option value="croxy">CroxyProxy</option>
-          <option value="proxysite">ProxySite</option>
-        </select>
         
         <button class="go-btn" onclick="navigateBrowser()">GO</button>
       </div>
       
       <div class="browser-viewport">
-        <iframe id="browserFrame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads" allow="fullscreen; autoplay"></iframe>
+        <iframe id="browserFrame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads allow-top-navigation allow-modals allow-pointer-lock" allow="fullscreen; autoplay; clipboard-write"></iframe>
         
-        <div id="errorOverlay" class="error-overlay">
-          <div class="error-icon">🔒</div>
-          <div class="error-title">Connection Blocked</div>
-          <div class="error-text">
-            This website has security headers (X-Frame-Options) that prevent it from loading inside this browser. 
-            This is common for Google, DuckDuckGo, and most major sites.
-          </div>
-          <div class="error-actions">
-            <button class="error-btn primary" onclick="openExternal()">Open in New Tab</button>
-            <button class="error-btn" onclick="tryAlternative()">Try Alternative</button>
-            <button class="error-btn" onclick="hideError()">Dismiss</button>
-          </div>
+        <div id="loadingOverlay" class="loading-overlay">
+          <div class="spinner"></div>
+          <div style="color: var(--accent); font-size: 1.1rem;">Establishing secure connection...</div>
+          <div style="color: var(--text-secondary); font-size: 0.9rem;">Loading through ultraviolet proxy</div>
         </div>
       </div>
     </div>
+    
+    <div style="margin-top: 15px; text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+      <span style="color: var(--accent-secondary);">●</span> Connected to public proxy node | 
+      <span style="color: var(--accent-tertiary);">⚠</span> Some sites may block iframe embedding
+    </div>
   </section>
 
-  <!-- GAMES SECTION - All 45 Games Restored -->
+  <!-- GAMES SECTION - All 45 Games -->
   <section id="games" class="section active">
     <div class="search-box">
       <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search all games..." onkeyup="searchGames()">
@@ -813,7 +614,7 @@ nav button.active::after {
 <div class="status-bar">
   <div class="status-left">
     <span><span class="status-indicator"></span>OPERATIONAL</span>
-    <span>VER: 9.3.0</span>
+    <span>VER: 3.0.0</span>
     <span>HOST: GITHUB_PAGES</span>
   </div>
   <div style="color: var(--text-secondary);">
@@ -835,273 +636,4 @@ nav button.active::after {
 const games = [
   {name: "8 Ball Pool", emoji: "🎱", tag: "SPORTS", url: "https://html5.gamedistribution.com/ed65e4198fe74fdbb0b2ac015dd81128/"},
   {name: "Ludo With Friends", emoji: "🎲", tag: "MULTIPLAYER", url: "https://zv1y2i8p.play.gamezop.com/g/SkhljT2fdgb"},
-  {name: "Basketball Stars", emoji: "🏀", tag: "MULTIPLAYER", url: "https://html5.gamedistribution.com/f7c4e66b484e45df86b7d46450aac477/"},
-  {name: "Stick Fighter", emoji: "⚔️", tag: "MULTIPLAYER", url: "https://html5.gamedistribution.com/rgSkqGbJade4O68B0T2u3zCZqe0FMBqO/"},
-  {name: "Poly Track", emoji: "🏎️", tag: "RACING", url: "https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},
-  {name: "Jelly Truck", emoji: "🚚", tag: "RACING", url: "https://jellytruck2.github.io/"},
-  {name: "Slope", emoji: "📐", tag: "RACING", url: "https://slope-y8.com/"},
-  {name: "Slope 2", emoji: "📐2", tag: "RACING", url: "https://slopegame2.github.io/"},
-  {name: "Drift Hunters", emoji: "🏎️", tag: "RACING", url: "https://drifthuntersonline.github.io/"},
-  {name: "Slow Roads", emoji: "🛣️", tag: "RACING", url: "https://slowroads.io/"},
-  {name: "Subway Surfers", emoji: "🏃", tag: "ARCADE", url: "https://subwaysurfers76.github.io/"},
-  {name: "Temple Run 2", emoji: "🏛️", tag: "ARCADE", url: "https://run3temp.github.io/"},
-  {name: "Crossy Road", emoji: "🐔", tag: "ARCADE", url: "https://crossyroad66.github.io/"},
-  {name: "1v1.LOL", emoji: "🔫", tag: "IO GAME", url: "https://1v1lol-gg.github.io/"},
-  {name: "Shell Shockers", emoji: "🥚", tag: "IO GAME", url: "https://shellshock.io/"},
-  {name: "Krunker.io", emoji: "🔫", tag: "IO GAME", url: "https://krunker.io/"},
-  {name: "Slither.io", emoji: "🐍", tag: "IO GAME", url: "https://slither.io/"},
-  {name: "Agar.io", emoji: "⚪", tag: "IO GAME", url: "https://agar.io/"},
-  {name: "Smash Karts", emoji: "🏎️", tag: "IO GAME", url: "https://smashkarts.io/"},
-  {name: "Zombs Royale", emoji: "🧟", tag: "IO GAME", url: "https://zombsroyale.io/"},
-  {name: "Retro Bowl", emoji: "🏈", tag: "SPORTS", url: "https://retrobowl97.github.io/"},
-  {name: "Thumb Fighter", emoji: "👊", tag: "FIGHTING", url: "https://thumbfighter.github.io/"},
-  {name: "Rooftop Snipers", emoji: "🎯", tag: "FIGHTING", url: "https://rooftopsnipers.github.io/"},
-  {name: "2048", emoji: "🔢", tag: "PUZZLE", url: "https://play2048.co/"},
-  {name: "Cookie Clicker", emoji: "🍪", tag: "PUZZLE", url: "https://cookieclicker-game.github.io/"},
-  {name: "Minesweeper", emoji: "💣", tag: "PUZZLE", url: "https://minesweeper.online/"},
-  {name: "Little Alchemy 2", emoji: "⚗️", tag: "PUZZLE", url: "https://littlealchemy2.com/"},
-  {name: "Sudoku Classic", emoji: "🧩", tag: "PUZZLE", url: "https://zv1y2i8p.play.gamezop.com/g/rkHVpV2Yugb"},
-  {name: "Fleeing the Complex", emoji: "🏃", tag: "HENRY", url: "https://machita66.github.io/game/fleeingthecomplex.html"},
-  {name: "Escaping the Prison", emoji: "🔨", tag: "HENRY", url: "https://escaping-the-prison.com/"},
-  {name: "Stealing the Diamond", emoji: "💎", tag: "HENRY", url: "https://stealing-the-diamond.com/"},
-  {name: "Infiltrating the Airship", emoji: "🎈", tag: "HENRY", url: "https://infiltrating-the-airship.com/"},
-  {name: "Papa's Pizzeria", emoji: "🍕", tag: "PAPA'S", url: "https://papaspizzeria-unblocked.github.io/"},
-  {name: "Papa's Pancakeria", emoji: "🥞", tag: "PAPA'S", url: "https://papaspancakeria.github.io/"},
-  {name: "Geometry Dash", emoji: "🔷", tag: "PLATFORMER", url: "https://geometry-dash-unbanned.github.io/"},
-  {name: "OvO", emoji: "🥚", tag: "PLATFORMER", url: "https://dedragames.com/games/ovo/1.3/"},
-  {name: "Vex 5", emoji: "🔺", tag: "PLATFORMER", url: "https://vex5.com/"},
-  {name: "Vex 6", emoji: "🔺6", tag: "PLATFORMER", url: "https://vex6.com/"},
-  {name: "Big Tower Tiny Square", emoji: "🗼", tag: "PLATFORMER", url: "https://big-tower-tiny-square.com/"},
-  {name: "Pac-Man", emoji: "👻", tag: "ARCADE", url: "https://google-pacman.github.io/"},
-  {name: "Chrome Dino", emoji: "🦖", tag: "ARCADE", url: "https://chrome-dino-game.github.io/"},
-  {name: "Flappy Bird", emoji: "🐦", tag: "ARCADE", url: "https://flappy-bird.com/"},
-  {name: "Eaglercraft 1.8.8", emoji: "⛏️", tag: "MINECRAFT", url: "https://g.deev.is/eaglercraft/"},
-  {name: "MineKhan", emoji: "⛏️", tag: "MINECRAFT", url: "https://yikuansun.github.io/minekhan/"},
-  {name: "Voxel Builder", emoji: "🧊", tag: "MINECRAFT", url: "https://voxelbuilder.github.io/"}
-];
-
-// Browser Navigation
-let historyStack = [];
-let historyIndex = -1;
-let currentUrl = '';
-
-const engineUrls = {
-  duckduckgo: { home: 'https://duckduckgo.com/', search: 'https://duckduckgo.com/?q=' },
-  brave: { home: 'https://search.brave.com/', search: 'https://search.brave.com/search?q=' },
-  startpage: { home: 'https://www.startpage.com/', search: 'https://www.startpage.com/do/dsearch?query=' },
-  metager: { home: 'https://metager.org/', search: 'https://metager.org/meta/meta.ger3?eingabe=' },
-  mojeek: { home: 'https://www.mojeek.com/', search: 'https://www.mojeek.com/search?q=' },
-  bing: { home: 'https://www.bing.com/', search: 'https://www.bing.com/search?q=' },
-  ecosia: { home: 'https://www.ecosia.org/', search: 'https://www.ecosia.org/search?q=' },
-  yahoo: { home: 'https://www.yahoo.com/', search: 'https://search.yahoo.com/search?p=' },
-  wolfram: { home: 'https://www.wolframalpha.com/', search: 'https://www.wolframalpha.com/input?i=' },
-  croxy: { home: 'https://www.croxyproxy.com/', search: 'https://www.croxyproxy.com/?url=' },
-  proxysite: { home: 'https://www.proxysite.com/', search: 'https://www.proxysite.com/' }
-};
-
-function navigateBrowser() {
-  const input = document.getElementById('urlInput').value.trim();
-  const engine = document.getElementById('searchEngine').value;
-  const frame = document.getElementById('browserFrame');
-  const errorOverlay = document.getElementById('errorOverlay');
-  
-  if (!input) {
-    // Just load homepage
-    const url = engineUrls[engine].home;
-    loadUrl(url);
-    return;
-  }
-  
-  // Determine if URL or search
-  let targetUrl;
-  if (input.includes('.') && !input.includes(' ')) {
-    // Treat as URL
-    if (!input.startsWith('http')) {
-      input = 'https://' + input;
-    }
-    
-    if (engine === 'croxy' || engine === 'proxysite') {
-      targetUrl = engineUrls[engine].search + encodeURIComponent(input);
-    } else {
-      // For search engines, search for the URL
-      targetUrl = engineUrls[engine].search + encodeURIComponent(input);
-    }
-  } else {
-    // Search query
-    targetUrl = engineUrls[engine].search + encodeURIComponent(input);
-  }
-  
-  loadUrl(targetUrl);
-}
-
-function loadUrl(url) {
-  const frame = document.getElementById('browserFrame');
-  const errorOverlay = document.getElementById('errorOverlay');
-  
-  currentUrl = url;
-  frame.src = url;
-  errorOverlay.classList.remove('active');
-  
-  // Try to detect if blocked after 4 seconds
-  setTimeout(() => {
-    try {
-      const frameWindow = frame.contentWindow;
-      const frameLocation = frameWindow.location.href;
-      if (frameLocation === 'about:blank' && url !== 'about:blank') {
-        showError();
-      }
-    } catch (e) {
-      // Cross-origin error usually means it loaded (good)
-      // But if we can't access it at all, check if blank
-      if (frame.src === '' || frame.src === 'about:blank') {
-        showError();
-      }
-    }
-  }, 4000);
-  
-  // Add to history
-  if (historyIndex < historyStack.length - 1) {
-    historyStack = historyStack.slice(0, historyIndex + 1);
-  }
-  historyStack.push(url);
-  historyIndex++;
-}
-
-function browserBack() {
-  if (historyIndex > 0) {
-    historyIndex--;
-    const url = historyStack[historyIndex];
-    document.getElementById('browserFrame').src = url;
-    currentUrl = url;
-  }
-}
-
-function browserForward() {
-  if (historyIndex < historyStack.length - 1) {
-    historyIndex++;
-    const url = historyStack[historyIndex];
-    document.getElementById('browserFrame').src = url;
-    currentUrl = url;
-  }
-}
-
-function reloadBrowser() {
-  const frame = document.getElementById('browserFrame');
-  if (currentUrl) {
-    frame.src = currentUrl;
-  }
-}
-
-function showError() {
-  document.getElementById('errorOverlay').classList.add('active');
-}
-
-function hideError() {
-  document.getElementById('errorOverlay').classList.remove('active');
-}
-
-function openExternal() {
-  if (currentUrl) {
-    window.open(currentUrl, '_blank');
-  }
-}
-
-function tryAlternative() {
-  hideError();
-  const currentEngine = document.getElementById('searchEngine').value;
-  const alternatives = ['croxy', 'proxysite', 'duckduckgo', 'brave'];
-  
-  for (let alt of alternatives) {
-    if (alt !== currentEngine) {
-      document.getElementById('searchEngine').value = alt;
-      navigateBrowser();
-      break;
-    }
-  }
-}
-
-// Game Functions
-function init() {
-  document.getElementById('gameCount').textContent = games.length;
-  renderGames(games);
-  
-  // Check for saved cloak
-  const savedTitle = localStorage.getItem('cloakTitle');
-  const savedIcon = localStorage.getItem('cloakIcon');
-  if (savedTitle) document.title = savedTitle;
-  if (savedIcon) document.getElementById('favicon').href = savedIcon;
-}
-
-function renderGames(gameList) {
-  const grid = document.getElementById('gamesGrid');
-  grid.innerHTML = gameList.map(game => `
-    <div class="game-card" onclick="launchGame('${game.name}', '${game.url}')">
-      <div class="game-header">
-        <span class="game-emoji">${game.emoji}</span>
-        <span class="game-tag">${game.tag}</span>
-      </div>
-      <div class="game-title">${game.name}</div>
-      <div class="game-footer">Ready to launch</div>
-    </div>
-  `).join('');
-}
-
-function showSection(id) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.getElementById('nav-' + id)?.classList.add('active');
-}
-
-function launchGame(name, url) {
-  document.getElementById('gameViewer').classList.add('active');
-  document.getElementById('viewerTitle').textContent = name;
-  document.getElementById('gameFrame').src = url;
-}
-
-function closeGame() {
-  document.getElementById('gameViewer').classList.remove('active');
-  document.getElementById('gameFrame').src = '';
-}
-
-function searchGames() {
-  const query = document.getElementById('searchInput').value.toLowerCase();
-  const filtered = games.filter(g => g.name.toLowerCase().includes(query));
-  renderGames(filtered);
-}
-
-// Settings
-function toggleSettings() {
-  document.getElementById('settingsModal').classList.toggle('active');
-}
-
-function resetIdentity() {
-  document.title = 'Lemons Proxy // Terminal';
-  document.getElementById('favicon').href = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23001133'/><text x='15' y='75' font-size='60' opacity='0.9'>🍋</text><text x='55' y='60' font-family='monospace' font-size='35' fill='%2358a6ff' font-weight='bold'>&lt;/&gt;</text></svg>";
-  localStorage.removeItem('cloakTitle');
-  localStorage.removeItem('cloakIcon');
-}
-
-function cloakIdentity(title, icon) {
-  document.title = title;
-  document.getElementById('favicon').href = icon;
-  localStorage.setItem('cloakTitle', title);
-  localStorage.setItem('cloakIcon', icon);
-}
-
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    if (document.getElementById('settingsModal').classList.contains('active')) {
-      toggleSettings();
-    } else if (document.getElementById('gameViewer').classList.add('active')) {
-      closeGame();
-    }
-  }
-});
-
-window.onload = init;
-</script>
-</body>
-</html>
-
+  {name: "Basketball Stars", emoji: "🏀
