@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LEMONS_PROXY // BLUEPRINT_TERMINAL_v10.0</title>
-<link id="favicon" rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23001133'/><text x='15' y='75' font-size='60'>🍋</text><text x='55' y='60' font-family='monospace' font-size='35' fill='%233b82f6' font-weight='bold'>&lt;/&gt;</text></svg>">
+<link id="favicon" rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg ' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23001133'/><text x='15' y='75' font-size='60'>🍋</text><text x='55' y='60' font-family='monospace' font-size='35' fill='%233b82f6' font-weight='bold'>&lt;/&gt;</text></svg>">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;800&family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300 ;400;500;600;800&family=Inter:wght@300;400;500&display=swap');
 :root{--bg-primary:#0a1628;--bg-secondary:#111d32;--bg-tertiary:#1a2942;--blueprint-grid:rgba(59,130,246,0.06);--terminal-blue:#3b82f6;--terminal-bright:#60a5fa;--terminal-dim:#1e40af;--terminal-amber:#f59e0b;--border-glow:rgba(59,130,246,0.15);--lemon-blue:#1e3a8a;--error-red:#ef4444;--success-green:#10b981;--text-primary:#e2e8f0;--text-secondary:#94a3b8;--accent-cyan:#06b6d4;--cyber-pink:#ff00ff;--matrix-green:#00ff00}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background-color:var(--bg-primary);background-image:linear-gradient(var(--blueprint-grid) 1px,transparent 1px),linear-gradient(90deg,var(--blueprint-grid) 1px,transparent 1px);background-size:40px 40px;font-family:'Inter','JetBrains Mono',sans-serif;font-weight:300;color:var(--text-primary);min-height:100vh;overflow-x:hidden;position:relative;transition:all 0.3s}
@@ -198,6 +198,434 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 .destruct-timer{font-size:4rem;color:#ff0000;font-weight:bold;margin:20px 0;font-family:'JetBrains Mono',monospace}
 .debug-overlay{position:fixed;bottom:100px;left:10px;background:rgba(0,0,0,0.8);border:1px solid var(--terminal-amber);padding:10px;font-size:0.7rem;color:#0f0;font-family:'JetBrains Mono',monospace;z-index:998;display:none;pointer-events:none}
 .debug-overlay.active{display:block}
+
+/* ===== CHROMEBOOK / SMALL SCREEN FIXES ===== */
+@media (max-width: 1366px), (max-height: 768px), (max-aspect-ratio: 16/9) {
+    
+    /* BSOD - Blue Screen */
+    .bsod {
+        padding: 4vh 5vw !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow-y: auto;
+    }
+    .bsod h1 {
+        font-size: clamp(2.5rem, 12vw, 5rem) !important;
+        margin-bottom: 2vh;
+    }
+    .bsod p {
+        font-size: clamp(0.85rem, 2vw, 1.1rem) !important;
+        line-height: 1.5;
+        max-width: 90vw;
+        margin-bottom: 2vh;
+    }
+    .bsod p:last-child {
+        font-size: 0.8rem !important;
+        margin-top: auto;
+        padding-top: 4vh;
+    }
+
+    /* Aurelio Lock Screen */
+    #aurelio-overlay {
+        padding: 3vh 4vw;
+    }
+    .stop-text {
+        font-size: clamp(2rem, 10vw, 4rem) !important;
+        letter-spacing: 0.1em;
+        text-align: center;
+    }
+    .stop-sub {
+        font-size: clamp(0.75rem, 2vw, 1rem) !important;
+        margin-top: 2vh;
+        text-align: center;
+        padding: 0 2vw;
+    }
+    .stop-timer {
+        font-size: clamp(2.5rem, 8vw, 3.5rem) !important;
+        margin-top: 3vh;
+    }
+    .stop-logs {
+        max-width: 95vw;
+        height: 20vh;
+        font-size: 0.7rem;
+        margin-top: 3vh;
+        padding-left: 3vw;
+    }
+    .stop-hint {
+        margin-top: 3vh;
+        font-size: 0.7rem;
+    }
+
+    /* Self Destruct Alert */
+    .self-destruct {
+        width: 85vw;
+        max-width: 450px;
+        padding: 5vh 4vw;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    .self-destruct h2 {
+        font-size: clamp(0.9rem, 3.5vw, 1.3rem);
+        line-height: 1.3;
+    }
+    .destruct-timer {
+        font-size: clamp(3rem, 12vw, 4rem) !important;
+        margin: 3vh 0;
+    }
+
+    /* Achievement Popup (Slide-in) */
+    .achievement-popup {
+        max-width: 80vw;
+        padding: 2.5vh 3vw;
+        top: 12vh;
+        right: -100vw; /* Hidden off-screen */
+        gap: 3vw;
+    }
+    .achievement-popup.show {
+        right: 3vw;
+    }
+    .pop-icon {
+        font-size: 1.5rem;
+    }
+    .pop-text h3 {
+        font-size: 0.8rem;
+        margin-bottom: 0.5vh;
+    }
+    .pop-text p {
+        font-size: 0.7rem;
+    }
+
+    /* Easter Egg Toast (Angry system messages) */
+    .easter-egg-toast {
+        max-width: 85vw;
+        min-width: auto;
+        width: auto;
+        padding: 2.5vh 4vw;
+        font-size: clamp(0.75rem, 2.2vw, 0.85rem);
+        right: -100vw;
+        line-height: 1.4;
+        top: 12vh;
+    }
+    .easter-egg-toast.show {
+        right: 3vw;
+    }
+    /* Shake animation less aggressive on small screens */
+    .easter-egg-toast.angry, .easter-egg-toast.furious {
+        animation-duration: 0.4s;
+    }
+
+    /* Secret Unlocked Toast (Center modal) */
+    .unlocked-toast {
+        width: 85vw;
+        max-width: 380px;
+        padding: 5vh 4vw;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    .unlocked-toast h2 {
+        font-size: clamp(1.1rem, 5vw, 1.8rem);
+    }
+    .big-lemon {
+        font-size: clamp(2.5rem, 12vw, 4rem);
+        margin-bottom: 3vh;
+    }
+
+    /* Boot Sequence */
+    #boot-sequence {
+        padding: 5vh 5vw;
+        font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+        line-height: 1.6;
+    }
+    .click-to-boot {
+        margin-top: 5vh;
+        padding: 2.5vh 5vw;
+        font-size: 0.85rem;
+        width: 80%;
+        max-width: 300px;
+        text-align: center;
+    }
+
+    /* Top Alert Banners (Dev warning, Disclaimer) */
+    .dev-warning {
+        padding: 1.5vh 3vw;
+        font-size: 0.7rem;
+        flex-wrap: wrap;
+        gap: 1vh;
+    }
+    .game-disclaimer {
+        padding: 2vh 3vw;
+        font-size: 0.8rem;
+        top: 28px;
+    }
+    .loading-warning {
+        padding: 2vh 3vw;
+        font-size: 0.8rem;
+        top: 60px;
+    }
+    
+    /* Adjust header margin since banners are smaller */
+    header {
+        margin-top: 85px;
+    }
+    nav {
+        top: 85px;
+    }
+
+    /* ===== MAIN INTERFACE FIXES ===== */
+    
+    /* Container - Use full width on small screens */
+    .container {
+        max-width: 100vw;
+        padding: 15px;
+        padding-bottom: 100px; /* Space for status bar */
+    }
+    
+    /* Games Grid - 2 columns instead of auto-fill */
+    .games-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 12px;
+    }
+    
+    .game-module {
+        min-height: 120px;
+    }
+    
+    .module-header {
+        padding: 12px;
+    }
+    
+    .module-title {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    
+    .module-icon {
+        font-size: 1.5rem;
+    }
+
+    /* Header - Compact */
+    header {
+        padding: 10px 15px;
+    }
+    
+    .terminal-title {
+        font-size: 1.1rem;
+    }
+    
+    .credits {
+        font-size: 0.65rem;
+    }
+    
+    .logo-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+    }
+
+    /* Nav - Smaller buttons */
+    nav button {
+        padding: 10px 20px;
+        font-size: 0.75rem;
+    }
+
+    /* System Stats - Single row scrollable or 2x2 grid */
+    .system-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .stat-value {
+        font-size: 1rem;
+    }
+
+    /* Search Bar */
+    .search-container {
+        margin-bottom: 15px;
+    }
+    
+    .search-input {
+        padding: 12px 15px 12px 40px;
+        font-size: 0.9rem;
+    }
+
+    /* ===== GAME VIEWER FIXES ===== */
+    .game-viewer {
+        /* Ensure it takes full viewport */
+        height: 100vh;
+        height: 100dvh; /* Dynamic viewport height for mobile Chrome */
+    }
+    
+    .viewer-header {
+        padding: 10px 15px;
+        min-height: 50px;
+    }
+    
+    .viewer-title {
+        font-size: 0.85rem;
+        max-width: 60vw; /* Prevent overflow */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .controls-group {
+        gap: 5px;
+    }
+    
+    .control-btn {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+    }
+
+    /* CRITICAL: Make iframe take remaining space properly */
+    #gameFrame {
+        height: calc(100vh - 50px); /* Subtract header height */
+        height: calc(100dvh - 50px);
+        width: 100%;
+        border: none;
+    }
+
+    /* Bottom bars - Compact */
+    .music-player {
+        padding: 8px 15px;
+        bottom: 35px; /* Above status bar */
+    }
+    
+    .music-input {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+    
+    .music-btn {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+    }
+    
+    .now-playing {
+        font-size: 0.7rem;
+        max-width: 30vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .status-bar {
+        padding: 8px 15px;
+        font-size: 0.7rem;
+    }
+
+    /* Achievement button - Smaller */
+    .achievements-btn {
+        bottom: 80px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+    
+    .achievements-panel {
+        bottom: 130px;
+        right: 15px;
+        width: 280px;
+        max-height: 60vh;
+    }
+
+    /* Secret Menu Adjustments */
+    .secret-grid {
+        grid-template-columns: 1fr; /* Stack cards on small screens */
+        gap: 12px;
+    }
+    
+    .secret-menu {
+        padding: 15px;
+    }
+    
+    .secret-title {
+        font-size: 1.1rem;
+    }
+
+    /* Anger indicator and counters - Reposition */
+    .anger-indicator {
+        top: 120px;
+        left: 15px;
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+    
+    .lemon-counter {
+        top: 120px;
+        right: 15px;
+        padding: 8px 12px;
+        font-size: 0.75rem;
+        max-width: 180px;
+    }
+}
+
+/* Extra small Chromebooks (11.6" screens) */
+@media (max-width: 1024px) {
+    .games-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 10px;
+    }
+    
+    .module-title {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+    
+    nav button {
+        padding: 8px 12px;
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+    }
+    
+    .system-stats {
+        grid-template-columns: repeat(2, 1fr);
+        font-size: 0.75rem;
+    }
+}
+
+/* Landscape mode fixes (when Chromebook is in tent/tablet mode) */
+@media (max-height: 600px) and (orientation: landscape) {
+    header {
+        margin-top: 0; /* Remove margin when banners are hidden */
+        padding: 8px 15px;
+    }
+    
+    nav {
+        position: relative;
+        top: 0;
+    }
+    
+    .container {
+        padding-top: 10px;
+    }
+    
+    .game-viewer {
+        height: 100vh;
+    }
+    
+    #gameFrame {
+        height: calc(100vh - 45px);
+    }
+    
+    .music-player {
+        display: none; /* Hide music player in landscape to save space */
+    }
+    
+    .status-bar {
+        display: none; /* Hide status bar in landscape */
+    }
+}
+
+/* High DPI / Zoom adjustments for Chrome OS */
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+    body {
+        font-size: 14px; /* Base font size adjustment for high DPI */
+    }
+}
 </style>
 </head>
 <body>
@@ -557,117 +985,117 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 </div>
 
 <script>
-// 74 GAMES
+// 74 GAMES - Updated List
 const games=[
   // Minecraft (10)
-  {name:"Eaglercraft",emoji:"⛏️",tag:"Minecraft",url:"https://eaglercraft.com/"},
-  {name:"Bloxd.io",emoji:"🧱",tag:"Minecraft",url:"https://bloxd.io/"},
-  {name:"Miniblox",emoji:"🎮",tag:"Minecraft",url:"https://miniblox.io/"},
-  {name:"Minecraft Classic",emoji:"⛏️",tag:"Sandbox",url:"https://classic.minecraft.net/"},
-  {name:"MineBlocks",emoji:"💎",tag:"Minecraft",url:"https://mineblocks.com/"},
-  {name:"CraftMine",emoji:"🌲",tag:"Minecraft",url:"https://craftmine.co/"},
-  {name:"Cluster Rush",emoji:"🏃",tag:"Minecraft",url:"https://clusterrush.net/"},
-  {name:"Paper Minecraft",emoji:"📄",tag:"Minecraft",url:"https://scratch.mit.edu/projects/10128407/"},
-  {name:"Minecraft TD",emoji:"🗼",tag:"Minecraft",url:"https://minecraft-tower-defense.com/"},
-  {name:"Pixel Warfare",emoji:"🔫",tag:"FPS",url:"https://pixel-warfare.com/"},
+  {name:"Eaglercraft",emoji:"⛏️",tag:"Minecraft",url:"https://eaglercraft.com/ "},
+  {name:"Bloxd.io",emoji:"🧱",tag:"Minecraft",url:"https://bloxd.io/ "},
+  {name:"Miniblox",emoji:"🎮",tag:"Minecraft",url:"https://miniblox.io/ "},
+  {name:"Minecraft Classic",emoji:"⛏️",tag:"Sandbox",url:"https://classic.minecraft.net/ "},
+  {name:"MineBlocks",emoji:"💎",tag:"Minecraft",url:"https://mineblocks.com/ "},
+  {name:"CraftMine",emoji:"🌲",tag:"Minecraft",url:"https://craftmine.co/ "},
+  {name:"Cluster Rush",emoji:"🏃",tag:"Minecraft",url:"https://clusterrush.net/ "},
+  {name:"Paper Minecraft",emoji:"📄",tag:"Minecraft",url:"https://scratch.mit.edu/projects/10128407/ "},
+  {name:"Minecraft TD",emoji:"🗼",tag:"Minecraft",url:"https://minecraft-tower-defense.com/ "},
+  {name:"Pixel Warfare",emoji:"🔫",tag:"FPS",url:"https://pixel-warfare.com/ "},
   
   // Racing (10)
-  {name:"Poly Track",emoji:"🏎️",tag:"Racing",url:"https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},
-  {name:"Jelly Truck",emoji:"🚚",tag:"Racing",url:"https://jellytruck2.github.io/"},
-  {name:"Slope",emoji:"📐",tag:"Racing",url:"https://slope-y8.com/"},
-  {name:"Slope 2",emoji:"📐",tag:"Racing",url:"https://slopegame2.github.io/"},
-  {name:"Drift Hunters",emoji:"🏎️",tag:"Racing",url:"https://drifthuntersonline.github.io/"},
-  {name:"Slow Roads",emoji:"🛣️",tag:"Racing",url:"https://slowroads.io/"},
-  {name:"Smash Karts",emoji:"🏎️",tag:"Racing",url:"https://smashkarts.io/"},
-  {name:"Moto X3M",emoji:"🏍️",tag:"Racing",url:"https://moto-x3m.com/"},
-  {name:"Hill Climb Racing",emoji:"🚙",tag:"Racing",url:"https://hill-climb-racing.github.io/"},
-  {name:"Madalin Stunt Cars 2",emoji:"🏎️",tag:"Racing",url:"https://madalinstuntcars2.com/"},
+  {name:"Poly Track",emoji:"🏎️",tag:"Racing",url:"https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html "},
+  {name:"Jelly Truck",emoji:"🚚",tag:"Racing",url:"https://jellytruck2.github.io/ "},
+  {name:"Slope",emoji:"📐",tag:"Racing",url:"https://slope-y8.com/ "},
+  {name:"Slope 2",emoji:"📐",tag:"Racing",url:"https://slopegame2.github.io/ "},
+  {name:"Drift Hunters",emoji:"🏎️",tag:"Racing",url:"https://drifthuntersonline.github.io/ "},
+  {name:"Slow Roads",emoji:"🛣️",tag:"Racing",url:"https://slowroads.io/ "},
+  {name:"Smash Karts",emoji:"🏎️",tag:"Racing",url:"https://smashkarts.io/ "},
+  {name:"Moto X3M",emoji:"🏍️",tag:"Racing",url:"https://moto-x3m.com/ "},
+  {name:"Hill Climb Racing",emoji:"🚙",tag:"Racing",url:"https://hill-climb-racing.github.io/ "},
+  {name:"Madalin Stunt Cars 2",emoji:"🏎️",tag:"Racing",url:"https://madalinstuntcars2.com/ "},
   
   // Sports (6)
-  {name:"8 Ball Pool",emoji:"🎱",tag:"Sports",url:"https://games.cdn.famobi.com/html5games/0/8-ball-billiards-classic/f6589445/?fg_domain=play.famobi.com&fg_aid=A1000-1&fg_uid=82038e98-d4e1-46dd-8de9-1460d1395eab&fg_pid=4638e320-4444-4514-81c4-d80a8c662371&fg_beat=103&original_ref=https%3A%2F%2Fwww.google.com%2F"},
-  {name:"Basketball Stars",emoji:"🏀",tag:"Sports",url:"https://basketball-stars.io/"},
-  {name:"Retro Bowl",emoji:"🏈",tag:"Sports",url:"https://retrobowl97.github.io/"},
-  {name:"Soccer Random",emoji:"⚽",tag:"Sports",url:"https://soccer-random.github.io/"},
-  {name:"Football Legends",emoji:"🏟️",tag:"Sports",url:"https://football-legends.github.io/"},
-  {name:"Tennis Masters",emoji:"🎾",tag:"Sports",url:"https://tennis-masters.com/"},
+  {name:"8 Ball Pool",emoji:"🎱",tag:"Sports",url:"https://games.cdn.famobi.com/html5games/0/8-ball-billiards-classic/f6589445/?fg_domain=play.famobi.com&fg_aid=A1000-1&fg_uid=82038e98-d4e1-46dd-8de9-1460d1395eab&fg_pid=4638e320-4444-4514-81c4-d80a8c662371&fg_beat=103&original_ref=https%3A%2F%2Fwww.google.com%2F "},
+  {name:"Basketball Stars",emoji:"🏀",tag:"Sports",url:"https://basketball-stars.io/ "},
+  {name:"Retro Bowl",emoji:"🏈",tag:"Sports",url:"https://retrobowl97.github.io/ "},
+  {name:"Soccer Random",emoji:"⚽",tag:"Sports",url:"https://soccer-random.github.io/ "},
+  {name:"Football Legends",emoji:"🏟️",tag:"Sports",url:"https://football-legends.github.io/ "},
+  {name:"Tennis Masters",emoji:"🎾",tag:"Sports",url:"https://tennis-masters.com/ "},
   
   // FPS/Battle (8)
-  {name:"1v1.LOL",emoji:"🔫",tag:"Battle",url:"https://1v1-lol-unblocked.github.io/"},
-  {name:"Shell Shockers",emoji:"🥚",tag:"FPS",url:"https://shellshock.io/"},
-  {name:"Krunker.io",emoji:"🔫",tag:"FPS",url:"https://krunker-io.github.io/"},
-  {name:"Zombs Royale",emoji:"🧟",tag:"Battle",url:"https://zombsroyale.io/"},
-  {name:"Build Royale",emoji:"🏗️",tag:"Battle",url:"https://buildroyale.io/"},
-  {name:"Deadshot.io",emoji:"🎯",tag:"FPS",url:"https://deadshot.io/"},
-  {name:"Venge.io",emoji:"⚔️",tag:"FPS",url:"https://venge.io/"},
-  {name:"Evowars.io",emoji:"🗡️",tag:"Battle",url:"https://evowars.io/"},
+  {name:"1v1.LOL",emoji:"🔫",tag:"Battle",url:"https://1v1-lol-unblocked.github.io/ "},
+  {name:"Shell Shockers",emoji:"🥚",tag:"FPS",url:"https://shellshock.io/ "},
+  {name:"Krunker.io",emoji:"🔫",tag:"FPS",url:"https://krunker-io.github.io/ "},
+  {name:"Zombs Royale",emoji:"🧟",tag:"Battle",url:"https://zombsroyale.io/ "},
+  {name:"Build Royale",emoji:"🏗️",tag:"Battle",url:"https://buildroyale.io/ "},
+  {name:"Deadshot.io",emoji:"🎯",tag:"FPS",url:"https://deadshot.io/ "},
+  {name:"Venge.io",emoji:"⚔️",tag:"FPS",url:"https://venge.io/ "},
+  {name:"Evowars.io",emoji:"🗡️",tag:"Battle",url:"https://evowars.io/ "},
   
   // Arcade/IO (10)
-  {name:"Subway Surfers",emoji:"🏃",tag:"Arcade",url:"https://subway-surfer.github.io/"},
-  {name:"Temple Run 2",emoji:"🏛️",tag:"Arcade",url:"https://temple-run-2.github.io/"},
-  {name:"Crossy Road",emoji:"🐔",tag:"Arcade",url:"https://crossyroad66.github.io/"},
-  {name:"Slither.io",emoji:"🐍",tag:"Arcade",url:"https://slither.io/"},
-  {name:"Agar.io",emoji:"⚪",tag:"Arcade",url:"https://agar.io/"},
-  {name:"Paper.io 2",emoji:"📄",tag:"Arcade",url:"https://paper-io.com/"},
-  {name:"Diep.io",emoji:"🔷",tag:"Arcade",url:"https://diep.io/"},
-  {name:"MooMoo.io",emoji:"🐮",tag:"Survival",url:"https://moomoo.io/"},
-  {name:"Hole.io",emoji:"🕳️",tag:"Arcade",url:"https://hole-io.com/"},
-  {name:"Helix Jump",emoji:"🌀",tag:"Arcade",url:"https://helix-jump.game/"},
+  {name:"Subway Surfers",emoji:"🏃",tag:"Arcade",url:"https://subway-surfer.github.io/ "},
+  {name:"Temple Run 2",emoji:"🏛️",tag:"Arcade",url:"https://temple-run-2.github.io/ "},
+  {name:"Crossy Road",emoji:"🐔",tag:"Arcade",url:"https://crossyroad66.github.io/ "},
+  {name:"Slither.io",emoji:"🐍",tag:"Arcade",url:"https://slither.io/ "},
+  {name:"Agar.io",emoji:"⚪",tag:"Arcade",url:"https://agar.io/ "},
+  {name:"Paper.io 2",emoji:"📄",tag:"Arcade",url:"https://paper-io.com/ "},
+  {name:"Diep.io",emoji:"🔷",tag:"Arcade",url:"https://diep.io/ "},
+  {name:"MooMoo.io",emoji:"🐮",tag:"Survival",url:"https://moomoo.io/ "},
+  {name:"Hole.io",emoji:"🕳️",tag:"Arcade",url:"https://hole-io.com/ "},
+  {name:"Helix Jump",emoji:"🌀",tag:"Arcade",url:"https://helix-jump.game/ "},
   
   // Puzzle (8)
-  {name:"2048",emoji:"🔢",tag:"Puzzle",url:"https://play2048.co/"},
-  {name:"Cookie Clicker",emoji:"🍪",tag:"Idle",url:"https://cookieclicker-game.github.io/"},
-  {name:"Minesweeper",emoji:"💣",tag:"Puzzle",url:"https://minesweeper.online/"},
-  {name:"Little Alchemy 2",emoji:"⚗️",tag:"Puzzle",url:"https://littlealchemy2.com/"},
-  {name:"Sudoku",emoji:"🧩",tag:"Puzzle",url:"https://sudoku.com/"},
-  {name:"Cut the Rope",emoji:"🍬",tag:"Puzzle",url:"https://cut-the-rope.github.io/"},
-  {name:"Tetris",emoji:"🧱",tag:"Puzzle",url:"https://tetris.com/play-tetris"},
-  {name:"Wordle",emoji:"📝",tag:"Puzzle",url:"https://wordlegame.org/"},
+  {name:"2048",emoji:"🔢",tag:"Puzzle",url:"https://play2048.co/ "},
+  {name:"Cookie Clicker",emoji:"🍪",tag:"Idle",url:"https://cookieclicker-game.github.io/ "},
+  {name:"Minesweeper",emoji:"💣",tag:"Puzzle",url:"https://minesweeper.online/ "},
+  {name:"Little Alchemy 2",emoji:"⚗️",tag:"Puzzle",url:"https://littlealchemy2.com/ "},
+  {name:"Sudoku",emoji:"🧩",tag:"Puzzle",url:"https://sudoku.com/ "},
+  {name:"Cut the Rope",emoji:"🍬",tag:"Puzzle",url:"https://cut-the-rope.github.io/ "},
+  {name:"Tetris",emoji:"🧱",tag:"Puzzle",url:"https://tetris.com/play-tetris "},
+  {name:"Wordle",emoji:"📝",tag:"Puzzle",url:"https://wordlegame.org/ "},
   
   // Stealth (4)
-  {name:"Fleeing Complex",emoji:"🏃",tag:"Stealth",url:"https://henry-stickmin.github.io/fleeingthecomplex/"},
-  {name:"Escaping Prison",emoji:"🔨",tag:"Stealth",url:"https://henry-stickmin.github.io/escapingtheprison/"},
-  {name:"Stealing Diamond",emoji:"💎",tag:"Stealth",url:"https://henry-stickmin.github.io/stealingthediamond/"},
-  {name:"Infiltrating Airship",emoji:"🎈",tag:"Stealth",url:"https://henry-stickmin.github.io/infiltratingtheairship/"},
+  {name:"Fleeing Complex",emoji:"🏃",tag:"Stealth",url:"https://henry-stickmin.github.io/fleeingthecomplex/ "},
+  {name:"Escaping Prison",emoji:"🔨",tag:"Stealth",url:"https://henry-stickmin.github.io/escapingtheprison/ "},
+  {name:"Stealing Diamond",emoji:"💎",tag:"Stealth",url:"https://henry-stickmin.github.io/stealingthediamond/ "},
+  {name:"Infiltrating Airship",emoji:"🎈",tag:"Stealth",url:"https://henry-stickmin.github.io/infiltratingtheairship/ "},
   
   // Platformer (6)
-  {name:"Geometry Dash",emoji:"🔷",tag:"Platformer",url:"https://geometry-dash-unbanned.github.io/"},
-  {name:"OvO",emoji:"🥚",tag:"Platformer",url:"https://dedragames.com/games/ovo/1.4/"},
-  {name:"Vex 5",emoji:"🔺",tag:"Platformer",url:"https://vex5.com/"},
-  {name:"Vex 6",emoji:"🔺",tag:"Platformer",url:"https://vex6.com/"},
-  {name:"Big Tower Tiny Square",emoji:"🗼",tag:"Platformer",url:"https://big-tower-tiny-square.com/"},
-  {name:"Fireboy Watergirl",emoji:"🔥",tag:"Platformer",url:"https://fireboy-watergirl.com/"},
+  {name:"Geometry Dash",emoji:"🔷",tag:"Platformer",url:"https://geometry-dash-unbanned.github.io/ "},
+  {name:"OvO",emoji:"🥚",tag:"Platformer",url:"https://dedragames.com/games/ovo/1.4/ "},
+  {name:"Vex 5",emoji:"🔺",tag:"Platformer",url:"https://vex5.com/ "},
+  {name:"Vex 6",emoji:"🔺",tag:"Platformer",url:"https://vex6.com/ "},
+  {name:"Big Tower Tiny Square",emoji:"🗼",tag:"Platformer",url:"https://big-tower-tiny-square.com/ "},
+  {name:"Fireboy Watergirl",emoji:"🔥",tag:"Platformer",url:"https://fireboy-watergirl.com/ "},
   
   // Fighting (4)
-  {name:"Stick Duel",emoji:"⚔️",tag:"Fighting",url:"https://stick-duel-battle.github.io/"},
-  {name:"Thumb Fighter",emoji:"👊",tag:"Fighting",url:"https://thumbfighter.github.io/"},
-  {name:"Rooftop Snipers",emoji:"🎯",tag:"Fighting",url:"https://rooftop-snipers.github.io/"},
-  {name:"Getaway Shootout",emoji:"🏃",tag:"Fighting",url:"https://getaway-shootout.github.io/"},
+  {name:"Stick Duel",emoji:"⚔️",tag:"Fighting",url:"https://stick-duel-battle.github.io/ "},
+  {name:"Thumb Fighter",emoji:"👊",tag:"Fighting",url:"https://thumbfighter.github.io/ "},
+  {name:"Rooftop Snipers",emoji:"🎯",tag:"Fighting",url:"https://rooftop-snipers.github.io/ "},
+  {name:"Getaway Shootout",emoji:"🏃",tag:"Fighting",url:"https://getaway-shootout.github.io/ "},
   
   // Sim (4)
-  {name:"Papa's Pizzeria",emoji:"🍕",tag:"Sim",url:"https://papas-pizzeria.github.io/"},
-  {name:"Papa's Pancakeria",emoji:"🥞",tag:"Sim",url:"https://papaspancakeria.github.io/"},
-  {name:"Papa's Freezeria",emoji:"🍦",tag:"Sim",url:"https://papasfreezeria.io/"},
-  {name:"BitLife",emoji:"📱",tag:"Sim",url:"https://bitlifeonline.com/"},
+  {name:"Papa's Pizzeria",emoji:"🍕",tag:"Sim",url:"https://papas-pizzeria.github.io/ "},
+  {name:"Papa's Pancakeria",emoji:"🥞",tag:"Sim",url:"https://papaspancakeria.github.io/ "},
+  {name:"Papa's Freezeria",emoji:"🍦",tag:"Sim",url:"https://papasfreezeria.io/ "},
+  {name:"BitLife",emoji:"📱",tag:"Sim",url:"https://bitlifeonline.com/ "},
   
   // Classic (4)
-  {name:"Pac-Man",emoji:"👻",tag:"Classic",url:"https://google-pacman.github.io/"},
-  {name:"Chrome Dino",emoji:"🦖",tag:"Classic",url:"https://chrome-dino-game.github.io/"},
-  {name:"Flappy Bird",emoji:"🐦",tag:"Classic",url:"https://flappy-bird.com/"},
-  {name:"T-Rex Game",emoji:"🦕",tag:"Classic",url:"https://trex-game.com/"},
+  {name:"Pac-Man",emoji:"👻",tag:"Classic",url:"https://google-pacman.github.io/ "},
+  {name:"Chrome Dino",emoji:"🦖",tag:"Classic",url:"https://chrome-dino-game.github.io/ "},
+  {name:"Flappy Bird",emoji:"🐦",tag:"Classic",url:"https://flappy-bird.com/ "},
+  {name:"T-Rex Game",emoji:"🦕",tag:"Classic",url:"https://trex-game.com/ "},
   
   // Strategy/Card (4)
-  {name:"Chess",emoji:"♟️",tag:"Strategy",url:"https://chess.com/"},
-  {name:"Checkers",emoji:"🔴",tag:"Strategy",url:"https://checkers.com/"},
-  {name:"Solitaire",emoji:"🃏",tag:"Card",url:"https://solitaire.com/"},
-  {name:"Bloons TD 5",emoji:"🎈",tag:"Tower Defense",url:"https://bloons-td-5.com/"},
+  {name:"Chess",emoji:"♟️",tag:"Strategy",url:"https://chess.com/ "},
+  {name:"Checkers",emoji:"🔴",tag:"Strategy",url:"https://checkers.com/ "},
+  {name:"Solitaire",emoji:"🃏",tag:"Card",url:"https://solitaire.com/ "},
+  {name:"Bloons TD 5",emoji:"🎈",tag:"Tower Defense",url:"https://bloons-td-5.com/ "},
   
   // Other (6)
-  {name:"Five Nights at Freddy's",emoji:"🐻",tag:"Horror",url:"https://fivenightsatfreddys.github.io/"},
-  {name:"Granny",emoji:"👵",tag:"Horror",url:"https://granny.games/"},
-  {name:"Friday Night Funkin'",emoji:"🎤",tag:"Rhythm",url:"https://fridaynightfunkin.io/"},
-  {name:"Fall Guys",emoji:"🎮",tag:"Party",url:"https://just-fall.github.io/"},
-  {name:"Gartic Phone",emoji:"📞",tag:"Party",url:"https://garticphone.com/"},
-  {name:"Skribbl.io",emoji:"✏️",tag:"Party",url:"https://skribbl.io/"}
+  {name:"Five Nights at Freddy's",emoji:"🐻",tag:"Horror",url:"https://fivenightsatfreddys.github.io/ "},
+  {name:"Granny",emoji:"👵",tag:"Horror",url:"https://granny.games/ "},
+  {name:"Friday Night Funkin'",emoji:"🎤",tag:"Rhythm",url:"https://fridaynightfunkin.io/ "},
+  {name:"Fall Guys",emoji:"🎮",tag:"Party",url:"https://just-fall.github.io/ "},
+  {name:"Gartic Phone",emoji:"📞",tag:"Party",url:"https://garticphone.com/ "},
+  {name:"Skribbl.io",emoji:"✏️",tag:"Party",url:"https://skribbl.io/ "}
 ];
 
 // 25 ACHIEVEMENTS DATABASE
@@ -1184,7 +1612,7 @@ function fakeCrash(){
 }
 
 function rickRoll(){
-    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ','_blank');
+    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ ','_blank');
 }
 
 function playMusic(){
