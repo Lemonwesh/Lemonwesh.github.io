@@ -189,10 +189,14 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 .user-item{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(245,158,11,0.1)}
 .theme-btn{background:rgba(59,130,246,0.1);border:1px solid var(--terminal-blue);color:var(--terminal-blue);padding:5px 10px;margin:2px;font-size:0.75rem;cursor:pointer;border-radius:3px}
 .theme-btn:hover,.theme-btn.active{background:var(--terminal-blue);color:white}
-.bsod{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0078d7;z-index:99999;color:white;font-family:'Segoe UI',sans-serif;padding:100px 200px}
+
+/* BSOD STYLES - FIXED */
+.bsod{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0078d7;z-index:99999;color:white;font-family:'Segoe UI',sans-serif;padding:100px 200px;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 .bsod.active{display:block}
 .bsod h1{font-size:8rem;margin-bottom:20px}
 .bsod p{font-size:1.5rem;line-height:1.6;margin-bottom:30px}
+@keyframes pulseBtn{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(0.98)}}
+
 .self-destruct{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;border:3px solid #ff0000;padding:40px;z-index:99999;text-align:center;border-radius:8px;box-shadow:0 0 50px rgba(255,0,0,0.8)}
 .self-destruct.active{display:block}
 .destruct-timer{font-size:4rem;color:#ff0000;font-weight:bold;margin:20px 0;font-family:'JetBrains Mono',monospace}
@@ -205,10 +209,14 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
     /* BSOD - Blue Screen */
     .bsod {
         padding: 4vh 5vw !important;
-        display: flex;
+        display: none; /* Force hidden by default */
         flex-direction: column;
         justify-content: center;
         overflow-y: auto;
+        text-align: center;
+    }
+    .bsod.active {
+        display: flex; /* Only show when active */
     }
     .bsod h1 {
         font-size: clamp(2.5rem, 12vw, 5rem) !important;
@@ -219,6 +227,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
         line-height: 1.5;
         max-width: 90vw;
         margin-bottom: 2vh;
+        padding: 0 10px;
     }
     .bsod p:last-child {
         font-size: 0.8rem !important;
@@ -279,7 +288,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
         max-width: 80vw;
         padding: 2.5vh 3vw;
         top: 12vh;
-        right: -100vw; /* Hidden off-screen */
+        right: -100vw;
         gap: 3vw;
     }
     .achievement-popup.show {
@@ -452,9 +461,8 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 
     /* ===== GAME VIEWER FIXES ===== */
     .game-viewer {
-        /* Ensure it takes full viewport */
         height: 100vh;
-        height: 100dvh; /* Dynamic viewport height for mobile Chrome */
+        height: 100dvh;
     }
     
     .viewer-header {
@@ -464,7 +472,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
     
     .viewer-title {
         font-size: 0.85rem;
-        max-width: 60vw; /* Prevent overflow */
+        max-width: 60vw;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -481,7 +489,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 
     /* CRITICAL: Make iframe take remaining space properly */
     #gameFrame {
-        height: calc(100vh - 50px); /* Subtract header height */
+        height: calc(100vh - 50px);
         height: calc(100dvh - 50px);
         width: 100%;
         border: none;
@@ -490,7 +498,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
     /* Bottom bars - Compact */
     .music-player {
         padding: 8px 15px;
-        bottom: 35px; /* Above status bar */
+        bottom: 35px;
     }
     
     .music-input {
@@ -534,7 +542,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 
     /* Secret Menu Adjustments */
     .secret-grid {
-        grid-template-columns: 1fr; /* Stack cards on small screens */
+        grid-template-columns: 1fr;
         gap: 12px;
     }
     
@@ -590,7 +598,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 /* Landscape mode fixes (when Chromebook is in tent/tablet mode) */
 @media (max-height: 600px) and (orientation: landscape) {
     header {
-        margin-top: 0; /* Remove margin when banners are hidden */
+        margin-top: 0;
         padding: 8px 15px;
     }
     
@@ -612,30 +620,32 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
     }
     
     .music-player {
-        display: none; /* Hide music player in landscape to save space */
+        display: none;
     }
     
     .status-bar {
-        display: none; /* Hide status bar in landscape */
+        display: none;
     }
 }
 
 /* High DPI / Zoom adjustments for Chrome OS */
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
     body {
-        font-size: 14px; /* Base font size adjustment for high DPI */
+        font-size: 14px;
     }
 }
 </style>
 </head>
 <body>
 
-<!-- BSOD Screen -->
-<div class="bsod" id="bsod">
+<!-- BSOD Screen - FIXED WITH CLICK TO CLOSE -->
+<div class="bsod" id="bsod" onclick="closeBSOD()">
     <h1>:(</h1>
     <p>Your PC ran into a problem and needs to restart.<br>We're just collecting some error info, and then we'll restart for you.</p>
-    <p style="font-size:1rem">Stop Code: CRITICAL_PROCESS_DIED<br>What failed: LEMONS_PROXY_SYS</p>
-    <p style="font-size:0.9rem;margin-top:50px">Press any key to pretend this didn't happen...</p>
+    <p style="font-size:1rem;margin-top:20px">Stop Code: CRITICAL_PROCESS_DIED<br>What failed: LEMONS_PROXY_SYS</p>
+    <div style="margin-top:50px;padding:15px 30px;border:2px solid white;display:inline-block;border-radius:4px;font-size:1rem;animation:pulseBtn 2s infinite;cursor:pointer;user-select:none;-webkit-user-select:none">
+        TAP SCREEN TO DISMISS
+    </div>
 </div>
 
 <!-- Self Destruct -->
@@ -985,6 +995,24 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 </div>
 
 <script>
+// EMERGENCY BSOD CONTROLS - MUST BE FIRST
+function closeBSOD(){
+    const bsod = document.getElementById('bsod');
+    if(bsod){
+        bsod.style.display = 'none';
+        bsod.classList.remove('active');
+    }
+}
+
+// Ensure BSOD is hidden on load - runs immediately
+(function(){
+    const bsod = document.getElementById('bsod');
+    if(bsod){
+        bsod.style.display = 'none';
+        bsod.classList.remove('active');
+    }
+})();
+
 // 74 GAMES - Updated List
 const games=[
   // Minecraft (10)
@@ -1143,6 +1171,9 @@ let overclockActive = false;
 
 // Initialize
 document.addEventListener('DOMContentLoaded',()=>{
+    // Force hide BSOD on load (double protection)
+    closeBSOD();
+    
     renderGames(games);
     renderAchievements();
     updateStats();
@@ -1726,10 +1757,19 @@ function hackMainframe(){
 }
 
 function triggerBSOD(){
-    document.getElementById('bsod').classList.add('active');
-    document.addEventListener('keydown',()=>{
-        document.getElementById('bsod').classList.remove('active');
-    },{once:true});
+    const bsod = document.getElementById('bsod');
+    bsod.style.display = 'flex';
+    bsod.classList.add('active');
+    
+    // Close on any key or click
+    const closeHandler = () => {
+        closeBSOD();
+        document.removeEventListener('keydown', closeHandler);
+    };
+    document.addEventListener('keydown', closeHandler, {once:true});
+    
+    // Also close on click
+    bsod.onclick = closeBSOD;
 }
 
 function selfDestruct(){
@@ -1830,4 +1870,4 @@ document.addEventListener('keydown',(e)=>{
 </script>
 
 </body>
-</html>
+</html>>
