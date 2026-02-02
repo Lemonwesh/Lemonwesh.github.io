@@ -560,102 +560,148 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 </div>
 
 <script>
-// 69 GAMES - CLEAN & STABLE
+// 74 GAMES
 const games=[
-  // Minecraft / Sandbox (8)
-  {name:"Eaglercraft",emoji:"⛏️",tag:"Minecraft",url:"https://eaglercraft.com"},
-  {name:"Bloxd.io",emoji:"🧱",tag:"Minecraft",url:"https://bloxd.io"},
-  {name:"Miniblox",emoji:"🎮",tag:"Minecraft",url:"https://miniblox.io"},
-  {name:"Minecraft Classic",emoji:"⛏️",tag:"Sandbox",url:"https://classic.minecraft.net"},
-  {name:"MineBlocks",emoji:"💎",tag:"Minecraft",url:"https://mineblocks.com"},
-  {name:"CraftMine",emoji:"🌲",tag:"Minecraft",url:"https://craftmine.co"},
+  // Minecraft (10)
+  {name:"Eaglercraft",emoji:"⛏️",tag:"Minecraft",url:"https://eaglercraft.com/"},
+  {name:"Bloxd.io",emoji:"🧱",tag:"Minecraft",url:"https://bloxd.io/"},
+  {name:"Miniblox",emoji:"🎮",tag:"Minecraft",url:"https://miniblox.io/"},
+  {name:"Minecraft Classic",emoji:"⛏️",tag:"Sandbox",url:"https://classic.minecraft.net/"},
+  {name:"MineBlocks",emoji:"💎",tag:"Minecraft",url:"https://mineblocks.com/"},
+  {name:"CraftMine",emoji:"🌲",tag:"Minecraft",url:"https://craftmine.co/"},
+  {name:"Cluster Rush",emoji:"🏃",tag:"Minecraft",url:"https://clusterrush.net/"},
   {name:"Paper Minecraft",emoji:"📄",tag:"Minecraft",url:"https://scratch.mit.edu/projects/10128407/"},
-  {name:"Minecraft Tower Defense",emoji:"🗼",tag:"Tower Defense",url:"https://minecraft-tower-defense.com"},
-
-  // Racing (9)
-  {name:"Slow Roads",emoji:"🛣️",tag:"Racing",url:"https://slowroads.io"},
-  {name:"Drift Hunters",emoji:"🏎️",tag:"Racing",url:"https://drifthunters.com"},
-  {name:"Smash Karts",emoji:"🏎️",tag:"Racing",url:"https://smashkarts.io"},
-  {name:"Slope",emoji:"📐",tag:"Racing",url:"https://slopegame.io"},
-  {name:"Madalin Stunt Cars 2",emoji:"🏎️",tag:"Racing",url:"https://madalinstuntcars2.com"},
-  {name:"PolyTrack",emoji:"🏁",tag:"Racing",url:"https://www.crazygames.com/game/polytrack"},
-  {name:"Jelly Truck",emoji:"🚚",tag:"Racing",url:"https://www.crazygames.com/game/jelly-truck"},
-  {name:"Moto X3M",emoji:"🏍️",tag:"Racing",url:"https://www.crazygames.com/game/moto-x3m"},
-  {name:"Hill Climb Racing",emoji:"🚙",tag:"Racing",url:"https://www.crazygames.com/game/hill-climb-racing"},
-
-  // Sports (5)
-  {name:"Basketball Stars",emoji:"🏀",tag:"Sports",url:"https://basketball-stars.io"},
-  {name:"Retro Bowl",emoji:"🏈",tag:"Sports",url:"https://retrobowl.me"},
-  {name:"8 Ball Pool",emoji:"🎱",tag:"Sports",url:"https://www.miniclip.com/games/8-ball-pool"},
-  {name:"Football Legends",emoji:"🏟️",tag:"Sports",url:"https://www.crazygames.com/game/football-legends"},
-  {name:"Tennis Masters",emoji:"🎾",tag:"Sports",url:"https://www.crazygames.com/game/tennis-masters"},
-
-  // FPS / Battle (8)
-  {name:"Krunker.io",emoji:"🔫",tag:"FPS",url:"https://krunker.io"},
-  {name:"1v1.LOL",emoji:"🔫",tag:"Battle",url:"https://1v1.lol"},
-  {name:"Shell Shockers",emoji:"🥚",tag:"FPS",url:"https://shellshockers.io"},
-  {name:"Zombs Royale",emoji:"🧟",tag:"Battle",url:"https://zombsroyale.io"},
-  {name:"BuildNow GG",emoji:"🏗️",tag:"Battle",url:"https://buildnow.gg"},
-  {name:"Deadshot.io",emoji:"🎯",tag:"FPS",url:"https://deadshot.io"},
-  {name:"Venge.io",emoji:"⚔️",tag:"FPS",url:"https://venge.io"},
-  {name:"EvoWars.io",emoji:"🗡️",tag:"Battle",url:"https://evowars.io"},
-
-  // Arcade / IO (7)
-  {name:"Slither.io",emoji:"🐍",tag:"Arcade",url:"https://slither.io"},
-  {name:"Agar.io",emoji:"⚪",tag:"Arcade",url:"https://agar.io"},
-  {name:"Paper.io 2",emoji:"📄",tag:"Arcade",url:"https://paper-io.com"},
-  {name:"Diep.io",emoji:"🔷",tag:"Arcade",url:"https://diep.io"},
-  {name:"MooMoo.io",emoji:"🐮",tag:"Survival",url:"https://moomoo.io"},
-  {name:"Hole.io",emoji:"🕳️",tag:"Arcade",url:"https://hole-io.com"},
-  {name:"Helix Jump",emoji:"🌀",tag:"Arcade",url:"https://www.crazygames.com/game/helix-jump"},
-
-  // Puzzle / Idle (7)
-  {name:"2048",emoji:"🔢",tag:"Puzzle",url:"https://play2048.co"},
-  {name:"Cookie Clicker",emoji:"🍪",tag:"Idle",url:"https://orteil.dashnet.org/cookieclicker"},
-  {name:"Minesweeper",emoji:"💣",tag:"Puzzle",url:"https://minesweeper.online"},
-  {name:"Little Alchemy 2",emoji:"⚗️",tag:"Puzzle",url:"https://littlealchemy2.com"},
-  {name:"Sudoku",emoji:"🧩",tag:"Puzzle",url:"https://sudoku.com"},
+  {name:"Minecraft TD",emoji:"🗼",tag:"Minecraft",url:"https://minecraft-tower-defense.com/"},
+  {name:"Pixel Warfare",emoji:"🔫",tag:"FPS",url:"https://pixel-warfare.com/"},
+  
+  // Racing (10)
+  {name:"Poly Track",emoji:"🏎️",tag:"Racing",url:"https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},
+  {name:"Jelly Truck",emoji:"🚚",tag:"Racing",url:"https://jellytruck2.github.io/"},
+  {name:"Slope",emoji:"📐",tag:"Racing",url:"https://slope-y8.com/"},
+  {name:"Slope 2",emoji:"📐",tag:"Racing",url:"https://slopegame2.github.io/"},
+  {name:"Drift Hunters",emoji:"🏎️",tag:"Racing",url:"https://drifthuntersonline.github.io/"},
+  {name:"Slow Roads",emoji:"🛣️",tag:"Racing",url:"https://slowroads.io/"},
+  {name:"Smash Karts",emoji:"🏎️",tag:"Racing",url:"https://smashkarts.io/"},
+  {name:"Moto X3M",emoji:"🏍️",tag:"Racing",url:"https://moto-x3m.com/"},
+  {name:"Hill Climb Racing",emoji:"🚙",tag:"Racing",url:"https://hill-climb-racing.github.io/"},
+  {name:"Madalin Stunt Cars 2",emoji:"🏎️",tag:"Racing",url:"https://madalinstuntcars2.com/"},
+  
+  // Sports (6)
+  {name:"8 Ball Pool",emoji:"🎱",tag:"Sports",url:"https://8ball-pool.github.io/"},
+  {name:"Basketball Stars",emoji:"🏀",tag:"Sports",url:"https://basketball-stars.io/"},
+  {name:"Retro Bowl",emoji:"🏈",tag:"Sports",url:"https://retrobowl97.github.io/"},
+  {name:"Soccer Random",emoji:"⚽",tag:"Sports",url:"https://soccer-random.github.io/"},
+  {name:"Football Legends",emoji:"🏟️",tag:"Sports",url:"https://football-legends.github.io/"},
+  {name:"Tennis Masters",emoji:"🎾",tag:"Sports",url:"https://tennis-masters.com/"},
+  
+  // FPS/Battle (8)
+  {name:"1v1.LOL",emoji:"🔫",tag:"Battle",url:"https://1v1-lol-unblocked.github.io/"},
+  {name:"Shell Shockers",emoji:"🥚",tag:"FPS",url:"https://shellshockers-unblocked.github.io/"},
+  {name:"Krunker.io",emoji:"🔫",tag:"FPS",url:"https://krunker-io.github.io/"},
+  {name:"Zombs Royale",emoji:"🧟",tag:"Battle",url:"https://zombsroyale.io/"},
+  {name:"Build Royale",emoji:"🏗️",tag:"Battle",url:"https://buildroyale.io/"},
+  {name:"Deadshot.io",emoji:"🎯",tag:"FPS",url:"https://deadshot.io/"},
+  {name:"Venge.io",emoji:"⚔️",tag:"FPS",url:"https://venge.io/"},
+  {name:"Evowars.io",emoji:"🗡️",tag:"Battle",url:"https://evowars.io/"},
+  
+  // Arcade/IO (10)
+  {name:"Subway Surfers",emoji:"🏃",tag:"Arcade",url:"https://subway-surfer.github.io/"},
+  {name:"Temple Run 2",emoji:"🏛️",tag:"Arcade",url:"https://temple-run-2.github.io/"},
+  {name:"Crossy Road",emoji:"🐔",tag:"Arcade",url:"https://crossyroad66.github.io/"},
+  {name:"Slither.io",emoji:"🐍",tag:"Arcade",url:"https://slither.io/"},
+  {name:"Agar.io",emoji:"⚪",tag:"Arcade",url:"https://agar.io/"},
+  {name:"Paper.io 2",emoji:"📄",tag:"Arcade",url:"https://paper-io.com/"},
+  {name:"Diep.io",emoji:"🔷",tag:"Arcade",url:"https://diep.io/"},
+  {name:"MooMoo.io",emoji:"🐮",tag:"Survival",url:"https://moomoo.io/"},
+  {name:"Hole.io",emoji:"🕳️",tag:"Arcade",url:"https://hole-io.com/"},
+  {name:"Helix Jump",emoji:"🌀",tag:"Arcade",url:"https://helix-jump.game/"},
+  
+  // Puzzle (8)
+  {name:"2048",emoji:"🔢",tag:"Puzzle",url:"https://play2048.co/"},
+  {name:"Cookie Clicker",emoji:"🍪",tag:"Idle",url:"https://cookieclicker-game.github.io/"},
+  {name:"Minesweeper",emoji:"💣",tag:"Puzzle",url:"https://minesweeper.online/"},
+  {name:"Little Alchemy 2",emoji:"⚗️",tag:"Puzzle",url:"https://littlealchemy2.com/"},
+  {name:"Sudoku",emoji:"🧩",tag:"Puzzle",url:"https://sudoku.com/"},
+  {name:"Cut the Rope",emoji:"🍬",tag:"Puzzle",url:"https://cut-the-rope.github.io/"},
   {name:"Tetris",emoji:"🧱",tag:"Puzzle",url:"https://tetris.com/play-tetris"},
-  {name:"Wordle",emoji:"📝",tag:"Puzzle",url:"https://www.nytimes.com/games/wordle"},
-
-  // Bit Planes (1)
-  {name:"Bit Planes",emoji:"✈️",tag:"Arcade",url:"https://bitplanes.github.io"},
-
-  // Stealth (1)
-  {name:"Henry Stickmin Collection",emoji:"🏃",tag:"Stealth",url:"https://www.innersloth.com/games/henry-stickmin"},
-
+  {name:"Wordle",emoji:"📝",tag:"Puzzle",url:"https://wordlegame.org/"},
+  
+  // Stealth (4)
+  {name:"Fleeing Complex",emoji:"🏃",tag:"Stealth",url:"https://henry-stickmin.github.io/fleeingthecomplex/"},
+  {name:"Escaping Prison",emoji:"🔨",tag:"Stealth",url:"https://henry-stickmin.github.io/escapingtheprison/"},
+  {name:"Stealing Diamond",emoji:"💎",tag:"Stealth",url:"https://henry-stickmin.github.io/stealingthediamond/"},
+  {name:"Infiltrating Airship",emoji:"🎈",tag:"Stealth",url:"https://henry-stickmin.github.io/infiltratingtheairship/"},
+  
   // Platformer (6)
-  {name:"Geometry Dash",emoji:"🔷",tag:"Platformer",url:"https://www.crazygames.com/game/geometry-dash-online"},
-  {name:"OvO",emoji:"🥚",tag:"Platformer",url:"https://www.crazygames.com/game/ovo"},
-  {name:"Vex 5",emoji:"🔺",tag:"Platformer",url:"https://www.crazygames.com/game/vex-5"},
-  {name:"Vex 6",emoji:"🔺",tag:"Platformer",url:"https://www.crazygames.com/game/vex-6"},
-  {name:"Big Tower Tiny Square",emoji:"🗼",tag:"Platformer",url:"https://www.crazygames.com/game/big-tower-tiny-square"},
-  {name:"Fireboy & Watergirl",emoji:"🔥",tag:"Platformer",url:"https://www.coolmathgames.com/0-fireboy-and-water-girl"},
-
+  {name:"Geometry Dash",emoji:"🔷",tag:"Platformer",url:"https://geometry-dash-unbanned.github.io/"},
+  {name:"OvO",emoji:"🥚",tag:"Platformer",url:"https://dedragames.com/games/ovo/1.4/"},
+  {name:"Vex 5",emoji:"🔺",tag:"Platformer",url:"https://vex5.com/"},
+  {name:"Vex 6",emoji:"🔺",tag:"Platformer",url:"https://vex6.com/"},
+  {name:"Big Tower Tiny Square",emoji:"🗼",tag:"Platformer",url:"https://big-tower-tiny-square.com/"},
+  {name:"Fireboy Watergirl",emoji:"🔥",tag:"Platformer",url:"https://fireboy-watergirl.com/"},
+  
   // Fighting (4)
-  {name:"Stick Duel",emoji:"⚔️",tag:"Fighting",url:"https://www.crazygames.com/game/stick-duel-battle"},
-  {name:"Thumb Fighter",emoji:"👊",tag:"Fighting",url:"https://www.crazygames.com/game/thumb-fighter"},
-  {name:"Rooftop Snipers",emoji:"🎯",tag:"Fighting",url:"https://www.crazygames.com/game/rooftop-snipers"},
-  {name:"Getaway Shootout",emoji:"🏃",tag:"Fighting",url:"https://www.crazygames.com/game/getaway-shootout"},
-
-  // Sim / Classic / Strategy (8)
-  {name:"BitLife",emoji:"📱",tag:"Sim",url:"https://bitlifeonline.com"},
-  {name:"Pac-Man",emoji:"👻",tag:"Classic",url:"https://www.google.com/logos/2010/pacman10-i.html"},
-  {name:"Chrome Dino",emoji:"🦖",tag:"Classic",url:"https://elgoog.im/t-rex"},
-  {name:"Flappy Bird",emoji:"🐦",tag:"Classic",url:"https://flappybird.io"},
-  {name:"Chess",emoji:"♟️",tag:"Strategy",url:"https://www.chess.com/play"},
-  {name:"Checkers",emoji:"🔴",tag:"Strategy",url:"https://www.checkers.org"},
-  {name:"Solitaire",emoji:"🃏",tag:"Card",url:"https://www.solitaire.com"},
-  {name:"Bloons TD 5",emoji:"🎈",tag:"Tower Defense",url:"https://www.crazygames.com/game/bloons-td-5"},
-
-  // Party / Other (5)
-  {name:"Granny",emoji:"👵",tag:"Horror",url:"https://granny.games"},
-  {name:"Friday Night Funkin'",emoji:"🎤",tag:"Rhythm",url:"https://fridaynightfunkin.io"},
-  {name:"Fall Guys",emoji:"🎮",tag:"Party",url:"https://just-fall.github.io"},
-  {name:"Gartic Phone",emoji:"📞",tag:"Party",url:"https://garticphone.com"},
-  {name:"Skribbl.io",emoji:"✏️",tag:"Party",url:"https://skribbl.io"}
-
+  {name:"Stick Duel",emoji:"⚔️",tag:"Fighting",url:"https://stick-duel-battle.github.io/"},
+  {name:"Thumb Fighter",emoji:"👊",tag:"Fighting",url:"https://thumbfighter.github.io/"},
+  {name:"Rooftop Snipers",emoji:"🎯",tag:"Fighting",url:"https://rooftop-snipers.github.io/"},
+  {name:"Getaway Shootout",emoji:"🏃",tag:"Fighting",url:"https://getaway-shootout.github.io/"},
+  
+  // Sim (4)
+  {name:"Papa's Pizzeria",emoji:"🍕",tag:"Sim",url:"https://papas-pizzeria.github.io/"},
+  {name:"Papa's Pancakeria",emoji:"🥞",tag:"Sim",url:"https://papaspancakeria.github.io/"},
+  {name:"Papa's Freezeria",emoji:"🍦",tag:"Sim",url:"https://papasfreezeria.io/"},
+  {name:"BitLife",emoji:"📱",tag:"Sim",url:"https://bitlifeonline.com/"},
+  
+  // Classic (4)
+  {name:"Pac-Man",emoji:"👻",tag:"Classic",url:"https://google-pacman.github.io/"},
+  {name:"Chrome Dino",emoji:"🦖",tag:"Classic",url:"https://chrome-dino-game.github.io/"},
+  {name:"Flappy Bird",emoji:"🐦",tag:"Classic",url:"https://flappy-bird.com/"},
+  {name:"T-Rex Game",emoji:"🦕",tag:"Classic",url:"https://trex-game.com/"},
+  
+  // Strategy/Card (4)
+  {name:"Chess",emoji:"♟️",tag:"Strategy",url:"https://chess.com/"},
+  {name:"Checkers",emoji:"🔴",tag:"Strategy",url:"https://checkers.com/"},
+  {name:"Solitaire",emoji:"🃏",tag:"Card",url:"https://solitaire.com/"},
+  {name:"Bloons TD 5",emoji:"🎈",tag:"Tower Defense",url:"https://bloons-td-5.com/"},
+  
+  // Other (6)
+  {name:"Five Nights at Freddy's",emoji:"🐻",tag:"Horror",url:"https://fivenightsatfreddys.github.io/"},
+  {name:"Granny",emoji:"👵",tag:"Horror",url:"https://granny.games/"},
+  {name:"Friday Night Funkin'",emoji:"🎤",tag:"Rhythm",url:"https://fridaynightfunkin.io/"},
+  {name:"Fall Guys",emoji:"🎮",tag:"Party",url:"https://just-fall.github.io/"},
+  {name:"Gartic Phone",emoji:"📞",tag:"Party",url:"https://garticphone.com/"},
+  {name:"Skribbl.io",emoji:"✏️",tag:"Party",url:"https://skribbl.io/"}
 ];
+
+// 25 ACHIEVEMENTS DATABASE
+const achievementData = [
+    {id:'first_visit',icon:'👋',title:'First Boot',desc:'Initialize system',secret:false},
+    {id:'lemon_hunter',icon:'🍋',title:'Citrus Collector',desc:'Search "lemon" 5 times',secret:false},
+    {id:'game_master',icon:'🎮',title:'Game Master',desc:'Play 10 different games',secret:false},
+    {id:'completionist',icon:'🏆',title:'Completionist',desc:'Play all 74 games',secret:false},
+    {id:'forbidden_name',icon:'⛔',title:'System Breach',desc:'Trigger lockdown protocol (7x "aurelio")',secret:false},
+    {id:'gullible',icon:'🤡',title:'Gullible',desc:'Click the maintenance button',secret:false},
+    {id:'music_lover',icon:'🎵',title:'Audio Stream',desc:'Play music in player',secret:false},
+    {id:'speed_demon',icon:'🏎️',title:'Speed Demon',desc:'Search "speed" or "fast" 3 times',secret:false},
+    {id:'puzzle_solver',icon:'🧩',title:'Puzzle Solver',desc:'Search "puzzle" or "brain" 3 times',secret:false},
+    {id:'warrior',icon:'⚔️',title:'Warrior',desc:'Search "battle" or "fight" 3 times',secret:false},
+    {id:'stealth_ops',icon:'🥷',title:'Stealth Ops',desc:'Search "stealth" or "sneak" 3 times',secret:false},
+    {id:'architect',icon:'⛏️',title:'Architect',desc:'Search "craft" or "build" 5 times',secret:false},
+    {id:'racer',icon:'🏁',title:'Speedster',desc:'Search "race" or "car" 3 times',secret:false},
+    {id:'sharpshooter',icon:'🎯',title:'Sharpshooter',desc:'Search "shoot" or "gun" 3 times',secret:false},
+    {id:'arcade_legend',icon:'👾',title:'Arcade Legend',desc:'Search "arcade" or "retro" 3 times',secret:false},
+    {id:'sports_fan',icon:'🏅',title:'Sports Fan',desc:'Search "sport" or "ball" 3 times',secret:false},
+    {id:'platform_pro',icon:'🦘',title:'Platform Pro',desc:'Search "jump" or "platform" 3 times',secret:false},
+    {id:'survivor',icon:'🧟',title:'Survivor',desc:'Search "survive" or "zombie" 3 times',secret:false},
+    {id:'strategist',icon:'♟️',title:'Strategist',desc:'Search "strategy" or "chess" 3 times',secret:false},
+    {id:'hacker',icon:'💻',title:'System Hacker',desc:'Use the hack command',secret:false},
+    {id:'crash_test',icon:'💥',title:'Crash Test',desc:'Trigger system crash',secret:false},
+    {id:'patient',icon:'⏱️',title:'Patient Gamer',desc:'Wait for game to load without reloading',secret:true},
+    {id:'collector',icon:'💎',title:'Collector',desc:'Play 50 different games',secret:false},
+    {id:'explorer',icon:'🔍',title:'Explorer',desc:'Search 20 different terms',secret:false},
+    {id:'dedication',icon:'🎖️',title:'Dedication',desc:'Spend 30 minutes on site',secret:false}
+];
+
 // State
 let currentGame = null;
 let secretUnlocked = localStorage.getItem('secretUnlocked') === 'true';
