@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LEMONS_PROXY // BLUEPRINT_TERMINAL_v10.0</title>
+<title>LEMONS_PROXY // BLUEPRINT_TERMINAL_v1.0</title>
 <link id="favicon" rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg ' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23001133'/><text x='15' y='75' font-size='60'>🍋</text><text x='55' y='60' font-family='monospace' font-size='35' fill='%233b82f6' font-weight='bold'>&lt;/&gt;</text></svg>">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300 ;400;500;600;800&family=Inter:wght@300;400;500&display=swap');
@@ -24,18 +24,24 @@ body.matrix{--bg-primary:#001100;--bg-secondary:#002200;--blueprint-grid:rgba(0,
 @keyframes blink{50%{opacity:0}}
 .click-to-boot{margin-top:40px;color:var(--terminal-amber);font-size:1rem;cursor:pointer;opacity:0;animation:fadeInOut 2s infinite;animation-delay:3s;text-align:center;border:1px solid var(--terminal-amber);padding:15px;width:fit-content;border-radius:4px;align-self:center}
 @keyframes fadeInOut{0%,100%{opacity:0.3}50%{opacity:1}}
-.dev-warning{position:fixed;top:0;left:0;width:100%;background:rgba(245,158,11,0.1);border-bottom:1px solid var(--terminal-amber);padding:8px 20px;text-align:center;font-size:0.8rem;color:var(--terminal-amber);z-index:9998;font-family:'JetBrains Mono',monospace;backdrop-filter:blur(5px);display:flex;justify-content:center;align-items:center;gap:15px}
-.dev-warning button{background:transparent;border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:2px 10px;font-size:0.7rem;cursor:pointer;border-radius:4px;font-family:'JetBrains Mono',monospace}
-.dev-warning button:hover{background:var(--terminal-amber);color:var(--bg-primary)}
-.game-disclaimer{position:fixed;top:35px;left:0;width:100%;background:rgba(239,68,68,0.15);border-bottom:2px solid var(--error-red);padding:12px 20px;text-align:center;font-size:0.9rem;color:#ff6b6b;z-index:9997;font-family:'JetBrains Mono',monospace;display:flex;justify-content:center;align-items:center;gap:15px;backdrop-filter:blur(5px);font-weight:500;letter-spacing:0.5px}
-.game-disclaimer span::before{content:"⚠️ ";color:#ff0000;font-weight:bold}
-.game-disclaimer button{background:transparent;border:1px solid #ff6b6b;color:#ff6b6b;padding:4px 15px;font-size:0.75rem;cursor:pointer;border-radius:4px;font-family:'JetBrains Mono',monospace;font-weight:600}
-.game-disclaimer button:hover{background:#ff6b6b;color:white}
-.loading-warning{position:fixed;top:76px;left:0;width:100%;background:rgba(245,158,11,0.1);border-bottom:1px solid var(--terminal-amber);padding:10px 20px;text-align:center;font-size:0.85rem;color:var(--terminal-amber);z-index:9996;font-family:'JetBrains Mono',monospace;display:flex;justify-content:center;align-items:center;gap:15px;backdrop-filter:blur(5px);font-weight:500}
+
+/* FIXED WARNING BANNERS - NO OVERLAP */
+.dev-warning{position:fixed;top:0;left:0;width:100%;height:34px;background:rgba(245,158,11,0.95);border-bottom:1px solid var(--terminal-amber);display:flex;justify-content:center;align-items:center;gap:15px;font-size:0.75rem;color:#000;z-index:9999;font-family:'JetBrains Mono',monospace;font-weight:600}
+.dev-warning button{background:#000;border:none;color:var(--terminal-amber);padding:3px 12px;font-size:0.7rem;cursor:pointer;border-radius:3px;font-family:'JetBrains Mono',monospace;font-weight:600}
+.dev-warning button:hover{background:#333}
+
+.game-disclaimer{position:fixed;top:34px;left:0;width:100%;height:42px;background:rgba(239,68,68,0.95);border-bottom:2px solid var(--error-red);display:flex;justify-content:center;align-items:center;gap:15px;font-size:0.8rem;color:#fff;z-index:9998;font-family:'JetBrains Mono',monospace;font-weight:600}
+.game-disclaimer span::before{content:"⚠️ ";color:#fff;font-weight:bold}
+.game-disclaimer button{background:#fff;border:none;color:var(--error-red);padding:4px 15px;font-size:0.75rem;cursor:pointer;border-radius:3px;font-family:'JetBrains Mono',monospace;font-weight:600}
+.game-disclaimer button:hover{background:#f0f0f0}
+
+.loading-warning{position:fixed;top:76px;left:0;width:100%;height:36px;background:rgba(245,158,11,0.9);border-bottom:1px solid var(--terminal-amber);display:flex;justify-content:center;align-items:center;gap:15px;font-size:0.75rem;color:#000;z-index:9997;font-family:'JetBrains Mono',monospace;font-weight:600}
 .loading-warning span::before{content:"⏱️ ";font-weight:bold}
-.loading-warning button{background:transparent;border:1px solid var(--terminal-amber);color:var(--terminal-amber);padding:3px 12px;font-size:0.75rem;cursor:pointer;border-radius:4px;font-family:'JetBrains Mono',monospace;font-weight:600}
-.loading-warning button:hover{background:var(--terminal-amber);color:var(--bg-primary)}
-header{background:var(--bg-secondary);border-bottom:1px solid var(--terminal-blue);padding:15px 25px;display:flex;align-items:center;justify-content:space-between;position:relative;margin-top:108px}
+.loading-warning button{background:#000;border:none;color:var(--terminal-amber);padding:3px 12px;font-size:0.75rem;cursor:pointer;border-radius:3px;font-family:'JetBrains Mono',monospace;font-weight:600}
+.loading-warning button:hover{background:#333}
+
+/* Header with proper offset for 3 banners (34+42+36=112px) */
+header{background:var(--bg-secondary);border-bottom:1px solid var(--terminal-blue);padding:15px 25px;display:flex;align-items:center;justify-content:space-between;position:relative;margin-top:112px}
 .logo-container{display:flex;align-items:center;gap:12px;cursor:pointer}
 .logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--lemon-blue) 0%,#1e293b 100%);border:1px solid var(--terminal-blue);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 12px var(--border-glow);position:relative;overflow:hidden;animation:pulseGlow 3s ease-in-out infinite}
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 12px var(--border-glow)}50%{box-shadow:0 0 18px rgba(59,130,246,0.3)}}
@@ -43,7 +49,7 @@ header{background:var(--bg-secondary);border-bottom:1px solid var(--terminal-blu
 .terminal-title{font-size:1.4rem;font-weight:400;color:var(--terminal-blue);text-transform:uppercase;letter-spacing:2px;font-family:'JetBrains Mono',monospace}
 .version-tag{font-size:0.65rem;color:var(--terminal-dim);background:rgba(59,130,246,0.1);padding:2px 6px;border-radius:3px;border:1px solid var(--terminal-dim);margin-left:8px;font-weight:400}
 .credits{color:var(--text-secondary);font-size:0.75rem;font-weight:300}
-nav{background:var(--bg-secondary);border-bottom:1px solid rgba(59,130,246,0.15);display:flex;justify-content:center;position:sticky;top:108px;z-index:100}
+nav{background:var(--bg-secondary);border-bottom:1px solid rgba(59,130,246,0.15);display:flex;justify-content:center;position:sticky;top:112px;z-index:100}
 nav button{background:transparent;border:none;border-right:1px solid rgba(59,130,246,0.15);color:var(--text-secondary);padding:14px 35px;font-family:'Inter',sans-serif;font-weight:400;font-size:0.85rem;cursor:pointer;text-transform:uppercase;letter-spacing:1.5px;transition:all 0.3s;position:relative}
 nav button:last-child{border-right:none}
 nav button:hover,nav button.active{background:rgba(59,130,246,0.08);color:var(--terminal-blue)}
@@ -57,7 +63,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 .section.active{display:block;animation:fadeIn 0.4s ease-out}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .system-stats{background:var(--bg-secondary);border:1px solid rgba(59,130,246,0.15);border-radius:6px;padding:18px 25px;margin-bottom:25px;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:25px;position:relative}
-.system-stats::after{content:"BLUEPRINT_v10.0 // SYSTEM STATUS";position:absolute;top:5px;right:10px;font-size:0.6rem;color:var(--terminal-dim);opacity:0.4;font-family:'JetBrains Mono',monospace;font-weight:300}
+.system-stats::after{content:"BLUEPRINT_v1.0 // SYSTEM STATUS";position:absolute;top:5px;right:10px;font-size:0.6rem;color:var(--terminal-dim);opacity:0.4;font-family:'JetBrains Mono',monospace;font-weight:300}
 .stat-box{display:flex;flex-direction:column;gap:4px}
 .stat-label{color:var(--text-secondary);font-size:0.7rem;text-transform:uppercase;letter-spacing:1px;font-weight:400}
 .stat-value{color:var(--terminal-blue);font-size:1.2rem;font-weight:400;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px}
@@ -139,7 +145,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 .stop-logs div{margin-bottom:5px;opacity:0;animation:logAppear 0.3s forwards}
 @keyframes logAppear{to{opacity:1}}
 .stop-hint{color:#550000;margin-top:30px;font-size:0.8rem;letter-spacing:2px}
-.lemon-counter{position:fixed;top:143px;right:25px;background:rgba(6,182,212,0.1);border:1px solid var(--accent-cyan);padding:10px 20px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--accent-cyan);z-index:996;opacity:0;transition:opacity 0.3s;max-width:250px}
+.lemon-counter{position:fixed;top:148px;right:25px;background:rgba(6,182,212,0.1);border:1px solid var(--accent-cyan);padding:10px 20px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--accent-cyan);z-index:996;opacity:0;transition:opacity 0.3s;max-width:250px}
 .lemon-counter.show{opacity:1}
 .search-tracker{margin-top:5px;font-size:0.7rem;color:var(--text-secondary)}
 .unlocked-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:var(--bg-secondary);border:2px solid var(--terminal-amber);border-radius:12px;padding:40px;text-align:center;z-index:10000;box-shadow:0 0 50px rgba(245,158,11,0.5);transition:transform 0.5s cubic-bezier(0.68,-0.55,0.265,1.55)}
@@ -171,7 +177,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 .dev-console-line{margin-bottom:5px;opacity:0;animation:typeLine 0.1s forwards}
 .matrix-slider{width:100%;margin:10px 0;background:var(--bg-primary);border:1px solid rgba(245,158,11,0.3);border-radius:4px;padding:10px}
 .matrix-slider input[type="range"]{width:100%;accent-color:var(--terminal-amber)}
-.anger-indicator{position:fixed;top:143px;left:25px;background:rgba(239,68,68,0.1);border:1px solid var(--error-red);padding:10px 20px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--error-red);z-index:996;opacity:0;transition:opacity 0.3s;display:none}
+.anger-indicator{position:fixed;top:148px;left:25px;background:rgba(239,68,68,0.1);border:1px solid var(--error-red);padding:10px 20px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--error-red);z-index:996;opacity:0;transition:opacity 0.3s;display:none}
 .anger-indicator.show{opacity:1;display:block}
 .anger-level{font-weight:bold;color:#ff0000}
 .fix-games-btn{background:linear-gradient(45deg,#ff0000,#ff6600);border:2px solid #ff0000;color:white;padding:15px;font-family:'JetBrains Mono',monospace;font-size:1rem;cursor:pointer;border-radius:8px;transition:all 0.3s;width:100%;font-weight:bold;text-transform:uppercase;letter-spacing:2px;animation:pulseFix 2s infinite;box-shadow:0 0 20px rgba(255,0,0,0.5)}
@@ -209,14 +215,14 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
     /* BSOD - Blue Screen */
     .bsod {
         padding: 4vh 5vw !important;
-        display: none; /* Force hidden by default */
+        display: none;
         flex-direction: column;
         justify-content: center;
         overflow-y: auto;
         text-align: center;
     }
     .bsod.active {
-        display: flex; /* Only show when active */
+        display: flex;
     }
     .bsod h1 {
         font-size: clamp(2.5rem, 12vw, 5rem) !important;
@@ -355,30 +361,31 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
         text-align: center;
     }
 
-    /* Top Alert Banners (Dev warning, Disclaimer) */
+    /* Top Alert Banners - Compact for Chromebook */
     .dev-warning {
-        padding: 1.5vh 3vw;
-        font-size: 0.7rem;
-        flex-wrap: wrap;
-        gap: 1vh;
+        height: 28px;
+        font-size: 0.65rem;
+        padding: 0 10px;
     }
     .game-disclaimer {
-        padding: 2vh 3vw;
-        font-size: 0.8rem;
         top: 28px;
+        height: 36px;
+        font-size: 0.75rem;
+        padding: 0 10px;
     }
     .loading-warning {
-        padding: 2vh 3vw;
-        font-size: 0.8rem;
-        top: 60px;
+        top: 64px;
+        height: 32px;
+        font-size: 0.7rem;
+        padding: 0 10px;
     }
     
-    /* Adjust header margin since banners are smaller */
+    /* Adjust header margin since banners are shorter (28+36+32=96px) */
     header {
-        margin-top: 85px;
+        margin-top: 96px;
     }
     nav {
-        top: 85px;
+        top: 96px;
     }
 
     /* ===== MAIN INTERFACE FIXES ===== */
@@ -387,7 +394,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
     .container {
         max-width: 100vw;
         padding: 15px;
-        padding-bottom: 100px; /* Space for status bar */
+        padding-bottom: 100px;
     }
     
     /* Games Grid - 2 columns instead of auto-fill */
@@ -556,14 +563,14 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 
     /* Anger indicator and counters - Reposition */
     .anger-indicator {
-        top: 120px;
+        top: 105px;
         left: 15px;
         padding: 8px 12px;
         font-size: 0.75rem;
     }
     
     .lemon-counter {
-        top: 120px;
+        top: 105px;
         right: 15px;
         padding: 8px 12px;
         font-size: 0.75rem;
@@ -597,6 +604,10 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 
 /* Landscape mode fixes (when Chromebook is in tent/tablet mode) */
 @media (max-height: 600px) and (orientation: landscape) {
+    .dev-warning, .game-disclaimer, .loading-warning {
+        display: none; /* Hide warnings in landscape to save space */
+    }
+    
     header {
         margin-top: 0;
         padding: 8px 15px;
@@ -659,7 +670,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 <!-- Dev Warning -->
 <div class="dev-warning">
     <span>⚠️ DEVELOPER BUILD // FEATURES MAY BE BROKEN</span>
-    <button onclick="this.parentElement.remove()">DISMISS</button>
+    <button onclick="this.parentElement.remove(); adjustLayout();">DISMISS</button>
 </div>
 
 <!-- AGGRESSIVE DISCLAIMER -->
@@ -670,7 +681,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 
 <!-- AGGRESSIVE LOADING WARNING -->
 <div class="loading-warning" id="loadingWarning">
-    <span>GAMES TAKE 3-10 SECONDS TO LOAD. DON'T SPAM CLICK OR I'LL MAKE THE WAIT LONGER.</span>
+    <span>GAMES TAKE 3-10 SECONDS TO LOAD. DON'T SPAM CLICK.</span>
     <button onclick="dismissLoadingWarning()">WHATEVER</button>
 </div>
 
@@ -695,7 +706,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 
 <!-- Boot Sequence -->
 <div id="boot-sequence">
-    <div class="boot-line" style="animation-delay:0.1s">> LEMONS_PROXY v10.0 INITIALIZING...</div>
+    <div class="boot-line" style="animation-delay:0.1s">> LEMONS_PROXY v1.0 INITIALIZING...</div>
     <div class="boot-line" style="animation-delay:0.3s">> Loading 74 game modules...</div>
     <div class="boot-line" style="animation-delay:0.5s">> Mounting achievement database [25 ENTRIES]</div>
     <div class="boot-line" style="animation-delay:0.8s">> Connection established [ENCRYPTED]</div>
@@ -741,7 +752,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
     <div class="logo-container">
         <div class="logo-icon">🍋</div>
         <div>
-            <div class="terminal-title">LEMONS_PROXY<span class="version-tag">v10.0</span></div>
+            <div class="terminal-title">LEMONS_PROXY<span class="version-tag">v1.0</span></div>
             <div class="credits">74 GAMES // 25 ACHIEVEMENTS // DEV TOO LAZY TO FIX</div>
         </div>
     </div>
@@ -990,7 +1001,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
         <span>Latency: <span id="latency">12</span>ms</span>
     </div>
     <div>
-        <span id="clock">00:00:00</span> | BUILD v10.0.74-LAZY
+        <span id="clock">00:00:00</span> | BUILD v1.0.74-LAZY
     </div>
 </div>
 
@@ -1228,22 +1239,30 @@ setTimeout(()=>{
 },4000);
 
 function adjustLayout(){
-    document.querySelector('header').style.marginTop = '35px';
-    document.querySelector('nav').style.top = '35px';
+    // Check which warnings are still visible
+    const devWarning = document.querySelector('.dev-warning');
+    const disclaimer = document.getElementById('gameDisclaimer');
+    const loading = document.getElementById('loadingWarning');
+    
+    let offset = 0;
+    if(devWarning) offset += 34;
+    if(disclaimer && disclaimer.style.display !== 'none') offset += 42;
+    if(loading && loading.style.display !== 'none') offset += 36;
+    
+    document.querySelector('header').style.marginTop = offset + 'px';
+    document.querySelector('nav').style.top = offset + 'px';
 }
 
 function dismissDisclaimer(){
-    document.getElementById('gameDisclaimer').style.display = 'none';
-    if(document.getElementById('loadingWarning').style.display === 'none'){
-        adjustLayout();
-    }
+    const el = document.getElementById('gameDisclaimer');
+    if(el) el.remove();
+    adjustLayout();
 }
 
 function dismissLoadingWarning(){
-    document.getElementById('loadingWarning').style.display = 'none';
-    if(document.getElementById('gameDisclaimer').style.display === 'none'){
-        adjustLayout();
-    }
+    const el = document.getElementById('loadingWarning');
+    if(el) el.remove();
+    adjustLayout();
 }
 
 function showSection(sectionId){
@@ -1870,4 +1889,4 @@ document.addEventListener('keydown',(e)=>{
 </script>
 
 </body>
-</html>>
+</html>
