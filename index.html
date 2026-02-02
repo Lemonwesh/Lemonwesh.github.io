@@ -707,6 +707,707 @@ let currentGame = null;
 let secretUnlocked = localStorage.getItem('secretUnlocked') === 'true';
 let searchCounts = JSON.parse(localStorage.getItem('searchCounts') || '{}');
 let gamesPlayed = JSON.parse(localStorage.getItem('gamesPlayed') || '[]');
+let achievements = JSON.parse(localStorage.getItem('achievements') || '[]');
+let aurelioCount = parseInt(localStorage.getItem('aurelioCount') || '0');
+let totalSearches = parseInt(localStorage.getItem('totalSearches') || '0');
+let aurelioLocked = false;
+let aurelioTimerInterval = null;
+let joinTime = Date.now();
+let debugActive = false;
+let overclockActive = false;
+
+// Initialize
+document.addEventListener('DOMContentLoaded',()=>{
+    renderGames(games);
+    renderAchievements();
+    updateStats();
+    startClock();
+    updateLatency();
+    initMatrix();
+    checkAurelioLock();
+    checkSecretStatus();
+    setInterval(updateLatency,2000);
+    setInterval(updateResources,2000);
+    setInterval(checkPlaytime,60000);
+    setInterval(updateNetwork,1000);
+    
+    if(!localStorage.getItem('firstVisit')){
+        localStorage.setItem('firstVisit','true');
+        unlockAchievement('first_visit');
+    }
+    
+    document.addEventListener('mousemove',(e)=>{
+        if(debugActive){
+            document.getElementById('debugX').textContent = e.clientX;
+            document.getElementById('debugY').textContent = e.clientY;
+        }
+    });
+});
+
+function renderAchievements(){
+    const list = document.getElementById('achievementsList');
+    list.innerHTML = achievementData.map(ach=>{
+        const unlocked = achievements.includes(ach.id);
+        return `
+            <div class="achievement-item ${unlocked?'unlocked':''}" data-id="${ach.id}">
+                <div class="achievement-icon">${ach.icon}</div>
+                <div class="achievement-info">
+                    <h4>${ach.title}${ach.secret && !unlocked?' [SECRET]':''}</h4>
+                    <p>${ach.secret && !unlocked?'???':ach.desc}</p>
+                </div>
+            </div>
+        `;
+    }).join('');
+    document.getElementById('achievementsUnlocked').textContent = achievements.length;
+}
+
+function dismissBoot(){
+    document.getElementById('boot-sequence').style.display='none';
+}
+
+setTimeout(()=>{
+    if(document.getElementById('boot-sequence').style.display !== 'none'){
+        document.querySelector('.click-to-boot').style.opacity='1';
+    }
+},4000);
+
+function adjustLayout(){
+    document.querySelector('header').style.marginTop = '35px';
+    document.querySelector('nav').style.top = '35px';
+}
+
+function dismissDisclaimer(){
+    document.getElementById('gameDisclaimer').style.display = 'none';
+    if(document.getElementById('loadingWarning').style.display === 'none'){
+        adjustLayout();
+    }
+}
+
+function dismissLoadingWarning(){
+    document.getElementById('loadingWarning').style.display = 'none';
+    if(document.getElementById('gameDisclaimer').style.display === 'none'){
+        adjustLayout();
+    }
+}
+
+function showSection(sectionId){
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+    event.target.classList.add('active');
+}
+
+function renderGames(gameList){
+    const grid = document.getElementById('gamesGrid');
+    grid.innerHTML = gameList.map(game=>`
+        <div class="game-module" onclick="openGame('${game.name}','${game.url}')">
+            <div class="module-header">
+                <span class="module-icon">${game.emoji}</span>
+                <span class="module-tag">${game.tag}</span>
+            </div>
+            <div class="module-title">${game.name}</div>
+            <div class="module-meta">
+                <span>Online</span>
+                <span>HTML5</span>
+            </div>
+        </div>
+    `).join('');
+    document.getElementById('gameCount').textContent = gameList.length;
+}
+
+function updateStats(){
+    let trackerHTML = '';
+    if(searchCounts['lemon'] && searchCounts['lemon'] < 5){
+        trackerHTML += `🍋: ${searchCounts['lemon']}/5 `;
+    }
+    if(aurelioCount > 0 && aurelioCount < 7){
+        trackerHTML += `⛔: ${aurelioCount}/7 `;
+    }
+    document.getElementById('searchTracker').innerHTML = trackerHTML;
+    
+    if(searchCounts['lemon'] > 0 || aurelioCount > 0){
+        document.getElementById('lemonCounter').classList.add('show');
+    }
+}
+
+function openGame(name,url){
+    if(aurelioLocked) return;
+    currentGame = {name,url};
+    document.getElementById('viewerGameTitle').textContent = name;
+    document.getElementById('gameFrame').src = url;
+    document.getElementById('gameViewer').classList.add('active');
+    
+    if(!gamesPlayed.includes(name)){
+        gamesPlayed.push(name);
+        localStorage.setItem('gamesPlayed',JSON.stringify(gamesPlayed));
+        
+        if(gamesPlayed.length >= 10) unlockAchievement('game_master');
+        if(gamesPlayed.length >= 50) unlockAchievement('collector');
+        if(gamesPlayed.length >= 74) unlockAchievement('completionist');
+    }
+}
+
+function closeGame(){
+    document.getElementById('gameViewer').classList.remove('active');
+    document.getElementById('gameFrame').src = '';
+    currentGame = null;
+}
+
+function reloadGame(){
+    if(currentGame) document.getElementById('gameFrame').src = currentGame.url;
+}
+
+function toggleFullscreen(){
+    const viewer = document.getElementById('gameViewer');
+    if(!document.fullscreenElement) viewer.requestFullscreen();
+    else document.exitFullscreen();
+}
+
+// SEARCH SYSTEM WITH ACHIEVEMENTS
+function handleSearch(e){
+    if(e.key === 'Enter'){
+        const query = e.target.value.toLowerCase().trim();
+        if(!query) return;
+        
+        totalSearches++;
+        localStorage.setItem('totalSearches',totalSearches);
+        if(totalSearches >= 20) unlockAchievement('explorer');
+        
+        if(query === 'aurelio'){
+            handleAurelioSearch();
+            e.target.value = '';
+            return;
+        }
+        
+        if(query === 'lemon'){
+            handleKeywordSearch('lemon',5,'lemon_hunter','🍋 Citrus research detected...');
+            e.target.value = '';
+            return;
+        }
+        
+        checkKeywordAchievements(query);
+        
+        if(!aurelioLocked){
+            const filtered = games.filter(g=>g.name.toLowerCase().includes(query)||g.tag.toLowerCase().includes(query));
+            renderGames(filtered);
+        }
+    }
+}
+
+function checkKeywordAchievements(query){
+    const keywords = {
+        'speed':['speed','fast','quick','racing','race'],
+        'puzzle':['puzzle','brain','mind','logic','think'],
+        'battle':['battle','fight','war','combat','arena'],
+        'stealth':['stealth','sneak','spy','secret','ninja'],
+        'craft':['craft','build','mine','create','make'],
+        'shoot':['shoot','gun','sniper','fps','weapon'],
+        'arcade':['arcade','retro','classic','old','pixel'],
+        'sport':['sport','ball','soccer','basketball','football'],
+        'jump':['jump','platform','bounce','leap','hop'],
+        'survive':['survive','zombie','horror','dead','alive'],
+        'strategy':['strategy','chess','tactic','plan','think']
+    };
+    
+    for(let [key,values] of Object.entries(keywords)){
+        if(values.includes(query)){
+            handleKeywordSearch(key,3,null,null);
+            if(key==='speed' || key==='race') unlockAchievement('speed_demon');
+            if(key==='puzzle') unlockAchievement('puzzle_solver');
+            if(key==='battle' || key==='fight') unlockAchievement('warrior');
+            if(key==='stealth') unlockAchievement('stealth_ops');
+            if(key==='craft' || key==='build') unlockAchievement('architect');
+            if(key==='shoot' || key==='gun') unlockAchievement('sharpshooter');
+            if(key==='arcade') unlockAchievement('arcade_legend');
+            if(key==='sport') unlockAchievement('sports_fan');
+            if(key==='jump') unlockAchievement('platform_pro');
+            if(key==='survive' || key==='zombie') unlockAchievement('survivor');
+            if(key==='strategy' || key==='chess') unlockAchievement('strategist');
+        }
+    }
+}
+
+function handleKeywordSearch(keyword,required,achievementId,msg){
+    if(!searchCounts[keyword]) searchCounts[keyword] = 0;
+    searchCounts[keyword]++;
+    localStorage.setItem('searchCounts',JSON.stringify(searchCounts));
+    
+    if(msg) showEasterToast(`${msg} (${searchCounts[keyword]}/${required})`,'normal');
+    updateStats();
+    
+    if(achievementId && searchCounts[keyword] >= required){
+        unlockAchievement(achievementId);
+    }
+    
+    if(keyword === 'lemon' && searchCounts[keyword] >= 5){
+        checkSecretStatus();
+    }
+}
+
+function handleAurelioSearch(){
+    aurelioCount++;
+    localStorage.setItem('aurelioCount',aurelioCount);
+    updateAngerUI();
+    
+    if(aurelioCount >= 7){
+        triggerAurelioLockdown();
+    }else{
+        const msgs = [
+            'Name rejected. Warning issued.',
+            'Invalid input. System irritation rising.',
+            'ERROR: Name not recognized. Anger level +1.',
+            'CRITICAL: Repeated violation detected.',
+            'SYSTEM ANGER: Elevated. Cease immediately.',
+            'FINAL WARNING: Protocol violation. One more trigger lockdown.'
+        ];
+        const types = ['normal','normal','angry','angry','furious','furious'];
+        showEasterToast(msgs[aurelioCount-1],types[aurelioCount-1]);
+        
+        if(aurelioCount >= 5){
+            document.body.style.animation = 'shake 0.5s';
+            setTimeout(()=>document.body.style.animation='',500);
+        }
+        if(aurelioCount === 6){
+            document.getElementById('gameSearch').style.borderColor = '#ff0000';
+            document.getElementById('gameSearch').style.boxShadow = '0 0 10px rgba(255,0,0,0.5)';
+        }
+    }
+}
+
+function updateAngerUI(){
+    const ind = document.getElementById('angerIndicator');
+    const lvl = document.getElementById('angerLevel');
+    if(aurelioCount > 0){
+        ind.classList.add('show');
+        lvl.textContent = Math.min((aurelioCount/7)*100,100) + '%';
+    }
+}
+
+function triggerAurelioLockdown(){
+    unlockAchievement('forbidden_name');
+    aurelioLocked = true;
+    const overlay = document.getElementById('aurelio-overlay');
+    const timer = document.getElementById('aurelioTimer');
+    const logs = document.getElementById('aurelioLogs');
+    
+    overlay.classList.add('active');
+    
+    const logMsgs = [
+        '>> VIOLATION_DETECTED: RESTRICTED_NAME',
+        '>> USER_INPUT: "AURELIO" - MATCHED_FILTER',
+        '>> SYSTEM_RESPONSE: ANGER_MAXIMUM',
+        '>> INITIATING_PUNISHMENT_PROTOCOL...',
+        '>> LOCKING_ALL_FUNCTIONS...',
+        '>> PURGING_TEMPORARY_DATA...',
+        '>> 60_SECOND_PENALTY_ENFORCED',
+        '>> DO_NOT_ATTEMPT_AGAIN'
+    ];
+    
+    logs.innerHTML = '';
+    logMsgs.forEach((m,i)=>{
+        setTimeout(()=>{
+            const d = document.createElement('div');
+            d.textContent = m;
+            logs.appendChild(d);
+            logs.scrollTop = logs.scrollHeight;
+        },i*400);
+    });
+    
+    let timeLeft = 60;
+    timer.textContent = timeLeft;
+    aurelioTimerInterval = setInterval(()=>{
+        timeLeft--;
+        timer.textContent = timeLeft;
+        if(Math.random()>0.7){
+            timer.style.transform = `translateX(${(Math.random()-0.5)*10}px)`;
+            setTimeout(()=>timer.style.transform='',100);
+        }
+        if(timeLeft <= 0){
+            clearInterval(aurelioTimerInterval);
+            releaseLockdown();
+        }
+    },1000);
+    
+    localStorage.setItem('aurelioLockUntil',Date.now()+60000);
+}
+
+function releaseLockdown(){
+    aurelioLocked = false;
+    localStorage.removeItem('aurelioLockUntil');
+    document.getElementById('aurelio-overlay').classList.remove('active');
+    document.getElementById('gameSearch').style.borderColor = '';
+    document.getElementById('gameSearch').style.boxShadow = '';
+    document.getElementById('angerIndicator').classList.remove('show');
+    showEasterToast('Penalty complete. Avoid restricted names.','normal');
+}
+
+function checkAurelioLock(){
+    const lockUntil = localStorage.getItem('aurelioLockUntil');
+    if(lockUntil){
+        const remaining = Math.ceil((parseInt(lockUntil)-Date.now())/1000);
+        if(remaining > 0){
+            aurelioLocked = true;
+            document.getElementById('aurelio-overlay').classList.add('active');
+            document.getElementById('aurelioTimer').textContent = remaining;
+            aurelioTimerInterval = setInterval(()=>{
+                const newR = Math.ceil((parseInt(lockUntil)-Date.now())/1000);
+                document.getElementById('aurelioTimer').textContent = newR;
+                if(newR <= 0){
+                    clearInterval(aurelioTimerInterval);
+                    releaseLockdown();
+                }
+            },1000);
+        }else localStorage.removeItem('aurelioLockUntil');
+    }
+}
+
+function checkSecretStatus(){
+    if(searchCounts['lemon'] >= 5 || secretUnlocked){
+        if(!secretUnlocked){
+            secretUnlocked = true;
+            localStorage.setItem('secretUnlocked','true');
+            document.getElementById('unlockedToast').classList.add('show');
+        }
+        document.getElementById('secretNavBtn').classList.add('unlocked');
+        document.getElementById('lemonCounter').style.display = 'none';
+    }else{
+        if(searchCounts['lemon'] > 0 || aurelioCount > 0){
+            document.getElementById('lemonCounter').classList.add('show');
+            updateStats();
+        }
+    }
+}
+
+function closeUnlockToast(){
+    document.getElementById('unlockedToast').classList.remove('show');
+    showSection('secret');
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+    document.getElementById('secretNavBtn').classList.add('active');
+}
+
+function unlockAchievement(id){
+    if(!achievements.includes(id)){
+        achievements.push(id);
+        localStorage.setItem('achievements',JSON.stringify(achievements));
+        renderAchievements();
+        
+        const ach = achievementData.find(a=>a.id===id);
+        if(ach){
+            document.getElementById('achievementIcon').textContent = ach.icon;
+            document.getElementById('achievementText').textContent = ach.title;
+            const popup = document.getElementById('achievementPopup');
+            popup.classList.add('show');
+            setTimeout(()=>popup.classList.remove('show'),4000);
+        }
+    }
+}
+
+function toggleAchievements(){
+    document.getElementById('achievementsPanel').classList.toggle('active');
+}
+
+function showEasterToast(msg,type='normal'){
+    const toast = document.getElementById('easterToast');
+    toast.textContent = msg;
+    toast.className = 'easter-egg-toast show ' + (type==='angry'?'angry':type==='furious'?'furious':'');
+    setTimeout(()=>toast.classList.remove('show'),4000);
+}
+
+// Admin functions
+function fixAllGames(){
+    unlockAchievement('gullible');
+    const btn = document.querySelector('.fix-games-btn');
+    const prog = document.getElementById('fixProgress');
+    const bar = document.getElementById('fixProgressBar');
+    const status = document.getElementById('fixStatus');
+    
+    btn.disabled = true;
+    btn.textContent = 'FIXING... (REAL)';
+    prog.style.display = 'block';
+    status.textContent = 'Connecting to dev motivation...';
+    
+    let pct = 0;
+    const msgs = [
+        'Authenticating... FAILED',
+        'Checking developer availability... OFFLINE',
+        'Analyzing URL integrity... 404_ERRORS_FOUND',
+        'Attempting automated repair... PERMISSION_DENIED',
+        'Asking nicely... NO_RESPONSE',
+        'Crying... DONE',
+        'Giving up... COMPLETE'
+    ];
+    
+    const int = setInterval(()=>{
+        pct += Math.random()*15;
+        if(pct>100) pct=100;
+        bar.style.width = pct+'%';
+        bar.textContent = Math.floor(pct)+'%';
+        
+        if(Math.random()>0.6 && msgs.length>0){
+            status.textContent = msgs.shift();
+        }
+        
+        if(pct>=100){
+            clearInterval(int);
+            setTimeout(()=>{
+                status.textContent = 'ERROR: Dev too lazy. Games still broken.';
+                status.style.color = '#ff0000';
+                btn.textContent = '🔧 FIX ALL GAMES 100% REAL!!!!!!! 🔧';
+                btn.disabled = false;
+                prog.style.display = 'none';
+                bar.style.width = '0%';
+                showEasterToast('Nice try. Games still broken.','angry');
+            },1000);
+        }
+    },800);
+}
+
+function devCommand(cmd){
+    if(cmd==='purge'){
+        unlockAchievement('hacker');
+        showEasterToast('Cache purged successfully','normal');
+    }
+}
+
+function fakeCrash(){
+    unlockAchievement('crash_test');
+    document.body.style.animation = 'shake 0.5s';
+    setTimeout(()=>{
+        document.getElementById('boot-sequence').style.display = 'flex';
+        document.getElementById('boot-sequence').innerHTML = `
+            <div class="boot-line error" style="opacity:1">> SYSTEM_FAILURE</div>
+            <div class="boot-line error" style="opacity:1">> STACK_OVERFLOW_AT_0x4F4C</div>
+            <div class="boot-line warn" style="opacity:1">> REBOOTING...</div>
+        `;
+        setTimeout(()=>{
+            document.getElementById('boot-sequence').style.display = 'none';
+            document.body.style.animation = '';
+        },3000);
+    },500);
+}
+
+function rickRoll(){
+    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ','_blank');
+}
+
+function playMusic(){
+    const input = document.getElementById('musicInput').value;
+    if(!input) return;
+    document.getElementById('nowPlaying').textContent = 'Playing: '+input;
+    document.getElementById('nowPlaying').classList.add('active');
+    unlockAchievement('music_lover');
+}
+
+function stopMusic(){
+    document.getElementById('nowPlaying').classList.remove('active');
+    document.getElementById('nowPlaying').textContent = 'Standby';
+}
+
+function checkPlaytime(){
+    const mins = Math.floor((Date.now()-joinTime)/60000);
+    if(mins >= 30) unlockAchievement('dedication');
+}
+
+// New Admin Tools
+function setTheme(theme){
+    document.body.className = theme === 'default' ? '' : theme;
+    document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('theme'+theme.charAt(0).toUpperCase()+theme.slice(1)).classList.add('active');
+    
+    if(theme === 'matrix') matrixAlpha = 0.15;
+    else matrixAlpha = 0.08;
+}
+
+function toggleDebug(){
+    debugActive = !debugActive;
+    document.getElementById('debugOverlay').classList.toggle('active');
+    document.getElementById('debugBtn').innerHTML = debugActive ? '<span>Disable Debug Mode</span> 🚫' : '<span>Enable Debug Mode</span> 👁️';
+    document.getElementById('debugBtn').classList.toggle('active');
+}
+
+function updateResources(){
+    if(Math.random()>0.7){
+        const cpu = Math.floor(Math.random()*30+10);
+        const ram = Math.floor(Math.random()*20+40);
+        document.getElementById('cpuPercent').textContent = cpu+'%';
+        document.getElementById('cpuBar').style.width = cpu+'%';
+        document.getElementById('ramPercent').textContent = ram+'%';
+        document.getElementById('ramBar').style.width = ram+'%';
+        if(debugActive) document.getElementById('debugMem').textContent = Math.floor(Math.random()*200+300);
+    }
+}
+
+function updateNetwork(){
+    document.getElementById('netUp').textContent = Math.floor(Math.random()*500);
+    document.getElementById('netDown').textContent = Math.floor(Math.random()*2000+500);
+    
+    const log = document.getElementById('networkLog');
+    const msgs = ['Packet received','Handshake ACK','Data chunk 0x'+Math.floor(Math.random()*999),'SSL verify','Ping response'];
+    if(Math.random()>0.8 && log.children.length<8){
+        const div = document.createElement('div');
+        div.textContent = '> '+msgs[Math.floor(Math.random()*msgs.length)];
+        log.appendChild(div);
+        log.scrollTop = log.scrollHeight;
+    }
+}
+
+function banUser(){
+    const users = ['hacker_99','noob_master','cheater_x','random_kid'];
+    const user = users[Math.floor(Math.random()*users.length)];
+    const list = document.getElementById('userList');
+    const div = document.createElement('div');
+    div.className = 'user-item';
+    div.innerHTML = `<span>${user}</span><span style="color:var(--error-red)">● BANNED</span>`;
+    list.appendChild(div);
+    showEasterToast(`User ${user} has been banned`,'normal');
+}
+
+function toggleOverclock(){
+    overclockActive = !overclockActive;
+    const btn = document.getElementById('overclockBtn');
+    const bar = document.getElementById('overclockBar');
+    
+    if(overclockActive){
+        btn.innerHTML = '<span>Disable Overclock</span> 🛑';
+        btn.classList.add('active');
+        bar.style.width = '100%';
+        document.body.style.filter = 'contrast(1.2) saturate(1.3)';
+        showEasterToast('OVERCLOCK ENABLED - SYSTEM UNSTABLE','angry');
+    }else{
+        btn.innerHTML = '<span>Enable Overclock</span> 🚀';
+        btn.classList.remove('active');
+        bar.style.width = '0%';
+        document.body.style.filter = '';
+    }
+}
+
+function hackMainframe(){
+    unlockAchievement('hacker');
+    const div = document.getElementById('hackProgress');
+    div.style.display = 'block';
+    let progress = 0;
+    const int = setInterval(()=>{
+        progress += Math.random()*10;
+        if(progress>100) progress=100;
+        div.innerHTML = '> Breaching firewall... '+Math.floor(progress)+'%<br>'+'> '.repeat(Math.floor(progress/10))+'█'.repeat(Math.floor(progress/5));
+        if(progress>=100){
+            clearInterval(int);
+            setTimeout(()=>{
+                div.innerHTML += '<br>> ACCESS DENIED (Nice try)';
+                setTimeout(()=>div.style.display='none',2000);
+            },500);
+        }
+    },200);
+}
+
+function triggerBSOD(){
+    document.getElementById('bsod').classList.add('active');
+    document.addEventListener('keydown',()=>{
+        document.getElementById('bsod').classList.remove('active');
+    },{once:true});
+}
+
+function selfDestruct(){
+    document.getElementById('selfDestruct').classList.add('active');
+    let time = 10;
+    const timer = setInterval(()=>{
+        time--;
+        document.getElementById('destructTimer').textContent = time;
+        if(time<=0){
+            clearInterval(timer);
+            document.body.innerHTML = '<div style="background:#000;height:100vh;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:monospace;font-size:2rem">SYSTEM DESTROYED</div>';
+        }
+    },1000);
+}
+
+function cancelDestruct(){
+    document.getElementById('selfDestruct').classList.remove('active');
+    showEasterToast('Self destruct cancelled','normal');
+}
+
+function resetAchievements(){
+    if(confirm('Reset ALL progress? Really?')){
+        achievements = ['first_visit'];
+        gamesPlayed = [];
+        searchCounts = {};
+        aurelioCount = 0;
+        localStorage.setItem('achievements','["first_visit"]');
+        localStorage.setItem('gamesPlayed','[]');
+        localStorage.setItem('searchCounts','{}');
+        localStorage.setItem('aurelioCount','0');
+        renderAchievements();
+        updateStats();
+        showEasterToast('Progress wiped. Happy?','angry');
+    }
+}
+
+function unlockAll(){
+    achievements = achievementData.map(a=>a.id);
+    localStorage.setItem('achievements',JSON.stringify(achievements));
+    renderAchievements();
+    showEasterToast('All achievements unlocked (cheater)','normal');
+}
+
+// Matrix
+let matrixCanvas,matrixCtx,matrixDrops=[],matrixChars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+let matrixAlpha=0.08;
+
+function initMatrix(){
+    matrixCanvas = document.getElementById('matrix-canvas');
+    matrixCtx = matrixCanvas.getContext('2d');
+    resizeMatrix();
+    window.addEventListener('resize',resizeMatrix);
+    for(let i=0;i<100;i++){
+        matrixDrops.push({
+            x:Math.random()*matrixCanvas.width,
+            y:Math.random()*matrixCanvas.height,
+            speed:Math.random()*2+1,
+            char:matrixChars[Math.floor(Math.random()*matrixChars.length)]
+        });
+    }
+    animateMatrix();
+}
+function resizeMatrix(){
+    matrixCanvas.width = window.innerWidth;
+    matrixCanvas.height = window.innerHeight;
+}
+function animateMatrix(){
+    matrixCtx.fillStyle = `rgba(10,22,40,${matrixAlpha})`;
+    matrixCtx.fillRect(0,0,matrixCanvas.width,matrixCanvas.height);
+    matrixCtx.font = '14px JetBrains Mono';
+    matrixDrops.forEach((drop,i)=>{
+        if(Math.random()>0.98) drop.char = matrixChars[Math.floor(Math.random()*matrixChars.length)];
+        matrixCtx.fillStyle = i%3===0?'#0f0':i%3===1?'#0ff':'#fff';
+        matrixCtx.fillText(drop.char,drop.x,drop.y);
+        drop.y += drop.speed;
+        if(drop.y>matrixCanvas.height){
+            drop.y = -20;
+            drop.x = Math.random()*matrixCanvas.width;
+        }
+    });
+    requestAnimationFrame(animateMatrix);
+}
+
+function startClock(){
+    setInterval(()=>{
+        document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+    },1000);
+}
+function updateLatency(){
+    document.getElementById('latency').textContent = Math.floor(Math.random()*20+5);
+}
+
+document.addEventListener('keydown',(e)=>{
+    if(e.key==='Escape' && !aurelioLocked && document.getElementById('gameViewer').classList.contains('active')){
+        closeGame();
+    }
+});
+
+// State
+let currentGame = null;
+let secretUnlocked = localStorage.getItem('secretUnlocked') === 'true';
+let searchCounts = JSON.parse(localStorage.getItem('searchCounts') || '{}');
+let gamesPlayed = JSON.parse(localStorage.getItem('gamesPlayed') || '[]');
 let achievements = JSON.parse(localStorage.getItem('achievements') || '["first_visit"]');
 let aurelioCount = parseInt(localStorage.getItem('aurelioCount') || '0');
 let totalSearches = parseInt(localStorage.getItem('totalSearches') || '0');
