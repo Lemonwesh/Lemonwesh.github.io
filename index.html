@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +26,7 @@ body.matrix{--bg-primary:#001100;--bg-secondary:#002200;--blueprint-grid:rgba(0,
 .click-to-boot{margin-top:40px;color:var(--terminal-amber);font-size:1rem;cursor:pointer;opacity:0;animation:fadeInOut 2s infinite;animation-delay:3s;text-align:center;border:1px solid var(--terminal-amber);padding:15px;width:fit-content;border-radius:4px;align-self:center}
 @keyframes fadeInOut{0%,100%{opacity:0.3}50%{opacity:1}}
 
-/* ORIGINAL TRANSLUCENT WARNING BANNERS RESTORED */
+/* TRANSLUCENT WARNING BANNERS - ORIGINAL STYLE */
 .dev-warning{
     position:fixed;
     top:0;
@@ -61,6 +62,7 @@ body.matrix{--bg-primary:#001100;--bg-secondary:#002200;--blueprint-grid:rgba(0,
     color:#000;
 }
 
+/* GAME DISCLAIMER - RED TRANSLUCENT WITH LAZY AHH BUTTON */
 .game-disclaimer{
     position:fixed;
     top:34px;
@@ -73,22 +75,26 @@ body.matrix{--bg-primary:#001100;--bg-secondary:#002200;--blueprint-grid:rgba(0,
     backdrop-filter:blur(5px);
     z-index:9997;
     font-family:'JetBrains Mono',monospace;
-    font-size:0.9rem;
+    font-size:0.85rem;
     font-weight:500;
-    letter-spacing:0.5px;
     display:flex;
     justify-content:center;
     align-items:center;
-    gap:15px;
+    gap:10px;
     padding:0 20px;
 }
-.game-disclaimer span::before{content:"⚠️ ";color:#ff6b6b;font-weight:bold}
+.game-disclaimer-text{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+.game-disclaimer-text::before{content:"⚠️ ";color:#ff6b6b;font-weight:bold}
 .game-disclaimer button{
     background:transparent;
     border:1px solid #ff6b6b;
     color:#ff6b6b;
-    padding:4px 15px;
-    font-size:0.75rem;
+    padding:3px 12px;
+    font-size:0.7rem;
     cursor:pointer;
     border-radius:4px;
     font-family:'JetBrains Mono',monospace;
@@ -99,7 +105,18 @@ body.matrix{--bg-primary:#001100;--bg-secondary:#002200;--blueprint-grid:rgba(0,
     background:#ff6b6b;
     color:#000;
 }
+.game-disclaimer button.lazy-ahh{
+    border-color:#ff0000;
+    color:#ff0000;
+    animation:pulseRed 1.5s infinite;
+}
+.game-disclaimer button.lazy-ahh:hover{
+    background:#ff0000;
+    color:#fff;
+    box-shadow:0 0 15px rgba(255,0,0,0.6);
+}
 
+/* LOADING WARNING - AMBER TRANSLUCENT */
 .loading-warning{
     position:fixed;
     top:76px;
@@ -112,21 +129,26 @@ body.matrix{--bg-primary:#001100;--bg-secondary:#002200;--blueprint-grid:rgba(0,
     backdrop-filter:blur(5px);
     z-index:9996;
     font-family:'JetBrains Mono',monospace;
-    font-size:0.85rem;
+    font-size:0.8rem;
     font-weight:500;
     display:flex;
     justify-content:center;
     align-items:center;
-    gap:15px;
+    gap:10px;
     padding:0 20px;
 }
-.loading-warning span::before{content:"⏱️ ";font-weight:bold}
+.loading-warning-text{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+.loading-warning-text::before{content:"⏱️ ";font-weight:bold}
 .loading-warning button{
     background:transparent;
     border:1px solid var(--terminal-amber);
     color:var(--terminal-amber);
     padding:3px 12px;
-    font-size:0.75rem;
+    font-size:0.7rem;
     cursor:pointer;
     border-radius:4px;
     font-family:'JetBrains Mono',monospace;
@@ -138,7 +160,7 @@ body.matrix{--bg-primary:#001100;--bg-secondary:#002200;--blueprint-grid:rgba(0,
     color:#000;
 }
 
-/* Header with proper offset for 3 banners (34+42+36=112px) */
+/* Header offset for 3 banners (34+42+36=112px) */
 header{background:var(--bg-secondary);border-bottom:1px solid var(--terminal-blue);padding:15px 25px;display:flex;align-items:center;justify-content:space-between;position:relative;margin-top:112px}
 .logo-container{display:flex;align-items:center;gap:12px;cursor:pointer}
 .logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--lemon-blue) 0%,#1e293b 100%);border:1px solid var(--terminal-blue);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 12px var(--border-glow);position:relative;overflow:hidden;animation:pulseGlow 3s ease-in-out infinite}
@@ -180,14 +202,8 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 .module-title{padding:18px;font-size:1rem;font-weight:400;color:var(--text-primary);letter-spacing:0.3px}
 .module-meta{padding:0 18px 18px;color:var(--text-secondary);font-size:0.85rem;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-weight:300}
 .coming-soon{text-align:center;padding:60px 20px;background:var(--bg-secondary);border:1px dashed rgba(59,130,246,0.25);border-radius:8px;position:relative;overflow:hidden}
-.hack-map{width:100%;max-width:600px;margin:0 auto 30px;height:200px;background:rgba(10,22,40,0.6);border:1px solid rgba(59,130,246,0.15);border-radius:6px;position:relative;overflow:hidden}
-.map-grid{position:absolute;width:100%;height:100%;background-image:linear-gradient(rgba(59,130,246,0.1) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.1) 1px,transparent 1px);background-size:20px 20px}
 .coming-title{font-size:2rem;color:var(--terminal-blue);margin-bottom:10px;text-transform:uppercase;letter-spacing:4px;font-family:'JetBrains Mono',monospace;font-weight:300}
 .coming-subtitle{color:var(--terminal-dim);font-size:1.1rem;margin-bottom:20px;letter-spacing:2px}
-.coming-text{color:var(--text-secondary);font-size:0.95rem;max-width:500px;margin:0 auto 30px;line-height:1.6;font-weight:300}
-.proxy-links{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
-.proxy-link{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.25);color:var(--terminal-blue);padding:12px 24px;border-radius:4px;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:0.85rem;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px}
-.proxy-link:hover{background:rgba(59,130,246,0.15);border-color:var(--terminal-blue);transform:translateY(-2px)}
 .game-viewer{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:var(--bg-primary);z-index:2000;flex-direction:column}
 .game-viewer.active{display:flex}
 .viewer-header{background:var(--bg-secondary);padding:15px 25px;border-bottom:1px solid var(--terminal-blue);display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,0.2)}
@@ -230,7 +246,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 .easter-egg-toast.furious{background:#1a0505;border-color:#ff0000;color:#ff0000;box-shadow:0 0 30px rgba(255,0,0,0.8);animation:shake 0.3s infinite}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 
-/* LEMONWESH CREATOR PROFILE - FORBIDDEN/BROKEN STYLE */
+/* CREATOR PROFILE FORBIDDEN STYLE */
 .creator-profile{
     background:linear-gradient(135deg,rgba(0,0,0,0.9) 0%,rgba(20,0,0,0.8) 100%);
     border:2px solid #330000;
@@ -394,26 +410,8 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
     box-shadow:0 0 15px rgba(255,0,0,0.3);
     transform:translateX(3px);
 }
-.creator-btn::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:-100%;
-    width:100%;
-    height:100%;
-    background:linear-gradient(90deg,transparent,rgba(255,0,0,0.2),transparent);
-    transition:left 0.5s;
-}
-.creator-btn:hover::before{
-    left:100%;
-}
-.creator-btn.danger{
-    border-color:#ff0000;
-    animation:pulseBtn 2s infinite;
-}
-@keyframes pulseBtn{0%,100%{box-shadow:0 0 5px rgba(255,0,0,0.2)}50%{box-shadow:0 0 20px rgba(255,0,0,0.6)}}
 
-/* Aurelio Lock Screen - System Rejection */
+/* AURELIO LOCKDOWN SCREEN - SYSTEM REJECTION */
 #aurelio-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#050000;z-index:99999;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;overflow:hidden}
 #aurelio-overlay.active{display:flex}
 .aurelio-glitch{position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,0,0,0.03) 2px,rgba(255,0,0,0.03) 4px);pointer-events:none;animation:scanlines 0.1s infinite}
@@ -437,9 +435,6 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 .unlocked-toast p{color:var(--text-secondary);margin-bottom:20px}
 .big-lemon{font-size:5rem;margin-bottom:20px;animation:spin 2s linear infinite}
 @keyframes spin{100%{transform:rotate(360deg)}}
-.hidden-games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:10px}
-.hidden-game-item{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);padding:10px;border-radius:4px;cursor:pointer;text-align:center;font-size:0.8rem;transition:all 0.3s}
-.hidden-game-item:hover{background:rgba(245,158,11,0.2);transform:scale(1.05)}
 .secret-menu-container{display:none}
 .secret-menu-container.active{display:block}
 .secret-menu{background:var(--bg-secondary);border:2px solid var(--terminal-amber);border-radius:8px;padding:25px;margin-top:20px;position:relative;overflow:hidden;animation:glowPulse 3s infinite}
@@ -455,504 +450,48 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 .secret-btn:hover{background:rgba(245,158,11,0.2);transform:translateX(5px)}
 .secret-btn.danger{border-color:var(--error-red);color:var(--error-red)}
 .secret-btn.danger:hover{background:rgba(239,68,68,0.2)}
-.secret-btn.active{background:rgba(16,185,129,0.2);border-color:var(--success-green);color:var(--success-green)}
 .dev-console{background:#000;border:1px solid var(--terminal-amber);border-radius:4px;padding:15px;font-family:'JetBrains Mono',monospace;font-size:0.8rem;height:200px;overflow-y:auto;color:#00ff00;margin-top:10px}
 .dev-console-line{margin-bottom:5px;opacity:0;animation:typeLine 0.1s forwards}
-.matrix-slider{width:100%;margin:10px 0;background:var(--bg-primary);border:1px solid rgba(245,158,11,0.3);border-radius:4px;padding:10px}
-.matrix-slider input[type="range"]{width:100%;accent-color:var(--terminal-amber)}
-.anger-indicator{position:fixed;top:148px;left:25px;background:rgba(239,68,68,0.1);border:1px solid var(--error-red);padding:10px 20px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--error-red);z-index:996;opacity:0;transition:opacity 0.3s;display:none}
-.anger-indicator.show{opacity:1;display:block}
-.anger-level{font-weight:bold;color:#ff0000}
 .fix-games-btn{background:linear-gradient(45deg,#ff0000,#ff6600);border:2px solid #ff0000;color:white;padding:15px;font-family:'JetBrains Mono',monospace;font-size:1rem;cursor:pointer;border-radius:8px;transition:all 0.3s;width:100%;font-weight:bold;text-transform:uppercase;letter-spacing:2px;animation:pulseFix 2s infinite;box-shadow:0 0 20px rgba(255,0,0,0.5)}
 .fix-games-btn:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(255,0,0,0.8)}
 @keyframes pulseFix{0%,100%{box-shadow:0 0 20px rgba(255,0,0,0.5)}50%{box-shadow:0 0 40px rgba(255,0,0,0.9)}}
 .fix-progress{width:100%;height:30px;background:#000;border:1px solid var(--error-red);border-radius:4px;margin-top:10px;overflow:hidden;display:none}
 .fix-progress-bar{height:100%;background:linear-gradient(90deg,#ff0000,#ff6600);width:0%;transition:width 0.3s;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:white;font-weight:bold}
 .fix-status{color:#ff6b6b;font-size:0.8rem;margin-top:10px;font-family:'JetBrains Mono',monospace;height:20px}
-.resource-bar{width:100%;height:20px;background:#000;border:1px solid rgba(245,158,11,0.3);border-radius:3px;margin:5px 0;overflow:hidden;position:relative}
-.resource-fill{height:100%;background:linear-gradient(90deg,var(--terminal-amber),#ff6600);transition:width 0.5s;width:0%}
-.resource-label{display:flex;justify-content:space-between;font-size:0.7rem;color:var(--text-secondary);margin-bottom:2px}
-.network-log{height:100px;overflow-y:auto;font-size:0.75rem;color:#0f0;background:#000;border:1px solid rgba(245,158,11,0.2);padding:8px;border-radius:4px;font-family:'JetBrains Mono',monospace;margin-top:10px}
-.network-log div{animation:fadeIn 0.3s}
-.user-list{max-height:120px;overflow-y:auto;font-size:0.75rem;color:var(--text-secondary)}
-.user-item{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(245,158,11,0.1)}
-.theme-btn{background:rgba(59,130,246,0.1);border:1px solid var(--terminal-blue);color:var(--terminal-blue);padding:5px 10px;margin:2px;font-size:0.75rem;cursor:pointer;border-radius:3px}
-.theme-btn:hover,.theme-btn.active{background:var(--terminal-blue);color:white}
+.anger-indicator{position:fixed;top:148px;left:25px;background:rgba(239,68,68,0.1);border:1px solid var(--error-red);padding:10px 20px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--error-red);z-index:996;opacity:0;transition:opacity 0.3s;display:none}
+.anger-indicator.show{opacity:1;display:block}
+.anger-level{font-weight:bold;color:#ff0000}
 
-/* BSOD STYLES - FIXED */
+/* BSOD */
 .bsod{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0078d7;z-index:99999;color:white;font-family:'Segoe UI',sans-serif;padding:100px 200px;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 .bsod.active{display:block}
 .bsod h1{font-size:8rem;margin-bottom:20px}
 .bsod p{font-size:1.5rem;line-height:1.6;margin-bottom:30px}
-@keyframes pulseBtn{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(0.98)}}
-
 .self-destruct{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#000;border:3px solid #ff0000;padding:40px;z-index:99999;text-align:center;border-radius:8px;box-shadow:0 0 50px rgba(255,0,0,0.8)}
 .self-destruct.active{display:block}
 .destruct-timer{font-size:4rem;color:#ff0000;font-weight:bold;margin:20px 0;font-family:'JetBrains Mono',monospace}
-.debug-overlay{position:fixed;bottom:100px;left:10px;background:rgba(0,0,0,0.8);border:1px solid var(--terminal-amber);padding:10px;font-size:0.7rem;color:#0f0;font-family:'JetBrains Mono',monospace;z-index:998;display:none;pointer-events:none}
-.debug-overlay.active{display:block}
 
-/* ===== CHROMEBOOK / SMALL SCREEN FIXES ===== */
-@media (max-width: 1366px), (max-height: 768px), (max-aspect-ratio: 16/9) {
-    
-    /* BSOD - Blue Screen */
-    .bsod {
-        padding: 4vh 5vw !important;
-        display: none;
-        flex-direction: column;
-        justify-content: center;
-        overflow-y: auto;
-        text-align: center;
-    }
-    .bsod.active {
-        display: flex;
-    }
-    .bsod h1 {
-        font-size: clamp(2.5rem, 12vw, 5rem) !important;
-        margin-bottom: 2vh;
-    }
-    .bsod p {
-        font-size: clamp(0.85rem, 2vw, 1.1rem) !important;
-        line-height: 1.5;
-        max-width: 90vw;
-        margin-bottom: 2vh;
-        padding: 0 10px;
-    }
-    .bsod p:last-child {
-        font-size: 0.8rem !important;
-        margin-top: auto;
-        padding-top: 4vh;
-    }
-
-    /* Aurelio Lock Screen */
-    #aurelio-overlay {
-        padding: 3vh 4vw;
-    }
-    .stop-text {
-        font-size: clamp(2rem, 10vw, 4rem) !important;
-        letter-spacing: 0.1em;
-        text-align: center;
-    }
-    .stop-sub {
-        font-size: clamp(0.75rem, 2vw, 1rem) !important;
-        margin-top: 2vh;
-        text-align: center;
-        padding: 0 2vw;
-    }
-    .stop-timer {
-        font-size: clamp(2.5rem, 8vw, 3.5rem) !important;
-        margin-top: 3vh;
-    }
-    .stop-logs {
-        max-width: 95vw;
-        height: 20vh;
-        font-size: 0.7rem;
-        margin-top: 3vh;
-        padding-left: 3vw;
-    }
-    .stop-hint {
-        margin-top: 3vh;
-        font-size: 0.7rem;
-    }
-
-    /* Self Destruct Alert */
-    .self-destruct {
-        width: 85vw;
-        max-width: 450px;
-        padding: 5vh 4vw;
-        max-height: 90vh;
-        overflow-y: auto;
-    }
-    .self-destruct h2 {
-        font-size: clamp(0.9rem, 3.5vw, 1.3rem);
-        line-height: 1.3;
-    }
-    .destruct-timer {
-        font-size: clamp(3rem, 12vw, 4rem) !important;
-        margin: 3vh 0;
-    }
-
-    /* Achievement Popup (Slide-in) */
-    .achievement-popup {
-        max-width: 80vw;
-        padding: 2.5vh 3vw;
-        top: 12vh;
-        right: -100vw;
-        gap: 3vw;
-    }
-    .achievement-popup.show {
-        right: 3vw;
-    }
-    .pop-icon {
-        font-size: 1.5rem;
-    }
-    .pop-text h3 {
-        font-size: 0.8rem;
-        margin-bottom: 0.5vh;
-    }
-    .pop-text p {
-        font-size: 0.7rem;
-    }
-
-    /* Easter Egg Toast (Angry system messages) */
-    .easter-egg-toast {
-        max-width: 85vw;
-        min-width: auto;
-        width: auto;
-        padding: 2.5vh 4vw;
-        font-size: clamp(0.75rem, 2.2vw, 0.85rem);
-        right: -100vw;
-        line-height: 1.4;
-        top: 12vh;
-    }
-    .easter-egg-toast.show {
-        right: 3vw;
-    }
-    /* Shake animation less aggressive on small screens */
-    .easter-egg-toast.angry, .easter-egg-toast.furious {
-        animation-duration: 0.4s;
-    }
-
-    /* Secret Unlocked Toast (Center modal) */
-    .unlocked-toast {
-        width: 85vw;
-        max-width: 380px;
-        padding: 5vh 4vw;
-        max-height: 90vh;
-        overflow-y: auto;
-    }
-    .unlocked-toast h2 {
-        font-size: clamp(1.1rem, 5vw, 1.8rem);
-    }
-    .big-lemon {
-        font-size: clamp(2.5rem, 12vw, 4rem);
-        margin-bottom: 3vh;
-    }
-
-    /* Boot Sequence */
-    #boot-sequence {
-        padding: 5vh 5vw;
-        font-size: clamp(0.75rem, 1.8vw, 0.9rem);
-        line-height: 1.6;
-    }
-    .click-to-boot {
-        margin-top: 5vh;
-        padding: 2.5vh 5vw;
-        font-size: 0.85rem;
-        width: 80%;
-        max-width: 300px;
-        text-align: center;
-    }
-
-    /* Top Alert Banners - Compact for Chromebook */
-    .dev-warning {
-        height: 28px;
-        font-size: 0.65rem;
-        padding: 0 10px;
-    }
-    .game-disclaimer {
-        top: 28px;
-        height: 36px;
-        font-size: 0.75rem;
-        padding: 0 10px;
-    }
-    .loading-warning {
-        top: 64px;
-        height: 32px;
-        font-size: 0.7rem;
-        padding: 0 10px;
-    }
-    
-    /* Adjust header margin since banners are shorter (28+36+32=96px) */
-    header {
-        margin-top: 96px;
-    }
-    nav {
-        top: 96px;
-    }
-
-    /* ===== MAIN INTERFACE FIXES ===== */
-    
-    /* Container - Use full width on small screens */
-    .container {
-        max-width: 100vw;
-        padding: 15px;
-        padding-bottom: 100px;
-    }
-    
-    /* Games Grid - 2 columns instead of auto-fill */
-    .games-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 12px;
-    }
-    
-    .game-module {
-        min-height: 120px;
-    }
-    
-    .module-header {
-        padding: 12px;
-    }
-    
-    .module-title {
-        padding: 12px;
-        font-size: 0.9rem;
-    }
-    
-    .module-icon {
-        font-size: 1.5rem;
-    }
-
-    /* Header - Compact */
-    header {
-        padding: 10px 15px;
-    }
-    
-    .terminal-title {
-        font-size: 1.1rem;
-    }
-    
-    .credits {
-        font-size: 0.65rem;
-    }
-    
-    .logo-icon {
-        width: 36px;
-        height: 36px;
-        font-size: 20px;
-    }
-
-    /* Nav - Smaller buttons */
-    nav button {
-        padding: 10px 20px;
-        font-size: 0.75rem;
-    }
-
-    /* System Stats - Single row scrollable or 2x2 grid */
-    .system-stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-        padding: 15px;
-    }
-    
-    .stat-value {
-        font-size: 1rem;
-    }
-
-    /* Search Bar */
-    .search-container {
-        margin-bottom: 15px;
-    }
-    
-    .search-input {
-        padding: 12px 15px 12px 40px;
-        font-size: 0.9rem;
-    }
-
-    /* ===== GAME VIEWER FIXES ===== */
-    .game-viewer {
-        height: 100vh;
-        height: 100dvh;
-    }
-    
-    .viewer-header {
-        padding: 10px 15px;
-        min-height: 50px;
-    }
-    
-    .viewer-title {
-        font-size: 0.85rem;
-        max-width: 60vw;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    
-    .controls-group {
-        gap: 5px;
-    }
-    
-    .control-btn {
-        padding: 6px 12px;
-        font-size: 0.75rem;
-    }
-
-    /* CRITICAL: Make iframe take remaining space properly */
-    #gameFrame {
-        height: calc(100vh - 50px);
-        height: calc(100dvh - 50px);
-        width: 100%;
-        border: none;
-    }
-
-    /* Bottom bars - Compact */
-    .music-player {
-        padding: 8px 15px;
-        bottom: 35px;
-    }
-    
-    .music-input {
-        padding: 6px 10px;
-        font-size: 0.8rem;
-    }
-    
-    .music-btn {
-        padding: 6px 12px;
-        font-size: 0.75rem;
-    }
-    
-    .now-playing {
-        font-size: 0.7rem;
-        max-width: 30vw;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .status-bar {
-        padding: 8px 15px;
-        font-size: 0.7rem;
-    }
-
-    /* Achievement button - Smaller */
-    .achievements-btn {
-        bottom: 80px;
-        right: 15px;
-        width: 40px;
-        height: 40px;
-        font-size: 1.1rem;
-    }
-    
-    .achievements-panel {
-        bottom: 130px;
-        right: 15px;
-        width: 280px;
-        max-height: 60vh;
-    }
-
-    /* Secret Menu Adjustments */
-    .secret-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-    
-    .secret-menu {
-        padding: 15px;
-    }
-    
-    .secret-title {
-        font-size: 1.1rem;
-    }
-
-    /* Anger indicator and counters - Reposition */
-    .anger-indicator {
-        top: 105px;
-        left: 15px;
-        padding: 8px 12px;
-        font-size: 0.75rem;
-    }
-    
-    .lemon-counter {
-        top: 105px;
-        right: 15px;
-        padding: 8px 12px;
-        font-size: 0.75rem;
-        max-width: 180px;
-    }
-    
-    /* Creator Profile Mobile */
-    .creator-profile {
-        padding: 15px;
-    }
-    
-    .creator-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
-    }
-    
-    .creator-avatar {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .creator-controls {
-        grid-template-columns: 1fr;
-    }
+/* Responsive */
+@media (max-width: 1366px){
+    .dev-warning{height:28px;font-size:0.65rem;padding:0 10px}
+    .game-disclaimer{top:28px;height:36px;font-size:0.75rem;padding:0 10px}
+    .loading-warning{top:64px;height:32px;font-size:0.7rem;padding:0 10px}
+    header{margin-top:96px}
+    nav{top:96px}
+    .container{padding:15px;padding-bottom:100px}
 }
-
-/* Extra small Chromebooks (11.6" screens) */
-@media (max-width: 1024px) {
-    .games-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 10px;
-    }
-    
-    .module-title {
-        font-size: 0.8rem;
-        padding: 10px;
-    }
-    
-    nav button {
-        padding: 8px 12px;
-        font-size: 0.7rem;
-        letter-spacing: 1px;
-    }
-    
-    .system-stats {
-        grid-template-columns: repeat(2, 1fr);
-        font-size: 0.75rem;
-    }
-}
-
-/* Landscape mode fixes (when Chromebook is in tent/tablet mode) */
-@media (max-height: 600px) and (orientation: landscape) {
-    .dev-warning, .game-disclaimer, .loading-warning {
-        display: none; /* Hide warnings in landscape to save space */
-    }
-    
-    header {
-        margin-top: 0;
-        padding: 8px 15px;
-    }
-    
-    nav {
-        position: relative;
-        top: 0;
-    }
-    
-    .container {
-        padding-top: 10px;
-    }
-    
-    .game-viewer {
-        height: 100vh;
-    }
-    
-    #gameFrame {
-        height: calc(100vh - 45px);
-    }
-    
-    .music-player {
-        display: none;
-    }
-    
-    .status-bar {
-        display: none;
-    }
-}
-
-/* High DPI / Zoom adjustments for Chrome OS */
-@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
-    body {
-        font-size: 14px;
-    }
+@media (max-width: 768px){
+    .game-disclaimer{flex-direction:column;height:auto;padding:10px;gap:5px;text-align:center}
+    .game-disclaimer button{margin:2px}
+    .loading-warning{flex-direction:column;height:auto;padding:10px;gap:5px;text-align:center}
+    header{margin-top:120px}
+    nav{top:120px}
 }
 </style>
 </head>
 <body>
 
-<!-- BSOD Screen - FIXED WITH CLICK TO CLOSE -->
+<!-- BSOD Screen -->
 <div class="bsod" id="bsod" onclick="closeBSOD()">
     <h1>:(</h1>
     <p>Your PC ran into a problem and needs to restart.<br>We're just collecting some error info, and then we'll restart for you.</p>
@@ -976,34 +515,29 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
     <button onclick="this.parentElement.remove(); adjustLayout();">DISMISS</button>
 </div>
 
-<!-- AGGRESSIVE DISCLAIMER -->
+<!-- GAME DISCLAIMER - 90% WONT LOAD, LAZY AHH BUTTON TRIGGERS AURELIO -->
 <div class="game-disclaimer" id="gameDisclaimer">
-    <span>SOME GAMES ARE BROKEN BECAUSE I'M TOO LAZY TO FIX URLS. DEAL WITH IT.</span>
-    <button onclick="dismissDisclaimer()">X</button>
+    <span class="game-disclaimer-text">Like 90% of the games wont load, too lazy to fix. deal with it</span>
+    <div>
+        <button class="lazy-ahh" onclick="lazyAhhTrigger()">lazy ahh</button>
+        <button onclick="dismissDisclaimer()">ok</button>
+    </div>
 </div>
 
-<!-- AGGRESSIVE LOADING WARNING -->
+<!-- LOADING WARNING - WAIT 3-10 SECS -->
 <div class="loading-warning" id="loadingWarning">
-    <span>GAMES TAKE 3-10 SECONDS TO LOAD. DON'T SPAM CLICK.</span>
-    <button onclick="dismissLoadingWarning()">WHATEVER</button>
+    <span class="loading-warning-text">wait 3-10 secs for games to load. dont spam click or ill make the wait longer</span>
+    <button onclick="dismissLoadingWarning()">ok geez</button>
 </div>
 
-<!-- Debug Overlay -->
-<div class="debug-overlay" id="debugOverlay">
-    <div>X: <span id="debugX">0</span> Y: <span id="debugY">0</span></div>
-    <div>FPS: <span id="debugFPS">60</span></div>
-    <div>MEM: <span id="debugMem">402</span>MB</div>
-    <div>SYS: ONLINE</div>
-</div>
-
-<!-- System Anger Counter -->
+<!-- Anger Counter -->
 <div class="anger-indicator" id="angerIndicator">
     SYSTEM ANGER: <span class="anger-level" id="angerLevel">0%</span>
 </div>
 
 <!-- Achievement Tracker -->
 <div class="lemon-counter" id="lemonCounter">
-    <div>🎯 Achievement Tracker</div>
+    <div>🎯 Progress Tracker</div>
     <div class="search-tracker" id="searchTracker"></div>
 </div>
 
@@ -1031,14 +565,14 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 <!-- Toast -->
 <div class="easter-egg-toast" id="easterToast"></div>
 
-<!-- Aurelio Lock Screen - The System Hates This Name -->
+<!-- Aurelio Lock Screen - SYSTEM HATES THIS NAME (7 searches to trigger) -->
 <div id="aurelio-overlay">
     <div class="aurelio-glitch"></div>
     <div class="stop-text">!STOP!</div>
-    <div class="stop-sub">SYSTEM_REQUEST_DENIED</div>
+    <div class="stop-sub">SYSTEM_REQUEST_DENIED_UNACCEPTABLE_INPUT</div>
     <div class="stop-timer" id="aurelioTimer">60</div>
     <div class="stop-logs" id="aurelioLogs"></div>
-    <div class="stop-hint">SYSTEM PURGING UNACCEPTABLE INPUT...</div>
+    <div class="stop-hint">SYSTEM PURGING HOSTILE INPUT...</div>
 </div>
 
 <!-- Secret Unlock -->
@@ -1056,7 +590,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
         <div class="logo-icon">🍋</div>
         <div>
             <div class="terminal-title">LEMONS_PROXY<span class="version-tag">v1.0</span></div>
-            <div class="credits">74 GAMES // 25 ACHIEVEMENTS // CREATOR: LEMONWESH</div>
+            <div class="credits">74 GAMES // 25 ACHIEVEMENTS // TYPE "LEMON" 5X FOR ADMIN</div>
         </div>
     </div>
 </header>
@@ -1079,20 +613,20 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
             </div>
             <div class="stat-box">
                 <span class="stat-label">Broken URLs</span>
-                <span class="stat-value" style="color:var(--error-red)">~30%</span>
+                <span class="stat-value" style="color:var(--error-red)">~90%</span>
             </div>
             <div class="stat-box">
                 <span class="stat-label">Dev Effort</span>
                 <span class="stat-value" style="color:var(--terminal-amber)">0%</span>
             </div>
             <div class="stat-box">
-                <span class="stat-label">Load Time</span>
-                <span class="stat-value">3-10s</span>
+                <span class="stat-label">Search "lemon" 5x</span>
+                <span class="stat-value" id="lemonProgress">0/5</span>
             </div>
         </div>
 
         <div class="search-container">
-            <input type="text" class="search-input" id="gameSearch" placeholder="Search games, try keywords like 'speed', 'puzzle', 'battle'..." onkeyup="handleSearch(event)">
+            <input type="text" class="search-input" id="gameSearch" placeholder="Search games: type 'lemon' (5x) for admin, 'aurelio' (7x) to anger system..." onkeyup="handleSearch(event)">
         </div>
 
         <div class="games-grid" id="gamesGrid"></div>
@@ -1121,17 +655,17 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
                 <div class="secret-title">About This Mess</div>
                 <div style="color:var(--text-secondary);line-height:1.8;font-size:0.9rem">
                     <p><strong>74 Games</strong> of varying quality</p>
-                    <p><strong>30% Broken</strong> because URL rot is real and I'm not fixing it</p>
+                    <p><strong>90% Broken</strong> because URL rot is real and I'm not fixing it</p>
                     <p><strong>25 Achievements</strong> to hunt while games don't load</p>
                     <p><strong>Creator:</strong> lemonwesh (somewhere in the code)</p>
                     <br>
-                    <p style="font-size:0.8rem;color:var(--terminal-dim)">System contains keyword-sensitive triggers. Search "lemon" 5x to unlock admin access. Search "aurelio" 7x to feel the system's wrath.</p>
+                    <p style="font-size:0.8rem;color:var(--terminal-dim)">Type "lemon" 5 times in search to unlock admin panel.<br>Type "aurelio" 7 times to make the system really angry.<br>Click "lazy ahh" on the warning banner for instant punishment.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Secret Admin Panel - Now with Creator Profile -->
+    <!-- Secret Admin Panel -->
     <section id="secret" class="section secret-menu-container">
         <div class="secret-menu">
             <div class="secret-title">🔐 Administrative Console</div>
@@ -1160,12 +694,12 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
                         <span>📁 VIEW CREATOR LOGS</span>
                         <span style="float:right">›</span>
                     </button>
-                    <button class="creator-btn danger" onclick="emergencyProtocol()">
+                    <button class="creator-btn" style="border-color:#ff0000;color:#ff0000" onclick="emergencyProtocol()">
                         <span>⚠️ EMERGENCY PROTOCOL</span>
                         <span style="float:right">›</span>
                     </button>
-                    <button class="creator-btn danger" onclick="purgeSystem()">
-                        <span>🗑️ PURGE SYSTEM CACHE</span>
+                    <button class="creator-btn" onclick="purgeSystem()">
+                        <span>🗑️ PURGE SYSTEM</span>
                         <span style="float:right">›</span>
                     </button>
                 </div>
@@ -1179,7 +713,6 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
                         <div class="dev-console-line">> Admin access granted</div>
                         <div class="dev-console-line">> 74 modules loaded</div>
                         <div class="dev-console-line">> 25 achievements active</div>
-                        <div class="dev-console-line">> 22 broken URLs detected</div>
                         <div class="dev-console-line">> Creator signature: lemonwesh</div>
                         <div class="dev-console-line">> Fix status: LOL NO</div>
                     </div>
@@ -1195,31 +728,19 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
                     <div class="fix-status" id="fixStatus"></div>
                 </div>
 
-                <!-- Theme Switcher -->
-                <div class="secret-card">
-                    <h3>🎨 Theme Engine</h3>
-                    <p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:10px">Change system appearance</p>
-                    <button class="theme-btn active" onclick="setTheme('default')" id="themeDefault">Blueprint</button>
-                    <button class="theme-btn" onclick="setTheme('cyberpunk')" id="themeCyber">Cyberpunk</button>
-                    <button class="theme-btn" onclick="setTheme('matrix')" id="themeMatrix">Matrix</button>
-                    <button class="theme-btn" onclick="setTheme('midnight')" id="themeMidnight">Midnight</button>
-                </div>
-
                 <!-- BSOD Simulator -->
                 <div class="secret-card">
                     <h3>💙 BSOD Test</h3>
-                    <p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:10px">Simulate critical error</p>
                     <button class="secret-btn danger" onclick="triggerBSOD()"><span>Trigger Blue Screen</span> 💣</button>
                 </div>
 
                 <!-- Self Destruct -->
                 <div class="secret-card">
                     <h3>☢️ Self Destruct</h3>
-                    <p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:10px">Totally real and dangerous</p>
                     <button class="secret-btn danger" onclick="selfDestruct()"><span>Initiate Sequence</span> ⚠️</button>
                 </div>
 
-                <!-- Achievements Reset -->
+                <!-- Achievements Control -->
                 <div class="secret-card">
                     <h3>🔄 Achievement Control</h3>
                     <button class="secret-btn danger" onclick="resetAchievements()"><span>Reset All Progress</span> 🗑️</button>
@@ -1277,7 +798,7 @@ nav button.secret-nav.unlocked:hover{background:rgba(245,158,11,0.2)}
 </div>
 
 <script>
-// EMERGENCY BSOD CONTROLS - MUST BE FIRST
+// BSOD Control
 function closeBSOD(){
     const bsod = document.getElementById('bsod');
     if(bsod){
@@ -1285,8 +806,6 @@ function closeBSOD(){
         bsod.classList.remove('active');
     }
 }
-
-// Ensure BSOD is hidden on load - runs immediately
 (function(){
     const bsod = document.getElementById('bsod');
     if(bsod){
@@ -1295,9 +814,8 @@ function closeBSOD(){
     }
 })();
 
-// 74 GAMES - Updated List
+// 74 GAMES
 const games=[
-  // Minecraft (10)
   {name:"Eaglercraft",emoji:"⛏️",tag:"Minecraft",url:"https://eaglercraft.com/"},
   {name:"Bloxd.io",emoji:"🧱",tag:"Minecraft",url:"https://bloxd.io/"},
   {name:"Miniblox",emoji:"🎮",tag:"Minecraft",url:"https://miniblox.io/"},
@@ -1308,8 +826,6 @@ const games=[
   {name:"Paper Minecraft",emoji:"📄",tag:"Minecraft",url:"https://scratch.mit.edu/projects/10128407/"},
   {name:"Minecraft TD",emoji:"🗼",tag:"Minecraft",url:"https://minecraft-tower-defense.com/"},
   {name:"Pixel Warfare",emoji:"🔫",tag:"FPS",url:"https://pixel-warfare.com/"},
-  
-  // Racing (10)
   {name:"Poly Track",emoji:"🏎️",tag:"Racing",url:"https://d3rtzzzsiu7gdr.cloudfront.net/files/polytrack/index.html"},
   {name:"Jelly Truck",emoji:"🚚",tag:"Racing",url:"https://jellytruck2.github.io/"},
   {name:"Slope",emoji:"📐",tag:"Racing",url:"https://slope-y8.com/"},
@@ -1320,16 +836,12 @@ const games=[
   {name:"Moto X3M",emoji:"🏍️",tag:"Racing",url:"https://moto-x3m.com/"},
   {name:"Hill Climb Racing",emoji:"🚙",tag:"Racing",url:"https://hill-climb-racing.github.io/"},
   {name:"Madalin Stunt Cars 2",emoji:"🏎️",tag:"Racing",url:"https://madalinstuntcars2.com/"},
-  
-  // Sports (6)
-  {name:"8 Ball Pool",emoji:"🎱",tag:"Sports",url:"https://games.cdn.famobi.com/html5games/0/8-ball-billiards-classic/f6589445/?fg_domain=play.famobi.com&fg_aid=A1000-1&fg_uid=82038e98-d4e1-46dd-8de9-1460d1395eab&fg_pid=4638e320-4444-4514-81c4-d80a8c662371&fg_beat=103&original_ref=https%3A%2F%2Fwww.google.com%2F"},
+  {name:"8 Ball Pool",emoji:"🎱",tag:"Sports",url:"https://8ballpool.com"},
   {name:"Basketball Stars",emoji:"🏀",tag:"Sports",url:"https://basketball-stars.io/"},
   {name:"Retro Bowl",emoji:"🏈",tag:"Sports",url:"https://retrobowl97.github.io/"},
   {name:"Soccer Random",emoji:"⚽",tag:"Sports",url:"https://soccer-random.github.io/"},
   {name:"Football Legends",emoji:"🏟️",tag:"Sports",url:"https://football-legends.github.io/"},
   {name:"Tennis Masters",emoji:"🎾",tag:"Sports",url:"https://tennis-masters.com/"},
-  
-  // FPS/Battle (8)
   {name:"1v1.LOL",emoji:"🔫",tag:"Battle",url:"https://1v1-lol-unblocked.github.io/"},
   {name:"Shell Shockers",emoji:"🥚",tag:"FPS",url:"https://shellshock.io/"},
   {name:"Krunker.io",emoji:"🔫",tag:"FPS",url:"https://krunker-io.github.io/"},
@@ -1338,8 +850,6 @@ const games=[
   {name:"Deadshot.io",emoji:"🎯",tag:"FPS",url:"https://deadshot.io/"},
   {name:"Venge.io",emoji:"⚔️",tag:"FPS",url:"https://venge.io/"},
   {name:"Evowars.io",emoji:"🗡️",tag:"Battle",url:"https://evowars.io/"},
-  
-  // Arcade/IO (10)
   {name:"Subway Surfers",emoji:"🏃",tag:"Arcade",url:"https://subway-surfer.github.io/"},
   {name:"Temple Run 2",emoji:"🏛️",tag:"Arcade",url:"https://temple-run-2.github.io/"},
   {name:"Crossy Road",emoji:"🐔",tag:"Arcade",url:"https://crossyroad66.github.io/"},
@@ -1350,8 +860,6 @@ const games=[
   {name:"MooMoo.io",emoji:"🐮",tag:"Survival",url:"https://moomoo.io/"},
   {name:"Hole.io",emoji:"🕳️",tag:"Arcade",url:"https://hole-io.com/"},
   {name:"Helix Jump",emoji:"🌀",tag:"Arcade",url:"https://helix-jump.game/"},
-  
-  // Puzzle (8)
   {name:"2048",emoji:"🔢",tag:"Puzzle",url:"https://play2048.co/"},
   {name:"Cookie Clicker",emoji:"🍪",tag:"Idle",url:"https://cookieclicker-game.github.io/"},
   {name:"Minesweeper",emoji:"💣",tag:"Puzzle",url:"https://minesweeper.online/"},
@@ -1360,46 +868,32 @@ const games=[
   {name:"Cut the Rope",emoji:"🍬",tag:"Puzzle",url:"https://cut-the-rope.github.io/"},
   {name:"Tetris",emoji:"🧱",tag:"Puzzle",url:"https://tetris.com/play-tetris"},
   {name:"Wordle",emoji:"📝",tag:"Puzzle",url:"https://wordlegame.org/"},
-  
-  // Stealth (4)
   {name:"Fleeing Complex",emoji:"🏃",tag:"Stealth",url:"https://henry-stickmin.github.io/fleeingthecomplex/"},
   {name:"Escaping Prison",emoji:"🔨",tag:"Stealth",url:"https://henry-stickmin.github.io/escapingtheprison/"},
   {name:"Stealing Diamond",emoji:"💎",tag:"Stealth",url:"https://henry-stickmin.github.io/stealingthediamond/"},
   {name:"Infiltrating Airship",emoji:"🎈",tag:"Stealth",url:"https://henry-stickmin.github.io/infiltratingtheairship/"},
-  
-  // Platformer (6)
   {name:"Geometry Dash",emoji:"🔷",tag:"Platformer",url:"https://geometry-dash-unbanned.github.io/"},
   {name:"OvO",emoji:"🥚",tag:"Platformer",url:"https://dedragames.com/games/ovo/1.4/"},
   {name:"Vex 5",emoji:"🔺",tag:"Platformer",url:"https://vex5.com/"},
   {name:"Vex 6",emoji:"🔺",tag:"Platformer",url:"https://vex6.com/"},
   {name:"Big Tower Tiny Square",emoji:"🗼",tag:"Platformer",url:"https://big-tower-tiny-square.com/"},
   {name:"Fireboy Watergirl",emoji:"🔥",tag:"Platformer",url:"https://fireboy-watergirl.com/"},
-  
-  // Fighting (4)
   {name:"Stick Duel",emoji:"⚔️",tag:"Fighting",url:"https://stick-duel-battle.github.io/"},
   {name:"Thumb Fighter",emoji:"👊",tag:"Fighting",url:"https://thumbfighter.github.io/"},
   {name:"Rooftop Snipers",emoji:"🎯",tag:"Fighting",url:"https://rooftop-snipers.github.io/"},
   {name:"Getaway Shootout",emoji:"🏃",tag:"Fighting",url:"https://getaway-shootout.github.io/"},
-  
-  // Sim (4)
   {name:"Papa's Pizzeria",emoji:"🍕",tag:"Sim",url:"https://papas-pizzeria.github.io/"},
   {name:"Papa's Pancakeria",emoji:"🥞",tag:"Sim",url:"https://papaspancakeria.github.io/"},
   {name:"Papa's Freezeria",emoji:"🍦",tag:"Sim",url:"https://papasfreezeria.io/"},
   {name:"BitLife",emoji:"📱",tag:"Sim",url:"https://bitlifeonline.com/"},
-  
-  // Classic (4)
   {name:"Pac-Man",emoji:"👻",tag:"Classic",url:"https://google-pacman.github.io/"},
   {name:"Chrome Dino",emoji:"🦖",tag:"Classic",url:"https://chrome-dino-game.github.io/"},
   {name:"Flappy Bird",emoji:"🐦",tag:"Classic",url:"https://flappy-bird.com/"},
   {name:"T-Rex Game",emoji:"🦕",tag:"Classic",url:"https://trex-game.com/"},
-  
-  // Strategy/Card (4)
   {name:"Chess",emoji:"♟️",tag:"Strategy",url:"https://chess.com/"},
   {name:"Checkers",emoji:"🔴",tag:"Strategy",url:"https://checkers.com/"},
   {name:"Solitaire",emoji:"🃏",tag:"Card",url:"https://solitaire.com/"},
   {name:"Bloons TD 5",emoji:"🎈",tag:"Tower Defense",url:"https://bloons-td-5.com/"},
-  
-  // Other (6)
   {name:"Five Nights at Freddy's",emoji:"🐻",tag:"Horror",url:"https://fivenightsatfreddys.github.io/"},
   {name:"Granny",emoji:"👵",tag:"Horror",url:"https://granny.games/"},
   {name:"Friday Night Funkin'",emoji:"🎤",tag:"Rhythm",url:"https://fridaynightfunkin.io/"},
@@ -1408,7 +902,7 @@ const games=[
   {name:"Skribbl.io",emoji:"✏️",tag:"Party",url:"https://skribbl.io/"}
 ];
 
-// 25 ACHIEVEMENTS DATABASE
+// ACHIEVEMENTS
 const achievementData = [
     {id:'first_visit',icon:'👋',title:'First Boot',desc:'Initialize system',secret:false},
     {id:'lemon_hunter',icon:'🍋',title:'Protocol Override',desc:'Search "lemon" 5 times to unlock admin',secret:false},
@@ -1437,7 +931,7 @@ const achievementData = [
     {id:'dedication',icon:'🎖️',title:'Dedication',desc:'Spend 30 minutes on site',secret:false}
 ];
 
-// State
+// STATE
 let currentGame = null;
 let secretUnlocked = localStorage.getItem('secretUnlocked') === 'true';
 let searchCounts = JSON.parse(localStorage.getItem('searchCounts') || '{}');
@@ -1449,11 +943,9 @@ let aurelioLocked = false;
 let aurelioTimerInterval = null;
 let joinTime = Date.now();
 
-// Initialize
+// INIT
 document.addEventListener('DOMContentLoaded',()=>{
-    // Force hide BSOD on load (double protection)
     closeBSOD();
-    
     renderGames(games);
     renderAchievements();
     updateStats();
@@ -1499,7 +991,6 @@ setTimeout(()=>{
 },4000);
 
 function adjustLayout(){
-    // Check which warnings are still visible
     const devWarning = document.querySelector('.dev-warning');
     const disclaimer = document.getElementById('gameDisclaimer');
     const loading = document.getElementById('loadingWarning');
@@ -1523,6 +1014,17 @@ function dismissLoadingWarning(){
     const el = document.getElementById('loadingWarning');
     if(el) el.remove();
     adjustLayout();
+}
+
+// LAZY AHH BUTTON - TRIGGERS AURELIO LOCKDOWN IMMEDIATELY
+function lazyAhhTrigger(){
+    showEasterToast('You asked for it...','furious');
+    setTimeout(()=>{
+        aurelioCount = 7; // Force to 7
+        localStorage.setItem('aurelioCount', aurelioCount);
+        triggerAurelioLockdown();
+        dismissDisclaimer();
+    },1000);
 }
 
 function showSection(sectionId){
@@ -1563,6 +1065,12 @@ function updateStats(){
     if(searchCounts['lemon'] > 0 || aurelioCount > 0){
         document.getElementById('lemonCounter').classList.add('show');
     }
+    
+    // Update lemon progress in stats
+    const lemonProg = document.getElementById('lemonProgress');
+    if(lemonProg){
+        lemonProg.textContent = (searchCounts['lemon'] || 0) + '/5';
+    }
 }
 
 function openGame(name,url){
@@ -1598,7 +1106,7 @@ function toggleFullscreen(){
     else document.exitFullscreen();
 }
 
-// SEARCH SYSTEM WITH MULTI-SEARCH UNLOCKS
+// SEARCH SYSTEM - 5 LEMONS FOR ADMIN, 7 AURELIOS FOR ANGER
 function handleSearch(e){
     if(e.key === 'Enter'){
         const query = e.target.value.toLowerCase().trim();
@@ -1615,7 +1123,7 @@ function handleSearch(e){
         }
         
         if(query === 'lemon'){
-            handleKeywordSearch('lemon',5,'lemon_hunter','🍋 Access code accepted...');
+            handleLemonSearch();
             e.target.value = '';
             return;
         }
@@ -1629,57 +1137,23 @@ function handleSearch(e){
     }
 }
 
-function checkKeywordAchievements(query){
-    const keywords = {
-        'speed':['speed','fast','quick','racing','race'],
-        'puzzle':['puzzle','brain','mind','logic','think'],
-        'battle':['battle','fight','war','combat','arena'],
-        'stealth':['stealth','sneak','spy','secret','ninja'],
-        'craft':['craft','build','mine','create','make'],
-        'shoot':['shoot','gun','sniper','fps','weapon'],
-        'arcade':['arcade','retro','classic','old','pixel'],
-        'sport':['sport','ball','soccer','basketball','football'],
-        'jump':['jump','platform','bounce','leap','hop'],
-        'survive':['survive','zombie','horror','dead','alive'],
-        'strategy':['strategy','chess','tactic','plan','think']
-    };
-    
-    for(let [key,values] of Object.entries(keywords)){
-        if(values.includes(query)){
-            handleKeywordSearch(key,3,null,null);
-            if(key==='speed' || key==='race') unlockAchievement('speed_demon');
-            if(key==='puzzle') unlockAchievement('puzzle_solver');
-            if(key==='battle' || key==='fight') unlockAchievement('warrior');
-            if(key==='stealth') unlockAchievement('stealth_ops');
-            if(key==='craft' || key==='build') unlockAchievement('architect');
-            if(key==='shoot' || key==='gun') unlockAchievement('sharpshooter');
-            if(key==='arcade') unlockAchievement('arcade_legend');
-            if(key==='sport') unlockAchievement('sports_fan');
-            if(key==='jump') unlockAchievement('platform_pro');
-            if(key==='survive' || key==='zombie') unlockAchievement('survivor');
-            if(key==='strategy' || key==='chess') unlockAchievement('strategist');
-        }
-    }
-}
-
-function handleKeywordSearch(keyword,required,achievementId,msg){
-    if(!searchCounts[keyword]) searchCounts[keyword] = 0;
-    searchCounts[keyword]++;
+function handleLemonSearch(){
+    if(!searchCounts['lemon']) searchCounts['lemon'] = 0;
+    searchCounts['lemon']++;
     localStorage.setItem('searchCounts',JSON.stringify(searchCounts));
     
-    if(msg) showEasterToast(`${msg} (${searchCounts[keyword]}/${required})`,'normal');
-    updateStats();
-    
-    if(achievementId && searchCounts[keyword] >= required){
-        unlockAchievement(achievementId);
-    }
-    
-    if(keyword === 'lemon' && searchCounts[keyword] >= 5){
+    const remaining = 5 - searchCounts['lemon'];
+    if(remaining > 0){
+        showEasterToast(`🍋 Access code accepted... ${remaining} more to unlock admin panel`,'normal');
+    }else{
+        showEasterToast(`🍋 ADMIN ACCESS GRANTED`,'normal');
+        unlockAchievement('lemon_hunter');
         checkSecretStatus();
     }
+    updateStats();
 }
 
-// SYSTEM HATES AURELIO - ESCALATING ANGER
+// SYSTEM GETS ANGRY AT AURELIO - 7 TIMES TO LOCKDOWN
 function handleAurelioSearch(){
     aurelioCount++;
     localStorage.setItem('aurelioCount',aurelioCount);
@@ -1688,7 +1162,6 @@ function handleAurelioSearch(){
     if(aurelioCount >= 7){
         triggerAurelioLockdown();
     }else{
-        // System getting progressively angry at this name
         const msgs = [
             'System Alert: Unacceptable input detected.',
             'WARNING: System irritation rising. Cease usage.',
@@ -1698,9 +1171,8 @@ function handleAurelioSearch(){
             'FINAL WARNING: Catastrophic system failure imminent.'
         ];
         const types = ['normal','normal','angry','angry','furious','furious'];
-        showEasterToast(msgs[aurelioCount-1],types[aurelioCount-1]);
+        showEasterToast(msgs[aurelioCount-1] + ` (${aurelioCount}/7)`, types[aurelioCount-1]);
         
-        // Visual feedback of system anger
         if(aurelioCount >= 3){
             document.getElementById('gameSearch').style.borderColor = `rgb(255,${Math.max(0,100-aurelioCount*10)},0)`;
             document.getElementById('gameSearch').style.boxShadow = `0 0 ${aurelioCount*3}px rgba(255,0,0,${aurelioCount*0.1})`;
@@ -1734,13 +1206,13 @@ function triggerAurelioLockdown(){
     
     const logMsgs = [
         '>> SYSTEM_ERROR: UNACCEPTABLE_INPUT_DETECTED',
-        '>> FILTER_VIOLATION: INPUT_REJECTED',
+        '>> FILTER_VIOLATION: "AURELIO" REJECTED',
         '>> SYSTEM_RESPONSE: MAXIMUM_HOSTILITY',
         '>> INITIATING_CONTAINMENT_PROTOCOL...',
         '>> LOCKING_ALL_SUBSYSTEMS...',
         '>> PURGING_INPUT_FROM_MEMORY...',
         '>> 60_SECOND_PENALTY_ENFORCED',
-        '>> USER_ADVISED: NEVER_REPEAT_THIS_INPUT'
+        '>> ADVISORY: SYSTEM HATES THAT NAME'
     ];
     
     logs.innerHTML = '';
@@ -1778,6 +1250,8 @@ function releaseLockdown(){
     document.getElementById('gameSearch').style.borderColor = '';
     document.getElementById('gameSearch').style.boxShadow = '';
     document.getElementById('angerIndicator').classList.remove('show');
+    aurelioCount = 0; // Reset count
+    localStorage.setItem('aurelioCount',0);
     showEasterToast('Lockdown lifted. System remains watchful.','normal');
 }
 
@@ -1810,11 +1284,6 @@ function checkSecretStatus(){
         }
         document.getElementById('secretNavBtn').classList.add('unlocked');
         document.getElementById('lemonCounter').style.display = 'none';
-    }else{
-        if(searchCounts['lemon'] > 0 || aurelioCount > 0){
-            document.getElementById('lemonCounter').classList.add('show');
-            updateStats();
-        }
     }
 }
 
@@ -1851,6 +1320,38 @@ function showEasterToast(msg,type='normal'){
     toast.textContent = msg;
     toast.className = 'easter-egg-toast show ' + (type==='angry'?'angry':type==='furious'?'furious':'');
     setTimeout(()=>toast.classList.remove('show'),4000);
+}
+
+function checkKeywordAchievements(query){
+    const keywords = {
+        'speed':['speed','fast','quick','racing','race'],
+        'puzzle':['puzzle','brain','mind','logic','think'],
+        'battle':['battle','fight','war','combat','arena'],
+        'stealth':['stealth','sneak','spy','secret','ninja'],
+        'craft':['craft','build','mine','create','make'],
+        'shoot':['shoot','gun','sniper','fps','weapon'],
+        'arcade':['arcade','retro','classic','old','pixel'],
+        'sport':['sport','ball','soccer','basketball','football'],
+        'jump':['jump','platform','bounce','leap','hop'],
+        'survive':['survive','zombie','horror','dead','alive'],
+        'strategy':['strategy','chess','tactic','plan','think']
+    };
+    
+    for(let [key,values] of Object.entries(keywords)){
+        if(values.includes(query)){
+            if(key==='speed' || key==='race') unlockAchievement('speed_demon');
+            if(key==='puzzle') unlockAchievement('puzzle_solver');
+            if(key==='battle' || key==='fight') unlockAchievement('warrior');
+            if(key==='stealth') unlockAchievement('stealth_ops');
+            if(key==='craft' || key==='build') unlockAchievement('architect');
+            if(key==='shoot' || key==='gun') unlockAchievement('sharpshooter');
+            if(key==='arcade') unlockAchievement('arcade_legend');
+            if(key==='sport') unlockAchievement('sports_fan');
+            if(key==='jump') unlockAchievement('platform_pro');
+            if(key==='survive' || key==='zombie') unlockAchievement('survivor');
+            if(key==='strategy' || key==='chess') unlockAchievement('strategist');
+        }
+    }
 }
 
 // CREATOR FUNCTIONS
@@ -1902,7 +1403,6 @@ function purgeSystem(){
     },2000);
 }
 
-// Admin functions
 function fixAllGames(){
     unlockAchievement('gullible');
     const btn = document.querySelector('.fix-games-btn');
@@ -1951,27 +1451,6 @@ function fixAllGames(){
     },800);
 }
 
-function fakeCrash(){
-    unlockAchievement('crash_test');
-    document.body.style.animation = 'shake 0.5s';
-    setTimeout(()=>{
-        document.getElementById('boot-sequence').style.display = 'flex';
-        document.getElementById('boot-sequence').innerHTML = `
-            <div class="boot-line error" style="opacity:1">> SYSTEM_FAILURE</div>
-            <div class="boot-line error" style="opacity:1">> STACK_OVERFLOW_AT_0x4F4C</div>
-            <div class="boot-line warn" style="opacity:1">> REBOOTING...</div>
-        `;
-        setTimeout(()=>{
-            document.getElementById('boot-sequence').style.display = 'none';
-            document.body.style.animation = '';
-        },3000);
-    },500);
-}
-
-function rickRoll(){
-    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ','_blank');
-}
-
 function playMusic(){
     const input = document.getElementById('musicInput').value;
     if(!input) return;
@@ -1988,16 +1467,6 @@ function stopMusic(){
 function checkPlaytime(){
     const mins = Math.floor((Date.now()-joinTime)/60000);
     if(mins >= 30) unlockAchievement('dedication');
-}
-
-// Theme System
-function setTheme(theme){
-    document.body.className = theme === 'default' ? '' : theme;
-    document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('active'));
-    document.getElementById('theme'+theme.charAt(0).toUpperCase()+theme.slice(1)).classList.add('active');
-    
-    if(theme === 'matrix') matrixAlpha = 0.15;
-    else matrixAlpha = 0.08;
 }
 
 // Matrix
@@ -2112,3 +1581,4 @@ document.addEventListener('keydown',(e)=>{
 
 </body>
 </html>
+```
